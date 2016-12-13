@@ -32,6 +32,7 @@ executable parse-hk
   build-depends:       base,
                        hxt,
                        safe,
+                       text,
                        highlighting-kate2
   hs-source-dirs:      bin
   main-is:             Parse.hs

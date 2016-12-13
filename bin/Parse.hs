@@ -1,6 +1,7 @@
 {-# LANGUAGE Arrows #-}
 
 import Safe
+import qualified Data.Text as Text
 import Text.XML.HXT.Core
 import Data.List ((\\))
 import Control.Monad
@@ -18,12 +19,12 @@ data SyntaxDefinition =
                    , synContexts      :: [SyntaxContext]
                    , synItemDatas     :: [(String, String)]
                    , synKeywordAttr   :: SyntaxKeywordAttr
-                   } deriving (Read, Show)
+                   } deriving (Show)
 
 data SyntaxKeywordAttr =
   SyntaxKeywordAttr  { keywordCaseSensitive   :: Bool
                      , keywordDelims          :: [Char]
-                     } deriving (Read, Show)
+                     } deriving (Show)
 
 data SyntaxContext =
   SyntaxContext { contName               :: String
@@ -33,9 +34,10 @@ data SyntaxContext =
                 , contFallthrough        :: Bool
                 , contFallthroughContext :: String
                 , contDynamic            :: Bool
-                , contParsers            :: [SyntaxParser]
-                } deriving (Read, Show)
+                , contParsers            :: [Rule]
+                } deriving (Show)
 
+{-
 data SyntaxParser =
   SyntaxParser { parserType              :: String
                , parserAttribute         :: String
@@ -49,7 +51,8 @@ data SyntaxParser =
                , parserChar              :: Char
                , parserChar1             :: Char
                , parserChildren          :: [SyntaxParser]
-               } deriving (Read, Show)
+               } deriving (Show)
+-}
 
 standardDelims :: [Char]
 standardDelims = " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
@@ -154,47 +157,62 @@ getContexts = listA $   multi (hasName "context")
                                            , contDynamic = vBool False dynamic
                                            , contParsers = parsers }
 
-getParsers :: IOSArrow XmlTree [SyntaxParser]
+-- Note, some xml files have "\\" for a backslash,
+-- others have "\".  Not sure what the rules are, but
+-- this covers both bases:
+readChar :: String -> Char
+readChar s = case s of
+                  [c] -> c
+                  _   -> readDef '\xffff' $ "'" ++ s ++ "'"
+
+
+getParsers :: IOSArrow XmlTree [Rule]
 getParsers = listA $ getChildren
                      >>>
                      proc x -> do
                        name <- getName -< x
                        attribute <- getAttrValue "attribute" -< x
                        context <- getAttrValue "context" -< x
-                       char0 <- getAttrValue "char" -< x
-                       char1 <- getAttrValue "char1" -< x
-                       str <- getAttrValue "String" -< x
-                       includeAttrib <- getAttrValue "includeAttrib" -< x
-                       lookahead <- getAttrValue "lookAhead" -< x
-                       firstNonSpace <- getAttrValue "firstNonSpace" -< x
-                       column <- getAttrValue "column" -< x
-                       dynamic <- getAttrValue "dynamic" -< x
+                       char0 <- arr readChar <<< getAttrValue "char" -< x
+                       char1 <- arr readChar <<< getAttrValue "char1" -< x
+                       str' <- getAttrValue "String" -< x
+                       includeAttrib <- arr (vBool False) <<< getAttrValue "includeAttrib" -< x
+                       lookahead <- arr (vBool False) <<< getAttrValue "lookAhead" -< x
+                       firstNonSpace <- arr (vBool False) <<< getAttrValue "firstNonSpace" -< x
+                       column' <- getAttrValue "column" -< x
+                       dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
                        children <- getParsers -< x
-                       let tildeRegex = name == "RegExpr" && length str > 0 && head str == '^'
-                       returnA -< SyntaxParser
-                                    { parserType = name
-                                    , parserAttribute = attribute
-                                    , parserContext = context
-                                    , parserLookAhead = vBool False lookahead
-                                    , parserIncludeAttrib = vBool False includeAttrib
-                                    , parserFirstNonSpace = vBool False firstNonSpace
-                                    , parserColumn = if tildeRegex
-                                                        then Just 0
-                                                        else if null column
-                                                                then Nothing
-                                                                else readMay column
-                                    , parserDynamic = vBool False dynamic
-                                    , parserString = if tildeRegex then drop 1 str else str
-                                    -- Note, some xml files have "\\" for a backslash,
-                                    -- others have "\".  Not sure what the rules are, but
-                                    -- this covers both bases:
-                                    , parserChar = case char0 of
-                                                         [c] -> c
-                                                         _   -> readDef '\xffff' $ "'" ++ char0 ++ "'"
-                                    , parserChar1 = case char1 of
-                                                         [c] -> c
-                                                         _   -> readDef '\xffff' $ "'" ++ char1 ++ "'"
-                                    , parserChildren = children }
+                       let tildeRegex = name == "RegExpr" && take 1 str' == "^"
+                       let str = if tildeRegex then drop 1 str' else str'
+                       let column = if tildeRegex
+                                       then Just 0
+                                       else readMay column'
+                       let matcher = case name of
+                                          "DetectChar" -> DetectChar char0
+                                          "Detect2Chars" -> Detect2Chars char0 char1
+                                          "AnyChar" -> AnyChar str
+                                          "RangeDetect" -> RangeDetect char0 char1
+                                          "StringText" -> StringDetect (Text.pack str)
+                                          "RegExpr" -> Unimplemented -- TODO
+                                          "Keyword" -> Unimplemented -- TODO
+                                          "Int" -> Int
+                                          "Float" -> Float
+                                          "HlCOct" -> HlCOct
+                                          "HlCHex" -> HlCHex
+                                          "HlCStringChar" -> HlCStringChar
+                                          "LineContinue" -> Unimplemented -- TODO
+                                          "IncludeRules" -> Unimplemented -- TODO
+                                          "DetectSpaces" -> DetectSpaces
+                                          "DetectIdentifier" -> DetectIdentifier
+                                          _ -> Unimplemented -- TODO
+                       let contextSwitch = [] -- TODO 
+                       returnA -< Rule{ matcher = matcher,
+                                        attribute = Text.pack attribute,
+                                        dynamic = dynamic,
+                                        children = children,
+                                        contextSwitch = contextSwitch }
+
+
 
 getKeywordAttrs :: IOSArrow XmlTree [SyntaxKeywordAttr]
 getKeywordAttrs = listA $ multi $ hasName "keywords"

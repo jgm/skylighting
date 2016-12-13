@@ -2,7 +2,6 @@
 
 module Highlighting.Kate.Parser (
                 Regex
-              , Dynamic(..)
               , RE(..)
               , ContextName
               , SyntaxName
@@ -22,7 +21,6 @@ import System.IO.Unsafe (unsafePerformIO)
 import Text.Regex.PCRE.ByteString (Regex)
 #endif
 
-data Dynamic = Dynamic | NotDynamic deriving (Read, Show, Eq)
 data RE = DynamicRegex Text | CompiledRegex Text Regex
 
 instance Show RE where
@@ -33,11 +31,11 @@ type ContextName = Text
 type SyntaxName = Text
 
 data Matcher =
-    DetectChar Dynamic Char
-  | Detect2Chars Dynamic Char Char
+    DetectChar Char
+  | Detect2Chars Char Char
   | AnyChar [Char]
   | RangeDetect Char Char
-  | StringDetect Dynamic Text
+  | StringDetect Text
   | RegExpr RE
   | Keyword [Text]
   | Int
@@ -63,6 +61,7 @@ data ContextSwitch =
 data Rule = Rule{
     matcher :: Matcher
   , attribute :: Text
+  , dynamic   :: Bool
   , children  ::  [Rule]
   , contextSwitch :: [ContextSwitch]
   } deriving (Show)
