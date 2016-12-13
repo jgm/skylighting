@@ -46,7 +46,7 @@ data Matcher =
   | HlCStringChar
   | HlCChar
   | LineContinue
-  | IncludeRules ContextName SyntaxName
+  | IncludeRules SyntaxName ContextName
   | DetectSpaces
   | DetectIdentifier
   | IfFirstNonspace Rule
@@ -60,19 +60,22 @@ data ContextSwitch =
   deriving Show
 
 data Rule = Rule{
-    matcher :: Matcher
-  , attribute :: Text
-  , dynamic   :: Bool
-  , children  ::  [Rule]
-  , contextSwitch :: [ContextSwitch]
+    rMatcher :: Matcher
+  , rAttribute :: Text
+  , rDynamic   :: Bool
+  , rChildren  ::  [Rule]
+  , rContextSwitch :: [ContextSwitch]
   } deriving (Show)
 
 data Syntax = Syntax{
-    name     :: Text
-  , contexts :: [Context]
+    sName     :: Text
+  , sContexts :: [Context]
+  -- TODO more stuff.
   } deriving (Show)
 
 data Context = Context{
-    rules :: [Rule]
+    cName  :: Text
+  , cRules :: [Rule]
+    -- TODO more stuff
 } deriving (Show)
 

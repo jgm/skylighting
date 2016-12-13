@@ -5,6 +5,6 @@ import Highlighting.Kate.Parser
 
 main :: IO ()
 main = hspec $ do
-  describe "Highlighing.Kate.Parser.Rule" $ do
+  describe "Highlighing.Kate.Parser.Matcher" $ do
     it "has a show instance" $ do
-      show (DetectChar Dynamic 'a') `shouldBe` "DetectChar Dynamic 'a'"
+      show (DetectChar 'a') `shouldBe` "DetectChar 'a'"

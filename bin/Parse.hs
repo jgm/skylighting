@@ -9,6 +9,7 @@ import Control.Monad
 import Highlighting.Kate.Parser
 import System.Environment (getArgs)
 
+{-
 data SyntaxDefinition =
   SyntaxDefinition { synLanguage      :: String
                    , synAuthor        :: String
@@ -22,11 +23,6 @@ data SyntaxDefinition =
                    , synKeywordAttr   :: SyntaxKeywordAttr
                    } deriving (Show)
 
-data SyntaxKeywordAttr =
-  SyntaxKeywordAttr  { keywordCaseSensitive   :: Bool
-                     , keywordDelims          :: [Char]
-                     } deriving (Show)
-
 data SyntaxContext =
   SyntaxContext { contName               :: String
                 , contAttribute          :: String
@@ -38,7 +34,6 @@ data SyntaxContext =
                 , contParsers            :: [Rule]
                 } deriving (Show)
 
-{-
 data SyntaxParser =
   SyntaxParser { parserType              :: String
                , parserAttribute         :: String
@@ -54,6 +49,12 @@ data SyntaxParser =
                , parserChildren          :: [SyntaxParser]
                } deriving (Show)
 -}
+
+data SyntaxKeywordAttr =
+  SyntaxKeywordAttr  { keywordCaseSensitive   :: Bool
+                     , keywordDelims          :: [Char]
+                     } deriving (Show)
+
 
 standardDelims :: [Char]
 standardDelims = " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
@@ -78,7 +79,7 @@ main = do
   syntaxes <- getArgs >>= mapM (runX . application)
   pPrint syntaxes
 
-application :: String -> IOSArrow b SyntaxDefinition
+application :: String -> IOSArrow b Syntax
 application src
     = readDocument [withValidate no, withInputEncoding utf8] src
       >>>
@@ -86,7 +87,7 @@ application src
       >>>
       extractSyntaxDefinition
 
-extractSyntaxDefinition :: IOSArrow XmlTree SyntaxDefinition
+extractSyntaxDefinition :: IOSArrow XmlTree Syntax
 extractSyntaxDefinition =  proc x -> do
                              lang <- getAttrValue "name" -< x
                              author <- getAttrValue "author" -< x
@@ -98,7 +99,11 @@ extractSyntaxDefinition =  proc x -> do
                              lists <- getLists -< x
                              contexts <- getContexts -< x
                              keywordAttr <- getKeywordAttrs -< x
-                             returnA -< SyntaxDefinition { synLanguage      = lang
+                             returnA -< Syntax{
+                                          sName     = Text.pack lang
+                                        , sContexts = contexts
+                                        }
+                             {- SyntaxDefinition { synLanguage      = lang
                                                          , synAuthor        = author
                                                          , synVersion       = version
                                                          , synLicense       = license
@@ -110,6 +115,7 @@ extractSyntaxDefinition =  proc x -> do
                                                          , synKeywordAttr   = if null keywordAttr
                                                                                  then defaultKeywordAttr
                                                                                  else head keywordAttr }
+                             -}
 
 getItemDatas :: IOSArrow XmlTree [(String,String)]
 getItemDatas = multi (hasName "itemDatas")
@@ -136,7 +142,7 @@ getListContents = listA $ getChildren
                           >>>
                           arr stripWhitespace
 
-getContexts :: IOSArrow XmlTree [SyntaxContext]
+getContexts :: IOSArrow XmlTree [Context]
 getContexts = listA $   multi (hasName "context")
                         >>>
                         proc x -> do
@@ -148,7 +154,12 @@ getContexts = listA $   multi (hasName "context")
                           fallthroughContext <- getAttrValue "fallthroughContext" -< x
                           dynamic <- getAttrValue "dynamic" -< x
                           parsers <- getParsers -< x
-                          returnA -< SyntaxContext
+                          returnA -< Context {
+                                        cName = Text.pack name
+                                      , cRules = parsers
+                                      }
+                                      {-
+                                       SyntaxContext
                                            { contName = name
                                            , contAttribute = attribute
                                            , contLineEndContext = if null lineEndContext then "#stay" else lineEndContext
@@ -157,6 +168,7 @@ getContexts = listA $   multi (hasName "context")
                                            , contFallthroughContext = if null fallthroughContext then "#pop" else fallthroughContext
                                            , contDynamic = vBool False dynamic
                                            , contParsers = parsers }
+                                      -}
 
 -- Note, some xml files have "\\" for a backslash,
 -- others have "\".  Not sure what the rules are, but
@@ -194,7 +206,7 @@ getParsers = listA $ getChildren
                                           "AnyChar" -> AnyChar str
                                           "RangeDetect" -> RangeDetect char0 char1
                                           "StringText" -> StringDetect (Text.pack str)
-                                          "RegExpr" -> Unimplemented -- TODO
+                                          "RegExpr" -> RegExpr (DynamicRegex (Text.pack str)) -- TODO or compiled regex
                                           "Keyword" -> Unimplemented -- TODO
                                           "Int" -> Int
                                           "Float" -> Float
@@ -207,11 +219,11 @@ getParsers = listA $ getChildren
                                           "DetectIdentifier" -> DetectIdentifier
                                           _ -> Unimplemented -- TODO
                        let contextSwitch = [] -- TODO 
-                       returnA -< Rule{ matcher = matcher,
-                                        attribute = Text.pack attribute,
-                                        dynamic = dynamic,
-                                        children = children,
-                                        contextSwitch = contextSwitch }
+                       returnA -< Rule{ rMatcher = matcher,
+                                        rAttribute = Text.pack attribute,
+                                        rDynamic = dynamic,
+                                        rChildren = children,
+                                        rContextSwitch = contextSwitch }
 
 
 
