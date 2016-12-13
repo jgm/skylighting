@@ -2,8 +2,8 @@
 
 module Highlighting.Kate.Parser (
                 Regex
-              , Dynamic
-              , RE
+              , Dynamic(..)
+              , RE(..)
               , ContextName
               , SyntaxName
               , Rule(..)
