@@ -1,0 +1,22 @@
+name:                highlighting-kate2
+version:             0.1.0.0
+synopsis:            Experimental new version of highlighting-kate
+-- description:         
+homepage:            https://github.com/jgm/highlighting-kate2
+license:             GPL-2
+license-file:        LICENSE
+author:              John MacFarlane
+maintainer:          jgm@berkeley.edu
+-- copyright:           
+category:            Text
+build-type:          Simple
+extra-source-files:  changelog.md
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     Parser
+  -- other-modules:
+  other-extensions:    CPP, Arrows
+  build-depends:       base >=4.9 && <4.10, text >=1.2 && <1.3, bytestring >=0.10 && <0.11, regex-pcre-builtin >=0.94 && <0.95, directory >=1.2 && <1.3, filepath >=1.4 && <1.5, pretty >=1.1 && <1.2, highlighting-kate >=0.6 && <0.7, utf8-string >=1.0 && <1.1, regex-posix >=0.95 && <0.96
+  hs-source-dirs:      .
+  default-language:    Haskell2010
