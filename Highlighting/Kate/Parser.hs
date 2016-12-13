@@ -6,7 +6,11 @@ module Highlighting.Kate.Parser (
               , RE(..)
               , ContextName
               , SyntaxName
+              , Matcher(..)
               , Rule(..)
+              , Context(..)
+              , ContextSwitch(..)
+              , Syntax(..)
               ) where
 import qualified Data.Text as Text
 import Data.Text (Text)
@@ -28,7 +32,7 @@ instance Show RE where
 type ContextName = Text
 type SyntaxName = Text
 
-data Rule =
+data Matcher =
     DetectChar Dynamic Char
   | Detect2Chars Dynamic Char Char
   | AnyChar [Char]
@@ -46,6 +50,29 @@ data Rule =
   | IncludeRules ContextName SyntaxName
   | DetectSpaces
   | DetectIdentifier
+  | IfFirstNonspace Rule
+  | IfColumn Int Rule
+  | WithChildren Rule [Rule]
   | Unimplemented
   deriving (Show)
+
+data ContextSwitch =
+  Pop | Push Context
+  deriving Show
+
+data Rule = Rule{
+    matcher :: Matcher
+  , attribute :: Text
+  , children  ::  [Rule]
+  , contextSwitch :: [ContextSwitch]
+  } deriving (Show)
+
+data Syntax = Syntax{
+    name     :: Text
+  , contexts :: [Context]
+  } deriving (Show)
+
+data Context = Context{
+    rules :: [Rule]
+} deriving (Show)
 
