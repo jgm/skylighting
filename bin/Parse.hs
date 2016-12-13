@@ -2,6 +2,7 @@
 
 import Safe
 import qualified Data.Text as Text
+import Text.Show.Pretty (pPrint)
 import Text.XML.HXT.Core
 import Data.List ((\\))
 import Control.Monad
@@ -75,7 +76,7 @@ vBool defaultVal value = case value of
 
 main = do
   syntaxes <- getArgs >>= mapM (runX . application)
-  print syntaxes
+  pPrint syntaxes
 
 application :: String -> IOSArrow b SyntaxDefinition
 application src

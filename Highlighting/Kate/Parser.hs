@@ -11,6 +11,7 @@ module Highlighting.Kate.Parser (
               , ContextSwitch(..)
               , Syntax(..)
               ) where
+
 import qualified Data.Text as Text
 import Data.Text (Text)
 #ifdef _PCRE_LIGHT
