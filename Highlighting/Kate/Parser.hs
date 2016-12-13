@@ -1,6 +1,7 @@
 {-# LANGUAGE CPP #-}
 
-module Parser ( Regex
+module Highlighting.Kate.Parser (
+                Regex
               , Dynamic
               , RE
               , ContextName
