@@ -2,12 +2,13 @@
 
 import Safe
 import System.FilePath (takeBaseName, (</>), (<.>))
-import Text.Show.Pretty (ppShow)
 import Text.XML.HXT.Core
+import Text.Show.Pretty (ppShow)
 import Data.List ((\\))
 import Control.Monad
 import Skylighting.Parser
 import System.Environment (getArgs)
+import qualified Data.Map as Map
 
 {-
 data SyntaxDefinition =
@@ -75,10 +76,10 @@ vBool defaultVal value = case value of
                            _ -> defaultVal
 
 main = do
-  (f:_) <- getArgs
-  syntax <- runX $ application f
+  syntaxes <- getArgs >>= (mapM (runX . application)) >>= return . mconcat
+  let syntaxMap = Map.fromList [(sName s, s) | s <- syntaxes]
   putStrLn $
-      "import Skylighting.Parser\n\nsyntax = " ++ ppShow syntax
+      "import Skylighting.Parser\nimport Data.Map\n\nsyntaxMap :: Data.Map.Map String Syntax\nsyntaxMap = " ++ ppShow syntaxMap
 
 application :: String -> IOSArrow b Syntax
 application src
@@ -102,7 +103,8 @@ extractSyntaxDefinition =  proc x -> do
                              keywordAttr <- getKeywordAttrs -< x
                              returnA -< Syntax{
                                           sName     = lang
-                                        , sContexts = contexts
+                                        , sContexts = Map.fromList
+                                               [(cName c, c) | c <- contexts]
                                         }
                              {- SyntaxDefinition { synLanguage      = lang
                                                          , synAuthor        = author
@@ -207,7 +209,8 @@ getParsers = listA $ getChildren
                                           "AnyChar" -> AnyChar str
                                           "RangeDetect" -> RangeDetect char0 char1
                                           "StringText" -> StringDetect str
-                                          "RegExpr" -> RegExpr (DynamicRegex str) -- TODO or compiled regex
+                                          "RegExpr" -> RegExpr RE{ reString = str, reDynamic = dynamic, reCompiled = Nothing, reCaseSensitive = True }
+                                           -- TODO or compiled regex
                                           "Keyword" -> Unimplemented -- TODO
                                           "Int" -> Int
                                           "Float" -> Float
