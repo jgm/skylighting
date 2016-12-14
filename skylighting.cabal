@@ -29,6 +29,7 @@ library
 executable skylighting-extract
   other-extensions:    CPP, Arrows
   build-depends:       base,
+                       filepath,
                        hxt,
                        safe,
                        text,

@@ -12,8 +12,6 @@ module Skylighting.Parser (
               , Syntax(..)
               ) where
 
-import qualified Data.Text as Text
-import Data.Text (Text)
 #ifdef _PCRE_LIGHT
 import Text.Regex.PCRE.Light (Regex)
 import Data.ByteString (ByteString)
@@ -22,23 +20,23 @@ import System.IO.Unsafe (unsafePerformIO)
 import Text.Regex.PCRE.ByteString (Regex)
 #endif
 
-data RE = DynamicRegex Text | CompiledRegex Text Regex
+data RE = DynamicRegex String | CompiledRegex String Regex
 
 instance Show RE where
   show (DynamicRegex t) = "DynamicRegex " ++ show t
   show (CompiledRegex t _) = "CompiledRegex " ++ show t
 
-type ContextName = Text
-type SyntaxName = Text
+type ContextName = String
+type SyntaxName = String
 
 data Matcher =
     DetectChar Char
   | Detect2Chars Char Char
   | AnyChar [Char]
   | RangeDetect Char Char
-  | StringDetect Text
+  | StringDetect String
   | RegExpr RE
-  | Keyword [Text]
+  | Keyword [String]
   | Int
   | Float
   | HlCOct
@@ -61,20 +59,20 @@ data ContextSwitch =
 
 data Rule = Rule{
     rMatcher :: Matcher
-  , rAttribute :: Text
+  , rAttribute :: String
   , rDynamic   :: Bool
   , rChildren  ::  [Rule]
   , rContextSwitch :: [ContextSwitch]
   } deriving (Show)
 
 data Syntax = Syntax{
-    sName     :: Text
+    sName     :: String
   , sContexts :: [Context]
   -- TODO more stuff.
   } deriving (Show)
 
 data Context = Context{
-    cName  :: Text
+    cName  :: String
   , cRules :: [Rule]
     -- TODO more stuff
 } deriving (Show)

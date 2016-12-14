@@ -1,8 +1,8 @@
 {-# LANGUAGE Arrows #-}
 
 import Safe
-import qualified Data.Text as Text
-import Text.Show.Pretty (pPrint)
+import System.FilePath (takeBaseName, (</>), (<.>))
+import Text.Show.Pretty (ppShow)
 import Text.XML.HXT.Core
 import Data.List ((\\))
 import Control.Monad
@@ -74,10 +74,11 @@ vBool defaultVal value = case value of
                            z | z `elem` ["false","no","0"] -> False
                            _ -> defaultVal
 
-
 main = do
-  syntaxes <- getArgs >>= mapM (runX . application)
-  pPrint syntaxes
+  (f:_) <- getArgs
+  syntax <- runX $ application f
+  putStrLn $
+      "import Skylighting.Parser\n\nsyntax = " ++ ppShow syntax
 
 application :: String -> IOSArrow b Syntax
 application src
@@ -100,7 +101,7 @@ extractSyntaxDefinition =  proc x -> do
                              contexts <- getContexts -< x
                              keywordAttr <- getKeywordAttrs -< x
                              returnA -< Syntax{
-                                          sName     = Text.pack lang
+                                          sName     = lang
                                         , sContexts = contexts
                                         }
                              {- SyntaxDefinition { synLanguage      = lang
@@ -155,7 +156,7 @@ getContexts = listA $   multi (hasName "context")
                           dynamic <- getAttrValue "dynamic" -< x
                           parsers <- getParsers -< x
                           returnA -< Context {
-                                        cName = Text.pack name
+                                        cName = name
                                       , cRules = parsers
                                       }
                                       {-
@@ -205,8 +206,8 @@ getParsers = listA $ getChildren
                                           "Detect2Chars" -> Detect2Chars char0 char1
                                           "AnyChar" -> AnyChar str
                                           "RangeDetect" -> RangeDetect char0 char1
-                                          "StringText" -> StringDetect (Text.pack str)
-                                          "RegExpr" -> RegExpr (DynamicRegex (Text.pack str)) -- TODO or compiled regex
+                                          "StringText" -> StringDetect str
+                                          "RegExpr" -> RegExpr (DynamicRegex str) -- TODO or compiled regex
                                           "Keyword" -> Unimplemented -- TODO
                                           "Int" -> Int
                                           "Float" -> Float
@@ -220,7 +221,7 @@ getParsers = listA $ getChildren
                                           _ -> Unimplemented -- TODO
                        let contextSwitch = [] -- TODO 
                        returnA -< Rule{ rMatcher = matcher,
-                                        rAttribute = Text.pack attribute,
+                                        rAttribute = attribute,
                                         rDynamic = dynamic,
                                         rChildren = children,
                                         rContextSwitch = contextSwitch }
