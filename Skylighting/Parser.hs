@@ -3,6 +3,7 @@
 module Skylighting.Parser (
                 Regex
               , RE(..)
+              , compileRegex
               , ContextName
               , SyntaxName
               , Matcher(..)
@@ -101,7 +102,7 @@ data Matcher =
   | IfFirstNonspace Rule
   | IfColumn Int Rule
   | WithChildren Rule [Rule]
-  | Unimplemented
+  | Unimplemented String
   deriving (Show)
 
 data ContextSwitch =

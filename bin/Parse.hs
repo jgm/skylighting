@@ -96,29 +96,16 @@ extractSyntaxDefinition =  proc x -> do
                              version <- getAttrValue "version" -< x
                              license <- getAttrValue "license" -< x
                              sources <- getAttrValue "extensions" -< x
-                             caseSensitive <- getAttrValue "casesensitive" -< x
+                             caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
                              itemdatas <- getItemDatas -< x
                              lists <- getLists -< x
+                             keywordAttr <- arr (headDef defaultKeywordAttr) <<< getKeywordAttrs -< x
                              contexts <- getContexts -< x
-                             keywordAttr <- getKeywordAttrs -< x
                              returnA -< Syntax{
                                           sName     = lang
                                         , sContexts = Map.fromList
                                                [(cName c, c) | c <- contexts]
                                         }
-                             {- SyntaxDefinition { synLanguage      = lang
-                                                         , synAuthor        = author
-                                                         , synVersion       = version
-                                                         , synLicense       = license
-                                                         , synExtensions    = sources
-                                                         , synCaseSensitive = vBool True caseSensitive
-                                                         , synLists         = lists
-                                                         , synContexts      = contexts
-                                                         , synItemDatas     = itemdatas
-                                                         , synKeywordAttr   = if null keywordAttr
-                                                                                 then defaultKeywordAttr
-                                                                                 else head keywordAttr }
-                             -}
 
 getItemDatas :: IOSArrow XmlTree [(String,String)]
 getItemDatas = multi (hasName "itemDatas")
@@ -203,25 +190,33 @@ getParsers = listA $ getChildren
                        let column = if tildeRegex
                                        then Just 0
                                        else readMay column'
+                       let compiledRe = if dynamic
+                                           then Nothing
+                                           else Just $ compileRegex True str
+                       let re = RegExpr RE{ reString = str
+                                          , reDynamic = dynamic
+                                          , reCompiled = Nothing
+                                          , reCaseSensitive = True } -- TODO
                        let matcher = case name of
                                           "DetectChar" -> DetectChar char0
                                           "Detect2Chars" -> Detect2Chars char0 char1
                                           "AnyChar" -> AnyChar str
                                           "RangeDetect" -> RangeDetect char0 char1
                                           "StringText" -> StringDetect str
-                                          "RegExpr" -> RegExpr RE{ reString = str, reDynamic = dynamic, reCompiled = Nothing, reCaseSensitive = True }
-                                           -- TODO or compiled regex
-                                          "Keyword" -> Unimplemented -- TODO
+                                          "RegExpr" -> re
+                                          "Keyword" -> Unimplemented "Keyword"
+{- lookup str sLists -}
+{- sKeywordAttr -}
                                           "Int" -> Int
                                           "Float" -> Float
                                           "HlCOct" -> HlCOct
                                           "HlCHex" -> HlCHex
                                           "HlCStringChar" -> HlCStringChar
-                                          "LineContinue" -> Unimplemented -- TODO
-                                          "IncludeRules" -> Unimplemented -- TODO
+                                          "LineContinue" -> LineContinue
+                                          "IncludeRules" -> Unimplemented "INcludeRules"
                                           "DetectSpaces" -> DetectSpaces
                                           "DetectIdentifier" -> DetectIdentifier
-                                          _ -> Unimplemented -- TODO
+                                          _ -> Unimplemented name
                        let contextSwitch = [] -- TODO 
                        returnA -< Rule{ rMatcher = matcher,
                                         rAttribute = attribute,
