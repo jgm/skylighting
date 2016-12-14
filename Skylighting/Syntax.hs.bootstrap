@@ -1,0 +1,6 @@
+module Skylighting.Syntax (syntaxMap) where
+import Skylighting.Parser
+import Data.Map
+
+syntaxMap :: Data.Map.Map String Syntax
+syntaxMap = empty
