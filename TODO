@@ -1,0 +1,7 @@
+_ use xml-conduit to parse
+_ pass lists and keyword info down to parser extractors
+_ put xml parsing in a module
+_ use TH for syntaxes
+_ add dynamic loading of xml files
+_ add logic for actually running the highlighters
+_ add renderers
