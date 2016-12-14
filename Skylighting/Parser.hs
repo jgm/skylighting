@@ -1,6 +1,6 @@
 {-# LANGUAGE CPP #-}
 
-module Highlighting.Kate.Parser (
+module Skylighting.Parser (
                 Regex
               , RE(..)
               , ContextName

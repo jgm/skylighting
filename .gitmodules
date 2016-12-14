@@ -1,0 +1,3 @@
+[submodule "syntax-highlighting"]
+	path = syntax-highlighting
+	url = https://github.com/KDE/syntax-highlighting

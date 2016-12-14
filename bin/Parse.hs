@@ -6,7 +6,7 @@ import Text.Show.Pretty (pPrint)
 import Text.XML.HXT.Core
 import Data.List ((\\))
 import Control.Monad
-import Highlighting.Kate.Parser
+import Skylighting.Parser
 import System.Environment (getArgs)
 
 {-
