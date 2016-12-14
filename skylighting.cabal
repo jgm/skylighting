@@ -15,6 +15,7 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Skylighting.Parser
+                       Skylighting.Syntax
   -- other-modules:
   other-extensions:    CPP, Arrows
   build-depends:       base,

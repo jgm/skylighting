@@ -79,7 +79,7 @@ main = do
   syntaxes <- getArgs >>= (mapM (runX . application)) >>= return . mconcat
   let syntaxMap = Map.fromList [(sName s, s) | s <- syntaxes]
   putStrLn $
-      "import Skylighting.Parser\nimport Data.Map\n\nsyntaxMap :: Data.Map.Map String Syntax\nsyntaxMap = " ++ ppShow syntaxMap
+      "module Skylighting.Syntax (syntaxMap) where\nimport Skylighting.Parser\nimport Data.Map\n\nsyntaxMap :: Data.Map.Map String Syntax\nsyntaxMap = " ++ ppShow syntaxMap
 
 application :: String -> IOSArrow b Syntax
 application src
