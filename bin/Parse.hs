@@ -1,58 +1,13 @@
 {-# LANGUAGE Arrows #-}
 
 import Safe
-import System.FilePath (takeBaseName, (</>), (<.>))
 import Text.XML.HXT.Core
 import Text.Show.Pretty (ppShow)
 import Data.Maybe (fromMaybe)
 import qualified Data.Set as Set
-import Data.List ((\\))
-import Control.Monad
 import Skylighting.Parser
 import System.Environment (getArgs)
 import qualified Data.Map as Map
-
-{-
-data SyntaxDefinition =
-  SyntaxDefinition { synLanguage      :: String
-                   , synAuthor        :: String
-                   , synVersion       :: String
-                   , synLicense       :: String
-                   , synExtensions    :: String
-                   , synCaseSensitive :: Bool
-                   , synLists         :: [(String, [String])]
-                   , synContexts      :: [SyntaxContext]
-                   , synItemDatas     :: [(String, String)]
-                   , synKeywordAttr   :: KeywordAttr
-                   } deriving (Show)
-
-data SyntaxContext =
-  SyntaxContext { contName               :: String
-                , contAttribute          :: String
-                , contLineEndContext     :: String
-                , contLineBeginContext   :: String
-                , contFallthrough        :: Bool
-                , contFallthroughContext :: String
-                , contDynamic            :: Bool
-                , contParsers            :: [Rule]
-                } deriving (Show)
-
-data SyntaxParser =
-  SyntaxParser { parserType              :: String
-               , parserAttribute         :: String
-               , parserContext           :: String
-               , parserLookAhead         :: Bool
-               , parserIncludeAttrib     :: Bool
-               , parserFirstNonSpace     :: Bool
-               , parserColumn            :: Maybe Int
-               , parserDynamic           :: Bool
-               , parserString            :: String -- could be a regex
-               , parserChar              :: Char
-               , parserChar1             :: Char
-               , parserChildren          :: [SyntaxParser]
-               } deriving (Show)
--}
-
 
 standardDelims :: Set.Set Char
 standardDelims = Set.fromList " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
@@ -72,6 +27,7 @@ vBool defaultVal value = case value of
                            z | z `elem` ["false","no","0"] -> False
                            _ -> defaultVal
 
+main :: IO ()
 main = do
   syntaxes <- getArgs >>= (mapM (runX . application)) >>= return . mconcat
   let syntaxMap = Map.fromList [(sName s, s) | s <- syntaxes]
@@ -95,8 +51,6 @@ extractSyntaxDefinition =  proc x -> do
                              extensions <- getAttrValue "extensions" -< x
                              caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
                              itemdatas <- getItemDatas -< x
-                             -- lists <- getLists -< x
-                             -- keywordAttr <- arr (headDef defaultKeywordAttr) <<< getKeywordAttrs -< x
                              contexts <- getContexts $< getLists &&& (arr (headDef defaultKeywordAttr) <<< getKeywordAttrs) -< x
                              returnA -< Syntax{
                                           sName     = lang
@@ -156,17 +110,6 @@ getContexts (lists, kwattr) = listA $   multi (hasName "context")
                                       , cFallthroughContext = parseContextSwitch fallthroughContext
                                       , cDynamic = dynamic
                                       }
-                                      {-
-                                       SyntaxContext
-                                           { contName = name
-                                           , contAttribute = attribute
-                                           , contLineEndContext = if null lineEndContext then "#stay" else lineEndContext
-                                           , contLineBeginContext = if null lineBeginContext then "#stay" else lineBeginContext
-                                           , contFallthrough = vBool False fallthrough
-                                           , contFallthroughContext = if null fallthroughContext then "#pop" else fallthroughContext
-                                           , contDynamic = vBool False dynamic
-                                           , contParsers = parsers }
-                                      -}
 
 -- Note, some xml files have "\\" for a backslash,
 -- others have "\".  Not sure what the rules are, but
@@ -197,7 +140,7 @@ getParsers (lists, kwattr) = listA $ getChildren
                        let tildeRegex = name == "RegExpr" && take 1 str' == "^"
                        let str = if tildeRegex then drop 1 str' else str'
                        let column = if tildeRegex
-                                       then Just 0
+                                       then Just (0 :: Int)
                                        else readMay column'
                        let compiledRe = if dynamic
                                            then Nothing

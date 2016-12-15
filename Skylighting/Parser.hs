@@ -38,7 +38,7 @@ instance Show RE where
             ", reCompiled = " ++
             (case reCompiled re of
                   Nothing  -> "Nothing"
-                  Just r   -> "Just (compileRegex " ++
+                  Just _   -> "Just (compileRegex " ++
                                 show (reCaseSensitive re) ++
                                 " " ++ show (reString re) ++ ")") ++
             ", reDynamic = " ++ show (reDynamic re) ++
@@ -148,4 +148,5 @@ data Context = Context{
   , cFallthroughContext :: [ContextSwitch]
   , cDynamic :: Bool
 } deriving (Show)
+
 
