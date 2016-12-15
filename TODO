@@ -1,7 +1,5 @@
-_ add Makefile to repository
 _ tokens
 _ last few touches to xml parsing (see warnings)
-_ put xml parsing in a module
 _ use TH for syntaxes
 _ add dynamic loading of xml files
 _ add logic for actually running the highlighters
