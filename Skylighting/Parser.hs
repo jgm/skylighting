@@ -32,8 +32,12 @@ vBool defaultVal value = case value of
 
 -- | Parses a string containing a Kate XML syntax definition
 -- into a 'Syntax' description.
-parseSyntaxDefinition :: String -> IO [Syntax]
-parseSyntaxDefinition xml = runX $ application xml
+parseSyntaxDefinition :: String -> IO Syntax
+parseSyntaxDefinition xml = do
+  res <- runX (application xml)
+  case res of
+       [s]   -> return s
+       _     -> error "Could not parse xml file" -- TODO better exceptions
 
 application :: String -> IOSArrow b Syntax
 application fp
