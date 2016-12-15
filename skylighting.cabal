@@ -22,7 +22,11 @@ library
                        Skylighting.Format.HTML
                        Skylighting.Format.LaTeX
                        Skylighting.Syntax
-  -- other-modules:
+  other-modules:
+                       Skylighting.Syntax.Syntax_haskell
+                       Skylighting.Syntax.Syntax_cmake
+                       Skylighting.Syntax.Syntax_diff
+                       Skylighting.Syntax.Syntax_javascript
   other-extensions:    CPP, Arrows
   build-depends:       base,
                        mtl,
@@ -47,6 +51,7 @@ executable skylighting-extract
                        text,
                        pretty-show,
                        containers,
+                       directory,
                        skylighting
   hs-source-dirs:      bin
   main-is:             extract.hs
