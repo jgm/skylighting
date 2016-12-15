@@ -18,6 +18,7 @@ library
                        Skylighting.Regex
                        Skylighting.Parser
                        Skylighting.Styles
+                       Skylighting.Tokenizer
                        Skylighting.Format.HTML
                        Skylighting.Format.LaTeX
                        Skylighting.Syntax
