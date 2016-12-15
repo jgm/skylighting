@@ -176,6 +176,7 @@ getParsers (lists, kwattr) = listA $ getChildren
                        char0 <- arr readChar <<< getAttrValue "char" -< x
                        char1 <- arr readChar <<< getAttrValue "char1" -< x
                        str' <- getAttrValue "String" -< x
+                       insensitive <- arr (vBool False) <<< getAttrValue "insensitive" -< x
                        includeAttrib <- arr (vBool False) <<< getAttrValue "includeAttrib" -< x
                        lookahead <- arr (vBool False) <<< getAttrValue "lookAhead" -< x
                        firstNonSpace <- arr (vBool False) <<< getAttrValue "firstNonSpace" -< x
@@ -192,8 +193,8 @@ getParsers (lists, kwattr) = listA $ getChildren
                                            else Just $ compileRegex True str
                        let re = RegExpr RE{ reString = str
                                           , reDynamic = dynamic
-                                          , reCompiled = Nothing
-                                          , reCaseSensitive = True } -- TODO
+                                          , reCompiled = compiledRe
+                                          , reCaseSensitive = not insensitive }
                        let matcher = case name of
                                           "DetectChar" -> DetectChar char0
                                           "Detect2Chars" -> Detect2Chars char0 char1
