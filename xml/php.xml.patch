@@ -1,0 +1,11 @@
+--- a/xml/php.xml
++++ b/xml/php.xml
+@@ -5412,6 +5412,7 @@
+     </list>
+ 
+     <contexts>
++      <!-- JGM:  Added fallthrough so it will handle snippets that don't begin with <?php -->
++      <context name="start" lineEndContext="#stay" attribute="Normal Text" fallthrough="true" fallthroughContext="phpsource">
+-      <context name="start" lineEndContext="#stay" attribute="Normal Text">
+         <RegExpr context="phpsource" attribute="Keyword" String="&lt;\?(?:=|php)?" insensitive="true" />
+         <StringDetect attribute="Keyword" context="#pop" String="?&gt;" />

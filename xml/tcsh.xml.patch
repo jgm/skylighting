@@ -1,0 +1,9 @@
+diff --git a/tcsh.xml b/tcsh.xml
+index bed4bfe..ddba8fc 100644
+--- a/tcsh.xml
++++ b/tcsh.xml
+@@ -685,3 +685,3 @@
+         <RegExpr attribute="Variable" context="#pop" String="\b&varname;" />
+-        <DetectChar attribute="Variable" context="Assign" char="\s" />
++        <DetectChar attribute="Variable" context="Assign" char=" " />
+         <IncludeRules context="FindMost" />

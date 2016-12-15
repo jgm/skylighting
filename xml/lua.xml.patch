@@ -1,0 +1,14 @@
+diff --git a/lua.xml b/lua.xml
+index 97e6b21..81bce25 100644
+--- a/lua.xml
++++ b/lua.xml
+@@ -282,3 +282,3 @@
+       <itemData name="Comment"         defStyleNum="dsComment"/>
+-      <itemData name="Constant"        defStyleNum="dsKeyword" spellChecking="false"/>
++      <itemData name="Constant"        defStyleNum="dsNormal" /> <!-- JGM -->
+       <itemData name="Control"         defStyleNum="dsKeyword" color="#A1A100" selColor="#ffffff" bold="0" italic="0" spellChecking="false"/>
+@@ -289,3 +289,3 @@
+       <itemData name="Symbols"         defStyleNum="dsOthers" spellChecking="false"/>
+-      <itemData name="Variable"        defStyleNum="dsKeyword" color="#5555FF" selColor="#ffffff" bold="0" italic="0" spellChecking="false"/>
++      <itemData name="Variable"        defStyleNum="dsNormal" /> <!-- JGM -->
+     </itemDatas>
