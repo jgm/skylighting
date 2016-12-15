@@ -42,10 +42,9 @@ library
   hs-source-dirs:      .
   default-language:    Haskell2010
   ghc-options:         -Wall
-  cpp-options:         -DTRACE
+--  cpp-options:         -DTRACE
 
 executable skylighting-extract
-  other-extensions:    CPP, Arrows
   build-depends:       base,
                        filepath,
                        text,
@@ -56,6 +55,21 @@ executable skylighting-extract
   hs-source-dirs:      bin
   main-is:             extract.hs
   default-language:    Haskell2010
+  other-extensions:    CPP
+  ghc-options:         -Wall
+
+executable skylighting-tokenize
+  build-depends:       base,
+                       filepath,
+                       text,
+                       pretty-show,
+                       containers,
+                       directory,
+                       skylighting
+  hs-source-dirs:      bin
+  main-is:             tokenize.hs
+  default-language:    Haskell2010
+  other-extensions:    CPP
   ghc-options:         -Wall
 
 test-suite test-skylighting
