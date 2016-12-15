@@ -3,7 +3,8 @@ module Skylighting.Tokenizer (
   tokenize
   ) where
 
-import Skylighting.Types
+import qualified Data.Set as Set
+import Skylighting.Types hiding (Token, SourceLine)
 import Control.Monad.Except
 import Control.Monad.State
 import Control.Applicative
@@ -55,7 +56,10 @@ tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
                 , captures = []
                 , column = 0 }
 
-tokenizeLine :: String -> TokenizerM SourceLine
+type Token = (String, String) -- TODO for now, until we map strings to TokenType
+type SourceLine = [Token]
+
+tokenizeLine :: String -> TokenizerM [Token]
 tokenizeLine ln = do
   modify $ \st -> st{ input = ln }
   many getToken
@@ -63,22 +67,41 @@ tokenizeLine ln = do
 getToken :: TokenizerM Token
 getToken = do
   inp <- gets input
+  guard $ not (null inp)
   context <- currentContext
-  msum $ map tryRule (cRules context)
-  {-
-  go (cRules context)
-    where go (r:rs) = (do
-            t <- tryRule r
-            return t) <|> go rs
-          go [] = mzero
-  -}
+  -- DEBUG
+  cstack <- gets contextStack
+  info $ "[" ++ unwords (map (show . cName) $ unContextStack cstack) ++  "]"
+  --
+  msum (map tryRule (cRules context))
+    <|> takeChars "ErrorToken" inp
+
+-- TODO first param should be token type eventually
+takeChars :: String -> String -> TokenizerM Token
+takeChars attr xs = do
+  inp <- gets input
+  modify $ \st -> st{ input = drop (length xs) (input st) }
+  return (attr, xs)
 
 tryRule :: Rule -> TokenizerM Token
 tryRule rule = do
-  info $ "trying " ++ show rule
+  -- info $ "trying " ++ show rule
   inp <- gets input
-  case inp of
-     []     -> mzero
-     (c:cs) -> do
-       modify $ \st -> st{ input = cs }
-       return (ErrorTok, [c])
+  let attr = rAttribute rule
+  case rMatcher rule of
+       DetectChar c ->
+          case inp of
+            (x:_) | x == c ->
+              takeChars attr [x]
+            _ -> mzero
+       Detect2Chars c d ->
+          case inp of
+            (x1:x2:xs) | x1 == c && x2 == d ->
+              takeChars attr [x1,x2]
+            _ -> mzero
+       AnyChar cs ->
+          case inp of
+            (x:xs) | x `elem` cs ->
+              takeChars attr [x]
+            _ -> mzero
+       _ -> mzero
