@@ -24,6 +24,7 @@ import Text.Regex.PCRE.ByteString (Regex, compCaseless, compUTF8, compAnchored, 
 import qualified Data.Map as Map
 import Data.ByteString.UTF8 (fromString)
 import Text.Printf
+import qualified Data.Set as Set
 
 data RE = RE{
     reString :: String
@@ -84,8 +85,12 @@ type SyntaxName = String
 
 data KeywordAttr =
   KeywordAttr  { keywordCaseSensitive   :: Bool
-               , keywordDelims          :: [Char]
-               } deriving (Show)
+               , keywordDelims          :: Set.Set Char
+               }
+instance Show KeywordAttr where
+  show k = "KeywordAttr{ keywordCaseSensitive = " ++
+            show (keywordCaseSensitive k) ++
+           ", keywordDelims = (Data.Set." ++ show (keywordDelims k) ++ ")}"
 
 data Matcher =
     DetectChar Char

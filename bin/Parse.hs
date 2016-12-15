@@ -5,6 +5,7 @@ import System.FilePath (takeBaseName, (</>), (<.>))
 import Text.XML.HXT.Core
 import Text.Show.Pretty (ppShow)
 import Data.Maybe (fromMaybe)
+import qualified Data.Set as Set
 import Data.List ((\\))
 import Control.Monad
 import Skylighting.Parser
@@ -53,8 +54,8 @@ data SyntaxParser =
 -}
 
 
-standardDelims :: [Char]
-standardDelims = " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
+standardDelims :: Set.Set Char
+standardDelims = Set.fromList " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
 
 defaultKeywordAttr :: KeywordAttr
 defaultKeywordAttr = KeywordAttr { keywordCaseSensitive = True
@@ -75,7 +76,7 @@ main = do
   syntaxes <- getArgs >>= (mapM (runX . application)) >>= return . mconcat
   let syntaxMap = Map.fromList [(sName s, s) | s <- syntaxes]
   putStrLn $
-      "module Skylighting.Syntax (syntaxMap) where\nimport Skylighting.Parser\nimport Data.Map\n\nsyntaxMap :: Data.Map.Map String Syntax\nsyntaxMap = " ++ ppShow syntaxMap
+      "module Skylighting.Syntax (syntaxMap) where\nimport Skylighting.Parser\nimport Data.Map\nimport qualified Data.Set\n\nsyntaxMap :: Data.Map.Map String Syntax\nsyntaxMap = " ++ ppShow syntaxMap
 
 application :: String -> IOSArrow b Syntax
 application src
@@ -225,11 +226,11 @@ getKeywordAttrs :: IOSArrow XmlTree [KeywordAttr]
 getKeywordAttrs = listA $ multi $ hasName "keywords"
                                   >>>
                                   proc x -> do
-                                    caseSensitive <- getAttrValue "casesensitive" -< x
+                                    caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
                                     weakDelim <- getAttrValue "weakDeliminator" -< x
                                     additionalDelim <- getAttrValue "additionalDeliminator" -< x
                                     returnA -< KeywordAttr
-                                                      { keywordCaseSensitive = vBool True caseSensitive
-                                                      , keywordDelims = (standardDelims ++ additionalDelim) \\ weakDelim }
+                                                      { keywordCaseSensitive = caseSensitive
+                                                      , keywordDelims = (Set.union standardDelims (Set.fromList additionalDelim)) Set.\\ Set.fromList weakDelim }
 
 
