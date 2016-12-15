@@ -131,12 +131,21 @@ data Rule = Rule{
 data Syntax = Syntax{
     sName     :: String
   , sContexts :: Map.Map String Context
-  -- TODO more stuff.
+  , sAuthor   :: String
+  , sVersion  :: String
+  , sLicense  :: String
+  , sExtensions :: [String]
+  -- , sItemDatas :: Map.Map String String -- TODO later, token
   } deriving (Show)
 
 data Context = Context{
     cName  :: String
   , cRules :: [Rule]
-    -- TODO more stuff
+  , cAttribute :: String
+  , cLineEndContext :: [ContextSwitch]
+  , cLineBeginContext :: [ContextSwitch]
+  , cFallthrough :: Bool
+  , cFallthroughContext :: [ContextSwitch]
+  , cDynamic :: Bool
 } deriving (Show)
 

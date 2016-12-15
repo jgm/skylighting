@@ -92,7 +92,7 @@ extractSyntaxDefinition =  proc x -> do
                              author <- getAttrValue "author" -< x
                              version <- getAttrValue "version" -< x
                              license <- getAttrValue "license" -< x
-                             sources <- getAttrValue "extensions" -< x
+                             extensions <- getAttrValue "extensions" -< x
                              caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
                              itemdatas <- getItemDatas -< x
                              -- lists <- getLists -< x
@@ -100,6 +100,11 @@ extractSyntaxDefinition =  proc x -> do
                              contexts <- getContexts $< getLists &&& (arr (headDef defaultKeywordAttr) <<< getKeywordAttrs) -< x
                              returnA -< Syntax{
                                           sName     = lang
+                                        , sAuthor   = author
+                                        , sVersion  = version
+                                        , sLicense  = license
+                                        , sExtensions = words $ map (\c -> if c == ';' then ' ' else c) extensions
+                                        -- TODO case sensitive
                                         , sContexts = Map.fromList
                                                [(cName c, c) | c <- contexts]
                                         }
@@ -137,13 +142,19 @@ getContexts (lists, kwattr) = listA $   multi (hasName "context")
                           attribute <- getAttrValue "attribute" -< x
                           lineEndContext <- getAttrValue "lineEndContext" -< x
                           lineBeginContext <- getAttrValue "lineBeginContext" -< x
-                          fallthrough <- getAttrValue "fallthrough" -< x
+                          fallthrough <- arr (vBool False) <<< getAttrValue "fallthrough" -< x
                           fallthroughContext <- getAttrValue "fallthroughContext" -< x
-                          dynamic <- getAttrValue "dynamic" -< x
+                          dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
                           parsers <- getParsers (lists, kwattr) -< x
                           returnA -< Context {
                                         cName = name
                                       , cRules = parsers
+                                      , cAttribute = attribute
+                                      , cLineEndContext = parseContextSwitch lineEndContext
+                                      , cLineBeginContext = parseContextSwitch lineBeginContext
+                                      , cFallthrough = fallthrough
+                                      , cFallthroughContext = parseContextSwitch fallthroughContext
+                                      , cDynamic = dynamic
                                       }
                                       {-
                                        SyntaxContext
