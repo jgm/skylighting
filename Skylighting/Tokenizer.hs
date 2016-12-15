@@ -64,11 +64,14 @@ getToken :: TokenizerM Token
 getToken = do
   inp <- gets input
   context <- currentContext
+  msum $ map tryRule (cRules context)
+  {-
   go (cRules context)
     where go (r:rs) = (do
             t <- tryRule r
             return t) <|> go rs
           go [] = mzero
+  -}
 
 tryRule :: Rule -> TokenizerM Token
 tryRule rule = do
