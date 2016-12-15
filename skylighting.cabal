@@ -17,6 +17,7 @@ library
   exposed-modules:     Skylighting.Types
                        Skylighting.Regex
                        Skylighting.Parser
+                       Skylighting.Styles
                        Skylighting.Syntax
   -- other-modules:
   other-extensions:    CPP, Arrows
