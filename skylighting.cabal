@@ -18,6 +18,8 @@ library
                        Skylighting.Regex
                        Skylighting.Parser
                        Skylighting.Styles
+                       Skylighting.Format.HTML
+                       Skylighting.Format.LaTeX
                        Skylighting.Syntax
   -- other-modules:
   other-extensions:    CPP, Arrows
@@ -30,6 +32,7 @@ library
                        utf8-string,
                        hxt,
                        safe,
+                       blaze-html >= 0.5,
                        containers
   hs-source-dirs:      .
   default-language:    Haskell2010
