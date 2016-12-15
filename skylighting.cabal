@@ -37,7 +37,7 @@ library
                        containers
   hs-source-dirs:      .
   default-language:    Haskell2010
-  ghc-options:         -Wall
+  ghc-options:         -Wall -DTRACE
 
 executable skylighting-extract
   other-extensions:    CPP, Arrows
