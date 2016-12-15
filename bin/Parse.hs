@@ -233,6 +233,7 @@ parseContextSwitch :: String -> [ContextSwitch]
 parseContextSwitch [] = []
 parseContextSwitch "#stay" = []
 parseContextSwitch ('#':'p':'o':'p':xs) = Pop : parseContextSwitch xs
+parseContextSwitch ('!':xs) = [Push xs]
 parseContextSwitch xs = [Push xs]
 
 getKeywordAttrs :: IOSArrow XmlTree [KeywordAttr]
