@@ -195,6 +195,10 @@ getParsers (lists, kwattr) = listA $ getChildren
                                           , reDynamic = dynamic
                                           , reCompiled = compiledRe
                                           , reCaseSensitive = not insensitive }
+                       let (syntaxname, contextname) =
+                               case break (=='#') context of
+                                     (cont, '#':'#':lang) -> (Just lang, cont)
+                                     _ -> (Nothing, context)
                        let matcher = case name of
                                           "DetectChar" -> DetectChar char0
                                           "Detect2Chars" -> Detect2Chars char0 char1
@@ -210,18 +214,26 @@ getParsers (lists, kwattr) = listA $ getChildren
                                           "HlCHex" -> HlCHex
                                           "HlCStringChar" -> HlCStringChar
                                           "LineContinue" -> LineContinue
-                                          "IncludeRules" -> Unimplemented "INcludeRules"
+                                          "IncludeRules" -> IncludeRules syntaxname contextname
                                           "DetectSpaces" -> DetectSpaces
                                           "DetectIdentifier" -> DetectIdentifier
                                           _ -> Unimplemented name
-                       let contextSwitch = [] -- TODO 
+                       let contextSwitch = if name == "IncludeRules"
+                                              then []
+                                              else parseContextSwitch context
                        returnA -< Rule{ rMatcher = matcher,
-                                        rAttribute = attribute,
+                                        rAttribute = if includeAttrib
+                                                        then ""
+                                                        else attribute,
                                         rDynamic = dynamic,
                                         rChildren = children,
                                         rContextSwitch = contextSwitch }
 
-
+parseContextSwitch :: String -> [ContextSwitch]
+parseContextSwitch [] = []
+parseContextSwitch "#stay" = []
+parseContextSwitch ('#':'p':'o':'p':xs) = Pop : parseContextSwitch xs
+parseContextSwitch xs = [Push xs]
 
 getKeywordAttrs :: IOSArrow XmlTree [KeywordAttr]
 getKeywordAttrs = listA $ multi $ hasName "keywords"

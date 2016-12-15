@@ -107,7 +107,7 @@ data Matcher =
   | HlCStringChar
   | HlCChar
   | LineContinue
-  | IncludeRules SyntaxName ContextName
+  | IncludeRules (Maybe SyntaxName) ContextName
   | DetectSpaces
   | DetectIdentifier
   | IfFirstNonspace Rule
@@ -117,7 +117,7 @@ data Matcher =
   deriving (Show)
 
 data ContextSwitch =
-  Pop | Push Context
+  Pop | Push ContextName
   deriving Show
 
 data Rule = Rule{
