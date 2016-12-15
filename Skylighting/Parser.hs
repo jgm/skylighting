@@ -1,8 +1,9 @@
 {-# LANGUAGE Arrows #-}
 
+module Skylighting.Parser ( parseSyntaxDefinition ) where
+
 import Safe
 import Text.XML.HXT.Core
-import Text.Show.Pretty (ppShow)
 import Data.Maybe (fromMaybe)
 import qualified Data.Set as Set
 import Skylighting.Types
@@ -28,16 +29,14 @@ vBool defaultVal value = case value of
                            z | z `elem` ["false","no","0"] -> False
                            _ -> defaultVal
 
-main :: IO ()
-main = do
-  syntaxes <- getArgs >>= (mapM (runX . application)) >>= return . mconcat
-  let syntaxMap = Map.fromList [(sName s, s) | s <- syntaxes]
-  putStrLn $
-      "module Skylighting.Syntax (syntaxMap) where\nimport Skylighting.Types\nimport Skylighting.Regex\nimport Data.Map\nimport qualified Data.Set\n\nsyntaxMap :: Data.Map.Map String Syntax\nsyntaxMap = " ++ ppShow syntaxMap
+-- | Parses a string containing a Kate XML syntax definition
+-- into a 'Syntax' description.
+parseSyntaxDefinition :: String -> IO [Syntax]
+parseSyntaxDefinition xml = runX $ application xml
 
 application :: String -> IOSArrow b Syntax
-application src
-    = readDocument [withValidate no, withInputEncoding utf8] src
+application fp
+    = readDocument [withValidate no, withInputEncoding utf8] fp
       >>>
       multi (hasName "language")
       >>>
