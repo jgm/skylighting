@@ -5,7 +5,8 @@ import Text.XML.HXT.Core
 import Text.Show.Pretty (ppShow)
 import Data.Maybe (fromMaybe)
 import qualified Data.Set as Set
-import Skylighting.Parser
+import Skylighting.Types
+import Skylighting.Regex
 import System.Environment (getArgs)
 import qualified Data.Map as Map
 
@@ -32,7 +33,7 @@ main = do
   syntaxes <- getArgs >>= (mapM (runX . application)) >>= return . mconcat
   let syntaxMap = Map.fromList [(sName s, s) | s <- syntaxes]
   putStrLn $
-      "module Skylighting.Syntax (syntaxMap) where\nimport Skylighting.Parser\nimport Data.Map\nimport qualified Data.Set\n\nsyntaxMap :: Data.Map.Map String Syntax\nsyntaxMap = " ++ ppShow syntaxMap
+      "module Skylighting.Syntax (syntaxMap) where\nimport Skylighting.Types\nimport Skylighting.Regex\nimport Data.Map\nimport qualified Data.Set\n\nsyntaxMap :: Data.Map.Map String Syntax\nsyntaxMap = " ++ ppShow syntaxMap
 
 application :: String -> IOSArrow b Syntax
 application src

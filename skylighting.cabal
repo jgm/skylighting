@@ -14,7 +14,8 @@ extra-source-files:  changelog.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Skylighting.Parser
+  exposed-modules:     Skylighting.Types
+                       Skylighting.Regex
                        Skylighting.Syntax
   -- other-modules:
   other-extensions:    CPP, Arrows
