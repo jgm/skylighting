@@ -10,6 +10,7 @@ import Skylighting.Types
 import Skylighting.Regex
 import System.Environment (getArgs)
 import qualified Data.Map as Map
+import qualified Control.Exception as E
 
 standardDelims :: Set.Set Char
 standardDelims = Set.fromList " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
@@ -52,6 +53,10 @@ extractSyntaxDefinition =  proc x -> do
                              caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
                              itemdatas <- getItemDatas -< x
                              contexts <- getContexts $< getLists &&& (arr (headDef defaultKeywordAttr) <<< getKeywordAttrs) -< x
+                             let startingContext =
+                                  case contexts of
+                                       (c:_) -> c
+                                       []    -> error "No contexts"
                              returnA -< Syntax{
                                           sName     = lang
                                         , sAuthor   = author
@@ -61,6 +66,7 @@ extractSyntaxDefinition =  proc x -> do
                                         -- TODO case sensitive
                                         , sContexts = Map.fromList
                                                [(cName c, c) | c <- contexts]
+                                        , sStartingContext = startingContext
                                         }
 
 getItemDatas :: IOSArrow XmlTree [(String,String)]

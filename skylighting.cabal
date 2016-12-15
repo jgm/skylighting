@@ -25,7 +25,7 @@ library
   -- other-modules:
   other-extensions:    CPP, Arrows
   build-depends:       base,
-                       text,
+                       mtl,
                        bytestring,
                        regex-pcre-builtin,
                        directory,

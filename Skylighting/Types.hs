@@ -88,6 +88,7 @@ data Syntax = Syntax{
   , sVersion  :: String
   , sLicense  :: String
   , sExtensions :: [String]
+  , sStartingContext :: Context
   -- , sItemDatas :: Map.Map String String -- TODO later, token
   } deriving (Show)
 
