@@ -4,6 +4,7 @@ import Safe
 import System.FilePath (takeBaseName, (</>), (<.>))
 import Text.XML.HXT.Core
 import Text.Show.Pretty (ppShow)
+import Data.Maybe (fromMaybe)
 import Data.List ((\\))
 import Control.Monad
 import Skylighting.Parser
@@ -51,18 +52,13 @@ data SyntaxParser =
                } deriving (Show)
 -}
 
-data KeywordAttr =
-  KeywordAttr  { keywordCaseSensitive   :: Bool
-                     , keywordDelims          :: [Char]
-                     } deriving (Show)
-
 
 standardDelims :: [Char]
 standardDelims = " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
 
 defaultKeywordAttr :: KeywordAttr
 defaultKeywordAttr = KeywordAttr { keywordCaseSensitive = True
-                                       , keywordDelims = standardDelims }
+                                 , keywordDelims = standardDelims }
 
 stripWhitespace :: String -> String
 stripWhitespace = reverse . stripWhitespaceLeft . reverse . stripWhitespaceLeft
@@ -143,7 +139,7 @@ getContexts (lists, kwattr) = listA $   multi (hasName "context")
                           fallthrough <- getAttrValue "fallthrough" -< x
                           fallthroughContext <- getAttrValue "fallthroughContext" -< x
                           dynamic <- getAttrValue "dynamic" -< x
-                          parsers <- getParsers -< x
+                          parsers <- getParsers (lists, kwattr) -< x
                           returnA -< Context {
                                         cName = name
                                       , cRules = parsers
@@ -169,8 +165,8 @@ readChar s = case s of
                   _   -> readDef '\xffff' $ "'" ++ s ++ "'"
 
 
-getParsers :: IOSArrow XmlTree [Rule]
-getParsers = listA $ getChildren
+getParsers :: ([(String, [String])], KeywordAttr) -> IOSArrow XmlTree [Rule]
+getParsers (lists, kwattr) = listA $ getChildren
                      >>>
                      proc x -> do
                        name <- getName -< x
@@ -184,7 +180,7 @@ getParsers = listA $ getChildren
                        firstNonSpace <- arr (vBool False) <<< getAttrValue "firstNonSpace" -< x
                        column' <- getAttrValue "column" -< x
                        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
-                       children <- getParsers -< x
+                       children <- getParsers (lists, kwattr) -< x
                        let tildeRegex = name == "RegExpr" && take 1 str' == "^"
                        let str = if tildeRegex then drop 1 str' else str'
                        let column = if tildeRegex
@@ -204,9 +200,8 @@ getParsers = listA $ getChildren
                                           "RangeDetect" -> RangeDetect char0 char1
                                           "StringText" -> StringDetect str
                                           "RegExpr" -> re
-                                          "Keyword" -> Unimplemented "Keyword"
-{- lookup str sLists -}
-{- sKeywordAttr -}
+                                          "keyword" -> Keyword kwattr $
+                                             fromMaybe [] (lookup str lists)
                                           "Int" -> Int
                                           "Float" -> Float
                                           "HlCOct" -> HlCOct

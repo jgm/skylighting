@@ -6,6 +6,7 @@ module Skylighting.Parser (
               , compileRegex
               , ContextName
               , SyntaxName
+              , KeywordAttr(..)
               , Matcher(..)
               , Rule(..)
               , Context(..)
@@ -81,6 +82,11 @@ isOctalDigit c = c >= '0' && c <= '7'
 type ContextName = String
 type SyntaxName = String
 
+data KeywordAttr =
+  KeywordAttr  { keywordCaseSensitive   :: Bool
+               , keywordDelims          :: [Char]
+               } deriving (Show)
+
 data Matcher =
     DetectChar Char
   | Detect2Chars Char Char
@@ -88,7 +94,7 @@ data Matcher =
   | RangeDetect Char Char
   | StringDetect String
   | RegExpr RE
-  | Keyword [String]
+  | Keyword KeywordAttr [String]
   | Int
   | Float
   | HlCOct
