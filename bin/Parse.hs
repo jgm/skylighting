@@ -21,7 +21,7 @@ data SyntaxDefinition =
                    , synLists         :: [(String, [String])]
                    , synContexts      :: [SyntaxContext]
                    , synItemDatas     :: [(String, String)]
-                   , synKeywordAttr   :: SyntaxKeywordAttr
+                   , synKeywordAttr   :: KeywordAttr
                    } deriving (Show)
 
 data SyntaxContext =
@@ -51,8 +51,8 @@ data SyntaxParser =
                } deriving (Show)
 -}
 
-data SyntaxKeywordAttr =
-  SyntaxKeywordAttr  { keywordCaseSensitive   :: Bool
+data KeywordAttr =
+  KeywordAttr  { keywordCaseSensitive   :: Bool
                      , keywordDelims          :: [Char]
                      } deriving (Show)
 
@@ -60,8 +60,8 @@ data SyntaxKeywordAttr =
 standardDelims :: [Char]
 standardDelims = " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
 
-defaultKeywordAttr :: SyntaxKeywordAttr
-defaultKeywordAttr = SyntaxKeywordAttr { keywordCaseSensitive = True
+defaultKeywordAttr :: KeywordAttr
+defaultKeywordAttr = KeywordAttr { keywordCaseSensitive = True
                                        , keywordDelims = standardDelims }
 
 stripWhitespace :: String -> String
@@ -98,9 +98,9 @@ extractSyntaxDefinition =  proc x -> do
                              sources <- getAttrValue "extensions" -< x
                              caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
                              itemdatas <- getItemDatas -< x
-                             lists <- getLists -< x
-                             keywordAttr <- arr (headDef defaultKeywordAttr) <<< getKeywordAttrs -< x
-                             contexts <- getContexts -< x
+                             -- lists <- getLists -< x
+                             -- keywordAttr <- arr (headDef defaultKeywordAttr) <<< getKeywordAttrs -< x
+                             contexts <- getContexts $< getLists &&& (arr (headDef defaultKeywordAttr) <<< getKeywordAttrs) -< x
                              returnA -< Syntax{
                                           sName     = lang
                                         , sContexts = Map.fromList
@@ -132,8 +132,8 @@ getListContents = listA $ getChildren
                           >>>
                           arr stripWhitespace
 
-getContexts :: IOSArrow XmlTree [Context]
-getContexts = listA $   multi (hasName "context")
+getContexts :: ([(String, [String])], KeywordAttr) -> IOSArrow XmlTree [Context]
+getContexts (lists, kwattr) = listA $   multi (hasName "context")
                         >>>
                         proc x -> do
                           name <- getAttrValue "name" -< x
@@ -226,14 +226,14 @@ getParsers = listA $ getChildren
 
 
 
-getKeywordAttrs :: IOSArrow XmlTree [SyntaxKeywordAttr]
+getKeywordAttrs :: IOSArrow XmlTree [KeywordAttr]
 getKeywordAttrs = listA $ multi $ hasName "keywords"
                                   >>>
                                   proc x -> do
                                     caseSensitive <- getAttrValue "casesensitive" -< x
                                     weakDelim <- getAttrValue "weakDeliminator" -< x
                                     additionalDelim <- getAttrValue "additionalDeliminator" -< x
-                                    returnA -< SyntaxKeywordAttr
+                                    returnA -< KeywordAttr
                                                       { keywordCaseSensitive = vBool True caseSensitive
                                                       , keywordDelims = (standardDelims ++ additionalDelim) \\ weakDelim }
 

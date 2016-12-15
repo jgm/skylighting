@@ -1,4 +1,3 @@
-_ use xml-conduit to parse
 _ pass lists and keyword info down to parser extractors
 _ put xml parsing in a module
 _ use TH for syntaxes
