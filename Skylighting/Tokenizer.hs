@@ -13,6 +13,7 @@ import Control.Monad.Except
 import Control.Monad.State
 import Control.Applicative
 import Debug.Trace
+import Data.Char (isSpace, isLetter, isAlphaNum)
 import qualified Data.Map as Map
 
 info :: String -> TokenizerM ()
@@ -121,15 +122,23 @@ tryRule rule = do
                 Int -> withAttr attr $ regExpr integerRegex
                 HlCOct -> withAttr attr $ regExpr octRegex
                 HlCHex -> withAttr attr $ regExpr hexRegex
+                HlCStringChar -> mzero -- TODO
+                HlCChar -> mzero -- TODO
                 Float -> withAttr attr $ regExpr floatRegex
                 Keyword kwattr kws ->
                   withAttr attr $ keyword kwattr kws
                 StringDetect s -> withAttr attr $ stringDetect s
                 LineContinue -> withAttr attr $ lineContinue
+                DetectSpaces -> withAttr attr $ detectSpaces
+                DetectIdentifier -> withAttr attr $ detectIdentifier
+                IfFirstNonspace r -> mzero -- TODO
+                IfColumn n r -> mzero -- TODO
                 IncludeRules cname -> includeRules
                    (if rIncludeAttribute rule then Just attr else Nothing)
                    cname
-                _ -> mzero
+                Unimplemented str -> do
+                  info $ "Unimplemented matcher: " ++ show str
+                  mzero
   (_, cresult) <- msum (map tryRule (rChildren rule))
               <|> return (NormalTok, "")
   doContextSwitch (rContextSwitch rule)
@@ -181,6 +190,21 @@ rangeDetect c d = do
   inp <- gets input
   case inp of
     (x:rest) | x == c -> takeChars (takeWhile (/= d) rest ++ [d])
+    _ -> mzero
+
+detectSpaces :: TokenizerM String
+detectSpaces = do
+  inp <- gets input
+  case span isSpace inp of
+       ([], _) -> mzero
+       (xs, _) -> takeChars xs
+
+detectIdentifier :: TokenizerM String
+detectIdentifier = do
+  inp <- gets input
+  case inp of
+    (c:cs) | isLetter c || c == '_' ->
+      takeChars $ [c] ++ takeWhile (\d -> isAlphaNum d || d == '_') cs
     _ -> mzero
 
 lineContinue :: TokenizerM String
