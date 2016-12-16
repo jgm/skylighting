@@ -4,12 +4,13 @@ module Skylighting.Regex (
                 Regex
               , RE(..)
               , compileRegex
+              , matchRegex
               ) where
 
 import Text.Printf
 import System.IO.Unsafe (unsafePerformIO)
-import Text.Regex.PCRE.ByteString (Regex, compCaseless, compUTF8, compAnchored, compile, execNotEmpty)
-import Data.ByteString.UTF8 (fromString)
+import Text.Regex.PCRE.ByteString
+import Data.ByteString.UTF8 (fromString, toString)
 
 data RE = RE{
     reString :: String
@@ -59,4 +60,11 @@ convertOctal (x:xs) = x : convertOctal xs
 
 isOctalDigit :: Char -> Bool
 isOctalDigit c = c >= '0' && c <= '7'
+
+matchRegex :: Regex -> String -> (Maybe [String])
+matchRegex r s = case unsafePerformIO (regexec r (fromString s)) of
+                      Right (Just (_, mat, _ , capts)) ->
+                                       Just $ map toString (mat : capts)
+                      Right Nothing -> Nothing
+                      Left matchError -> error $ show matchError -- handle better
 

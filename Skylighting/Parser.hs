@@ -267,3 +267,4 @@ getKeywordAttrs =
                          , keywordDelims = (Set.union standardDelims
                              (Set.fromList additionalDelim)) Set.\\
                                 Set.fromList weakDelim }
+
