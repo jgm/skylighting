@@ -26,6 +26,7 @@ newtype ContextStack = ContextStack{ unContextStack :: [Context] }
 
 data TokenizerState = TokenizerState{
     input        :: String
+  , prevChar     :: Char
   , contextStack :: ContextStack
   , captures     :: [String]
   , column       :: Int
@@ -66,6 +67,7 @@ doContextSwitch (Push (s,c) : xs) = do
 tokenize :: Syntax -> String -> Either String [SourceLine]
 tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
   TokenizerState{ input = inp
+                , prevChar = '\n'
                 , contextStack = ContextStack [sStartingContext syntax]
                 , captures = []
                 , column = 0 }
@@ -74,7 +76,7 @@ tokenizeLine :: String -> TokenizerM [Token]
 tokenizeLine ln = do
   cur <- currentContext
   doContextSwitch (cLineBeginContext cur)
-  modify $ \st -> st{ input = ln }
+  modify $ \st -> st{ input = ln, prevChar = '\n' }
   ts <- normalizeHighlighting <$> many getToken
   inp <- gets input
   doContextSwitch (cLineEndContext cur)
@@ -93,7 +95,8 @@ getToken = do
 takeChars :: String -> TokenizerM String
 takeChars [] = mzero
 takeChars xs = do
-  modify $ \st -> st{ input = drop (length xs) (input st) }
+  modify $ \st -> st{ input = drop (length xs) (input st),
+                      prevChar = last xs }
   return xs
 
 tryRule :: Rule -> TokenizerM Token
@@ -157,7 +160,19 @@ anyChar cs = do
      _ -> mzero
 
 regExpr :: RE -> TokenizerM String
-regExpr re = mzero -- TODO for now
+regExpr re = do -- TODO dynamic, case sensitive
+  regex <- maybe mzero return $ reCompiled re
+  inp <- gets input
+  prev <- gets prevChar
+  -- we keep one preceding character, so initial \b can match:
+  let target = if prev == '\n'
+                  then ' ':inp
+                  else prev:inp
+  case matchRegex regex target of
+       Just ((_:match):capts) -> do
+         modify $ \st -> st{ captures = capts }
+         takeChars match
+       _ -> mzero
 
 -- TODO eventually the keywords need to be a set
 -- though this complicates code generation
