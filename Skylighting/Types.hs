@@ -3,7 +3,6 @@
 
 module Skylighting.Types (
                 ContextName
-              , SyntaxName
               , KeywordAttr(..)
               , Matcher(..)
               , Rule(..)
@@ -32,8 +31,7 @@ import Data.Bits
 import Data.Data (Data)
 import Data.Typeable (Typeable)
 
-type ContextName = String
-type SyntaxName = String
+type ContextName = (String, String)
 
 data KeywordAttr =
   KeywordAttr  { keywordCaseSensitive   :: Bool
@@ -60,7 +58,7 @@ data Matcher =
   | HlCStringChar
   | HlCChar
   | LineContinue
-  | IncludeRules (Maybe SyntaxName) ContextName
+  | IncludeRules ContextName
   | DetectSpaces
   | DetectIdentifier
   | IfFirstNonspace Rule
@@ -90,7 +88,6 @@ data Syntax = Syntax{
   , sLicense  :: String
   , sExtensions :: [String]
   , sStartingContext :: Context
-  -- , sItemDatas :: Map.Map String String -- TODO later, token
   } deriving (Show)
 
 data Context = Context{

@@ -212,8 +212,8 @@ getParsers (itemdatas, (lists, kwattr)) =
                           , reCaseSensitive = not insensitive }
        let (syntaxname, contextname) =
                case break (=='#') context of
-                     (cont, '#':'#':lang) -> (Just lang, cont)
-                     _ -> (Nothing, context)
+                     (cont, '#':'#':lang) -> (lang, cont)
+                     _ -> ("", context)
        let matcher = case name of
                           "DetectChar" -> DetectChar char0
                           "Detect2Chars" -> Detect2Chars char0 char1
@@ -229,7 +229,7 @@ getParsers (itemdatas, (lists, kwattr)) =
                           "HlCHex" -> HlCHex
                           "HlCStringChar" -> HlCStringChar
                           "LineContinue" -> LineContinue
-                          "IncludeRules" -> IncludeRules syntaxname contextname
+                          "IncludeRules" -> IncludeRules (syntaxname, contextname)
                           "DetectSpaces" -> DetectSpaces
                           "DetectIdentifier" -> DetectIdentifier
                           _ -> Unimplemented name
@@ -248,8 +248,8 @@ parseContextSwitch :: String -> [ContextSwitch]
 parseContextSwitch [] = []
 parseContextSwitch "#stay" = []
 parseContextSwitch ('#':'p':'o':'p':xs) = Pop : parseContextSwitch xs
-parseContextSwitch ('!':xs) = [Push xs]
-parseContextSwitch xs = [Push xs]
+parseContextSwitch ('!':xs) = [Push ("",xs)]
+parseContextSwitch xs = [Push ("",xs)]
 
 getKeywordAttrs :: IOSArrow XmlTree [KeywordAttr]
 getKeywordAttrs =

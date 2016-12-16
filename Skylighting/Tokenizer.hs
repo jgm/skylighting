@@ -6,10 +6,12 @@ module Skylighting.Tokenizer (
 import qualified Data.Set as Set
 import Skylighting.Regex
 import Skylighting.Types
+import Skylighting.Syntax (syntaxMap)
 import Control.Monad.Except
 import Control.Monad.State
 import Control.Applicative
 import Debug.Trace
+import qualified Data.Map as Map
 
 info :: String -> TokenizerM ()
 #ifdef TRACE
@@ -50,6 +52,16 @@ currentContext = do
        []    -> error "Empty context stack" -- programming error
        (c:_) -> return c
 
+doContextSwitch :: [ContextSwitch] -> TokenizerM ()
+doContextSwitch [] = return ()
+doContextSwitch (Pop : xs) = popContextStack >> doContextSwitch xs
+doContextSwitch (Push (s,c) : xs) = do
+  cur <- currentContext
+  let syn = if null s then cName cur else s
+  case Map.lookup syn syntaxMap >>= Map.lookup c . sContexts of
+       Just con -> pushContextStack con >> doContextSwitch xs
+       Nothing  -> error "Unknown syntax or context" -- TODO handle better
+
 tokenize :: Syntax -> String -> Either String [SourceLine]
 tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
   TokenizerState{ input = inp
@@ -74,7 +86,9 @@ getToken = do
   info $ "[" ++ unwords (map (show . cName) $ unContextStack cstack) ++  "]"
   --
   msum (map tryRule (cRules context)) <|> -- TODO check for fallthrough
-    (cAttribute context, ) <$> nextChar
+    if cFallthrough context
+       then mzero -- TODO
+       else (cAttribute context, ) <$> nextChar
 
 takeChars :: String -> TokenizerM String
 takeChars [] = mzero
@@ -93,6 +107,8 @@ tryRule rule = do
              Keyword kwattr kws -> keyword kwattr kws
              _ -> mzero
   let attr = rAttribute rule
+  -- TODO rChildren
+  doContextSwitch (rContextSwitch rule)
   return (attr, xs)
 
 nextChar :: TokenizerM String
