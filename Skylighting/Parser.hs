@@ -8,9 +8,7 @@ import Data.Maybe (fromMaybe)
 import qualified Data.Set as Set
 import Skylighting.Types
 import Skylighting.Regex
-import System.Environment (getArgs)
 import qualified Data.Map as Map
-import qualified Control.Exception as E
 
 standardDelims :: Set.Set Char
 standardDelims = Set.fromList " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
@@ -56,9 +54,10 @@ extractSyntaxDefinition =
      license <- getAttrValue "license" -< x
      extensions <- getAttrValue "extensions" -< x
      caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
-     itemdatas <- getItemDatas -< x
-     contexts <- getContexts $< getLists &&& (arr (headDef defaultKeywordAttr)
-                 <<< getKeywordAttrs) -< x
+     contexts <- getContexts $< (arr toItemDataTable <<< getItemDatas) &&&
+                                getLists &&&
+                                (arr (headDef defaultKeywordAttr)
+                                    <<< getKeywordAttrs) -< x
      let startingContext =
           case contexts of
                (c:_) -> c
@@ -78,6 +77,9 @@ extractSyntaxDefinition =
                 , sStartingContext = startingContext
                 }
 
+toItemDataTable :: [(String,String)] -> Map.Map String TokenType
+toItemDataTable = Map.fromList . map (\(s,t) -> (s, toTokenType t))
+
 getItemDatas :: IOSArrow XmlTree [(String,String)]
 getItemDatas =
   multi (hasName "itemDatas")
@@ -87,6 +89,41 @@ getItemDatas =
              hasName "itemData"
              >>>
              getAttrValue "name" &&& getAttrValue "defStyleNum")
+
+toTokenType :: String -> TokenType
+toTokenType s =
+  case s of
+       "dsKeyword" -> KeywordTok
+       "dsDataType" -> DataTypeTok
+       "dsDecVal" -> DecValTok
+       "dsBaseN" -> BaseNTok
+       "dsFloat" -> FloatTok
+       "dsConstant" -> ConstantTok
+       "dsChar" -> CharTok
+       "dsSpecialChar" -> SpecialCharTok
+       "dsString" -> StringTok
+       "dsVerbatimString" -> VerbatimStringTok
+       "dsSpecialString" -> SpecialStringTok
+       "dsImport" -> ImportTok
+       "dsComment" -> CommentTok
+       "dsDocumentation" -> DocumentationTok
+       "dsAnnotation" -> AnnotationTok
+       "dsCommentVar" -> CommentVarTok
+       "dsOthers" -> OtherTok
+       "dsFunction" -> FunctionTok
+       "dsVariable" -> VariableTok
+       "dsControlFlow" -> ControlFlowTok
+       "dsOperator" -> OperatorTok
+       "dsBuiltIn" -> BuiltInTok
+       "dsExtension" -> ExtensionTok
+       "dsPreprocessor" -> PreprocessorTok
+       "dsAttribute" -> AttributeTok
+       "dsRegionMarker" -> RegionMarkerTok
+       "dsInformation" -> InformationTok
+       "dsWarning" -> WarningTok
+       "dsAlert" -> AlertTok
+       "dsError" -> ErrorTok
+       _ -> OtherTok -- warning?
 
 getLists :: IOSArrow XmlTree [(String, [String])]
 getLists =
@@ -106,8 +143,9 @@ getListContents =
      >>>
      arr stripWhitespace
 
-getContexts :: ([(String, [String])], KeywordAttr) -> IOSArrow XmlTree [Context]
-getContexts (lists, kwattr) =
+getContexts :: (Map.Map String TokenType, ([(String, [String])], KeywordAttr))
+            -> IOSArrow XmlTree [Context]
+getContexts (itemdatas, (lists, kwattr)) =
   listA $ multi (hasName "context")
      >>>
      proc x -> do
@@ -118,7 +156,7 @@ getContexts (lists, kwattr) =
        fallthrough <- arr (vBool False) <<< getAttrValue "fallthrough" -< x
        fallthroughContext <- getAttrValue "fallthroughContext" -< x
        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
-       parsers <- getParsers (lists, kwattr) -< x
+       parsers <- getParsers (itemdatas, (lists, kwattr)) -< x
        returnA -< Context {
                      cName = name
                    , cRules = parsers
@@ -139,8 +177,9 @@ readChar s = case s of
                   _   -> readDef '\xffff' $ "'" ++ s ++ "'"
 
 
-getParsers :: ([(String, [String])], KeywordAttr) -> IOSArrow XmlTree [Rule]
-getParsers (lists, kwattr) =
+getParsers :: (Map.Map String TokenType, ([(String, [String])], KeywordAttr))
+            -> IOSArrow XmlTree [Rule]
+getParsers (itemdatas, (lists, kwattr)) =
   listA $ getChildren
      >>>
      proc x -> do
@@ -156,7 +195,7 @@ getParsers (lists, kwattr) =
        firstNonSpace <- arr (vBool False) <<< getAttrValue "firstNonSpace" -< x
        column' <- getAttrValue "column" -< x
        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
-       children <- getParsers (lists, kwattr) -< x
+       children <- getParsers (itemdatas, (lists, kwattr)) -< x
        let tildeRegex = name == "RegExpr" && take 1 str' == "^"
        let str = if tildeRegex then drop 1 str' else str'
        let column = if tildeRegex
@@ -196,9 +235,9 @@ getParsers (lists, kwattr) =
                               then []
                               else parseContextSwitch context
        returnA -< Rule{ rMatcher = matcher,
-                        rAttribute = if includeAttrib
-                                        then ""
-                                        else attribute,
+                        rAttribute = fromMaybe OtherTok $
+                           Map.lookup attribute itemdatas,
+                        rIncludeAttribute = includeAttrib,
                         rDynamic = dynamic,
                         rChildren = children,
                         rContextSwitch = contextSwitch }

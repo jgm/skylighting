@@ -75,7 +75,8 @@ data ContextSwitch =
 
 data Rule = Rule{
     rMatcher :: Matcher
-  , rAttribute :: String
+  , rAttribute :: TokenType
+  , rIncludeAttribute :: Bool
   , rDynamic   :: Bool
   , rChildren  ::  [Rule]
   , rContextSwitch :: [ContextSwitch]

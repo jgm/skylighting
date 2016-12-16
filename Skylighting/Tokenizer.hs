@@ -4,7 +4,7 @@ module Skylighting.Tokenizer (
   ) where
 
 import qualified Data.Set as Set
-import Skylighting.Types hiding (Token, SourceLine)
+import Skylighting.Types
 import Control.Monad.Except
 import Control.Monad.State
 import Control.Applicative
@@ -56,9 +56,6 @@ tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
                 , captures = []
                 , column = 0 }
 
-type Token = (String, String) -- TODO for now, until we map strings to TokenType
-type SourceLine = [Token]
-
 tokenizeLine :: String -> TokenizerM [Token]
 tokenizeLine ln = do
   modify $ \st -> st{ input = ln }
@@ -74,10 +71,9 @@ getToken = do
   info $ "[" ++ unwords (map (show . cName) $ unContextStack cstack) ++  "]"
   --
   msum (map tryRule (cRules context))
-    <|> takeChars "ErrorToken" inp
+    <|> takeChars ErrorTok inp
 
--- TODO first param should be token type eventually
-takeChars :: String -> String -> TokenizerM Token
+takeChars :: TokenType -> String -> TokenizerM Token
 takeChars attr xs = do
   inp <- gets input
   modify $ \st -> st{ input = drop (length xs) (input st) }
