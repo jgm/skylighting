@@ -1,4 +1,4 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, TupleSections #-}
 module Skylighting.Tokenizer (
   tokenize
   ) where
@@ -60,7 +60,7 @@ tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
 tokenizeLine :: String -> TokenizerM [Token]
 tokenizeLine ln = do
   modify $ \st -> st{ input = ln }
-  ts <- many getToken
+  ts <- normalizeHighlighting <$> many getToken
   inp <- gets input
   return $ ts ++ [(ErrorTok, inp) | not (null inp)]
 
@@ -73,7 +73,8 @@ getToken = do
   cstack <- gets contextStack
   info $ "[" ++ unwords (map (show . cName) $ unContextStack cstack) ++  "]"
   --
-  msum (map tryRule (cRules context))
+  msum (map tryRule (cRules context)) <|> -- TODO check for fallthrough
+    (cAttribute context, ) <$> nextChar
 
 takeChars :: String -> TokenizerM String
 takeChars [] = mzero
@@ -90,10 +91,16 @@ tryRule rule = do
              AnyChar cs -> anyChar cs
              RegExpr re -> regExpr re
              Keyword kwattr kws -> keyword kwattr kws
-             _ -> do
-               mzero
+             _ -> mzero
   let attr = rAttribute rule
   return (attr, xs)
+
+nextChar :: TokenizerM String
+nextChar = do
+  inp <- gets input
+  case inp of
+    (x:_) -> takeChars [x]
+    _ -> mzero
 
 detectChar :: Char -> TokenizerM String
 detectChar c = do
@@ -132,3 +139,18 @@ keyword kwattr kws = do
      then takeChars w
      else mzero
 
+-- TODO better as a monad instance for token
+-- perhaps use Seq?
+normalizeHighlighting :: [Token] -> [Token]
+normalizeHighlighting [] = []
+normalizeHighlighting ((_,""):xs) = normalizeHighlighting xs
+normalizeHighlighting ((a,x):(b,y):xs)
+  | a == b = normalizeHighlighting ((a, x++y):xs)
+normalizeHighlighting (x:xs) = x : normalizeHighlighting xs
+
+isSpace :: Char -> Bool
+isSpace ' '  = True
+isSpace '\t' = True
+isSpace '\n' = True
+isSpace '\r' = True
+isSpace _    = False

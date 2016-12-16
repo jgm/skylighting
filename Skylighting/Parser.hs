@@ -93,6 +93,7 @@ getItemDatas =
 toTokenType :: String -> TokenType
 toTokenType s =
   case s of
+       "dsNormal" -> NormalTok
        "dsKeyword" -> KeywordTok
        "dsDataType" -> DataTypeTok
        "dsDecVal" -> DecValTok
@@ -160,7 +161,8 @@ getContexts (itemdatas, (lists, kwattr)) =
        returnA -< Context {
                      cName = name
                    , cRules = parsers
-                   , cAttribute = attribute
+                   , cAttribute = fromMaybe NormalTok $
+                           Map.lookup attribute itemdatas
                    , cLineEndContext = parseContextSwitch lineEndContext
                    , cLineBeginContext = parseContextSwitch lineBeginContext
                    , cFallthrough = fallthrough
