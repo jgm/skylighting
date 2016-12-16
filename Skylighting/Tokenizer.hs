@@ -60,9 +60,7 @@ currentContext = do
 doContextSwitch :: [ContextSwitch] -> TokenizerM ()
 doContextSwitch [] = return ()
 doContextSwitch (Pop : xs) = popContextStack >> doContextSwitch xs
-doContextSwitch (Push (s,c) : xs) = do
-  cur <- currentContext
-  let syn = if null s then cSyntax cur else s
+doContextSwitch (Push (syn,c) : xs) = do
   case Map.lookup syn syntaxMap >>= Map.lookup c . sContexts of
        Just con -> pushContextStack con >> doContextSwitch xs
        Nothing  -> error $"Unknown syntax or context: " ++ show (syn, c) -- TODO handle better
@@ -163,11 +161,8 @@ nextChar = do
 
 includeRules :: Maybe TokenType -> ContextName -> TokenizerM Token
 includeRules mbattr (syn, con) = do
-  syn' <- if null syn
-             then cSyntax <$> currentContext
-             else return syn
-  (t,xs) <- case Map.lookup syn' syntaxMap >>= Map.lookup con . sContexts of
-                 Nothing  -> error $ "Context lookup failed " ++ show (syn',con)
+  (t,xs) <- case Map.lookup syn syntaxMap >>= Map.lookup con . sContexts of
+                 Nothing  -> error $ "Context lookup failed " ++ show (syn, con)
                  Just c   -> msum (map tryRule (cRules c))
   return (fromMaybe t mbattr, xs)
 

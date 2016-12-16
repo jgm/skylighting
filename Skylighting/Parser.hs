@@ -159,17 +159,20 @@ getContexts (syntaxname, (itemdatas, (lists, kwattr))) =
        fallthrough <- arr (vBool False) <<< getAttrValue "fallthrough" -< x
        fallthroughContext <- getAttrValue "fallthroughContext" -< x
        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
-       parsers <- getParsers (itemdatas, (lists, kwattr)) -< x
+       parsers <- getParsers (syntaxname, (itemdatas, (lists, kwattr))) -< x
        returnA -< Context {
                      cName = name
                    , cSyntax = syntaxname
                    , cRules = parsers
                    , cAttribute = fromMaybe NormalTok $
                            Map.lookup attribute itemdatas
-                   , cLineEndContext = parseContextSwitch lineEndContext
-                   , cLineBeginContext = parseContextSwitch lineBeginContext
+                   , cLineEndContext =
+                        parseContextSwitch syntaxname lineEndContext
+                   , cLineBeginContext =
+                        parseContextSwitch syntaxname lineBeginContext
                    , cFallthrough = fallthrough
-                   , cFallthroughContext = parseContextSwitch fallthroughContext
+                   , cFallthroughContext =
+                        parseContextSwitch syntaxname fallthroughContext
                    , cDynamic = dynamic
                    }
 
@@ -182,9 +185,10 @@ readChar s = case s of
                   _   -> readDef '\xffff' $ "'" ++ s ++ "'"
 
 
-getParsers :: (Map.Map String TokenType, ([(String, [String])], KeywordAttr))
+getParsers :: (String,
+                (Map.Map String TokenType, ([(String, [String])], KeywordAttr)))
             -> IOSArrow XmlTree [Rule]
-getParsers (itemdatas, (lists, kwattr)) =
+getParsers (syntaxname, (itemdatas, (lists, kwattr))) =
   listA $ getChildren
      >>>
      proc x -> do
@@ -200,7 +204,7 @@ getParsers (itemdatas, (lists, kwattr)) =
        firstNonSpace <- arr (vBool False) <<< getAttrValue "firstNonSpace" -< x
        column' <- getAttrValue "column" -< x
        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
-       children <- getParsers (itemdatas, (lists, kwattr)) -< x
+       children <- getParsers (syntaxname, (itemdatas, (lists, kwattr))) -< x
        let tildeRegex = name == "RegExpr" && take 1 str' == "^"
        let str = if tildeRegex then drop 1 str' else str'
        let column = if tildeRegex
@@ -213,16 +217,16 @@ getParsers (itemdatas, (lists, kwattr)) =
                           , reDynamic = dynamic
                           , reCompiled = compiledRe
                           , reCaseSensitive = not insensitive }
-       let (syntaxname, contextname) =
+       let (incsyntax, inccontext) =
                case break (=='#') context of
                      (cont, '#':'#':lang) -> (lang, cont)
-                     _ -> ("", context)
+                     _ -> (syntaxname, context)
        let matcher = case name of
                           "DetectChar" -> DetectChar char0
                           "Detect2Chars" -> Detect2Chars char0 char1
                           "AnyChar" -> AnyChar str
                           "RangeDetect" -> RangeDetect char0 char1
-                          "StringText" -> StringDetect str
+                          "StringDetect" -> StringDetect str
                           "RegExpr" -> re
                           "keyword" -> Keyword kwattr $
                              maybe (WordSet Set.empty)
@@ -234,13 +238,14 @@ getParsers (itemdatas, (lists, kwattr)) =
                           "HlCHex" -> HlCHex
                           "HlCStringChar" -> HlCStringChar
                           "LineContinue" -> LineContinue
-                          "IncludeRules" -> IncludeRules (syntaxname, contextname)
+                          "IncludeRules" ->
+                            IncludeRules (incsyntax, inccontext)
                           "DetectSpaces" -> DetectSpaces
                           "DetectIdentifier" -> DetectIdentifier
                           _ -> Unimplemented name
        let contextSwitch = if name == "IncludeRules"
-                              then []
-                              else parseContextSwitch context
+                              then []  -- FIXME is this right?
+                              else parseContextSwitch syntaxname context
        returnA -< Rule{ rMatcher = matcher,
                         rAttribute = fromMaybe OtherTok $
                            Map.lookup attribute itemdatas,
@@ -249,12 +254,13 @@ getParsers (itemdatas, (lists, kwattr)) =
                         rChildren = children,
                         rContextSwitch = contextSwitch }
 
-parseContextSwitch :: String -> [ContextSwitch]
-parseContextSwitch [] = []
-parseContextSwitch "#stay" = []
-parseContextSwitch ('#':'p':'o':'p':xs) = Pop : parseContextSwitch xs
-parseContextSwitch ('!':xs) = [Push ("",xs)]
-parseContextSwitch xs = [Push ("",xs)]
+parseContextSwitch :: String -> String -> [ContextSwitch]
+parseContextSwitch _ [] = []
+parseContextSwitch _ "#stay" = []
+parseContextSwitch syntaxname ('#':'p':'o':'p':xs) =
+  Pop : parseContextSwitch syntaxname xs
+parseContextSwitch syntaxname ('!':xs) = [Push (syntaxname,xs)]
+parseContextSwitch syntaxname xs = [Push (syntaxname,xs)]
 
 getKeywordAttrs :: IOSArrow XmlTree [KeywordAttr]
 getKeywordAttrs =
