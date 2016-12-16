@@ -63,7 +63,6 @@ data Matcher =
   | DetectIdentifier
   | IfFirstNonspace Rule
   | IfColumn Int Rule
-  | WithChildren Rule [Rule]
   | Unimplemented String
   deriving (Show)
 

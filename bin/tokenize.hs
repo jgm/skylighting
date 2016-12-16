@@ -1,4 +1,3 @@
-import Skylighting.Types
 import Skylighting.Tokenizer
 import Skylighting.Syntax
 import Text.Show.Pretty

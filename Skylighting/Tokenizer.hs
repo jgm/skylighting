@@ -8,6 +8,7 @@ import Skylighting.Regex
 import Skylighting.Types
 import Skylighting.Syntax (syntaxMap)
 import Data.Maybe
+import Data.List (isPrefixOf)
 import Control.Monad.Except
 import Control.Monad.State
 import Control.Applicative
@@ -30,6 +31,7 @@ data TokenizerState = TokenizerState{
   , contextStack :: ContextStack
   , captures     :: [String]
   , column       :: Int
+  , lineContinuation :: Bool
 } deriving (Show)
 
 type TokenizerM = ExceptT String (State TokenizerState)
@@ -70,16 +72,23 @@ tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
                 , prevChar = '\n'
                 , contextStack = ContextStack [sStartingContext syntax]
                 , captures = []
-                , column = 0 }
+                , column = 0
+                , lineContinuation = False }
 
 tokenizeLine :: String -> TokenizerM [Token]
 tokenizeLine ln = do
   cur <- currentContext
+  lineCont <- gets lineContinuation
+  if lineCont
+     then modify $ \st -> st{ lineContinuation = False }
+     else doContextSwitch (cLineEndContext cur)
   doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
   ts <- normalizeHighlighting <$> many getToken
+  if lineCont
+     then return ()
+     else doContextSwitch (cLineEndContext cur)
   inp <- gets input
-  doContextSwitch (cLineEndContext cur)
   return $ ts ++ [(ErrorTok, inp) | not (null inp)]
 
 getToken :: TokenizerM Token
@@ -103,26 +112,37 @@ tryRule :: Rule -> TokenizerM Token
 tryRule rule = do
   -- info $ "Trying " ++ take 12 (show (rMatcher rule))
   let attr = rAttribute rule
-  tok <- case rMatcher rule of
-             DetectChar c -> withAttr attr $ detectChar c
-             Detect2Chars c d -> withAttr attr $ detect2Chars c d
-             AnyChar cs -> withAttr attr $ anyChar cs
-             RegExpr re -> withAttr attr $ regExpr re
-             Int -> withAttr attr $ regExpr integerRegex
-             HlCOct -> withAttr attr $ regExpr octRegex
-             HlCHex -> withAttr attr $ regExpr hexRegex
-             Float -> withAttr attr $ regExpr floatRegex
-             Keyword kwattr kws -> withAttr attr $ keyword kwattr kws
-             IncludeRules cname -> includeRules
-                (if rIncludeAttribute rule then Just attr else Nothing)
-                cname
-             _ -> mzero
-  -- TODO rChildren
+  (tt, s) <- case rMatcher rule of
+                DetectChar c -> withAttr attr $ detectChar c
+                Detect2Chars c d -> withAttr attr $ detect2Chars c d
+                AnyChar cs -> withAttr attr $ anyChar cs
+                RangeDetect c d -> withAttr attr $ rangeDetect c d
+                RegExpr re -> withAttr attr $ regExpr re
+                Int -> withAttr attr $ regExpr integerRegex
+                HlCOct -> withAttr attr $ regExpr octRegex
+                HlCHex -> withAttr attr $ regExpr hexRegex
+                Float -> withAttr attr $ regExpr floatRegex
+                Keyword kwattr kws -> withAttr attr $ keyword kwattr kws
+                StringDetect s -> withAttr attr $ stringDetect s
+                LineContinue -> withAttr attr $ lineContinue
+                IncludeRules cname -> includeRules
+                   (if rIncludeAttribute rule then Just attr else Nothing)
+                   cname
+                _ -> mzero
+  (_, cresult) <- msum (map tryRule (rChildren rule))
+              <|> return (NormalTok, "")
   doContextSwitch (rContextSwitch rule)
-  return tok
+  return (tt, s ++ cresult)
 
 withAttr :: TokenType -> TokenizerM String -> TokenizerM Token
 withAttr tt p = (tt,) <$> p
+
+stringDetect :: String -> TokenizerM String
+stringDetect s = do
+  inp <- gets input
+  if s `isPrefixOf` inp
+     then takeChars s
+     else mzero
 
 nextChar :: TokenizerM String
 nextChar = do
@@ -155,7 +175,23 @@ detect2Chars c d = do
     (x:y:_) | x == c && y == d -> takeChars [x,y]
     _ -> mzero
 
--- TODO eventually make this a set of Char
+rangeDetect :: Char -> Char -> TokenizerM String
+rangeDetect c d = do
+  inp <- gets input
+  case inp of
+    (x:rest) | x == c -> takeChars (takeWhile (/= d) rest ++ [d])
+    _ -> mzero
+
+lineContinue :: TokenizerM String
+lineContinue = do
+  inp <- gets input
+  case inp of
+     ['\\'] -> do
+       modify $ \st -> st{ lineContinuation = True }
+       takeChars "\\"
+     _ -> mzero
+
+--- TODO eventually make this a set of Char
 anyChar :: [Char] -> TokenizerM String
 anyChar cs = do
   inp <- gets input

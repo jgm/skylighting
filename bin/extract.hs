@@ -6,7 +6,6 @@ import System.FilePath
 import Data.Char (isAlphaNum)
 import Skylighting.Types
 import System.Environment (getArgs)
-import qualified Data.Map as Map
 import System.Directory
 import Data.List (isInfixOf, intersperse)
 

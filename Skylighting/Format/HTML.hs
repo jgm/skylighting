@@ -8,7 +8,6 @@ import Skylighting.Types
 import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
-import Data.Monoid
 import Data.List (intersperse)
 
 -- | Format tokens using HTML spans inside @code@ tags. For example,
@@ -77,7 +76,7 @@ short WarningTok        = "wa"
 short NormalTok         = ""
 
 sourceLineToHtml :: FormatOptions -> SourceLine -> Html
-sourceLineToHtml opts contents = mapM_ (tokenToHtml opts) contents
+sourceLineToHtml opts cont = mapM_ (tokenToHtml opts) cont
 
 formatHtmlBlockPre :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlockPre opts = H.pre . formatHtmlInline opts
@@ -142,7 +141,7 @@ toCss (t,tf) = "code > span." ++ short t ++ " { "
         weightspec = if tokenBold tf then "font-weight: bold; " else ""
         stylespec  = if tokenItalic tf then "font-style: italic; " else ""
         decorationspec = if tokenUnderline tf then "text-decoration: underline; " else ""
-        showTokenType t = case reverse (show t) of
+        showTokenType t' = case reverse (show t') of
                              'k':'o':'T':xs -> reverse xs
                              _              -> ""
 
