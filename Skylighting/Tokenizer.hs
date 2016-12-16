@@ -23,6 +23,11 @@ info s = trace s (return ())
 info _ = return ()
 #endif
 
+infoContextStack :: TokenizerM ()
+infoContextStack = do
+  ContextStack stack <- gets contextStack
+  info $ show $ map cName stack
+
 newtype ContextStack = ContextStack{ unContextStack :: [Context] }
   deriving (Show)
 
@@ -95,9 +100,11 @@ getToken = do
   inp <- gets input
   guard $ not (null inp)
   context <- currentContext
+  infoContextStack
+  info $ "At :" ++ take 5 inp
   msum (map tryRule (cRules context)) <|> -- TODO check for fallthrough
     if cFallthrough context
-       then mzero -- TODO
+       then doContextSwitch (cFallthroughContext context) >> getToken
        else (cAttribute context, ) <$> nextChar
 
 takeChars :: String -> TokenizerM String
