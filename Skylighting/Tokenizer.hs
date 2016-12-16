@@ -18,7 +18,7 @@ info :: String -> TokenizerM ()
 #ifdef TRACE
 info s = trace s (return ())
 #else
-info s = return ()
+info _ = return ()
 #endif
 
 newtype ContextStack = ContextStack{ unContextStack :: [Context] }
@@ -38,8 +38,8 @@ popContextStack = do
   ContextStack cs <- gets contextStack
   case cs of
        []     -> error "Empty context stack" -- programming error
-       [c]    -> return ()  -- don't pop last context
-       (c:cs) -> modify (\st -> st{ contextStack = ContextStack cs })
+       [_]    -> return ()  -- don't pop last context
+       (_:rest) -> modify (\st -> st{ contextStack = ContextStack rest })
 
 pushContextStack :: Context -> TokenizerM ()
 pushContextStack cont =
@@ -108,7 +108,7 @@ tryRule rule = do
              RegExpr re -> withAttr attr $ regExpr re
              Keyword kwattr kws -> withAttr attr $ keyword kwattr kws
              IncludeRules cname -> includeRules
-                (if rIncludeAttribute rule then Nothing else Just attr)
+                (if rIncludeAttribute rule then Just attr else Nothing)
                 cname
              _ -> mzero
   -- TODO rChildren
@@ -181,9 +181,3 @@ normalizeHighlighting ((a,x):(b,y):xs)
   | a == b = normalizeHighlighting ((a, x++y):xs)
 normalizeHighlighting (x:xs) = x : normalizeHighlighting xs
 
-isSpace :: Char -> Bool
-isSpace ' '  = True
-isSpace '\t' = True
-isSpace '\n' = True
-isSpace '\r' = True
-isSpace _    = False
