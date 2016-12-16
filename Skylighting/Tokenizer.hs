@@ -72,9 +72,12 @@ tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
 
 tokenizeLine :: String -> TokenizerM [Token]
 tokenizeLine ln = do
+  cur <- currentContext
+  doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln }
   ts <- normalizeHighlighting <$> many getToken
   inp <- gets input
+  doContextSwitch (cLineEndContext cur)
   return $ ts ++ [(ErrorTok, inp) | not (null inp)]
 
 getToken :: TokenizerM Token
@@ -82,10 +85,6 @@ getToken = do
   inp <- gets input
   guard $ not (null inp)
   context <- currentContext
-  -- DEBUG
-  cstack <- gets contextStack
-  info $ "[" ++ unwords (map (show . cName) $ unContextStack cstack) ++  "]"
-  --
   msum (map tryRule (cRules context)) <|> -- TODO check for fallthrough
     if cFallthrough context
        then mzero -- TODO
@@ -99,7 +98,7 @@ takeChars xs = do
 
 tryRule :: Rule -> TokenizerM Token
 tryRule rule = do
-  info $ "Trying " ++ take 12 (show (rMatcher rule))
+  -- info $ "Trying " ++ take 12 (show (rMatcher rule))
   let attr = rAttribute rule
   tok <- case rMatcher rule of
              DetectChar c -> withAttr attr $ detectChar c
@@ -154,7 +153,7 @@ anyChar :: [Char] -> TokenizerM String
 anyChar cs = do
   inp <- gets input
   case inp of
-     (x:xs) | x `elem` cs -> takeChars [x]
+     (x:_) | x `elem` cs -> takeChars [x]
      _ -> mzero
 
 regExpr :: RE -> TokenizerM String
