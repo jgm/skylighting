@@ -66,9 +66,16 @@ doContextSwitch :: [ContextSwitch] -> TokenizerM ()
 doContextSwitch [] = return ()
 doContextSwitch (Pop : xs) = popContextStack >> doContextSwitch xs
 doContextSwitch (Push (syn,c) : xs) = do
-  case Map.lookup syn syntaxMap >>= Map.lookup c . sContexts of
+  case Map.lookup syn syntaxMap >>= lookupContext c of
        Just con -> pushContextStack con >> doContextSwitch xs
        Nothing  -> error $"Unknown syntax or context: " ++ show (syn, c) -- TODO handle better
+
+lookupContext :: String -> Syntax -> Maybe Context
+lookupContext name syntax =
+  if null name
+     then Just $ sStartingContext syntax
+     else Map.lookup name $ sContexts syntax
+
 
 tokenize :: Syntax -> String -> Either String [SourceLine]
 tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
@@ -168,7 +175,7 @@ nextChar = do
 
 includeRules :: Maybe TokenType -> ContextName -> TokenizerM Token
 includeRules mbattr (syn, con) = do
-  (t,xs) <- case Map.lookup syn syntaxMap >>= Map.lookup con . sContexts of
+  (t,xs) <- case Map.lookup syn syntaxMap >>= lookupContext con of
                  Nothing  -> error $ "Context lookup failed " ++ show (syn, con)
                  Just c   -> msum (map tryRule (cRules c))
   return (fromMaybe t mbattr, xs)
