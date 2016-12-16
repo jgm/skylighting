@@ -122,7 +122,8 @@ tryRule rule = do
                 HlCOct -> withAttr attr $ regExpr octRegex
                 HlCHex -> withAttr attr $ regExpr hexRegex
                 Float -> withAttr attr $ regExpr floatRegex
-                Keyword kwattr kws -> withAttr attr $ keyword kwattr kws
+                Keyword kwattr kws ->
+                  withAttr attr $ keyword kwattr kws
                 StringDetect s -> withAttr attr $ stringDetect s
                 LineContinue -> withAttr attr $ lineContinue
                 IncludeRules cname -> includeRules
@@ -218,13 +219,13 @@ regExpr re = do -- TODO dynamic, case sensitive
 
 -- TODO eventually the keywords need to be a set
 -- though this complicates code generation
-keyword :: KeywordAttr -> [String] -> TokenizerM String
-keyword kwattr kws = do
+keyword :: KeywordAttr -> WordSet -> TokenizerM String
+keyword kwattr (WordSet kws) = do
   inp <- gets input
   let (w,_) = break (`Set.member` (keywordDelims kwattr)) inp
   guard $ not (null w)
   -- TODO handle keywordCaseInsensitive
-  if w `elem` kws
+  if w `Set.member` kws
      then takeChars w
      else mzero
 

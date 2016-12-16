@@ -4,6 +4,7 @@
 module Skylighting.Types (
                 ContextName
               , KeywordAttr(..)
+              , WordSet(..)
               , Matcher(..)
               , Rule(..)
               , Context(..)
@@ -43,6 +44,11 @@ instance Show KeywordAttr where
             show (keywordCaseSensitive k) ++
            ", keywordDelims = (Data.Set." ++ show (keywordDelims k) ++ ")}"
 
+newtype WordSet = WordSet (Set.Set String)
+
+instance Show WordSet where
+  show (WordSet s) = "(WordSet (Data.Set." ++ show s ++ "))"
+
 data Matcher =
     DetectChar Char
   | Detect2Chars Char Char
@@ -50,7 +56,7 @@ data Matcher =
   | RangeDetect Char Char
   | StringDetect String
   | RegExpr RE
-  | Keyword KeywordAttr [String]
+  | Keyword KeywordAttr WordSet
   | Int
   | Float
   | HlCOct

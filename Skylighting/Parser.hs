@@ -225,7 +225,9 @@ getParsers (itemdatas, (lists, kwattr)) =
                           "StringText" -> StringDetect str
                           "RegExpr" -> re
                           "keyword" -> Keyword kwattr $
-                             fromMaybe [] (lookup str lists)
+                             maybe (WordSet Set.empty)
+                               (WordSet . Set.fromList)
+                               (lookup str lists)
                           "Int" -> Int
                           "Float" -> Float
                           "HlCOct" -> HlCOct
