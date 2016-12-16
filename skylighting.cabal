@@ -42,7 +42,7 @@ library
   hs-source-dirs:      .
   default-language:    Haskell2010
   ghc-options:         -Wall
-  cpp-options:         -DTRACE
+--  cpp-options:         -DTRACE
 
 executable skylighting-extract
   build-depends:       base,

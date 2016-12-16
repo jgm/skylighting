@@ -7,6 +7,7 @@ import qualified Data.Set as Set
 import Skylighting.Regex
 import Skylighting.Types
 import Skylighting.Syntax (syntaxMap)
+import Data.Maybe
 import Control.Monad.Except
 import Control.Monad.State
 import Control.Applicative
@@ -99,17 +100,23 @@ takeChars xs = do
 tryRule :: Rule -> TokenizerM Token
 tryRule rule = do
   info $ "Trying " ++ take 12 (show (rMatcher rule))
-  xs <- case rMatcher rule of
-             DetectChar c -> detectChar c
-             Detect2Chars c d -> detect2Chars c d
-             AnyChar cs -> anyChar cs
-             RegExpr re -> regExpr re
-             Keyword kwattr kws -> keyword kwattr kws
-             _ -> mzero
   let attr = rAttribute rule
+  tok <- case rMatcher rule of
+             DetectChar c -> withAttr attr $ detectChar c
+             Detect2Chars c d -> withAttr attr $ detect2Chars c d
+             AnyChar cs -> withAttr attr $ anyChar cs
+             RegExpr re -> withAttr attr $ regExpr re
+             Keyword kwattr kws -> withAttr attr $ keyword kwattr kws
+             IncludeRules cname -> includeRules
+                (if rIncludeAttribute rule then Nothing else Just attr)
+                cname
+             _ -> mzero
   -- TODO rChildren
   doContextSwitch (rContextSwitch rule)
-  return (attr, xs)
+  return tok
+
+withAttr :: TokenType -> TokenizerM String -> TokenizerM Token
+withAttr tt p = (tt,) <$> p
 
 nextChar :: TokenizerM String
 nextChar = do
@@ -117,6 +124,16 @@ nextChar = do
   case inp of
     (x:_) -> takeChars [x]
     _ -> mzero
+
+includeRules :: Maybe TokenType -> ContextName -> TokenizerM Token
+includeRules mbattr (syn, con) = do
+  syn' <- if null syn
+             then cSyntax <$> currentContext
+             else return syn
+  (t,xs) <- case Map.lookup syn' syntaxMap >>= Map.lookup con . sContexts of
+                 Nothing  -> error $ "Context lookup failed " ++ show (syn',con)
+                 Just c   -> msum (map tryRule (cRules c))
+  return (fromMaybe t mbattr, xs)
 
 detectChar :: Char -> TokenizerM String
 detectChar c = do
