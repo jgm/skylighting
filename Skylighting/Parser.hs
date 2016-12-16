@@ -48,62 +48,63 @@ application fp
       extractSyntaxDefinition
 
 extractSyntaxDefinition :: IOSArrow XmlTree Syntax
-extractSyntaxDefinition =  proc x -> do
-                             lang <- getAttrValue "name" -< x
-                             author <- getAttrValue "author" -< x
-                             version <- getAttrValue "version" -< x
-                             license <- getAttrValue "license" -< x
-                             extensions <- getAttrValue "extensions" -< x
-                             caseSensitive <- arr (vBool True)
-                                      <<< getAttrValue "casesensitive" -< x
-                             itemdatas <- getItemDatas -< x
-                             contexts <- getContexts $<
-                                      getLists &&&
-                                       (arr (headDef defaultKeywordAttr)
-                                         <<< getKeywordAttrs) -< x
-                             let startingContext =
-                                  case contexts of
-                                       (c:_) -> c
-                                       []    -> error "No contexts"
-                             returnA -< Syntax{
-                                          sName     = lang
-                                        , sAuthor   = author
-                                        , sVersion  = version
-                                        , sLicense  = license
-                                        , sExtensions = words $ map
-                                             (\c -> if c == ';'
-                                                       then ' '
-                                                       else c) extensions
-                                        -- TODO case sensitive
-                                        , sContexts = Map.fromList
-                                               [(cName c, c) | c <- contexts]
-                                        , sStartingContext = startingContext
-                                        }
+extractSyntaxDefinition =
+  proc x -> do
+     lang <- getAttrValue "name" -< x
+     author <- getAttrValue "author" -< x
+     version <- getAttrValue "version" -< x
+     license <- getAttrValue "license" -< x
+     extensions <- getAttrValue "extensions" -< x
+     caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
+     itemdatas <- getItemDatas -< x
+     contexts <- getContexts $< getLists &&& (arr (headDef defaultKeywordAttr)
+                 <<< getKeywordAttrs) -< x
+     let startingContext =
+          case contexts of
+               (c:_) -> c
+               []    -> error "No contexts"
+     returnA -< Syntax{
+                  sName     = lang
+                , sAuthor   = author
+                , sVersion  = version
+                , sLicense  = license
+                , sExtensions = words $ map
+                     (\c -> if c == ';'
+                               then ' '
+                               else c) extensions
+                -- TODO case sensitive
+                , sContexts = Map.fromList
+                       [(cName c, c) | c <- contexts]
+                , sStartingContext = startingContext
+                }
 
 getItemDatas :: IOSArrow XmlTree [(String,String)]
-getItemDatas = multi (hasName "itemDatas")
-               >>>
-               (listA $ getChildren
-                       >>>
-                       hasName "itemData"
-                       >>>
-                       getAttrValue "name" &&& getAttrValue "defStyleNum")
+getItemDatas =
+  multi (hasName "itemDatas")
+     >>>
+     (listA $ getChildren
+             >>>
+             hasName "itemData"
+             >>>
+             getAttrValue "name" &&& getAttrValue "defStyleNum")
 
 getLists :: IOSArrow XmlTree [(String, [String])]
-getLists = listA $ multi (hasName "list")
-                   >>>
-                   getAttrValue "name" &&& getListContents
+getLists =
+  listA $ multi (hasName "list")
+     >>>
+     getAttrValue "name" &&& getListContents
 
 getListContents :: IOSArrow XmlTree [String]
-getListContents = listA $ getChildren
-                          >>>
-                          hasName "item"
-                          >>>
-                          getChildren
-                          >>>
-                          getText
-                          >>>
-                          arr stripWhitespace
+getListContents =
+  listA $ getChildren
+     >>>
+     hasName "item"
+     >>>
+     getChildren
+     >>>
+     getText
+     >>>
+     arr stripWhitespace
 
 getContexts :: ([(String, [String])], KeywordAttr) -> IOSArrow XmlTree [Context]
 getContexts (lists, kwattr) =
