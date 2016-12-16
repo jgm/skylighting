@@ -54,7 +54,8 @@ extractSyntaxDefinition =
      license <- getAttrValue "license" -< x
      extensions <- getAttrValue "extensions" -< x
      caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
-     contexts <- getContexts $< (arr toItemDataTable <<< getItemDatas) &&&
+     contexts <- getContexts $< (getAttrValue "name") &&&
+                                (arr toItemDataTable <<< getItemDatas) &&&
                                 getLists &&&
                                 (arr (headDef defaultKeywordAttr)
                                     <<< getKeywordAttrs) -< x
@@ -144,9 +145,10 @@ getListContents =
      >>>
      arr stripWhitespace
 
-getContexts :: (Map.Map String TokenType, ([(String, [String])], KeywordAttr))
+getContexts ::
+     (String, (Map.Map String TokenType, ([(String, [String])], KeywordAttr)))
             -> IOSArrow XmlTree [Context]
-getContexts (itemdatas, (lists, kwattr)) =
+getContexts (syntaxname, (itemdatas, (lists, kwattr))) =
   listA $ multi (hasName "context")
      >>>
      proc x -> do
@@ -160,6 +162,7 @@ getContexts (itemdatas, (lists, kwattr)) =
        parsers <- getParsers (itemdatas, (lists, kwattr)) -< x
        returnA -< Context {
                      cName = name
+                   , cSyntax = syntaxname
                    , cRules = parsers
                    , cAttribute = fromMaybe NormalTok $
                            Map.lookup attribute itemdatas

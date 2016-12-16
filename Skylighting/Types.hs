@@ -92,6 +92,7 @@ data Syntax = Syntax{
 
 data Context = Context{
     cName  :: String
+  , cSyntax :: String
   , cRules :: [Rule]
   , cAttribute :: TokenType
   , cLineEndContext :: [ContextSwitch]

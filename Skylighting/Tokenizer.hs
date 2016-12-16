@@ -57,10 +57,10 @@ doContextSwitch [] = return ()
 doContextSwitch (Pop : xs) = popContextStack >> doContextSwitch xs
 doContextSwitch (Push (s,c) : xs) = do
   cur <- currentContext
-  let syn = if null s then cName cur else s
+  let syn = if null s then cSyntax cur else s
   case Map.lookup syn syntaxMap >>= Map.lookup c . sContexts of
        Just con -> pushContextStack con >> doContextSwitch xs
-       Nothing  -> error "Unknown syntax or context" -- TODO handle better
+       Nothing  -> error $"Unknown syntax or context: " ++ show (syn, c) -- TODO handle better
 
 tokenize :: Syntax -> String -> Either String [SourceLine]
 tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
