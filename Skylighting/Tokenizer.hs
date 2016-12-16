@@ -108,6 +108,10 @@ tryRule rule = do
              Detect2Chars c d -> withAttr attr $ detect2Chars c d
              AnyChar cs -> withAttr attr $ anyChar cs
              RegExpr re -> withAttr attr $ regExpr re
+             Int -> withAttr attr $ regExpr integerRegex
+             HlCOct -> withAttr attr $ regExpr octRegex
+             HlCHex -> withAttr attr $ regExpr hexRegex
+             Float -> withAttr attr $ regExpr floatRegex
              Keyword kwattr kws -> withAttr attr $ keyword kwattr kws
              IncludeRules cname -> includeRules
                 (if rIncludeAttribute rule then Just attr else Nothing)
@@ -161,7 +165,9 @@ anyChar cs = do
 
 regExpr :: RE -> TokenizerM String
 regExpr re = do -- TODO dynamic, case sensitive
-  regex <- maybe mzero return $ reCompiled re
+  -- TODO if dynamic, modify reString here?
+  regex <- maybe (return $ compileRegex (reCaseSensitive re) (reString re))
+                 return $ reCompiled re
   inp <- gets input
   prev <- gets prevChar
   -- we keep one preceding character, so initial \b can match:
@@ -194,4 +200,41 @@ normalizeHighlighting ((_,""):xs) = normalizeHighlighting xs
 normalizeHighlighting ((a,x):(b,y):xs)
   | a == b = normalizeHighlighting ((a, x++y):xs)
 normalizeHighlighting (x:xs) = x : normalizeHighlighting xs
+
+integerRegex :: RE
+integerRegex = RE{
+    reString = intReStr
+  , reCompiled = Just $ compileRegex False intReStr
+  , reDynamic  = False
+  , reCaseSensitive = False
+  }
+  where intReStr = "\\b[-+]?(0[Xx][0-9A-Fa-f]+|0[Oo][0-7]+|[0-9]+)\\b"
+
+floatRegex :: RE
+floatRegex = RE{
+    reString = floatReStr
+  , reCompiled = Just $ compileRegex False floatReStr
+  , reDynamic = False
+  , reCaseSensitive = False
+  }
+  where floatReStr = "\\b[-+]?(([0-9]+\\.[0-9]*|[0-9]*\\.[0-9]+)([Ee][-+]?[0-9]+)?|[0-9]+[Ee][-+]?[0-9]+)\\b"
+
+octRegex :: RE
+octRegex = RE{
+    reString = octRegexStr
+  , reCompiled = Just $ compileRegex False octRegexStr
+  , reDynamic = False
+  , reCaseSensitive = False
+  }
+  where octRegexStr = "\\b[-+]?0[Oo][0-7]+\\b"
+
+hexRegex :: RE
+hexRegex = RE{
+    reString = hexRegexStr
+  , reCompiled = Just $ compileRegex False hexRegexStr
+  , reDynamic = False
+  , reCaseSensitive = False
+  }
+  where hexRegexStr = "\\b[-+]?0[Xx][0-9A-Fa-f]+\\b"
+
 
