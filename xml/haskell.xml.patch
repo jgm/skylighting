@@ -1,32 +1,17 @@
---- ../kate-xml/haskell.xml	2016-09-17 12:49:18.000000000 +0200
-+++ haskell.xml	2016-09-18 18:05:14.000000000 +0200
-@@ -369,16 +369,11 @@
-       <Detect2Chars attribute="EnumFromTo" context="#stay" char ="." char1="." />
-       <AnyChar      attribute="EnumFromTo" context="#stay" String="‥" />
- 
--      <RegExpr attribute="Normal" context="Hamlet" String="\[[wx]?hamlet\|" />
-       <RegExpr attribute="Normal" context="QuasiQuote" String="\[[a-zA-Z_'](\w|[_'])*\|" />
-     </context>
-     <context attribute="Normal" lineEndContext="#stay" name="QuasiQuote">
-       <Detect2Chars attribute="Normal" context="#pop" char="|" char1="]"/>
-     </context>
--    <context attribute="Normal" lineEndContext="#stay" name="Hamlet">
--      <IncludeRules context="QuasiQuote"/>
--      <IncludeRules context="##Hamlet" />
--    </context>
-     <context attribute="Comment" lineEndContext="#pop" name="comment">
-       <IncludeRules context="Haddock" />
-     </context>
-@@ -476,9 +471,9 @@
+diff --git a/xml/haskell.xml b/xml/haskell.xml
+index 27ca018..8997722 100644
+--- a/xml/haskell.xml
++++ b/xml/haskell.xml
+@@ -476,9 +476,9 @@
  
      <itemData name="Keyword"          defStyleNum="dsKeyword"  spellChecking="false" />
      <itemData name="Type Prelude"     defStyleNum="dsDataType" spellChecking="false" />
 -    <itemData name="Function Prelude" defStyleNum="dsFunction" spellChecking="false" />
 -    <itemData name="Data Prelude"     defStyleNum="dsKeyword"  spellChecking="false" />
 -    <itemData name="Class Prelude"    defStyleNum="dsKeyword"  spellChecking="false" />
-+    <itemData name="Function Prelude" defStyleNum="dsNormal" spellChecking="false" />
-+    <itemData name="Data Prelude"     defStyleNum="dsDataType"  spellChecking="false" />
-+    <itemData name="Class Prelude"    defStyleNum="dsDataType"  spellChecking="false" />
++    <itemData name="Function Prelude" defStyleNum="dsNormal"   spellChecking="false" />
++    <itemData name="Data Prelude"     defStyleNum="dsDataType" spellChecking="false" />
++    <itemData name="Class Prelude"    defStyleNum="dsDataType" spellChecking="false" />
  
      <itemData name="Signature"        defStyleNum="dsOthers"  spellChecking="false" />
      <itemData name="Function"         defStyleNum="dsNormal"   spellChecking="false" />

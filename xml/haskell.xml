@@ -476,9 +476,9 @@
 
     <itemData name="Keyword"          defStyleNum="dsKeyword"  spellChecking="false" />
     <itemData name="Type Prelude"     defStyleNum="dsDataType" spellChecking="false" />
-    <itemData name="Function Prelude" defStyleNum="dsFunction" spellChecking="false" />
-    <itemData name="Data Prelude"     defStyleNum="dsKeyword"  spellChecking="false" />
-    <itemData name="Class Prelude"    defStyleNum="dsKeyword"  spellChecking="false" />
+    <itemData name="Function Prelude" defStyleNum="dsNormal"   spellChecking="false" />
+    <itemData name="Data Prelude"     defStyleNum="dsDataType" spellChecking="false" />
+    <itemData name="Class Prelude"    defStyleNum="dsDataType" spellChecking="false" />
 
     <itemData name="Signature"        defStyleNum="dsOthers"  spellChecking="false" />
     <itemData name="Function"         defStyleNum="dsNormal"   spellChecking="false" />
