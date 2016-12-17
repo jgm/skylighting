@@ -202,7 +202,7 @@ executable skylighting
                        blaze-html >= 0.5,
                        skylighting
   hs-source-dirs:      bin
-  main-is:             skylighting.hs
+  main-is:             main.hs
   default-language:    Haskell2010
   other-extensions:    CPP
   ghc-options:         -Wall

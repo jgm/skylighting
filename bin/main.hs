@@ -1,16 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import Skylighting.Tokenizer
-import Skylighting.Syntax
 import Text.Show.Pretty
 import System.Environment
 import qualified Data.Map as Map
-import Skylighting.Format.HTML
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 import Text.Blaze.Html.Renderer.String
-import Skylighting.Types
-import Skylighting.Styles
+import Skylighting
 
 main :: IO ()
 main = do
