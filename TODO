@@ -1,5 +1,4 @@
 _ test against h-k for correctness
-  (currently a problem with import in Haskell)
 _ handle case sensitive in Parser, Tokenizer
 _ handle dynamic in Parser, Tokenizer
 _ better exception handling in Parser

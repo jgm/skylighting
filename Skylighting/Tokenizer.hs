@@ -117,8 +117,9 @@ tokenizeLine ln = do
   doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
   ts <- normalizeHighlighting <$> many getToken
+  cur' <- currentContext
   lineCont' <- gets lineContinuation
-  unless lineCont' $ doContextSwitch (cLineEndContext cur)
+  unless lineCont' $ doContextSwitch (cLineEndContext cur')
   inp <- gets input
   return $ ts ++ [(ErrorTok, inp) | not (null inp)]
 
