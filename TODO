@@ -5,7 +5,6 @@ _ better exception handling in Parser
 _ better exception handling in Tokenizer
 _ spruce up tokenize -> skylighting with proper options etc.
 _ add library function for dynamic loading of xml files
-_ add main Skylighting module
 _ make faster
   (use Set for char and keyword matchers)
   (improve normalize fn?)
