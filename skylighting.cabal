@@ -179,7 +179,7 @@ executable skylighting-extract
                        pretty-show,
                        containers,
                        directory
-  hs-source-dirs:      bin, .
+  hs-source-dirs:      src, .
   main-is:             extract.hs
   default-language:    Haskell2010
   other-extensions:    CPP
@@ -201,7 +201,7 @@ executable skylighting
                        directory,
                        blaze-html >= 0.5,
                        skylighting
-  hs-source-dirs:      bin
+  hs-source-dirs:      src
   main-is:             main.hs
   default-language:    Haskell2010
   other-extensions:    CPP
