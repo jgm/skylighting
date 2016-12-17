@@ -154,12 +154,13 @@ tryRule rule = do
                 Int -> withAttr attr $ regExpr integerRegex
                 HlCOct -> withAttr attr $ regExpr octRegex
                 HlCHex -> withAttr attr $ regExpr hexRegex
-                HlCStringChar -> mzero -- TODO
-                HlCChar -> mzero -- TODO
+                HlCStringChar -> withAttr attr $ hlCStringChar
+                HlCChar -> withAttr attr $ hlCChar
                 Float -> withAttr attr $ regExpr floatRegex
                 Keyword kwattr kws ->
                   withAttr attr $ keyword kwattr kws
                 StringDetect s -> withAttr attr $ stringDetect s
+                WordDetect s -> withAttr attr $ wordDetect s
                 LineContinue -> withAttr attr $ lineContinue
                 DetectSpaces -> withAttr attr $ detectSpaces
                 DetectIdentifier -> withAttr attr $ detectIdentifier
@@ -168,9 +169,6 @@ tryRule rule = do
                 IncludeRules cname -> includeRules
                    (if rIncludeAttribute rule then Just attr else Nothing)
                    cname
-                Unimplemented str -> do
-                  info $ "Unimplemented matcher: " ++ show str
-                  mzero
   (_, cresult) <- msum (map tryRule (rChildren rule))
               <|> return (NormalTok, "")
   doContextSwitch (rContextSwitch rule)
@@ -180,6 +178,15 @@ tryRule rule = do
 
 withAttr :: TokenType -> TokenizerM String -> TokenizerM Token
 withAttr tt p = (tt,) <$> p
+
+hlCStringChar :: TokenizerM String
+hlCStringChar = undefined -- TODO
+
+hlCChar :: TokenizerM String
+hlCChar = undefined -- TODO
+
+wordDetect :: String -> TokenizerM String
+wordDetect s = undefined -- TODO
 
 ifColumn :: Int -> Rule -> TokenizerM Token
 ifColumn n rule = do

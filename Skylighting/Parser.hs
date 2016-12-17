@@ -227,6 +227,7 @@ getParsers (syntaxname, (itemdatas, (lists, kwattr))) =
                           "AnyChar" -> AnyChar str
                           "RangeDetect" -> RangeDetect char0 char1
                           "StringDetect" -> StringDetect str
+                          "WordDetect" -> WordDetect str
                           "RegExpr" -> re
                           "keyword" -> Keyword kwattr $
                              maybe (WordSet Set.empty)
@@ -237,12 +238,13 @@ getParsers (syntaxname, (itemdatas, (lists, kwattr))) =
                           "HlCOct" -> HlCOct
                           "HlCHex" -> HlCHex
                           "HlCStringChar" -> HlCStringChar
+                          "HlCChar" -> HlCChar
                           "LineContinue" -> LineContinue
                           "IncludeRules" ->
                             IncludeRules (incsyntax, inccontext)
                           "DetectSpaces" -> DetectSpaces
                           "DetectIdentifier" -> DetectIdentifier
-                          _ -> Unimplemented name
+                          _ -> error $ "Unknown element " ++ name
        let contextSwitch = if name == "IncludeRules"
                               then []  -- FIXME is this right?
                               else parseContextSwitch syntaxname context

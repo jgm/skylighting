@@ -55,6 +55,7 @@ data Matcher =
   | AnyChar [Char]
   | RangeDetect Char Char
   | StringDetect String
+  | WordDetect String
   | RegExpr RE
   | Keyword KeywordAttr WordSet
   | Int
@@ -69,7 +70,6 @@ data Matcher =
   | DetectIdentifier
   | IfFirstNonspace Rule
   | IfColumn Int Rule
-  | Unimplemented String
   deriving (Show)
 
 data ContextSwitch =
