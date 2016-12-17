@@ -8,13 +8,15 @@ import Skylighting.Regex
 import Skylighting.Types
 import Skylighting.Syntax (syntaxMap)
 import Data.Maybe
-import Data.List (isPrefixOf)
+import Data.List (isPrefixOf, findIndex)
 import Control.Monad.Except
 import Control.Monad.State
 import Control.Applicative
-import Debug.Trace
 import Data.Char (isSpace, isLetter, isAlphaNum)
 import qualified Data.Map as Map
+#ifdef TRACE
+import Debug.Trace
+#endif
 
 info :: String -> TokenizerM ()
 #ifdef TRACE
@@ -38,6 +40,7 @@ data TokenizerState = TokenizerState{
   , captures     :: [String]
   , column       :: Int
   , lineContinuation :: Bool
+  , firstNonspaceColumn :: Maybe Int
 } deriving (Show)
 
 type TokenizerM = ExceptT String (State TokenizerState)
@@ -87,7 +90,8 @@ tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
                 , contextStack = ContextStack [sStartingContext syntax]
                 , captures = []
                 , column = 0
-                , lineContinuation = False }
+                , lineContinuation = False
+                , firstNonspaceColumn = Nothing }
 
 tokenizeLine :: String -> TokenizerM [Token]
 tokenizeLine ln = do
@@ -96,7 +100,9 @@ tokenizeLine ln = do
   if lineCont
      then modify $ \st -> st{ lineContinuation = False }
      else do
-       modify $ \st -> st{ column = 0 }
+       modify $ \st -> st{ column = 0
+                         , firstNonspaceColumn =
+                              findIndex (not . isSpace) ln }
        doContextSwitch (cLineBeginContext cur)
   doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
@@ -147,7 +153,7 @@ tryRule rule = do
                 LineContinue -> withAttr attr $ lineContinue
                 DetectSpaces -> withAttr attr $ detectSpaces
                 DetectIdentifier -> withAttr attr $ detectIdentifier
-                IfFirstNonspace r -> mzero -- TODO
+                IfFirstNonspace r -> ifFirstNonspace r
                 IfColumn n r -> ifColumn n r
                 IncludeRules cname -> includeRules
                    (if rIncludeAttribute rule then Just attr else Nothing)
@@ -169,6 +175,13 @@ ifColumn :: Int -> Rule -> TokenizerM Token
 ifColumn n rule = do
   col <- gets column
   guard $ col == n
+  tryRule rule
+
+ifFirstNonspace :: Rule -> TokenizerM Token
+ifFirstNonspace rule = do
+  firstNonspace <- gets firstNonspaceColumn
+  col <- gets column
+  guard $ firstNonspace == Just col
   tryRule rule
 
 stringDetect :: String -> TokenizerM String
