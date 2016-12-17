@@ -160,7 +160,12 @@ library
   hs-source-dirs:      .
   default-language:    Haskell2010
   ghc-options:         -Wall
-  cpp-options:         -DTRACE
+  if flag(trace)
+    cpp-options:       -DTRACE
+
+Flag trace
+  Description:   Turn on diagnostic tracing
+  Default:       False
 
 executable skylighting-extract
   build-depends:       base,

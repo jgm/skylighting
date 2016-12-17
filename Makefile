@@ -6,7 +6,10 @@ DEFS=$(patsubst %,xml/%,$(XMLS))
 quick:
 	stack install --test --fast
 
-all: $(DEFS)
+trace:
+	stack install --test --fast --flag 'skylighting:trace'
+
+bootstrap: $(DEFS)
 	-rm -rf Skylighting/Syntax
 	cp Skylighting/Syntax.hs.bootstrap Skylighting/Syntax.hs
 	sed -i '' -e '/Syntax\.Syntax_/d' skylighting.cabal
@@ -20,5 +23,8 @@ syntax-highlighting:
 update-xml: syntax-highlighting
 	cp syntax-highlighting/data/syntax/*.xml xml/
 
-.PHONY: all update-xml quick
+clean:
+	stack clean
+
+.PHONY: all update-xml quick clean
 
