@@ -3,7 +3,7 @@
 import Skylighting.Parser (parseSyntaxDefinition)
 import Text.Show.Pretty (ppShow)
 import System.FilePath
-import Data.Char (isAlphaNum)
+import Data.Char (isAlphaNum, toUpper)
 import Skylighting.Types
 import System.Environment (getArgs)
 import System.Directory
@@ -23,7 +23,7 @@ main = do
   putStrLn "Updating module list in skylighting.cabal"
   cabalLines <- lines <$> readFile "skylighting.cabal.orig"
   let (top, rest) = break ("other-modules:" `isInfixOf`) cabalLines
-  let (_, bottom) = span ("Syntax.Syntax_" `isInfixOf`) (drop 1 rest)
+  let (_, bottom) = span ("Skylighting.Syntax." `isInfixOf`) (drop 1 rest)
   let modulenames = map toModuleName files
   let autogens = map ((replicate 23 ' ') ++) modulenames
   let newcabal = unlines $ top ++ ("  other-modules:" : autogens) ++ bottom
@@ -53,8 +53,16 @@ writeModuleFor (s, syn) = do
       "module " ++ toModuleName s ++ " (syntax) where\n\nimport Skylighting.Types\nimport Skylighting.Regex\nimport Data.Map\nimport qualified Data.Set\n\nsyntax :: Syntax\nsyntax = " ++ ppShow syn
 
 toModuleName :: String -> String
-toModuleName s = "Skylighting.Syntax.Syntax_" ++
-  map (\c -> if isAlphaNum c then c else '_') (takeBaseName s)
+toModuleName s = "Skylighting.Syntax." ++ capitalize (camelize (takeBaseName s))
+
+camelize :: String -> String
+camelize (d:c:cs) | not (isAlphaNum d) = toUpper c : camelize cs
+camelize (c:cs) = c : camelize cs
+camelize [] = []
+
+capitalize :: String -> String
+capitalize (c:cs) = toUpper c : cs
+capitalize [] = []
 
 toPathName :: String -> String
 toPathName s = map (\c -> if c == '.' then '/' else c)
