@@ -5,6 +5,7 @@ module Skylighting (
   , syntaxByFilename
   , syntaxByFullName
   , highlightAs
+  , lowercaseSyntaxMap
   , module Skylighting.Types
   , module Skylighting.Tokenizer
   , module Skylighting.Parser
@@ -33,6 +34,7 @@ languages = sort $ Map.keys syntaxMap
 syntaxes :: [Syntax]
 syntaxes = Map.elems syntaxMap
 
+-- | A version of the syntax map with lowercase keys.
 lowercaseSyntaxMap :: Map.Map String Syntax
 lowercaseSyntaxMap = Map.mapKeys (map toLower) syntaxMap
 
