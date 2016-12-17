@@ -183,6 +183,7 @@ executable skylighting-tokenize
                        pretty-show,
                        containers,
                        directory,
+                       blaze-html >= 0.5,
                        skylighting
   hs-source-dirs:      bin
   main-is:             tokenize.hs
