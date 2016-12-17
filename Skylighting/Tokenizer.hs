@@ -334,9 +334,9 @@ keyword kwattr (WordSet kws) = do
 normalizeHighlighting :: [Token] -> [Token]
 normalizeHighlighting [] = []
 normalizeHighlighting ((_,""):xs) = normalizeHighlighting xs
-normalizeHighlighting ((a,x):(b,y):xs)
-  | a == b = normalizeHighlighting ((a, x++y):xs)
-normalizeHighlighting (x:xs) = x : normalizeHighlighting xs
+normalizeHighlighting ((t,x):xs) =
+  (t, concat (x : map snd matches)) : normalizeHighlighting rest
+  where (matches, rest) = span (\(z,_) -> z == t) xs
 
 integerRegex :: RE
 integerRegex = RE{
