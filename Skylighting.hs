@@ -1,8 +1,8 @@
 module Skylighting (
     languages
---  , languagesByExtension
+  , languagesByExtension
+  , languagesByFilename
 --  , languagesByFullName
---  , languagesByFilename
 --  , highlightAs
   , module Skylighting.Types
   , module Skylighting.Tokenizer
@@ -22,7 +22,8 @@ import Skylighting.Styles
 import Skylighting.Format.HTML
 import Skylighting.Format.LaTeX
 import qualified Data.Map as Map
-import Data.List (sort)
+import Data.List (sort, tails)
+import Data.Char (toLower)
 
 -- | List of supported languages.
 languages :: [String]
@@ -31,10 +32,24 @@ languages = sort $ Map.keys syntaxMap
 syntaxes :: [Syntax]
 syntaxes = Map.elems syntaxMap
 
+lowercaseSyntaxMap :: Map.Map String Syntax
+lowercaseSyntaxMap = Map.mapKeys (map toLower) syntaxMap
+
+-- | Returns a list of languages appropriate for the given file extension.
+languagesByExtension :: String -> [String]
+languagesByExtension ('.':ext) = languagesByFilename ("*." ++ ext)
+languagesByExtension ext       = languagesByFilename ("*." ++ ext)
+
+-- | Returns a list of languages appropriate for the given filename.
+languagesByFilename :: FilePath -> [String]
+languagesByFilename fn = [lang | (lang, globs) <- languageExtensions,
+                                  matchGlobs fn globs]
+
+languageExtensions :: [(String, [String])]
+languageExtensions = [(sName s, sExtensions s) | s <- syntaxes]
+
 {-
 -- | List of language extensions.
-languageExtensions :: [(String, String)]
-languageExtensions = [(sName s, sExtensions s) | s <- syntaxes]
 
 -- | List of full names of languages.
 languageFullNames :: [(String, String)]
@@ -48,14 +63,6 @@ languageShortNames =
 languageByFullName :: String -> Maybe String
 languageByFullName s = undefined -- lookup s languageShortNames
 
--- | Returns a list of languages appropriate for the given file extension.
-languagesByExtension :: String -> [String]
-languagesByExtension ('.':ext) = languagesByFilename ("*." ++ ext)
-languagesByExtension ext       = languagesByFilename ("*." ++ ext)
-
--- | Returns a list of languages appropriate for the given filename.
-languagesByFilename :: FilePath -> [String]
-languagesByFilename fn = undefined -- [lang | (lang, globs) <- languageExtensions, matchGlobs fn globs]
 -}
 
 -- | Highlight source code. The source language may be specified
@@ -79,3 +86,15 @@ highlightAs lang = undefined
                                     [l]  -> map toLower l
                                     _    -> lang'
 -}
+
+-- | Match filename against a list of globs contained in a semicolon-separated
+-- string.
+matchGlobs :: String -> [String] -> Bool
+matchGlobs fn globs = any (flip matchGlob fn) globs
+
+-- | Match filename against a glob pattern with asterisks.
+matchGlob :: String -> String -> Bool
+matchGlob ('*':xs) fn = any (matchGlob xs) (tails fn)
+matchGlob (x:xs) (y:ys) = x == y && matchGlob xs ys
+matchGlob "" "" = True
+matchGlob _ _   = False
