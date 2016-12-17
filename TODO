@@ -1,3 +1,5 @@
+_ Skylighting module - provide compatible functions
+  note, case-insensitive match of names
 _ test against h-k for correctness
 _ handle case sensitive in Parser, Tokenizer
 _ handle dynamic in Parser, Tokenizer
