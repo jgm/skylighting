@@ -121,7 +121,7 @@ getToken = do
   msum (map tryRule (cRules context)) <|>
     if cFallthrough context
        then doContextSwitch (cFallthroughContext context) >> getToken
-       else (cAttribute context, ) <$> nextChar
+       else (cAttribute context, ) <$> normalChunk
 
 takeChars :: String -> TokenizerM String
 takeChars [] = mzero
@@ -191,12 +191,19 @@ stringDetect s = do
      then takeChars s
      else mzero
 
-nextChar :: TokenizerM String
-nextChar = do
+-- This assumes that nothing significant will happen
+-- in the middle of a string of spaces or a string
+-- of alphanumerics.  This seems true  for all normal
+-- programming languages, and the optimization speeds
+-- things up a lot, relative to just parsing one char.
+normalChunk :: TokenizerM String
+normalChunk = do
   inp <- gets input
   case inp of
+    [] -> mzero
+    (' ':xs) -> takeChars $ ' ' : takeWhile (== ' ') xs
+    (x:xs) | isAlphaNum x -> takeChars $ x : takeWhile isAlphaNum xs
     (x:_) -> takeChars [x]
-    _ -> mzero
 
 includeRules :: Maybe TokenType -> ContextName -> TokenizerM Token
 includeRules mbattr (syn, con) = do
