@@ -246,7 +246,7 @@ getParsers (syntaxname, (itemdatas, (lists, kwattr))) =
                           "DetectIdentifier" -> DetectIdentifier
                           _ -> error $ "Unknown element " ++ name
        let contextSwitch = if name == "IncludeRules"
-                              then []  -- FIXME is this right?
+                              then []  -- is this right?
                               else parseContextSwitch syntaxname context
        returnA -< Rule{ rMatcher = matcher,
                         rAttribute = fromMaybe OtherTok $
