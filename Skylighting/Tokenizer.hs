@@ -1,6 +1,7 @@
-{-# LANGUAGE CPP, TupleSections #-}
+{-# LANGUAGE TupleSections #-}
 module Skylighting.Tokenizer (
-  tokenize
+    tokenize
+  , tokenizeWithTrace
   ) where
 
 import qualified Data.Set as Set
@@ -14,21 +15,19 @@ import Control.Monad.State
 import Control.Applicative
 import Data.Char (isSpace, isLetter, isAlphaNum)
 import qualified Data.Map as Map
-#ifdef TRACE
 import Debug.Trace
-#endif
 
 info :: String -> TokenizerM ()
-#ifdef TRACE
-info s = trace s (return ())
-#else
-info _ = return ()
-#endif
+info s = do
+  tr <- gets traceOutput
+  when tr $ trace s (return ())
 
 infoContextStack :: TokenizerM ()
 infoContextStack = do
-  ContextStack stack <- gets contextStack
-  info $ "CONTEXT STACK " ++ show (map cName stack)
+  tr <- gets traceOutput
+  when tr $ do
+    ContextStack stack <- gets contextStack
+    info $ "CONTEXT STACK " ++ show (map cName stack)
 
 newtype ContextStack = ContextStack{ unContextStack :: [Context] }
   deriving (Show)
@@ -41,6 +40,7 @@ data TokenizerState = TokenizerState{
   , column       :: Int
   , lineContinuation :: Bool
   , firstNonspaceColumn :: Maybe Int
+  , traceOutput  :: Bool
 } deriving (Show)
 
 type TokenizerM = ExceptT String (State TokenizerState)
@@ -85,13 +85,23 @@ lookupContext name syntax =
 
 tokenize :: Syntax -> String -> Either String [SourceLine]
 tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
-  TokenizerState{ input = inp
+  startingState{ input = inp, contextStack = ContextStack [sStartingContext syntax] }
+
+tokenizeWithTrace :: Syntax -> String -> Either String [SourceLine]
+tokenizeWithTrace syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
+  startingState{ input = inp, contextStack = ContextStack [sStartingContext syntax],
+                 traceOutput = True }
+
+startingState :: TokenizerState
+startingState =
+  TokenizerState{ input = ""
                 , prevChar = '\n'
-                , contextStack = ContextStack [sStartingContext syntax]
+                , contextStack = ContextStack []
                 , captures = []
                 , column = 0
                 , lineContinuation = False
-                , firstNonspaceColumn = Nothing }
+                , firstNonspaceColumn = Nothing
+                , traceOutput = False }
 
 tokenizeLine :: String -> TokenizerM [Token]
 tokenizeLine ln = do

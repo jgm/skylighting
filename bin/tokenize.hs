@@ -16,10 +16,13 @@ main :: IO ()
 main = do
   (lang:rest) <- getArgs
   let htmlOutput = "--html" `elem` rest
+  let traceOutput = "--trace" `elem` rest
   syn <- case Map.lookup lang syntaxMap of
                 Nothing -> error "language not found"
                 Just s  -> return s
-  res <- tokenize syn <$> getContents
+  res <- (if traceOutput
+             then tokenizeWithTrace
+             else tokenize) syn <$> getContents
   case res of
       Left e -> error e
       Right toks | htmlOutput -> putStrLn $
