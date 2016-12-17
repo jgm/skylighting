@@ -191,7 +191,7 @@ executable skylighting-extract
   else
     buildable:         False
 
-executable skylighting-tokenize
+executable skylighting
   build-depends:       base,
                        filepath,
                        text,
@@ -201,7 +201,7 @@ executable skylighting-tokenize
                        blaze-html >= 0.5,
                        skylighting
   hs-source-dirs:      bin
-  main-is:             tokenize.hs
+  main-is:             skylighting.hs
   default-language:    Haskell2010
   other-extensions:    CPP
   ghc-options:         -Wall

@@ -50,7 +50,7 @@ popContextStack = do
   ContextStack cs <- gets contextStack
   case cs of
        []     -> error "Empty context stack" -- programming error
-       [_]    -> return ()  -- don't pop last context
+       (_:[]) -> return ()  -- don't pop last context
        (_:rest) -> do
          modify (\st -> st{ contextStack = ContextStack rest })
          infoContextStack
@@ -117,9 +117,8 @@ tokenizeLine ln = do
   doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
   ts <- normalizeHighlighting <$> many getToken
-  if lineCont
-     then return ()
-     else doContextSwitch (cLineEndContext cur)
+  lineCont' <- gets lineContinuation
+  unless lineCont' $ doContextSwitch (cLineEndContext cur)
   inp <- gets input
   return $ ts ++ [(ErrorTok, inp) | not (null inp)]
 
@@ -171,9 +170,9 @@ tryRule rule = do
                    cname
   (_, cresult) <- msum (map tryRule (rChildren rule))
               <|> return (NormalTok, "")
-  doContextSwitch (rContextSwitch rule)
   let tok = (tt, s ++ cresult)
   info $ takeWhile (/=' ') (show (rMatcher rule)) ++ " MATCHED " ++ show tok
+  doContextSwitch (rContextSwitch rule)
   return tok
 
 withAttr :: TokenType -> TokenizerM String -> TokenizerM Token
