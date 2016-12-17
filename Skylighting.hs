@@ -1,9 +1,10 @@
 module Skylighting (
     languages
-  , languagesByExtension
-  , languagesByFilename
---  , languagesByFullName
---  , highlightAs
+  , languageFullNames
+  , syntaxByExtension
+  , syntaxByFilename
+  , syntaxByFullName
+  , highlightAs
   , module Skylighting.Types
   , module Skylighting.Tokenizer
   , module Skylighting.Parser
@@ -36,56 +37,40 @@ lowercaseSyntaxMap :: Map.Map String Syntax
 lowercaseSyntaxMap = Map.mapKeys (map toLower) syntaxMap
 
 -- | Returns a list of languages appropriate for the given file extension.
-languagesByExtension :: String -> [String]
-languagesByExtension ('.':ext) = languagesByFilename ("*." ++ ext)
-languagesByExtension ext       = languagesByFilename ("*." ++ ext)
+syntaxByExtension :: String -> [Syntax]
+syntaxByExtension ('.':ext) = syntaxByFilename ("*." ++ ext)
+syntaxByExtension ext       = syntaxByFilename ("*." ++ ext)
 
 -- | Returns a list of languages appropriate for the given filename.
-languagesByFilename :: FilePath -> [String]
-languagesByFilename fn = [lang | (lang, globs) <- languageExtensions,
-                                  matchGlobs fn globs]
-
-languageExtensions :: [(String, [String])]
-languageExtensions = [(sName s, sExtensions s) | s <- syntaxes]
-
-{-
--- | List of language extensions.
-
--- | List of full names of languages.
-languageFullNames :: [(String, String)]
-languageFullNames = [(sName s, sFullName s) | s <- syntaxes]
-
-languageShortNames :: [(String, String)]
-languageShortNames =
-  [(map toLower y, map toLower x) | (x, y) <- languageFullNames]
+syntaxByFilename :: String -> [Syntax]
+syntaxByFilename fn = [s | s <- syntaxes
+                         , matchGlobs fn (sExtensions s)]
 
 -- | Lookup canonical language name by full syntaxName (e.g. "C#" for "Cs").
-languageByFullName :: String -> Maybe String
-languageByFullName s = undefined -- lookup s languageShortNames
+syntaxByFullName :: String -> [Syntax]
+syntaxByFullName name = [s | s <- syntaxes, sFullName s == name]
 
--}
+-- | List of full names of languages.
+languageFullNames :: [String]
+languageFullNames = [sFullName s | s <- syntaxes]
 
 -- | Highlight source code. The source language may be specified
 -- by its canonical name (case-insensitive) or by a canonical
--- extension (if unique).
--- The parsers read the input lazily and parse line by line;
--- results are returned immediately.
+-- extension (if unique) or by the full name in the syntax description.
 highlightAs :: String         -- ^ Language syntax (e.g. "haskell") or extension (e.g. "hs").
             -> String         -- ^ Source code to highlight
-            -> [SourceLine]   -- ^ List of highlighted source lines
-highlightAs lang = undefined
-{-
-  let lang'  = map toLower lang
-      lang'' = if lang' `elem` map (map toLower) languages
-                  then lang'
-                  else case languageByFullName lang' of
-                            Just l -> l
-                            Nothing ->
-                              case languagesByExtension lang' of
-                                    -- go by extension if unambiguous
-                                    [l]  -> map toLower l
-                                    _    -> lang'
--}
+            -> Either String [SourceLine]   -- ^ List of highlighted source lines
+highlightAs "csharp" = highlightAs "cs" -- special case
+highlightAs lang =
+  case Map.lookup (map toLower lang) lowercaseSyntaxMap of
+         Just s  -> tokenize s
+         Nothing ->
+           case syntaxByFullName lang of
+                (s:_) -> tokenize s
+                [] -> case syntaxByExtension lang of
+                           (s:_) -> tokenize s
+                           []    -> \_ -> Left
+                               ("Could not find syntax definition for " ++ lang)
 
 -- | Match filename against a list of globs contained in a semicolon-separated
 -- string.
