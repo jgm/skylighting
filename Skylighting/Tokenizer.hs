@@ -154,8 +154,8 @@ tryRule rule = do
                 Int -> withAttr attr $ regExpr integerRegex
                 HlCOct -> withAttr attr $ regExpr octRegex
                 HlCHex -> withAttr attr $ regExpr hexRegex
-                HlCStringChar -> withAttr attr $ hlCStringChar
-                HlCChar -> withAttr attr $ hlCChar
+                HlCStringChar -> withAttr attr $ regExpr hlCStringCharRegex
+                HlCChar -> withAttr attr $ regExpr hlCCharRegex
                 Float -> withAttr attr $ regExpr floatRegex
                 Keyword kwattr kws ->
                   withAttr attr $ keyword kwattr kws
@@ -179,14 +179,32 @@ tryRule rule = do
 withAttr :: TokenType -> TokenizerM String -> TokenizerM Token
 withAttr tt p = (tt,) <$> p
 
-hlCStringChar :: TokenizerM String
-hlCStringChar = undefined -- TODO
+hlCStringCharRegex :: RE
+hlCStringCharRegex = RE{
+    reString = reStr
+  , reCompiled = Just $ compileRegex False reStr
+  , reDynamic  = False
+  , reCaseSensitive = False
+  }
+  where reStr = "\\\\(?[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)"
 
-hlCChar :: TokenizerM String
-hlCChar = undefined -- TODO
+hlCCharRegex :: RE
+hlCCharRegex = RE{
+    reString = reStr
+  , reCompiled = Just $ compileRegex False reStr
+  , reDynamic  = False
+  , reCaseSensitive = False
+  }
+  where reStr = "'\\\\(?[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)'"
 
 wordDetect :: String -> TokenizerM String
-wordDetect s = undefined -- TODO
+wordDetect s = do
+  res <- stringDetect s
+  -- now check for word boundary:  (TODO: check to make sure this is correct)
+  inp <- gets input
+  case inp of
+       (c:_) | not (isAlphaNum c) -> return res
+       _ -> mzero
 
 ifColumn :: Int -> Rule -> TokenizerM Token
 ifColumn n rule = do
