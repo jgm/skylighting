@@ -26,7 +26,7 @@ info _ = return ()
 infoContextStack :: TokenizerM ()
 infoContextStack = do
   ContextStack stack <- gets contextStack
-  info $ show $ map cName stack
+  info $ "CONTEXT STACK " ++ show (map cName stack)
 
 newtype ContextStack = ContextStack{ unContextStack :: [Context] }
   deriving (Show)
@@ -48,12 +48,15 @@ popContextStack = do
   case cs of
        []     -> error "Empty context stack" -- programming error
        [_]    -> return ()  -- don't pop last context
-       (_:rest) -> modify (\st -> st{ contextStack = ContextStack rest })
+       (_:rest) -> do
+         modify (\st -> st{ contextStack = ContextStack rest })
+         infoContextStack
 
 pushContextStack :: Context -> TokenizerM ()
-pushContextStack cont =
+pushContextStack cont = do
   modify (\st -> st{ contextStack =
                       ContextStack (cont : unContextStack (contextStack st)) } )
+  infoContextStack
 
 currentContext :: TokenizerM Context
 currentContext = do
@@ -107,7 +110,7 @@ getToken = do
   inp <- gets input
   guard $ not (null inp)
   context <- currentContext
-  msum (map tryRule (cRules context)) <|> -- TODO check for fallthrough
+  msum (map tryRule (cRules context)) <|>
     if cFallthrough context
        then doContextSwitch (cFallthroughContext context) >> getToken
        else (cAttribute context, ) <$> nextChar
@@ -121,7 +124,6 @@ takeChars xs = do
 
 tryRule :: Rule -> TokenizerM Token
 tryRule rule = do
-  -- info $ "Trying " ++ take 12 (show (rMatcher rule))
   let attr = rAttribute rule
   (tt, s) <- case rMatcher rule of
                 DetectChar c -> withAttr attr $ detectChar c
@@ -152,7 +154,9 @@ tryRule rule = do
   (_, cresult) <- msum (map tryRule (rChildren rule))
               <|> return (NormalTok, "")
   doContextSwitch (rContextSwitch rule)
-  return (tt, s ++ cresult)
+  let tok = (tt, s ++ cresult)
+  info $ takeWhile (/=' ') (show (rMatcher rule)) ++ " MATCHED " ++ show tok
+  return tok
 
 withAttr :: TokenType -> TokenizerM String -> TokenizerM Token
 withAttr tt p = (tt,) <$> p
