@@ -2,4 +2,5 @@ _ last few touches to xml parsing (see warnings)
 _ use TH for syntaxes
 _ add dynamic loading of xml files
 _ add logic for actually running the highlighters
-_ add renderers
+_ add main module
+_ make faster: so far h-k takes 59% of the time tokenize takes

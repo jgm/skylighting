@@ -11,9 +11,7 @@ trace:
 
 bootstrap: $(DEFS)
 	-rm -rf Skylighting/Syntax
-	cp Skylighting/Syntax.hs.bootstrap Skylighting/Syntax.hs
-	sed -i '' -e '/Syntax\.Syntax_/d' skylighting.cabal
-	stack install --test --fast
+	stack install --fast --flag 'skylighting:bootstrap'
 	skylighting-extract $(DEFS)
 	stack install --test --fast
 
