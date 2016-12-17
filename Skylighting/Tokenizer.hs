@@ -107,8 +107,6 @@ getToken = do
   inp <- gets input
   guard $ not (null inp)
   context <- currentContext
-  infoContextStack
-  info $ "At :" ++ take 5 inp
   msum (map tryRule (cRules context)) <|> -- TODO check for fallthrough
     if cFallthrough context
        then doContextSwitch (cFallthroughContext context) >> getToken
