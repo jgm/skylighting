@@ -3,6 +3,8 @@
 module Skylighting.Parser ( parseSyntaxDefinition ) where
 
 import Safe
+import System.FilePath
+import Data.Char (isAlphaNum, toUpper)
 import Text.XML.HXT.Core
 import Data.Maybe (fromMaybe)
 import qualified Data.Set as Set
@@ -28,7 +30,19 @@ vBool defaultVal value = case value of
                            z | z `elem` ["false","no","0"] -> False
                            _ -> defaultVal
 
--- | Parses a string containing a Kate XML syntax definition
+pathToLangName :: String -> String
+pathToLangName s = "Skylighting.Syntax." ++ capitalize (camelize (takeBaseName s))
+
+camelize :: String -> String
+camelize (d:c:cs) | not (isAlphaNum d) = toUpper c : camelize cs
+camelize (c:cs) = c : camelize cs
+camelize [] = []
+
+capitalize :: String -> String
+capitalize (c:cs) = toUpper c : cs
+capitalize [] = []
+
+-- | Parses a file containing a Kate XML syntax definition
 -- into a 'Syntax' description.
 parseSyntaxDefinition :: String -> IO Syntax
 parseSyntaxDefinition xml = do
@@ -43,10 +57,10 @@ application fp
       >>>
       multi (hasName "language")
       >>>
-      extractSyntaxDefinition
+      extractSyntaxDefinition (pathToLangName fp)
 
-extractSyntaxDefinition :: IOSArrow XmlTree Syntax
-extractSyntaxDefinition =
+extractSyntaxDefinition :: String -> IOSArrow XmlTree Syntax
+extractSyntaxDefinition langname =
   proc x -> do
      lang <- getAttrValue "name" -< x
      author <- getAttrValue "author" -< x
@@ -64,7 +78,8 @@ extractSyntaxDefinition =
                (c:_) -> c
                []    -> error "No contexts"
      returnA -< Syntax{
-                  sName     = lang
+                  sName     = langname
+                , sFullName = lang
                 , sAuthor   = author
                 , sVersion  = version
                 , sLicense  = license

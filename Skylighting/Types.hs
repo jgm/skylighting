@@ -87,6 +87,7 @@ data Rule = Rule{
 
 data Syntax = Syntax{
     sName     :: String
+  , sFullName :: String
   , sContexts :: Map.Map String Context
   , sAuthor   :: String
   , sVersion  :: String
