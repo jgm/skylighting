@@ -95,7 +95,9 @@ tokenizeLine ln = do
   lineCont <- gets lineContinuation
   if lineCont
      then modify $ \st -> st{ lineContinuation = False }
-     else doContextSwitch (cLineEndContext cur)
+     else do
+       modify $ \st -> st{ column = 0 }
+       doContextSwitch (cLineBeginContext cur)
   doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
   ts <- normalizeHighlighting <$> many getToken
@@ -118,8 +120,10 @@ getToken = do
 takeChars :: String -> TokenizerM String
 takeChars [] = mzero
 takeChars xs = do
-  modify $ \st -> st{ input = drop (length xs) (input st),
-                      prevChar = last xs }
+  let numchars = length xs
+  modify $ \st -> st{ input = drop numchars (input st),
+                      prevChar = last xs,
+                      column = column st + numchars }
   return xs
 
 tryRule :: Rule -> TokenizerM Token
@@ -144,7 +148,7 @@ tryRule rule = do
                 DetectSpaces -> withAttr attr $ detectSpaces
                 DetectIdentifier -> withAttr attr $ detectIdentifier
                 IfFirstNonspace r -> mzero -- TODO
-                IfColumn n r -> mzero -- TODO
+                IfColumn n r -> ifColumn n r
                 IncludeRules cname -> includeRules
                    (if rIncludeAttribute rule then Just attr else Nothing)
                    cname
@@ -160,6 +164,12 @@ tryRule rule = do
 
 withAttr :: TokenType -> TokenizerM String -> TokenizerM Token
 withAttr tt p = (tt,) <$> p
+
+ifColumn :: Int -> Rule -> TokenizerM Token
+ifColumn n rule = do
+  col <- gets column
+  guard $ col == n
+  tryRule rule
 
 stringDetect :: String -> TokenizerM String
 stringDetect s = do
