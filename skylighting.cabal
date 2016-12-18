@@ -158,7 +158,7 @@ library
                        safe,
                        blaze-html >= 0.5,
                        containers
-  hs-source-dirs:      .
+  hs-source-dirs:      src
   default-language:    Haskell2010
   ghc-options:         -Wall
   if flag(bootstrap)
@@ -179,7 +179,7 @@ executable skylighting-extract
                        pretty-show,
                        containers,
                        directory
-  hs-source-dirs:      src, .
+  hs-source-dirs:      bin, src
   main-is:             extract.hs
   default-language:    Haskell2010
   other-extensions:    CPP
@@ -201,7 +201,7 @@ executable skylighting
                        directory,
                        blaze-html >= 0.5,
                        skylighting
-  hs-source-dirs:      src
+  hs-source-dirs:      bin
   main-is:             main.hs
   default-language:    Haskell2010
   other-extensions:    CPP

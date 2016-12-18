@@ -26,8 +26,8 @@ main = do
   let newcabal = unlines $ top ++ ("  other-modules:" : autogens) ++ bottom
   writeFile "skylighting.cabal" newcabal
 
-  putStrLn "Writing Skylighting/Syntax.hs"
-  writeFile "Skylighting/Syntax.hs" $ unlines $
+  putStrLn "Writing src/Skylighting/Syntax.hs"
+  writeFile "src/Skylighting/Syntax.hs" $ unlines $
      [ "module Skylighting.Syntax (syntaxMap) where"
      , "import qualified Data.Map as Map"
      , "import Skylighting.Types" ] ++
@@ -51,5 +51,5 @@ writeModuleFor syn = do
       "module Skylighting.Syntax." ++ sName syn ++ " (syntax) where\n\nimport Skylighting.Types\nimport Skylighting.Regex\nimport Data.Map\nimport qualified Data.Set\n\nsyntax :: Syntax\nsyntax = " ++ ppShow syn
 
 toPathName :: String -> String
-toPathName s = "Skylighting/Syntax/" ++ map (\c -> if c == '.' then '/' else c) s ++ ".hs"
+toPathName s = "src/Skylighting/Syntax/" ++ map (\c -> if c == '.' then '/' else c) s ++ ".hs"
 
