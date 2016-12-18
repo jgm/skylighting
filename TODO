@@ -1,11 +1,8 @@
-_ Skylighting module - provide compatible functions
-  note, case-insensitive match of names
 _ test against h-k for correctness
 _ handle case sensitive in Parser, Tokenizer
 _ handle dynamic in Parser, Tokenizer
 _ better exception handling in Parser
 _ better exception handling in Tokenizer
-_ spruce up tokenize -> skylighting with proper options etc.
 _ add library function for dynamic loading of xml files
 _ make faster
   (use Set for char and keyword matchers)
