@@ -21,7 +21,7 @@ main = do
   cabalLines <- lines <$> readFile "skylighting.cabal.orig"
   let (top, rest) = break ("other-modules:" `isInfixOf`) cabalLines
   let (_, bottom) = span ("Skylighting.Syntax." `isInfixOf`) (drop 1 rest)
-  let modulenames = map sName syntaxes
+  let modulenames = map (\s -> "Skylighting.Syntax." ++ sName s) syntaxes
   let autogens = map ((replicate 23 ' ') ++) modulenames
   let newcabal = unlines $ top ++ ("  other-modules:" : autogens) ++ bottom
   writeFile "skylighting.cabal" newcabal
@@ -39,7 +39,8 @@ main = do
      ] ++
      (intersperse "  , "
        ["  (" ++ show (sName s) ++ ", "
-              ++ sName s ++ ".syntax)" | s <- syntaxes ]) ++
+              ++ "Skylighting.Syntax." ++ sName s
+              ++ ".syntax)" | s <- syntaxes ]) ++
      ["  ]"]
 
 writeModuleFor :: Syntax -> IO ()
@@ -47,8 +48,8 @@ writeModuleFor syn = do
   let fp = toPathName $ sName syn
   putStrLn $ "Writing " ++ fp
   writeFile fp $
-      "module " ++ sName syn ++ " (syntax) where\n\nimport Skylighting.Types\nimport Skylighting.Regex\nimport Data.Map\nimport qualified Data.Set\n\nsyntax :: Syntax\nsyntax = " ++ ppShow syn
+      "module Skylighting.Syntax." ++ sName syn ++ " (syntax) where\n\nimport Skylighting.Types\nimport Skylighting.Regex\nimport Data.Map\nimport qualified Data.Set\n\nsyntax :: Syntax\nsyntax = " ++ ppShow syn
 
 toPathName :: String -> String
-toPathName s = map (\c -> if c == '.' then '/' else c) s ++ ".hs"
+toPathName s = "Skylighting/Syntax/" ++ map (\c -> if c == '.' then '/' else c) s ++ ".hs"
 

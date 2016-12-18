@@ -31,7 +31,7 @@ vBool defaultVal value = case value of
                            _ -> defaultVal
 
 pathToLangName :: String -> String
-pathToLangName s = "Skylighting.Syntax." ++ capitalize (camelize (takeBaseName s))
+pathToLangName s = capitalize (camelize (takeBaseName s))
 
 camelize :: String -> String
 camelize (d:c:cs) | not (isAlphaNum d) = toUpper c : camelize cs
