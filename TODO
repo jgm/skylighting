@@ -1,11 +1,4 @@
-_ use full name for the syntax map not shortName,
-  or includerules will fail - eg CMake Cmake
-_ Complete: don't use syntaxMap directly
-  a syntax map should be a parameter of the tokenize function.
-_ Instead of highlightAs, we should simply provide a function
-  that retrieves the Syntax given various sorts of names.
-  And we don't need to provide all the same fns as in
-  h-k.
+_ parsing C hangs
 _ handle dynamic in Parser, Tokenizer
   this attribute attaches to: context, RegExpr
   figure out what it does on each and look at examples
