@@ -15,7 +15,6 @@ import Data.ByteString.UTF8 (fromString, toString)
 data RE = RE{
     reString :: String
   , reCompiled :: Maybe Regex
-  , reDynamic :: Bool
   , reCaseSensitive :: Bool
 }
 
@@ -27,7 +26,6 @@ instance Show RE where
                   Just _   -> "Just (compileRegex " ++
                                 show (reCaseSensitive re) ++
                                 " " ++ show (reString re) ++ ")") ++
-            ", reDynamic = " ++ show (reDynamic re) ++
             ", reCaseSensitive = " ++ show (reCaseSensitive re) ++ "}"
 
 compileRegex :: Bool -> String -> Regex

@@ -13,7 +13,7 @@ import Control.Monad.Except
 import Control.Monad.State
 import Control.Monad.Reader
 import Control.Applicative
-import Data.Char (isSpace, isLetter, isAlphaNum)
+import Data.Char (isSpace, isLetter, isAlphaNum, ord)
 import qualified Data.Map as Map
 import Debug.Trace
 
@@ -178,13 +178,14 @@ tryRule rule = do
                 Detect2Chars c d -> withAttr attr $ detect2Chars c d
                 AnyChar cs -> withAttr attr $ anyChar cs
                 RangeDetect c d -> withAttr attr $ rangeDetect c d
-                RegExpr re -> withAttr attr $ regExpr re
-                Int -> withAttr attr $ regExpr integerRegex
-                HlCOct -> withAttr attr $ regExpr octRegex
-                HlCHex -> withAttr attr $ regExpr hexRegex
-                HlCStringChar -> withAttr attr $ regExpr hlCStringCharRegex
-                HlCChar -> withAttr attr $ regExpr hlCCharRegex
-                Float -> withAttr attr $ regExpr floatRegex
+                RegExpr re -> withAttr attr $ regExpr (rDynamic rule) re
+                Int -> withAttr attr $ regExpr False integerRegex
+                HlCOct -> withAttr attr $ regExpr False octRegex
+                HlCHex -> withAttr attr $ regExpr False hexRegex
+                HlCStringChar -> withAttr attr $
+                                     regExpr False hlCStringCharRegex
+                HlCChar -> withAttr attr $ regExpr False hlCCharRegex
+                Float -> withAttr attr $ regExpr False floatRegex
                 Keyword kwattr kws ->
                   withAttr attr $ keyword kwattr kws
                 StringDetect s -> withAttr attr $ stringDetect s
@@ -210,7 +211,6 @@ hlCStringCharRegex :: RE
 hlCStringCharRegex = RE{
     reString = reHlCStringChar
   , reCompiled = Just $ compileRegex False reHlCStringChar
-  , reDynamic  = False
   , reCaseSensitive = False
   }
 
@@ -221,7 +221,6 @@ hlCCharRegex :: RE
 hlCCharRegex = RE{
     reString = reStr
   , reCompiled = Just $ compileRegex False reStr
-  , reDynamic  = False
   , reCaseSensitive = False
   }
   where reStr = '\'' : reHlCStringChar ++ "|[^'\\\\]'"
@@ -317,10 +316,13 @@ anyChar cs = do
      (x:_) | x `elem` cs -> takeChars [x]
      _ -> mzero
 
-regExpr :: RE -> TokenizerM String
-regExpr re = do -- TODO dynamic, case sensitive
-  -- TODO if dynamic, modify reString here?
-  regex <- maybe (return $ compileRegex (reCaseSensitive re) (reString re))
+regExpr :: Bool -> RE -> TokenizerM String
+regExpr dynamic re = do
+  reStr <- if dynamic
+              then subDynamic (reString re)
+              else return (reString re)
+  -- note, for dynamic regexes rCompiled == Nothing:
+  regex <- maybe (return $ compileRegex (reCaseSensitive re) reStr)
                  return $ reCompiled re
   inp <- gets input
   prev <- gets prevChar
@@ -333,6 +335,29 @@ regExpr re = do -- TODO dynamic, case sensitive
          modify $ \st -> st{ captures = capts }
          takeChars match
        _ -> mzero
+
+-- Substitute out %1, %2, etc. in regex string, escaping
+-- appropriately..
+subDynamic :: String -> TokenizerM String
+subDynamic ('%':x:xs) | x >= '0' && x <= '9' = do
+  let capNum = ord x - ord '0'
+  let escapeRegexChar c | c `elem` "^$\\[](){}*+.?" = ['\\',c]
+                        | otherwise = [c]
+  let escapeRegex = concatMap escapeRegexChar
+  replacement <- getCapture capNum
+  (escapeRegex replacement ++) <$> subDynamic xs
+subDynamic xs = case break (=='%') xs of
+                     ([],('%':zs)) -> ('%':) <$> subDynamic zs
+                     (ys,(z:zs)) -> (ys ++) <$> subDynamic (z:zs)
+                     (ys,[]) -> return ys
+
+getCapture :: Int -> TokenizerM String
+getCapture capnum = do
+  capts <- gets captures
+  if length capts < capnum
+     then mzero
+     else return $ capts !! (capnum - 1)
+
 
 -- TODO eventually the keywords need to be a set
 -- though this complicates code generation
@@ -359,7 +384,6 @@ integerRegex :: RE
 integerRegex = RE{
     reString = intReStr
   , reCompiled = Just $ compileRegex False intReStr
-  , reDynamic  = False
   , reCaseSensitive = False
   }
   where intReStr = "\\b[-+]?(0[Xx][0-9A-Fa-f]+|0[Oo][0-7]+|[0-9]+)\\b"
@@ -368,7 +392,6 @@ floatRegex :: RE
 floatRegex = RE{
     reString = floatReStr
   , reCompiled = Just $ compileRegex False floatReStr
-  , reDynamic = False
   , reCaseSensitive = False
   }
   where floatReStr = "\\b[-+]?(([0-9]+\\.[0-9]*|[0-9]*\\.[0-9]+)([Ee][-+]?[0-9]+)?|[0-9]+[Ee][-+]?[0-9]+)\\b"
@@ -377,7 +400,6 @@ octRegex :: RE
 octRegex = RE{
     reString = octRegexStr
   , reCompiled = Just $ compileRegex False octRegexStr
-  , reDynamic = False
   , reCaseSensitive = False
   }
   where octRegexStr = "\\b[-+]?0[Oo][0-7]+\\b"
@@ -386,9 +408,7 @@ hexRegex :: RE
 hexRegex = RE{
     reString = hexRegexStr
   , reCompiled = Just $ compileRegex False hexRegexStr
-  , reDynamic = False
   , reCaseSensitive = False
   }
   where hexRegexStr = "\\b[-+]?0[Xx][0-9A-Fa-f]+\\b"
-
 

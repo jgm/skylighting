@@ -1,5 +1,5 @@
 _ handle dynamic in Parser, Tokenizer
-  this attribute attaches to: context, RegExpr
+  this attribute attaches to: context, RegExpr, DetectChar
   figure out what it does on each and look at examples
 _ test against h-k for correctness
 _ better exception handling in Parser

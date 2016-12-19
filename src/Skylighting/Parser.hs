@@ -241,7 +241,6 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
                            then Nothing
                            else Just $ compileRegex True str
        let re = RegExpr RE{ reString = str
-                          , reDynamic = dynamic
                           , reCompiled = compiledRe
                           , reCaseSensitive = not insensitive }
        let (incsyntax, inccontext) =
