@@ -209,12 +209,14 @@ withAttr tt p = (tt,) <$> p
 
 hlCStringCharRegex :: RE
 hlCStringCharRegex = RE{
-    reString = reStr
-  , reCompiled = Just $ compileRegex False reStr
+    reString = reHlCStringChar
+  , reCompiled = Just $ compileRegex False reHlCStringChar
   , reDynamic  = False
   , reCaseSensitive = False
   }
-  where reStr = "\\\\(?:[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)"
+
+reHlCStringChar :: [Char]
+reHlCStringChar = "\\\\(?:[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)"
 
 hlCCharRegex :: RE
 hlCCharRegex = RE{
@@ -223,7 +225,7 @@ hlCCharRegex = RE{
   , reDynamic  = False
   , reCaseSensitive = False
   }
-  where reStr = "'\\\\(?:[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)'"
+  where reStr = '\'' : reHlCStringChar ++ "|[^'\\\\]'"
 
 wordDetect :: String -> TokenizerM String
 wordDetect s = do
