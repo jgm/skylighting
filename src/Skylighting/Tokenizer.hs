@@ -170,8 +170,7 @@ tryRule rule = do
     col <- gets column
     guard (firstNonspace == Just col)
 
-  when (rLookahead rule) $
-    modify (\st -> st{ lookaheadRule = True })
+  modify (\st -> st{ lookaheadRule = rLookahead rule })
 
   let attr = rAttribute rule
   (tt, s) <- case rMatcher rule of
