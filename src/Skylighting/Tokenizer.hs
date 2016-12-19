@@ -41,6 +41,7 @@ data TokenizerState = TokenizerState{
   , lineContinuation :: Bool
   , firstNonspaceColumn :: Maybe Int
   , traceOutput  :: Bool
+  , lookaheadRule :: Bool
 } deriving (Show)
 
 type TokenizerM = ExceptT String (State TokenizerState)
@@ -101,7 +102,8 @@ startingState =
                 , column = 0
                 , lineContinuation = False
                 , firstNonspaceColumn = Nothing
-                , traceOutput = False }
+                , traceOutput = False
+                , lookaheadRule = False }
 
 tokenizeLine :: String -> TokenizerM [Token]
 tokenizeLine ln = do
@@ -137,13 +139,19 @@ takeChars :: String -> TokenizerM String
 takeChars [] = mzero
 takeChars xs = do
   let numchars = length xs
-  modify $ \st -> st{ input = drop numchars (input st),
-                      prevChar = last xs,
-                      column = column st + numchars }
-  return xs
+  lookahead <- gets lookaheadRule
+  if lookahead
+     then return ""
+     else do
+       modify $ \st -> st{ input = drop numchars (input st),
+                           prevChar = last xs,
+                           column = column st + numchars }
+       return xs
 
 tryRule :: Rule -> TokenizerM Token
 tryRule rule = do
+  when (rLookahead rule) $
+    modify (\st -> st{ lookaheadRule = True })
   let attr = rAttribute rule
   (tt, s) <- case rMatcher rule of
                 DetectChar c -> withAttr attr $ detectChar c
@@ -171,6 +179,7 @@ tryRule rule = do
                    cname
   (_, cresult) <- msum (map tryRule (rChildren rule))
               <|> return (NormalTok, "")
+  modify (\st -> st{ lookaheadRule = False })
   let tok = (tt, s ++ cresult)
   info $ takeWhile (/=' ') (show (rMatcher rule)) ++ " MATCHED " ++ show tok
   doContextSwitch (rContextSwitch rule)

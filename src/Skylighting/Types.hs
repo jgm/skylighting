@@ -81,7 +81,8 @@ data Rule = Rule{
   , rAttribute :: TokenType
   , rIncludeAttribute :: Bool
   , rDynamic   :: Bool
-  , rChildren  ::  [Rule]
+  , rChildren  :: [Rule]
+  , rLookahead :: Bool
   , rContextSwitch :: [ContextSwitch]
   } deriving (Show)
 

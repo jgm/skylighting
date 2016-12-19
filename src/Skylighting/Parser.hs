@@ -269,7 +269,8 @@ getParsers (syntaxname, (itemdatas, (lists, kwattr))) =
                         rIncludeAttribute = includeAttrib,
                         rDynamic = dynamic,
                         rChildren = children,
-                        rContextSwitch = contextSwitch }
+                        rContextSwitch = contextSwitch,
+                        rLookahead = lookahead }
 
 parseContextSwitch :: String -> String -> [ContextSwitch]
 parseContextSwitch _ [] = []
