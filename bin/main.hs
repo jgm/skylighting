@@ -24,6 +24,7 @@ data Flag = Sty String
           | NumberLines
           | Syn String
           | TitleAttributes
+          | Definition String
           | Trace
           | Version
           deriving (Eq, Show)
@@ -35,27 +36,60 @@ data HighlightFormat = FormatHtml
 
 options :: [OptDescr Flag]
 options =
-  [ Option ['S'] ["style"] (ReqArg Sty "STYLE") "specify style"
-  , Option ['F'] ["format"] (ReqArg Format "FORMAT")  "output format (html|latex)"
-  , Option ['f'] ["fragment"] (NoArg Fragment)  "fragment, without document header"
-  , Option ['h'] ["help"] (NoArg Help)   "show usage message"
-  , Option ['l'] ["list"] (NoArg List)   "list available language syntaxes"
-  , Option ['n'] ["number-lines"] (NoArg NumberLines)  "number lines"
-  , Option ['s'] ["syntax"] (ReqArg Syn "SYNTAX")  "specify language syntax to use"
-  , Option ['t'] ["title-attributes"] (NoArg TitleAttributes)  "include structure in title attributes"
-  , Option ['T'] ["trace"] (NoArg Trace)  "trace tokenizer for debugging"
-  , Option ['v'] ["version"] (NoArg Version)   "print version"
-  ]
+  [Option ['S']
+          ["style"]
+          (ReqArg Sty "STYLE")
+          "specify style"
+  ,Option ['F']
+          ["format"]
+          (ReqArg Format "FORMAT")
+          "output format (html|latex|native)"
+  ,Option ['f']
+          ["fragment"]
+          (NoArg Fragment)
+          "fragment, without document header"
+  ,Option ['h']
+          ["help"]
+          (NoArg Help)
+          "show usage message"
+  ,Option ['l']
+          ["list"]
+          (NoArg List)
+          "list available language syntaxes"
+  ,Option ['n']
+          ["number-lines"]
+          (NoArg NumberLines)
+          "number lines"
+  ,Option ['s']
+          ["syntax"]
+          (ReqArg Syn "SYNTAX")
+          "specify language syntax to use"
+  ,Option ['t']
+          ["title-attributes"]
+          (NoArg TitleAttributes)
+          "include structure in title attributes"
+  ,Option ['d']
+          ["definition"]
+          (ReqArg Definition "PATH")
+          "load xml syntax definition file (may be repeated)"
+  ,Option ['T']
+          ["trace"]
+          (NoArg Trace)
+          "trace tokenizer for debugging"
+  ,Option ['v']
+          ["version"]
+          (NoArg Version)
+          "print version"]
 
-syntaxOf :: [FilePath] -> [Flag] -> IO Syntax
-syntaxOf fps [] = case concatMap (syntaxesByFilename syntaxMap) fps of
-                       (s:_) -> return s
-                       _     -> err "No syntax specified: use --syntax."
-syntaxOf _ (Syn lang : _) = do
-  case lookupSyntax lang syntaxMap of
+syntaxOf :: SyntaxMap -> [FilePath] -> [Flag] -> IO Syntax
+syntaxOf smap fps [] = case concatMap (syntaxesByFilename smap) fps of
+                             (s:_) -> return s
+                             _     -> err "No syntax specified: use --syntax."
+syntaxOf smap _ (Syn lang : _) = do
+  case lookupSyntax lang smap of
          Just s  -> return s
          Nothing -> err ("Could not find syntax definition for " ++ lang)
-syntaxOf fps (_:xs) = syntaxOf fps xs
+syntaxOf smap fps (_:xs) = syntaxOf smap fps xs
 
 styleOf :: [Flag] -> IO Style
 styleOf [] = return pygments
@@ -66,7 +100,7 @@ styleOf (Sty s : _) = case map toLower s of
                             "tango"      -> return tango
                             "haddock"    -> return haddock
                             "monochrome" -> return monochrome
-                            _            -> error $ "Unknown style: " ++ s  -- TODO
+                            _            -> err $ "Unknown style: " ++ s
 styleOf (_ : xs) = styleOf xs
 
 formatOf :: [Flag] -> IO HighlightFormat
@@ -75,7 +109,7 @@ formatOf (Format s : _) = case map toLower s of
                             "html"   -> return FormatHtml
                             "latex"  -> return FormatLaTeX
                             "native" -> return FormatNative
-                            _        -> error $ "Unknown format: " ++ s
+                            _        -> err $ "Unknown format: " ++ s
 formatOf (_ : xs) = formatOf xs
 
 filterNewlines :: String -> String
@@ -83,6 +117,17 @@ filterNewlines ('\r':'\n':xs) = '\n' : filterNewlines xs
 filterNewlines ('\r':xs) = '\n' : filterNewlines xs
 filterNewlines (x:xs) = x : filterNewlines xs
 filterNewlines [] = []
+
+extractDefinitions :: [Flag] -> IO [Syntax]
+extractDefinitions [] = return []
+extractDefinitions (Definition fp : xs) = do
+  res <- parseSyntaxDefinition fp
+  case res of
+       Left e -> err e
+       Right s -> do
+         putStrLn $ "Loaded syntax definition for " ++ sName s
+         (s:) <$> extractDefinitions xs
+extractDefinitions (_:xs) = extractDefinitions xs
 
 err :: String -> IO a
 err msg = do
@@ -94,20 +139,34 @@ main = do
   (opts, fnames, errs) <- getArgs >>= return . getOpt Permute options
   prg <- getProgName
   let usageHeader = prg ++ " [options] [files...]"
+
   when (not (null errs)) $
      err (concat errs ++ usageInfo usageHeader options)
+
+  when (Help `elem` opts) $ do
+     hPutStrLn stderr (usageInfo usageHeader options)
+     exitWith ExitSuccess
+
+  when (Version `elem` opts) $ do
+     putStrLn (prg ++ " " ++ showVersion version)
+     exitWith ExitSuccess
+
+  syntaxMap' <- foldr addSyntaxDefinition syntaxMap <$> extractDefinitions opts
+
+  case missingIncludes (Map.elems syntaxMap') of
+       [] -> return ()
+       xs -> err $ "Missing syntax definitions:\n" ++
+              unlines (map
+                  (\(syn,dep) -> (syn ++ " requires " ++
+                    dep ++ " through IncludeRules.")) xs)
+
   when (List `elem` opts) $ do
      let printSyntaxNames s = putStrLn (printf "%s (%s)"
                                        (map toLower $ sShortname s)
                                        (sName s))
-     mapM_ printSyntaxNames $ Map.elems syntaxMap
+     mapM_ printSyntaxNames $ Map.elems syntaxMap'
      exitWith ExitSuccess
-  when (Help `elem` opts) $ do
-     hPutStrLn stderr (usageInfo usageHeader options)
-     exitWith ExitSuccess
-  when (Version `elem` opts) $ do
-     putStrLn (prg ++ " " ++ showVersion version)
-     exitWith ExitSuccess
+
   code <- if null fnames
              then getContents >>= return . filterNewlines
              else mapM readFile fnames >>= return . filterNewlines . concat
@@ -122,13 +181,13 @@ main = do
                     (x:_) -> x
   let trace = Trace `elem` opts
 
-  syntax <- syntaxOf fnames opts
+  syntax <- syntaxMap' `seq` syntaxOf syntaxMap' fnames opts
   style <- styleOf opts
   format <- formatOf opts
 
   let tokenize' = if trace
-                     then tokenizeWithTrace syntaxMap
-                     else tokenize syntaxMap
+                     then tokenizeWithTrace syntaxMap'
+                     else tokenize syntaxMap'
 
   sourceLines <- case tokenize' syntax code of
                       Left e -> err e

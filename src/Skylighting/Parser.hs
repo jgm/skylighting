@@ -16,8 +16,7 @@ import Skylighting.Regex
 import qualified Data.Map as Map
 import Data.List (nub)
 
-addSyntaxDefinition :: Syntax -> Map.Map String Syntax
-                    -> Map.Map String Syntax
+addSyntaxDefinition :: Syntax -> SyntaxMap -> SyntaxMap
 addSyntaxDefinition s = Map.insert (sName s) s
 
 missingIncludes :: [Syntax] -> [(String, String)]
