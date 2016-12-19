@@ -174,8 +174,9 @@ tryRule rule = do
 
   let attr = rAttribute rule
   (tt, s) <- case rMatcher rule of
-                DetectChar c -> withAttr attr $ detectChar c
-                Detect2Chars c d -> withAttr attr $ detect2Chars c d
+                DetectChar c -> withAttr attr $ detectChar (rDynamic rule) c
+                Detect2Chars c d -> withAttr attr $
+                                      detect2Chars (rDynamic rule) c d
                 AnyChar cs -> withAttr attr $ anyChar cs
                 RangeDetect c d -> withAttr attr $ rangeDetect c d
                 RegExpr re -> withAttr attr $ regExpr (rDynamic rule) re
@@ -263,19 +264,26 @@ includeRules mbattr (syn, con) = do
                  Just c   -> msum (map tryRule (cRules c))
   return (fromMaybe t mbattr, xs)
 
-detectChar :: Char -> TokenizerM String
-detectChar c = do
+detectChar :: Bool -> Char -> TokenizerM String
+detectChar dynamic c = do
+  c' <- if dynamic && c >= '0' && c <= '9'
+           then do
+             let capNum = ord c - ord '0'
+             res <- getCapture capNum
+             case res of
+                  []    -> mzero
+                  (d:_) -> return d
+           else return c
   inp <- gets input
   case inp of
-    (x:_) | x == c -> takeChars [x]
+    (x:_) | x == c' -> takeChars [x]
     _ -> mzero
 
-detect2Chars :: Char -> Char -> TokenizerM String
-detect2Chars c d = do
-  inp <- gets input
-  case inp of
-    (x:y:_) | x == c && y == d -> takeChars [x,y]
-    _ -> mzero
+detect2Chars :: Bool -> Char -> Char -> TokenizerM String
+detect2Chars dynamic c d = do
+  x <- detectChar dynamic c
+  y <- detectChar dynamic d
+  return (x ++ y)
 
 rangeDetect :: Char -> Char -> TokenizerM String
 rangeDetect c d = do
