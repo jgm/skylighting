@@ -1,6 +1,8 @@
 {-# LANGUAGE Arrows #-}
 
-module Skylighting.Parser ( parseSyntaxDefinition ) where
+module Skylighting.Parser ( parseSyntaxDefinition
+                          , addSyntaxDefinition
+                          ) where
 
 import Safe
 import System.FilePath
@@ -50,6 +52,9 @@ parseSyntaxDefinition xml = do
   case res of
        [s]   -> return s
        _     -> error "Could not parse xml file" -- TODO better exceptions
+
+addSyntaxDefinition :: String -> SyntaxMap -> SyntaxMap
+addSyntaxDefinition xml = undefined -- TODO
 
 application :: String -> IOSArrow b Syntax
 application fp
