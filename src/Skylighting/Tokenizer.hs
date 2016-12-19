@@ -214,7 +214,7 @@ hlCStringCharRegex = RE{
   , reDynamic  = False
   , reCaseSensitive = False
   }
-  where reStr = "\\\\(?[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)"
+  where reStr = "\\\\(?:[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)"
 
 hlCCharRegex :: RE
 hlCCharRegex = RE{
@@ -223,7 +223,7 @@ hlCCharRegex = RE{
   , reDynamic  = False
   , reCaseSensitive = False
   }
-  where reStr = "'\\\\(?[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)'"
+  where reStr = "'\\\\(?:[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)'"
 
 wordDetect :: String -> TokenizerM String
 wordDetect s = do
