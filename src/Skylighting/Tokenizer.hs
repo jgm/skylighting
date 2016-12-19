@@ -298,7 +298,7 @@ detectIdentifier = do
   inp <- gets input
   case inp of
     (c:cs) | isLetter c || c == '_' ->
-      takeChars $ [c] ++ takeWhile (\d -> isAlphaNum d || d == '_') cs
+      takeChars $ c : takeWhile (\d -> isAlphaNum d || d == '_') cs
     _ -> mzero
 
 lineContinue :: TokenizerM String
