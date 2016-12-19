@@ -1,3 +1,5 @@
+_ use full name for the syntax map not shortName,
+  or includerules will fail - eg CMake Cmake
 _ Complete: don't use syntaxMap directly
   a syntax map should be a parameter of the tokenize function.
 _ Instead of highlightAs, we should simply provide a function

@@ -1,11 +1,8 @@
 module Skylighting (
-    languages
-  , languageFullNames
-  , syntaxByExtension
-  , syntaxByFilename
-  , syntaxByFullName
-  , highlightAs
-  , lowercaseSyntaxMap
+    lookupSyntax
+  , syntaxesByShortName
+  , syntaxesByExtension
+  , syntaxesByFilename
   , module Skylighting.Types
   , module Skylighting.Tokenizer
   , module Skylighting.Parser
@@ -23,56 +20,38 @@ import Skylighting.Syntax
 import Skylighting.Styles
 import Skylighting.Format.HTML
 import Skylighting.Format.LaTeX
+import Control.Monad
 import qualified Data.Map as Map
-import Data.List (sort, tails)
+import Data.List (tails)
 import Data.Char (toLower)
-
--- | List of supported languages.
-languages :: [String]
-languages = sort $ Map.keys syntaxMap
-
-syntaxes :: [Syntax]
-syntaxes = Map.elems syntaxMap
-
--- | A version of the syntax map with lowercase keys.
-lowercaseSyntaxMap :: Map.Map String Syntax
-lowercaseSyntaxMap = Map.mapKeys (map toLower) syntaxMap
+import Data.Maybe (listToMaybe)
 
 -- | Returns a list of languages appropriate for the given file extension.
-syntaxByExtension :: String -> [Syntax]
-syntaxByExtension ('.':ext) = syntaxByFilename ("*." ++ ext)
-syntaxByExtension ext       = syntaxByFilename ("*." ++ ext)
+syntaxesByExtension :: SyntaxMap -> String -> [Syntax]
+syntaxesByExtension syntaxmap ('.':ext) =
+  syntaxesByFilename syntaxmap ("*." ++ ext)
+syntaxesByExtension syntaxmap ext =
+  syntaxesByFilename syntaxmap ("*." ++ ext)
 
 -- | Returns a list of languages appropriate for the given filename.
-syntaxByFilename :: String -> [Syntax]
-syntaxByFilename fn = [s | s <- syntaxes
-                         , matchGlobs fn (sExtensions s)]
+syntaxesByFilename :: SyntaxMap -> String -> [Syntax]
+syntaxesByFilename syntaxmap fn = [s | s <- Map.elems syntaxmap
+                                , matchGlobs fn (sExtensions s)]
 
--- | Lookup canonical language name by full syntaxName (e.g. "C#" for "Cs").
-syntaxByFullName :: String -> [Syntax]
-syntaxByFullName name = [s | s <- syntaxes, sFullName s == name]
+-- | Lookup syntax by short name (case insensitive).
+syntaxesByShortName :: SyntaxMap -> String -> [Syntax]
+syntaxesByShortName syntaxmap name = [s | s <- Map.elems syntaxmap
+                                   , map toLower (sShortname s) ==
+                                     map toLower name ]
 
--- | List of full names of languages.
-languageFullNames :: [String]
-languageFullNames = [sFullName s | s <- syntaxes]
-
--- | Highlight source code. The source language may be specified
--- by its canonical name (case-insensitive) or by a canonical
--- extension (if unique) or by the full name in the syntax description.
-highlightAs :: String         -- ^ Language syntax (e.g. "haskell") or extension (e.g. "hs").
-            -> String         -- ^ Source code to highlight
-            -> Either String [SourceLine]   -- ^ List of highlighted source lines
-highlightAs "csharp" = highlightAs "cs" -- special case
-highlightAs lang =
-  case Map.lookup (map toLower lang) lowercaseSyntaxMap of
-         Just s  -> tokenize syntaxMap s
-         Nothing ->
-           case syntaxByFullName lang of
-                (s:_) -> tokenize syntaxMap s
-                [] -> case syntaxByExtension lang of
-                           (s:_) -> tokenize syntaxMap s
-                           []    -> \_ -> Left
-                               ("Could not find syntax definition for " ++ lang)
+-- | Lookup syntax by (in order) full name (case insensitive),
+-- short name (case insensitive), extension.
+lookupSyntax :: String -> SyntaxMap -> Maybe Syntax
+lookupSyntax "csharp" syntaxmap = lookupSyntax "cs" syntaxmap -- special case
+lookupSyntax lang syntaxmap =
+  Map.lookup (map toLower lang) (Map.mapKeys (map toLower) syntaxmap) `mplus`
+    listToMaybe (syntaxesByShortName syntaxmap lang ++
+                 syntaxesByExtension syntaxmap lang)
 
 -- | Match filename against a list of globs contained in a semicolon-separated
 -- string.

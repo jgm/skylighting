@@ -6,8 +6,8 @@ module Skylighting.Parser ( parseSyntaxDefinition
                           ) where
 
 import Safe
+import Data.Char (toUpper, isAlphaNum)
 import System.FilePath
-import Data.Char (isAlphaNum, toUpper)
 import Text.XML.HXT.Core
 import Data.Maybe (fromMaybe)
 import qualified Data.Set as Set
@@ -46,18 +46,6 @@ vBool defaultVal value = case value of
                            z | z `elem` ["false","no","0"] -> False
                            _ -> defaultVal
 
-pathToLangName :: String -> String
-pathToLangName s = capitalize (camelize (takeBaseName s))
-
-camelize :: String -> String
-camelize (d:c:cs) | not (isAlphaNum d) = toUpper c : camelize cs
-camelize (c:cs) = c : camelize cs
-camelize [] = []
-
-capitalize :: String -> String
-capitalize (c:cs) = toUpper c : cs
-capitalize [] = []
-
 -- | Parses a file containing a Kate XML syntax definition
 -- into a 'Syntax' description.
 parseSyntaxDefinition :: String -> IO (Either String Syntax)
@@ -73,10 +61,10 @@ application fp
       >>>
       multi (hasName "language")
       >>>
-      extractSyntaxDefinition (pathToLangName fp)
+      extractSyntaxDefinition (takeFileName fp)
 
 extractSyntaxDefinition :: String -> IOSArrow XmlTree Syntax
-extractSyntaxDefinition langname =
+extractSyntaxDefinition filename =
   proc x -> do
      lang <- getAttrValue "name" -< x
      author <- getAttrValue "author" -< x
@@ -94,8 +82,9 @@ extractSyntaxDefinition langname =
                (c:_) -> c
                []    -> error "No contexts"
      returnA -< Syntax{
-                  sName     = langname
-                , sFullName = lang
+                  sName     = lang
+                , sFilename = filename
+                , sShortname = pathToLangName filename
                 , sAuthor   = author
                 , sVersion  = version
                 , sLicense  = license
@@ -311,3 +300,15 @@ getKeywordAttrs =
                          , keywordDelims = (Set.union standardDelims
                              (Set.fromList additionalDelim)) Set.\\
                                 Set.fromList weakDelim }
+
+pathToLangName :: String -> String
+pathToLangName s = capitalize (camelize (takeBaseName s))
+
+camelize :: String -> String
+camelize (d:c:cs) | not (isAlphaNum d) = toUpper c : camelize cs
+camelize (c:cs) = c : camelize cs
+camelize [] = []
+
+capitalize :: String -> String
+capitalize (c:cs) = toUpper c : cs
+capitalize [] = []

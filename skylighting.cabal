@@ -27,7 +27,9 @@ library
                        Skylighting.Syntax.Haskell
                        Skylighting.Syntax.Cmake
                        Skylighting.Syntax.Diff
-                       Skylighting.Syntax.Javascript
+                       Skylighting.Syntax.Hamlet
+                       Skylighting.Syntax.Alert
+                       Skylighting.Syntax.Modelines
   other-extensions:    CPP, Arrows
   build-depends:       base,
                        mtl,

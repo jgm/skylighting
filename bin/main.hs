@@ -2,6 +2,7 @@
 
 import Skylighting
 import System.IO (hPutStrLn, stderr)
+import Text.Printf (printf)
 import Data.Char (toLower)
 import Control.Monad
 import Text.Show.Pretty (ppShow)
@@ -47,18 +48,13 @@ options =
   ]
 
 syntaxOf :: [FilePath] -> [Flag] -> IO Syntax
-syntaxOf fps [] = case concatMap syntaxByFilename fps of
+syntaxOf fps [] = case concatMap (syntaxesByFilename syntaxMap) fps of
                        (s:_) -> return s
                        _     -> err "No syntax specified: use --syntax."
 syntaxOf _ (Syn lang : _) = do
-  case Map.lookup (map toLower lang) lowercaseSyntaxMap of
+  case lookupSyntax lang syntaxMap of
          Just s  -> return s
-         Nothing ->
-           case syntaxByFullName lang of
-                (s:_) -> return s
-                [] -> case syntaxByExtension lang of
-                           (s:_) -> return s
-                           []    -> err ("Could not find syntax definition for " ++ lang)
+         Nothing -> err ("Could not find syntax definition for " ++ lang)
 syntaxOf fps (_:xs) = syntaxOf fps xs
 
 styleOf :: [Flag] -> IO Style
@@ -101,7 +97,10 @@ main = do
   when (not (null errs)) $
      err (concat errs ++ usageInfo usageHeader options)
   when (List `elem` opts) $ do
-     putStrLn (unwords languages)
+     let printSyntaxNames s = putStrLn (printf "%s (%s)"
+                                       (map toLower $ sShortname s)
+                                       (sName s))
+     mapM_ printSyntaxNames $ Map.elems syntaxMap
      exitWith ExitSuccess
   when (Help `elem` opts) $ do
      hPutStrLn stderr (usageInfo usageHeader options)
