@@ -68,8 +68,6 @@ data Matcher =
   | IncludeRules ContextName
   | DetectSpaces
   | DetectIdentifier
-  | IfFirstNonspace Rule
-  | IfColumn Int Rule
   deriving (Show)
 
 data ContextSwitch =
@@ -83,6 +81,8 @@ data Rule = Rule{
   , rDynamic   :: Bool
   , rChildren  :: [Rule]
   , rLookahead :: Bool
+  , rFirstNonspace :: Bool
+  , rColumn    :: Maybe Int
   , rContextSwitch :: [ContextSwitch]
   } deriving (Show)
 

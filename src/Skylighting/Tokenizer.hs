@@ -150,8 +150,20 @@ takeChars xs = do
 
 tryRule :: Rule -> TokenizerM Token
 tryRule rule = do
+  case rColumn rule of
+       Nothing -> return ()
+       Just n  -> do
+         col <- gets column
+         guard (col == n)
+
+  when (rFirstNonspace rule) $ do
+    firstNonspace <- gets firstNonspaceColumn
+    col <- gets column
+    guard (firstNonspace == Just col)
+
   when (rLookahead rule) $
     modify (\st -> st{ lookaheadRule = True })
+
   let attr = rAttribute rule
   (tt, s) <- case rMatcher rule of
                 DetectChar c -> withAttr attr $ detectChar c
@@ -172,8 +184,6 @@ tryRule rule = do
                 LineContinue -> withAttr attr $ lineContinue
                 DetectSpaces -> withAttr attr $ detectSpaces
                 DetectIdentifier -> withAttr attr $ detectIdentifier
-                IfFirstNonspace r -> ifFirstNonspace r
-                IfColumn n r -> ifColumn n r
                 IncludeRules cname -> includeRules
                    (if rIncludeAttribute rule then Just attr else Nothing)
                    cname
@@ -214,19 +224,6 @@ wordDetect s = do
   case inp of
        (c:_) | not (isAlphaNum c) -> return res
        _ -> mzero
-
-ifColumn :: Int -> Rule -> TokenizerM Token
-ifColumn n rule = do
-  col <- gets column
-  guard $ col == n
-  tryRule rule
-
-ifFirstNonspace :: Rule -> TokenizerM Token
-ifFirstNonspace rule = do
-  firstNonspace <- gets firstNonspaceColumn
-  col <- gets column
-  guard $ firstNonspace == Just col
-  tryRule rule
 
 stringDetect :: String -> TokenizerM String
 stringDetect s = do

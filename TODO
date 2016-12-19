@@ -1,5 +1,5 @@
 _ test against h-k for correctness
-_ handle case sensitive in Parser, Tokenizer
+_ handle case sensitive rule attribute in tokenizer
 _ handle dynamic in Parser, Tokenizer
 _ better exception handling in Parser
 _ better exception handling in Tokenizer

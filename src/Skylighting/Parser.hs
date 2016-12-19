@@ -270,7 +270,9 @@ getParsers (syntaxname, (itemdatas, (lists, kwattr))) =
                         rDynamic = dynamic,
                         rChildren = children,
                         rContextSwitch = contextSwitch,
-                        rLookahead = lookahead }
+                        rLookahead = lookahead,
+                        rFirstNonspace = firstNonSpace ,
+                        rColumn = column }
 
 parseContextSwitch :: String -> String -> [ContextSwitch]
 parseContextSwitch _ [] = []
@@ -293,4 +295,3 @@ getKeywordAttrs =
                          , keywordDelims = (Set.union standardDelims
                              (Set.fromList additionalDelim)) Set.\\
                                 Set.fromList weakDelim }
-
