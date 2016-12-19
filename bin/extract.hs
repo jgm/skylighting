@@ -47,8 +47,23 @@ writeModuleFor :: Syntax -> IO ()
 writeModuleFor syn = do
   let fp = toPathName $ sName syn
   putStrLn $ "Writing " ++ fp
-  writeFile fp $
-      "module Skylighting.Syntax." ++ sName syn ++ " (syntax) where\n\nimport Skylighting.Types\nimport Skylighting.Regex\nimport Data.Map\nimport qualified Data.Set\n\nsyntax :: Syntax\nsyntax = " ++ ppShow syn
+  let isregex (RegExpr{}) = True
+      isregex _ = False
+  let iskeyword (Keyword{}) = True
+      iskeyword _ = False
+  let matchers = map rMatcher $ concatMap cRules $ sContexts syn
+  let usesRegex = any isregex matchers
+  let usesSet = any iskeyword matchers
+  writeFile fp $ unlines $
+    [ "module Skylighting.Syntax." ++ sName syn ++ " (syntax) where"
+    , ""
+    , "import Skylighting.Types"
+    , "import Data.Map" ] ++
+    [ "import Skylighting.Regex" | usesRegex ] ++
+    [ "import qualified Data.Set" | usesSet ] ++
+    [ ""
+    , "syntax :: Syntax"
+    , "syntax = " ++ ppShow syn ]
 
 toPathName :: String -> String
 toPathName s = "src/Skylighting/Syntax/" ++ map (\c -> if c == '.' then '/' else c) s ++ ".hs"
