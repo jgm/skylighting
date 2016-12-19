@@ -1,6 +1,13 @@
+_ don't use syntaxMap directly; instead, put the map in
+  state and provide a way for it to be modified so people
+  can add their own syntax definitions (or modify existing
+  ones); a syntax map should be a parameter of the
+  tokenize function.
+_ handle dynamic in Parser, Tokenizer
+  this attribute attaches to: context, RegExpr
+  figure out what it does on each and look at examples
 _ test against h-k for correctness
 _ handle case sensitive rule attribute in tokenizer
-_ handle dynamic in Parser, Tokenizer
 _ better exception handling in Parser
 _ better exception handling in Tokenizer
 _ make faster
