@@ -6,12 +6,15 @@ import Skylighting.Types
 import System.Environment (getArgs)
 import System.Directory
 import Data.List (isInfixOf, intersperse)
+import Data.Either (partitionEithers)
+import System.IO (hPutStrLn, stderr)
 
 main :: IO ()
 main = do
   createDirectoryIfMissing True "src/Skylighting/Syntax"
   files <- getArgs
-  syntaxes <- mapM parseSyntaxDefinition files
+  (errs, syntaxes) <- partitionEithers <$> mapM parseSyntaxDefinition files
+  mapM_ (hPutStrLn stderr) errs
   mapM_ writeModuleFor syntaxes
 
   putStrLn "Backing up skylighting.cabal to skylighting.cabal.orig"

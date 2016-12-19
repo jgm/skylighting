@@ -14,6 +14,10 @@ import Skylighting.Types
 import Skylighting.Regex
 import qualified Data.Map as Map
 
+addSyntaxDefinition :: Syntax -> Map.Map String Syntax
+                    -> Map.Map String Syntax
+addSyntaxDefinition s = Map.insert (sName s) s
+
 standardDelims :: Set.Set Char
 standardDelims = Set.fromList " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
 
@@ -46,15 +50,12 @@ capitalize [] = []
 
 -- | Parses a file containing a Kate XML syntax definition
 -- into a 'Syntax' description.
-parseSyntaxDefinition :: String -> IO Syntax
+parseSyntaxDefinition :: String -> IO (Either String Syntax)
 parseSyntaxDefinition xml = do
   res <- runX (application xml)
   case res of
-       [s]   -> return s
-       _     -> error "Could not parse xml file" -- TODO better exceptions
-
-addSyntaxDefinition :: String -> SyntaxMap -> SyntaxMap
-addSyntaxDefinition xml = undefined -- TODO
+       [s]   -> return $ Right s
+       _     -> return $ Left $ "Could not parse syntax definition " ++ xml
 
 application :: String -> IOSArrow b Syntax
 application fp
