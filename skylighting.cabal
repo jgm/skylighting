@@ -30,6 +30,8 @@ library
                        Skylighting.Syntax.Hamlet
                        Skylighting.Syntax.Alert
                        Skylighting.Syntax.Modelines
+                       Skylighting.Syntax.C
+                       Skylighting.Syntax.Doxygen
   other-extensions:    CPP, Arrows
   build-depends:       base,
                        mtl,
