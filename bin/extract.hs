@@ -9,7 +9,7 @@ import Data.List (isInfixOf, intersperse)
 
 main :: IO ()
 main = do
-  createDirectoryIfMissing True "Skylighting/Syntax"
+  createDirectoryIfMissing True "src/Skylighting/Syntax"
   files <- getArgs
   syntaxes <- mapM parseSyntaxDefinition files
   mapM_ writeModuleFor syntaxes

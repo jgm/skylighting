@@ -10,7 +10,7 @@ trace:
 	stack install --test --fast --flag 'skylighting:trace'
 
 bootstrap: $(DEFS)
-	-rm -rf Skylighting/Syntax
+	-rm -rf src/Skylighting/Syntax
 	stack install --fast --flag 'skylighting:bootstrap'
 	skylighting-extract $(DEFS)
 	stack install --test --fast
