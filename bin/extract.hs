@@ -1,8 +1,9 @@
 {-# LANGUAGE Arrows #-}
 
-import Skylighting.Parser (parseSyntaxDefinition)
+import Skylighting.Parser (parseSyntaxDefinition, missingIncludes)
 import Text.Show.Pretty (ppShow)
 import Skylighting.Types
+import System.Exit
 import System.Environment (getArgs)
 import System.Directory
 import Data.List (isInfixOf, intersperse)
@@ -16,6 +17,15 @@ main = do
   (errs, syntaxes) <- partitionEithers <$> mapM parseSyntaxDefinition files
   mapM_ (hPutStrLn stderr) errs
   mapM_ writeModuleFor syntaxes
+
+  case missingIncludes syntaxes of
+       [] -> return ()
+       ns -> do
+         mapM_ (\(syn,dep) -> hPutStrLn stderr
+             ("Missing syntax definition: " ++ syn ++ " requires " ++
+               dep ++ " through IncludeRules.")) ns
+         hPutStrLn stderr "Fatal error."
+         exitWith (ExitFailure 1)
 
   putStrLn "Backing up skylighting.cabal to skylighting.cabal.orig"
   copyFile "skylighting.cabal" "skylighting.cabal.orig"
@@ -70,4 +80,3 @@ writeModuleFor syn = do
 
 toPathName :: String -> String
 toPathName s = "src/Skylighting/Syntax/" ++ map (\c -> if c == '.' then '/' else c) s ++ ".hs"
-

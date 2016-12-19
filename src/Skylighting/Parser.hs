@@ -2,6 +2,7 @@
 
 module Skylighting.Parser ( parseSyntaxDefinition
                           , addSyntaxDefinition
+                          , missingIncludes
                           ) where
 
 import Safe
@@ -13,10 +14,19 @@ import qualified Data.Set as Set
 import Skylighting.Types
 import Skylighting.Regex
 import qualified Data.Map as Map
+import Data.List (nub)
 
 addSyntaxDefinition :: Syntax -> Map.Map String Syntax
                     -> Map.Map String Syntax
 addSyntaxDefinition s = Map.insert (sName s) s
+
+missingIncludes :: [Syntax] -> [(String, String)]
+missingIncludes syns = nub
+  [(sName s, lang)
+     | s <- syns
+     , c <- Map.elems (sContexts s)
+     , IncludeRules (lang, _) <- map rMatcher (cRules c)
+     , lang `notElem` (map sName syns)]
 
 standardDelims :: Set.Set Char
 standardDelims = Set.fromList " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
