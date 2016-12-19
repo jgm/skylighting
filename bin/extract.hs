@@ -37,7 +37,7 @@ main = do
      [ "import qualified " ++ m | m <- modulenames ]
      ++
      [ ""
-     , "syntaxMap :: Map.Map String Syntax"
+     , "syntaxMap :: SyntaxMap"
      , "syntaxMap = Map.fromList ["
      ] ++
      (intersperse "  , "

@@ -10,6 +10,7 @@ module Skylighting.Types (
               , Context(..)
               , ContextSwitch(..)
               , Syntax(..)
+              , SyntaxMap
               , Token
               , TokenType(..)
               , SourceLine
@@ -96,6 +97,8 @@ data Syntax = Syntax{
   , sExtensions :: [String]
   , sStartingContext :: Context
   } deriving (Show)
+
+type SyntaxMap = Map.Map String Syntax
 
 data Context = Context{
     cName  :: String

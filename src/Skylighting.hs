@@ -65,12 +65,12 @@ highlightAs :: String         -- ^ Language syntax (e.g. "haskell") or extension
 highlightAs "csharp" = highlightAs "cs" -- special case
 highlightAs lang =
   case Map.lookup (map toLower lang) lowercaseSyntaxMap of
-         Just s  -> tokenize s
+         Just s  -> tokenize syntaxMap s
          Nothing ->
            case syntaxByFullName lang of
-                (s:_) -> tokenize s
+                (s:_) -> tokenize syntaxMap s
                 [] -> case syntaxByExtension lang of
-                           (s:_) -> tokenize s
+                           (s:_) -> tokenize syntaxMap s
                            []    -> \_ -> Left
                                ("Could not find syntax definition for " ++ lang)
 

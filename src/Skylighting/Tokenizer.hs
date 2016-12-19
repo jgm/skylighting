@@ -7,11 +7,11 @@ module Skylighting.Tokenizer (
 import qualified Data.Set as Set
 import Skylighting.Regex
 import Skylighting.Types
-import Skylighting.Syntax (syntaxMap)
 import Data.Maybe
 import Data.List (isPrefixOf, findIndex)
 import Control.Monad.Except
 import Control.Monad.State
+import Control.Monad.Reader
 import Control.Applicative
 import Data.Char (isSpace, isLetter, isAlphaNum)
 import qualified Data.Map as Map
@@ -44,7 +44,7 @@ data TokenizerState = TokenizerState{
   , lookaheadRule :: Bool
 } deriving (Show)
 
-type TokenizerM = ExceptT String (State TokenizerState)
+type TokenizerM = ExceptT String (ReaderT SyntaxMap (State TokenizerState))
 
 popContextStack :: TokenizerM ()
 popContextStack = do
@@ -73,7 +73,8 @@ doContextSwitch :: [ContextSwitch] -> TokenizerM ()
 doContextSwitch [] = return ()
 doContextSwitch (Pop : xs) = popContextStack >> doContextSwitch xs
 doContextSwitch (Push (syn,c) : xs) = do
-  case Map.lookup syn syntaxMap >>= lookupContext c of
+  syntaxes <- ask
+  case Map.lookup syn syntaxes >>= lookupContext c of
        Just con -> pushContextStack con >> doContextSwitch xs
        Nothing  -> error $"Unknown syntax or context: " ++ show (syn, c) -- TODO handle better
 
@@ -84,13 +85,21 @@ lookupContext name syntax =
      else Map.lookup name $ sContexts syntax
 
 
-tokenize :: Syntax -> String -> Either String [SourceLine]
-tokenize syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
-  startingState{ input = inp, contextStack = ContextStack [sStartingContext syntax] }
+tokenize :: SyntaxMap -> Syntax -> String -> Either String [SourceLine]
+tokenize syntaxes syntax inp =
+  evalState
+    (runReaderT
+      (runExceptT (mapM tokenizeLine (lines inp))) syntaxes)
+    startingState{ input = inp
+                 , contextStack = ContextStack [sStartingContext syntax] }
 
-tokenizeWithTrace :: Syntax -> String -> Either String [SourceLine]
-tokenizeWithTrace syntax inp = evalState (runExceptT $ mapM tokenizeLine $ lines inp)
-  startingState{ input = inp, contextStack = ContextStack [sStartingContext syntax],
+tokenizeWithTrace :: SyntaxMap -> Syntax -> String -> Either String [SourceLine]
+tokenizeWithTrace syntaxes syntax inp =
+  evalState
+    (runReaderT
+      (runExceptT (mapM tokenizeLine (lines inp))) syntaxes)
+  startingState{ input = inp,
+                 contextStack = ContextStack [sStartingContext syntax],
                  traceOutput = True }
 
 startingState :: TokenizerState
@@ -248,7 +257,8 @@ normalChunk = do
 
 includeRules :: Maybe TokenType -> ContextName -> TokenizerM Token
 includeRules mbattr (syn, con) = do
-  (t,xs) <- case Map.lookup syn syntaxMap >>= lookupContext con of
+  syntaxes <- ask
+  (t,xs) <- case Map.lookup syn syntaxes >>= lookupContext con of
                  Nothing  -> error $ "Context lookup failed " ++ show (syn, con)
                  Just c   -> msum (map tryRule (cRules c))
   return (fromMaybe t mbattr, xs)

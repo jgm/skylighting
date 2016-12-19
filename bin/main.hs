@@ -128,8 +128,8 @@ main = do
   format <- formatOf opts
 
   let tokenize' = if trace
-                     then tokenizeWithTrace
-                     else tokenize
+                     then tokenizeWithTrace syntaxMap
+                     else tokenize syntaxMap
 
   sourceLines <- case tokenize' syntax code of
                       Left e -> err e
