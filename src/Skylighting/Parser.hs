@@ -144,7 +144,7 @@ toTokenType s =
        "dsWarning" -> WarningTok
        "dsAlert" -> AlertTok
        "dsError" -> ErrorTok
-       _ -> OtherTok -- warning?
+       _ -> NormalTok
 
 getLists :: IOSArrow XmlTree [(String, [String])]
 getLists =
