@@ -70,8 +70,8 @@ extractSyntaxDefinition filename =
      version <- getAttrValue "version" -< x
      license <- getAttrValue "license" -< x
      extensions <- getAttrValue "extensions" -< x
-     caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
-     contexts <- getContexts $< (getAttrValue "name") &&&
+     contexts <- getContexts $< (arr (vBool True) <<< getAttrValue "casesensitive") &&&
+                                (getAttrValue "name") &&&
                                 (arr toItemDataTable <<< getItemDatas) &&&
                                 getLists &&&
                                 (arr (headDef defaultKeywordAttr)
@@ -165,9 +165,12 @@ getListContents =
      arr stripWhitespace
 
 getContexts ::
-     (String, (Map.Map String TokenType, ([(String, [String])], KeywordAttr)))
+     (Bool,
+       (String,
+         (Map.Map String TokenType,
+           ([(String, [String])], KeywordAttr))))
             -> IOSArrow XmlTree [Context]
-getContexts (syntaxname, (itemdatas, (lists, kwattr))) =
+getContexts (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
   listA $ multi (hasName "context")
      >>>
      proc x -> do
@@ -178,7 +181,8 @@ getContexts (syntaxname, (itemdatas, (lists, kwattr))) =
        fallthrough <- arr (vBool False) <<< getAttrValue "fallthrough" -< x
        fallthroughContext <- getAttrValue "fallthroughContext" -< x
        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
-       parsers <- getParsers (syntaxname, (itemdatas, (lists, kwattr))) -< x
+       parsers <- getParsers (casesensitive, (syntaxname,
+                                (itemdatas, (lists, kwattr)))) -< x
        returnA -< Context {
                      cName = name
                    , cSyntax = syntaxname
@@ -204,10 +208,12 @@ readChar s = case s of
                   _   -> readDef '\xffff' $ "'" ++ s ++ "'"
 
 
-getParsers :: (String,
-                (Map.Map String TokenType, ([(String, [String])], KeywordAttr)))
+getParsers :: (Bool,
+                (String,
+                  (Map.Map String TokenType,
+                    ([(String, [String])], KeywordAttr))))
             -> IOSArrow XmlTree [Rule]
-getParsers (syntaxname, (itemdatas, (lists, kwattr))) =
+getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
   listA $ getChildren
      >>>
      proc x -> do
@@ -217,13 +223,15 @@ getParsers (syntaxname, (itemdatas, (lists, kwattr))) =
        char0 <- arr readChar <<< getAttrValue "char" -< x
        char1 <- arr readChar <<< getAttrValue "char1" -< x
        str' <- getAttrValue "String" -< x
-       insensitive <- arr (vBool False) <<< getAttrValue "insensitive" -< x
+       insensitive <- arr (vBool (not casesensitive))
+                            <<< getAttrValue "insensitive" -< x
        includeAttrib <- arr (vBool False) <<< getAttrValue "includeAttrib" -< x
        lookahead <- arr (vBool False) <<< getAttrValue "lookAhead" -< x
        firstNonSpace <- arr (vBool False) <<< getAttrValue "firstNonSpace" -< x
        column' <- getAttrValue "column" -< x
        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
-       children <- getParsers (syntaxname, (itemdatas, (lists, kwattr))) -< x
+       children <- getParsers (casesensitive,
+                                 (syntaxname, (itemdatas, (lists, kwattr)))) -< x
        let tildeRegex = name == "RegExpr" && take 1 str' == "^"
        let str = if tildeRegex then drop 1 str' else str'
        let column = if tildeRegex

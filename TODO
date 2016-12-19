@@ -2,7 +2,6 @@ _ handle dynamic in Parser, Tokenizer
   this attribute attaches to: context, RegExpr
   figure out what it does on each and look at examples
 _ test against h-k for correctness
-_ handle case sensitive rule attribute in tokenizer
 _ better exception handling in Parser
 _ better exception handling in Tokenizer
 _ make faster
