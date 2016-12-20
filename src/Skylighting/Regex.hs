@@ -1,16 +1,26 @@
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Skylighting.Regex (
                 Regex
+              , RegexException
               , RE(..)
               , compileRegex
               , matchRegex
               ) where
 
 import Text.Printf
+import GHC.Generics (Generic)
 import System.IO.Unsafe (unsafePerformIO)
 import Text.Regex.PCRE.ByteString
 import Data.ByteString.UTF8 (fromString, toString)
+import qualified Control.Exception as E
+
+newtype RegexException = RegexException String
+      deriving (Show, Generic)
+
+instance E.Exception RegexException
 
 data RE = RE{
     reString :: String
@@ -34,8 +44,9 @@ compileRegex caseSensitive regexpStr =
                if caseSensitive then 0 else compCaseless
   in  case unsafePerformIO $ compile opts (execNotEmpty)
              (fromString ('.' : convertOctal regexpStr)) of
-            Left e  -> error $ "Error compiling regex: " ++ regexpStr ++
-                               "\n" ++ show e -- TODO handle better
+            Left (off,msg) -> E.throw $ RegexException $
+                        "Error compiling regex: " ++ regexpStr ++
+                        " at offset " ++ show off ++ "\n" ++ msg
             Right r -> r
 
 -- convert octal escapes to the form pcre wants.  Note:
@@ -52,7 +63,8 @@ convertOctal ('\\':'o':'{':zs) =
        (ds, '}':rest) | all isOctalDigit ds && not (null ds) ->
             case reads ('0':'o':ds) of
                  ((n :: Int,[]):_) -> printf "\\x{%x}" n ++ convertOctal rest
-                 _          -> error $ "Unable to read octal number: " ++ ds
+                 _          -> E.throw $ RegexException $
+                                   "Unable to read octal number: " ++ ds
        _  -> '\\':'o':'{': convertOctal zs
 convertOctal (x:xs) = x : convertOctal xs
 
@@ -64,5 +76,4 @@ matchRegex r s = case unsafePerformIO (regexec r (fromString s)) of
                       Right (Just (_, mat, _ , capts)) ->
                                        Just $ map toString (mat : capts)
                       Right Nothing -> Nothing
-                      Left matchError -> error $ show matchError -- handle better
-
+                      Left (_rc, msg) -> E.throw $ RegexException msg
