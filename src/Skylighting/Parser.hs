@@ -70,12 +70,12 @@ extractSyntaxDefinition filename =
      version <- getAttrValue "version" -< x
      license <- getAttrValue "license" -< x
      extensions <- getAttrValue "extensions" -< x
-     contexts <- getContexts $< (arr (vBool True) <<< getAttrValue "casesensitive") &&&
-                                (getAttrValue "name") &&&
-                                (arr toItemDataTable <<< getItemDatas) &&&
-                                getLists &&&
-                                (arr (headDef defaultKeywordAttr)
-                                    <<< getKeywordAttrs) -< x
+     contexts <- getContexts $<
+                    (arr (vBool True) <<< getAttrValue "casesensitive") &&&
+                    (getAttrValue "name") &&&
+                    (arr toItemDataTable <<< getItemDatas) &&&
+                    getLists &&&
+                    (arr (headDef defaultKeywordAttr) <<< getKeywordAttrs) -< x
      let startingContext =
           case contexts of
                (c:_) -> c
