@@ -2,13 +2,21 @@ _ test against h-k for correctness
   still failing relative to h-k expected output.
   needs to be analyzed ; might be problems in h-k.
   _ abc.c
+    <span class="pp">#include </span><span class="im">ctype.h&gt;</span><span class="pp">&gt;</span>
   _ abc.cpp
+    same issue as for abc.c
   _ abc.lisp
+    looks fine, even better, no problem
   _ abc.ocaml
+    in original we had <span class="ch">&#39;B&#39;</span>
+    but now we don't get any highlighting for the char
   _ abc.r
-  _ abc.scheme
+    looks better, no problem
   _ archive.rhtml
+    <span class="ch">&#39;</span>archive<span class="ch">&#39;}</span> - this should be st not ch!
   _ life.lua
+    maybe need the patch life.lua.patch?
+  _ look at other patch files too, and generate new patches
 _ make faster
   (use Set for char and keyword matchers)
   (improve normalize fn?)
