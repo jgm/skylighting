@@ -1,3 +1,4 @@
+_ fix hang on test/cases/abc.d
 _ test against h-k for correctness
 _ make faster
   (use Set for char and keyword matchers)

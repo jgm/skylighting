@@ -37,6 +37,7 @@ main = do
 
 runTest :: Bool -> FilePath -> IO TestResult
 runTest regen inpFile = do
+  putStrLn $ "Testing with " ++ inpFile
   let casesdir = "test" </> "cases"
   let expecteddir = "test" </> "expected"
   code <- readFile (casesdir </> inpFile)
@@ -45,7 +46,7 @@ runTest regen inpFile = do
                  Just s  -> return s
                  Nothing -> fail $
                     "Could not find syntax definition for " ++ lang
-  actual <- case tokenize syntaxMap syntax code of
+  actual <- case tokenizeWithTrace syntaxMap syntax code of
                  Left e -> fail e
                  Right ls -> return $ renderHtml $
                                 formatHtmlBlock defaultFormatOpts ls
