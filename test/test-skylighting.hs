@@ -32,7 +32,7 @@ main = do
 mkTest :: Bool -> FilePath -> TestTree
 mkTest regen inpFile = localOption (mkTimeout 2000000) $
   goldenTest testname getExpected getActual compareValues updateGolden
-  where testname = "highlighting of " ++ inpFile ++ "(" ++ lang ++ ")"
+  where testname = lang ++ " highlighting of " ++ inpFile
         getExpected = readFile (expecteddir </> inpFile <.> "html")
         getActual = do
           code <- readFile (casesdir </> inpFile)
