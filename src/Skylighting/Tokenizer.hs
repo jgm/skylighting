@@ -41,7 +41,6 @@ data TokenizerState = TokenizerState{
   , lineContinuation :: Bool
   , firstNonspaceColumn :: Maybe Int
   , traceOutput  :: Bool
-  , lookaheadRule :: Bool
 } deriving (Show)
 
 type TokenizerM = ExceptT String (ReaderT SyntaxMap (State TokenizerState))
@@ -112,7 +111,7 @@ startingState =
                 , lineContinuation = False
                 , firstNonspaceColumn = Nothing
                 , traceOutput = False
-                , lookaheadRule = False }
+                }
 
 tokenizeLine :: String -> TokenizerM [Token]
 tokenizeLine ln = do
@@ -140,22 +139,18 @@ getToken = do
   guard $ not (null inp)
   context <- currentContext
   msum (map tryRule (cRules context)) <|>
-    if cFallthrough context
-       then doContextSwitch (cFallthroughContext context) >> getToken
-       else (cAttribute context, ) <$> normalChunk
+     if cFallthrough context
+        then doContextSwitch (cFallthroughContext context) >> getToken
+        else (cAttribute context, ) <$> normalChunk
 
 takeChars :: String -> TokenizerM String
 takeChars [] = mzero
 takeChars xs = do
   let numchars = length xs
-  lookahead <- gets lookaheadRule
-  if lookahead
-     then return ""
-     else do
-       modify $ \st -> st{ input = drop numchars (input st),
-                           prevChar = last xs,
-                           column = column st + numchars }
-       return xs
+  modify $ \st -> st{ input = drop numchars (input st),
+                      prevChar = last xs,
+                      column = column st + numchars }
+  return xs
 
 tryRule :: Rule -> TokenizerM Token
 tryRule rule = do
@@ -170,7 +165,7 @@ tryRule rule = do
     col <- gets column
     guard (firstNonspace == Just col)
 
-  modify (\st -> st{ lookaheadRule = rLookahead rule })
+  oldstate <- get -- needed for lookahead rules
 
   let attr = rAttribute rule
   (tt, s) <- case rMatcher rule of
@@ -199,8 +194,15 @@ tryRule rule = do
                    cname
   (_, cresult) <- msum (map tryRule (rChildren rule))
               <|> return (NormalTok, "")
-  modify (\st -> st{ lookaheadRule = False })
-  let tok = (tt, s ++ cresult)
+
+  tok <- if rLookahead rule
+            then do
+              modify $ \st -> st{ input = input oldstate
+                                , prevChar = prevChar oldstate
+                                , column = column oldstate }
+              return (tt, "")
+            else return (tt, s ++ cresult)
+
   info $ takeWhile (/=' ') (show (rMatcher rule)) ++ " MATCHED " ++ show tok
   doContextSwitch (rContextSwitch rule)
   return tok
