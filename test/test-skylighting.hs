@@ -18,45 +18,48 @@ import Text.Blaze.Html
 import Text.Blaze.Html.Renderer.String
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
-import Test.HUnit
+import Test.Tasty
+import Test.Tasty.Golden.Advanced (goldenTest)
 
-data TestResult = Pass | Fail | Error
-                  deriving (Eq, Show)
-
-main :: IO Counts
+main :: IO ()
 main = do
   inputs <- filter (\fp -> take 1 fp /= ".")
          <$> getDirectoryContents ("test" </> "cases")
   args <- getArgs
   let regen = "--regenerate" `elem` args
-  runTestTT $ TestList $ map (mkTest regen) inputs
+  defaultMain $ testGroup "Golden tests" $ map (mkTest regen) inputs
 
-mkTest :: Bool -> FilePath -> Test
-mkTest regen inpFile = TestLabel inpFile $ TestCase $ do
-  let casesdir = "test" </> "cases"
-  let expecteddir = "test" </> "expected"
-  code <- readFile (casesdir </> inpFile)
-  let lang = drop 1 $ takeExtension inpFile
-  syntax <- case lookupSyntax lang defaultSyntaxMap of
-                 Just s  -> return s
-                 Nothing -> fail $
-                    "Could not find syntax definition for " ++ lang
-  actual <- case tokenize TokenizerConfig{
-                               traceOutput = False
-                             , syntaxMap = defaultSyntaxMap } syntax code of
+mkTest :: Bool -> FilePath -> TestTree
+mkTest regen inpFile = localOption (mkTimeout 2000000) $
+  goldenTest testname getExpected getActual compareValues updateGolden
+  where testname = "highlighting of " ++ inpFile ++ "(" ++ lang ++ ")"
+        getExpected = readFile (expecteddir </> inpFile <.> "html")
+        getActual = do
+          code <- readFile (casesdir </> inpFile)
+          syntax <- case lookupSyntax lang defaultSyntaxMap of
+                         Just s  -> return s
+                         Nothing -> fail $
+                            "Could not find syntax definition for " ++ lang
+          case tokenize TokenizerConfig{
+                             traceOutput = False
+                           , syntaxMap = defaultSyntaxMap } syntax $! code of
                  Left e -> fail e
                  Right ls -> return $ renderHtml $
                                 formatHtmlBlock defaultFormatOpts{
                                   titleAttributes = True } ls
-  when regen $
-    writeFile (expecteddir </> inpFile <.> "html") actual
-  expectedString <- readFile (expecteddir </> inpFile <.> "html")
-  when (expectedString /= actual) $ do
-    putStrLn $ "--- " ++ (expecteddir </> inpFile <.> "html")
-    putStrLn $ "+++ actual"
-    printDiff expectedString actual
-  assertEqual ("result of highlighting " ++ inpFile ++ " as expected")
-              actual expectedString
+        updateGolden = if regen
+                          then writeFile (expecteddir </> inpFile <.> "html")
+                          else \_ -> return ()
+        expecteddir = "test" </> "expected"
+        casesdir = "test" </> "cases"
+        lang = drop 1 $ takeExtension inpFile
+        compareValues expected actual = do
+           if expected == actual
+              then return Nothing
+              else return $ Just $ unlines $
+                   [ "--- " ++ (expecteddir </> inpFile <.> "html")
+                   , "+++ actual" ] ++
+                   map vividize (getDiff (lines expected) (lines actual))
 
 formatHtml toks =
   renderHtml $ H.head (metadata >> css) >> H.body (toHtml fragment)
@@ -69,7 +72,3 @@ vividize :: Diff String -> String
 vividize (Both s _) = "  " ++ s
 vividize (First s)  = "- " ++ s
 vividize (Second s) = "+ " ++ s
-
-printDiff :: String -> String -> IO ()
-printDiff expected actual = do
-  mapM_ putStrLn $ map vividize $ getDiff (lines expected) (lines actual)
