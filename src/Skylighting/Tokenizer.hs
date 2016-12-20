@@ -7,7 +7,6 @@ module Skylighting.Tokenizer (
 import qualified Data.Set as Set
 import Skylighting.Regex
 import Skylighting.Types
-import Data.Maybe
 import Data.List (isPrefixOf, findIndex)
 import Control.Monad.Except
 import Control.Monad.State
@@ -261,7 +260,10 @@ includeRules mbattr (syn, con) = do
                  Nothing  -> throwError $ "Context lookup failed " ++
                                             show (syn, con)
                  Just c   -> msum (map tryRule (cRules c))
-  return (fromMaybe t mbattr, xs)
+  let t' = case (t, mbattr) of
+                (NormalTok, Just attr)  -> attr
+                _ -> t
+  return (t', xs)
 
 detectChar :: Bool -> Char -> TokenizerM String
 detectChar dynamic c = do

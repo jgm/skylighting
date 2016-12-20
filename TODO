@@ -7,10 +7,6 @@ _ test against h-k for correctness
     same issue as for abc.c
   _ abc.lisp
     looks fine, even better, no problem
-  _ abc.ocaml
-    ['A'] doesn't get any markup.
-    in original we had <span class="ch">&#39;B&#39;</span>
-    but now we don't get any highlighting for the char
   _ abc.r
     looks better, no problem
   _ archive.rhtml
