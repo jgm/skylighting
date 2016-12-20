@@ -151,7 +151,8 @@ main = do
      putStrLn (prg ++ " " ++ showVersion version)
      exitWith ExitSuccess
 
-  syntaxMap' <- foldr addSyntaxDefinition syntaxMap <$> extractDefinitions opts
+  syntaxMap' <- foldr addSyntaxDefinition defaultSyntaxMap <$>
+                    extractDefinitions opts
 
   case missingIncludes (Map.elems syntaxMap') of
        [] -> return ()
@@ -181,15 +182,14 @@ main = do
                     (x:_) -> x
   let trace = Trace `elem` opts
 
-  syntax <- syntaxMap' `seq` syntaxOf syntaxMap' fnames opts
+  syntax <- syntaxOf syntaxMap' fnames opts
   style <- styleOf opts
   format <- formatOf opts
 
-  let tokenize' = if trace
-                     then tokenizeWithTrace syntaxMap'
-                     else tokenize syntaxMap'
+  let config = TokenizerConfig { traceOutput = trace
+                               , syntaxMap = syntaxMap' }
 
-  sourceLines <- case tokenize' syntax code of
+  sourceLines <- case tokenize config syntax code of
                       Left e -> err e
                       Right ls -> return ls
 

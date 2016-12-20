@@ -6,7 +6,7 @@ import Skylighting.Types
 import System.Exit
 import System.Environment (getArgs)
 import System.Directory
-import Data.List (isInfixOf, intersperse)
+import Data.List (isInfixOf, intercalate)
 import Data.Either (partitionEithers)
 import System.IO (hPutStrLn, stderr)
 
@@ -40,21 +40,20 @@ main = do
   writeFile "skylighting.cabal" newcabal
 
   putStrLn "Writing src/Skylighting/Syntax.hs"
-  writeFile "src/Skylighting/Syntax.hs" $ unlines $
-     [ "module Skylighting.Syntax (syntaxMap) where"
+  writeFile "src/Skylighting/Syntax.hs" $ unlines (
+     [ "module Skylighting.Syntax (defaultSyntaxMap) where"
      , "import qualified Data.Map as Map"
      , "import Skylighting.Types" ] ++
      [ "import qualified " ++ m | m <- modulenames ]
      ++
      [ ""
-     , "syntaxMap :: SyntaxMap"
-     , "syntaxMap = Map.fromList ["
-     ] ++
-     (intersperse "  , "
+     , "defaultSyntaxMap :: SyntaxMap"
+     , "defaultSyntaxMap = Map.fromList ["
+     ]) ++
+     (intercalate "\n  ,"
        ["  (" ++ show (sName s) ++ ", "
               ++ "Skylighting.Syntax." ++ sShortname s ++ ".syntax)"
-                  | s <- syntaxes ]) ++
-     ["  ]"]
+                  | s <- syntaxes ]) ++ " ]"
 
 writeModuleFor :: Syntax -> IO ()
 writeModuleFor syn = do

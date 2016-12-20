@@ -42,11 +42,13 @@ runTest regen inpFile = do
   let expecteddir = "test" </> "expected"
   code <- readFile (casesdir </> inpFile)
   let lang = drop 1 $ takeExtension inpFile
-  syntax <- case lookupSyntax lang syntaxMap of
+  syntax <- case lookupSyntax lang defaultSyntaxMap of
                  Just s  -> return s
                  Nothing -> fail $
                     "Could not find syntax definition for " ++ lang
-  actual <- case tokenize syntaxMap syntax code of
+  actual <- case tokenize TokenizerConfig{
+                               traceOutput = False
+                             , syntaxMap = defaultSyntaxMap } syntax code of
                  Left e -> fail e
                  Right ls -> return $ renderHtml $
                                 formatHtmlBlock defaultFormatOpts ls
