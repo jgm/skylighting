@@ -18,26 +18,21 @@ import Text.Blaze.Html
 import Text.Blaze.Html.Renderer.String
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
+import Test.HUnit
 
 data TestResult = Pass | Fail | Error
                   deriving (Eq, Show)
 
-main :: IO ()
+main :: IO Counts
 main = do
   inputs <- filter (\fp -> take 1 fp /= ".")
          <$> getDirectoryContents ("test" </> "cases")
   args <- getArgs
   let regen = "--regenerate" `elem` args
-  results <- forM inputs (runTest regen)
-  let numfailures = length $ filter (== Fail) results
-  let numerrors = length $ filter (== Error) results
-  exitWith $ if numfailures == 0 && numerrors == 0
-                then ExitSuccess
-                else ExitFailure $ numfailures + numerrors
+  runTestTT $ TestList $ map (mkTest regen) inputs
 
-runTest :: Bool -> FilePath -> IO TestResult
-runTest regen inpFile = do
-  putStrLn $ "Testing with " ++ inpFile
+mkTest :: Bool -> FilePath -> Test
+mkTest regen inpFile = TestLabel inpFile $ TestCase $ do
   let casesdir = "test" </> "cases"
   let expecteddir = "test" </> "expected"
   code <- readFile (casesdir </> inpFile)
@@ -56,16 +51,12 @@ runTest regen inpFile = do
   when regen $
     writeFile (expecteddir </> inpFile <.> "html") actual
   expectedString <- readFile (expecteddir </> inpFile <.> "html")
-  if expectedString == actual
-     then do
-       putStrLn $ "[PASSED] " ++ inpFile
-       return Pass
-     else do
-       putStrLn $ "[FAILED] " ++ inpFile
-       putStrLn $ "--- " ++ (expecteddir </> inpFile <.> "html")
-       putStrLn $ "+++ actual"
-       printDiff expectedString actual
-       return Fail
+  when (expectedString /= actual) $ do
+    putStrLn $ "--- " ++ (expecteddir </> inpFile <.> "html")
+    putStrLn $ "+++ actual"
+    printDiff expectedString actual
+  assertEqual ("result of highlighting " ++ inpFile ++ " as expected")
+              actual expectedString
 
 formatHtml toks =
   renderHtml $ H.head (metadata >> css) >> H.body (toHtml fragment)
