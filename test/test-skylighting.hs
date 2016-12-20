@@ -51,7 +51,8 @@ runTest regen inpFile = do
                              , syntaxMap = defaultSyntaxMap } syntax code of
                  Left e -> fail e
                  Right ls -> return $ renderHtml $
-                                formatHtmlBlock defaultFormatOpts ls
+                                formatHtmlBlock defaultFormatOpts{
+                                  titleAttributes = True } ls
   when regen $
     writeFile (expecteddir </> inpFile <.> "html") actual
   expectedString <- readFile (expecteddir </> inpFile <.> "html")
