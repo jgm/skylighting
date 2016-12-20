@@ -258,8 +258,8 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
                          "WordDetect" -> Just $ WordDetect str
                          "RegExpr" -> Just $ re
                          "keyword" -> Just $ Keyword kwattr $
-                            maybe (WordSet Set.empty)
-                              (WordSet . Set.fromList)
+                            maybe (makeWordSet True [])
+                              (makeWordSet (keywordCaseSensitive kwattr))
                               (lookup str lists)
                          "Int" -> Just $ Int
                          "Float" -> Just $ Float

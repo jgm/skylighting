@@ -1,9 +1,7 @@
 _ test against h-k for correctness
   still failing relative to h-k expected output.
   needs to be analyzed ; might be problems in h-k.
-  _ abc.ada
   _ abc.c
-  _ abc.clojure
   _ abc.cpp
   _ abc.lisp
   _ abc.ocaml

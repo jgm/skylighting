@@ -198,6 +198,7 @@ library
                        regex-pcre-builtin,
                        directory,
                        filepath,
+                       case-insensitive,
                        utf8-string,
                        hxt,
                        safe,
@@ -221,6 +222,7 @@ executable skylighting-extract
                        safe,
                        hxt,
                        utf8-string,
+                       case-insensitive,
                        pretty-show,
                        containers,
                        directory

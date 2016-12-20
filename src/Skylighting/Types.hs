@@ -5,6 +5,7 @@ module Skylighting.Types (
                 ContextName
               , KeywordAttr(..)
               , WordSet(..)
+              , makeWordSet
               , Matcher(..)
               , Rule(..)
               , Context(..)
@@ -32,6 +33,7 @@ import Text.Printf
 import Data.Bits
 import Data.Data (Data)
 import Data.Typeable (Typeable)
+import Data.CaseInsensitive (CI, mk)
 
 type ContextName = (String, String)
 
@@ -45,10 +47,18 @@ instance Show KeywordAttr where
             show (keywordCaseSensitive k) ++
            ", keywordDelims = (Data.Set." ++ show (keywordDelims k) ++ ")}"
 
-newtype WordSet = WordSet (Set.Set String)
+data WordSet = CaseSensitiveWords (Set.Set String)
+             | CaseInsensitiveWords (Set.Set (CI String))
+
+makeWordSet :: Bool -> [String] -> WordSet
+makeWordSet True ws = CaseSensitiveWords (Set.fromList ws)
+makeWordSet False ws = CaseInsensitiveWords (Set.map mk (Set.fromList ws))
 
 instance Show WordSet where
-  show (WordSet s) = "(WordSet (Data.Set." ++ show s ++ "))"
+  show (CaseSensitiveWords s) =
+    "(makeWordSet True " ++ show (Set.toList s) ++ ")"
+  show (CaseInsensitiveWords s) =
+    "(makeWordSet False " ++ show (Set.toList s) ++ ")"
 
 data Matcher =
     DetectChar Char

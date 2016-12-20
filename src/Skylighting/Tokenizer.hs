@@ -16,6 +16,7 @@ import Control.Applicative
 import Data.Char (isSpace, isLetter, isAlphaNum, ord)
 import qualified Data.Map as Map
 import Debug.Trace
+import Data.CaseInsensitive (mk)
 
 info :: String -> TokenizerM ()
 info s = do
@@ -374,18 +375,19 @@ getCapture capnum = do
      then mzero
      else return $ capts !! (capnum - 1)
 
-
 -- TODO eventually the keywords need to be a set
 -- though this complicates code generation
 keyword :: KeywordAttr -> WordSet -> TokenizerM String
-keyword kwattr (WordSet kws) = do
+keyword kwattr kws = do
+  prev <- gets prevChar
+  guard $ prev `Set.member` (keywordDelims kwattr)
   inp <- gets input
   let (w,_) = break (`Set.member` (keywordDelims kwattr)) inp
   guard $ not (null w)
-  -- TODO handle keywordCaseInsensitive
-  if w `Set.member` kws
-     then takeChars w
-     else mzero
+  case kws of
+       CaseSensitiveWords ws | w `Set.member` ws -> takeChars w
+       CaseInsensitiveWords ws | mk w `Set.member` ws -> takeChars w
+       _ -> mzero
 
 -- TODO better as a monad instance for token
 -- perhaps use Seq?
