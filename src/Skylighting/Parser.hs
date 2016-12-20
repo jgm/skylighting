@@ -181,7 +181,8 @@ getContexts (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
        fallthroughContext <- getAttrValue "fallthroughContext" -< x
        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
        parsers <- getParsers (casesensitive, (syntaxname,
-                                (itemdatas, (lists, kwattr)))) -< x
+                                (itemdatas, (lists, kwattr)))) $<
+                            getAttrValue "attribute" -< x
        returnA -< Context {
                      cName = name
                    , cSyntax = syntaxname
@@ -211,8 +212,9 @@ getParsers :: (Bool,
                 (String,
                   (Map.Map String TokenType,
                     ([(String, [String])], KeywordAttr))))
+            -> String  -- context attribute
             -> IOSArrow XmlTree [Rule]
-getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
+getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
   listA $ getChildren
      >>>
      proc x -> do
@@ -229,8 +231,9 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
        firstNonSpace <- arr (vBool False) <<< getAttrValue "firstNonSpace" -< x
        column' <- getAttrValue "column" -< x
        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
-       children <- getParsers (casesensitive,
-                                 (syntaxname, (itemdatas, (lists, kwattr)))) -< x
+       children <- getParsers
+                     (casesensitive, (syntaxname, (itemdatas, (lists, kwattr))))
+                     cattr -< x
        let tildeRegex = name == "RegExpr" && take 1 str' == "^"
        let str = if tildeRegex then drop 1 str' else str'
        let column = if tildeRegex
@@ -283,7 +286,9 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
                               else parseContextSwitch syntaxname context
        returnA -< Rule{ rMatcher = matcher,
                         rAttribute = fromMaybe NormalTok $
-                           Map.lookup attribute itemdatas,
+                           if null attribute
+                              then Map.lookup cattr itemdatas
+                              else Map.lookup attribute itemdatas,
                         rIncludeAttribute = includeAttrib,
                         rDynamic = dynamic,
                         rChildren = children,
