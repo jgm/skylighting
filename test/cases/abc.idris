@@ -1,0 +1,61 @@
+||| Blatantly copied from abc.haskell with some extra constructs
+|||
+||| Main module
+module Main
+
+%default total
+%access private
+
+data Vect' : Nat -> a -> Type where
+  Nil : Vect' 0 a
+  (::) : (x : a) -> (xs : Vect' n a) -> Vect' (S n) a
+
+instance Foldable (Vect' n) where
+  foldr f e xs = go f e id xs
+   where
+    go : (t -> acc -> acc) -> acc -> (acc -> acc) -> Vect' n t -> acc
+    go f e g [] = g e
+    go f e g (x :: xs) = go f e (g . (f x)) xs
+
+infixr 7 ++
+
+(++) : (xs' : Vect' m a) -> Vect' n a -> Vect' (m + n) a
+[] ++ ys = ys
+(x :: xs') ++ ys = x :: (xs' ++ ys)
+
+lemma_plus_associativity : (m : Nat) -> (n : Nat) -> (k : Nat) -> m + (n + k) = (m + n) + k
+lemma_plus_associativity m n k = ?lemma_plus_associativity_rhs
+
+-- returns list of all solutions
+--
+-- each solution being a list of blocks
+abc : Vect' n String -> String -> List (List String)
+abc blocks = go (toList blocks) . unpack
+ where
+  go : List String -> List Char -> List (List String)
+  go _ [] = [[]]
+  go blocks (c :: cs) = [ b :: ans | b <- blocks, c `elem` (unpack b), ans <- go (delete b blocks) cs ]
+
+{-
+This is a test of nested {- multiline
+comment -}
+-}
+blocks : Vect' 20 String
+blocks = ["BO", "XK", "DQ", "CP", "NA", "GT", "RE", "TG", "QD", "FS",
+          "JW", "HU", "VI", "AN", "OB", "ER", "FS", "LY", "PC", "ZM"]
+
+public main : IO ()
+main = traverse_ (\w => print (w, not . (== 0) . length $ abc blocks $ toUpper w)) $
+  the (List String) [ "", "A", "BARK", "BoOK", "TrEAT", "COmMoN", "SQUAD", "conFUsE" ]
+
+---------- Proofs ----------
+
+Main.lemma_plus_associativity_rhs = proof
+  intros
+  induction m
+  compute
+  trivial
+  intros
+  compute
+  rewrite ihn__0 
+  trivial

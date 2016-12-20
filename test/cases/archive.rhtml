@@ -1,0 +1,23 @@
+<h1>Event Archive</h1>
+
+
+<% form_for :to_date, @to_date, :url => {:action => 'archive'} do |f| %>
+  <p><label for="start_date">From</label>
+  <%= select_date @from_date, :prefix => 'from' %>
+  <label for="end_date">To</label>
+  <%= select_date @to_date, :prefix => 'to', :start_year => 2000 %></p>
+  <p><label for="event_series">Series</label>
+  <%= select_tag "series", options_for_select(series_list('All'), @series) %>
+  <%= f.submit 'Show events' %>
+  </p>
+<% end %>
+
+<ul>
+<%
+if @events
+%>
+  <%= render :partial => 'events' %>
+<%
+end
+%>
+</ul>

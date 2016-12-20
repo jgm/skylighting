@@ -1,0 +1,55 @@
+import java.util.Arrays
+
+/*
+    Swap elements i and j of a Kotlin Array.
+ */
+fun <T> Array<T>.swap(i: Int, j: Int) {
+    val tmp = this[i]
+    this[i] = this[j]
+    this[j] = tmp
+}
+
+data class Block(val block: String)
+
+/*
+ *  Not the most elegant way but interesting from an highlighting perspective ;)
+ */
+public class ABC() {
+    class object {
+
+        public fun canMakeWord(word: String, blocks: Array<Block>): Boolean {
+            if (word.length() == 0)
+                return true
+
+            val c = Character.toUpperCase(word.charAt(0))
+            for (i in 0..blocks.size - 1) {
+                val b = blocks[i]
+                if (Character.toUpperCase(b.block.charAt(0)) != c && Character.toUpperCase(b.block.charAt(1)) != c)
+                    continue
+                blocks.swap(0, i)
+                if (canMakeWord(word.substring(1), Arrays.copyOfRange(blocks, 1, blocks.size)))
+                    return true
+                blocks.swap(0, i)
+            }
+
+            return false
+        }
+
+        public fun main(args: Array<String>) {
+
+            val blocksString = array("BO", "XK", "DQ", "CP", "NA", "GT", "RE", "TG", "QD", "FS", "JW",
+                                             "HU", "VI", "AN", "OB", "ER", "FS", "LY", "PC", "ZM");
+
+            val blocks = Array(blocksString.size, { s -> Block(blocksString[s])})
+
+            val words = array("", "A", "BARK", "book", "treat", "COMMON", "SQuAd", "CONFUSE");
+
+            for (word in words) {
+                System.out.println("${word}: " + canMakeWord("${word}", blocks))
+            }
+
+        }
+    }
+}
+
+fun main(args: Array<String>) = ABC.main(args)

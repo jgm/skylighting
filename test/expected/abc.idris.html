@@ -1,0 +1,96 @@
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style></head><body><div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="co" title="CommentTok">||| Blatantly copied from abc.haskell with some extra constructs</span>
+<span class="co" title="CommentTok">|||</span>
+<span class="co" title="CommentTok">||| Main module</span>
+<span class="kw" title="KeywordTok">module</span> <span class="dt" title="DataTypeTok">Main</span>
+
+<span class="kw" title="KeywordTok">%default</span> <span class="kw" title="KeywordTok">total</span>
+<span class="kw" title="KeywordTok">%access</span> <span class="kw" title="KeywordTok">private</span>
+
+<span class="kw" title="KeywordTok">data</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Nat</span> <span class="ot" title="OtherTok">-&gt;</span> a <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">Type</span> <span class="kw" title="KeywordTok">where</span>
+  <span class="dt" title="DataTypeTok">Nil</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> <span class="dv" title="DecValTok">0</span> a
+  <span class="fu" title="FunctionTok">(::)</span> <span class="ot" title="OtherTok">:</span> (x <span class="ot" title="OtherTok">:</span> a) <span class="ot" title="OtherTok">-&gt;</span> (xs <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> n a) <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> (<span class="dt" title="DataTypeTok">S</span> n) a
+
+<span class="kw" title="KeywordTok">instance</span> <span class="dt" title="DataTypeTok">Foldable</span> (<span class="dt" title="DataTypeTok">Vect&#39;</span> n) <span class="kw" title="KeywordTok">where</span>
+  foldr f e xs <span class="fu" title="FunctionTok">=</span> go f e id xs
+   <span class="kw" title="KeywordTok">where</span>
+    <span class="fu" title="FunctionTok">go</span> <span class="ot" title="OtherTok">:</span> (t <span class="ot" title="OtherTok">-&gt;</span> acc <span class="ot" title="OtherTok">-&gt;</span> acc) <span class="ot" title="OtherTok">-&gt;</span> acc <span class="ot" title="OtherTok">-&gt;</span> (acc <span class="ot" title="OtherTok">-&gt;</span> acc) <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> n t <span class="ot" title="OtherTok">-&gt;</span> acc
+    go f e g [] <span class="fu" title="FunctionTok">=</span> g e
+    go f e g (x <span class="ot" title="OtherTok">::</span> xs) <span class="fu" title="FunctionTok">=</span> go f e (g <span class="fu" title="FunctionTok">.</span> (f x)) xs
+
+<span class="kw" title="KeywordTok">infixr</span> <span class="dv" title="DecValTok">7</span> <span class="fu" title="FunctionTok">++</span>
+
+<span class="fu" title="FunctionTok">(++)</span> <span class="ot" title="OtherTok">:</span> (xs&#39; <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> m a) <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> n a <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> (m <span class="fu" title="FunctionTok">+</span> n) a
+[] <span class="fu" title="FunctionTok">++</span> ys <span class="fu" title="FunctionTok">=</span> ys
+(x <span class="ot" title="OtherTok">::</span> xs&#39;) <span class="fu" title="FunctionTok">++</span> ys <span class="fu" title="FunctionTok">=</span> x <span class="ot" title="OtherTok">::</span> (xs&#39; <span class="fu" title="FunctionTok">++</span> ys)
+
+<span class="fu" title="FunctionTok">lemma_plus_associativity</span> <span class="ot" title="OtherTok">:</span> (m <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Nat</span>) <span class="ot" title="OtherTok">-&gt;</span> (n <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Nat</span>) <span class="ot" title="OtherTok">-&gt;</span> (k <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Nat</span>) <span class="ot" title="OtherTok">-&gt;</span> m <span class="fu" title="FunctionTok">+</span> (n <span class="fu" title="FunctionTok">+</span> k) <span class="fu" title="FunctionTok">=</span> (m <span class="fu" title="FunctionTok">+</span> n) <span class="fu" title="FunctionTok">+</span> k
+lemma_plus_associativity m n k <span class="fu" title="FunctionTok">=</span> <span class="ot" title="OtherTok">?lemma_plus_associativity_rhs</span>
+
+<span class="co" title="CommentTok">-- returns list of all solutions</span>
+<span class="co" title="CommentTok">--</span>
+<span class="co" title="CommentTok">-- each solution being a list of blocks</span>
+<span class="fu" title="FunctionTok">abc</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> n <span class="dt" title="DataTypeTok">String</span> <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">String</span> <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">List</span> (<span class="dt" title="DataTypeTok">List</span> <span class="dt" title="DataTypeTok">String</span>)
+abc blocks <span class="fu" title="FunctionTok">=</span> go (toList blocks) <span class="fu" title="FunctionTok">.</span> unpack
+ <span class="kw" title="KeywordTok">where</span>
+  <span class="fu" title="FunctionTok">go</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">List</span> <span class="dt" title="DataTypeTok">String</span> <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">List</span> <span class="dt" title="DataTypeTok">Char</span> <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">List</span> (<span class="dt" title="DataTypeTok">List</span> <span class="dt" title="DataTypeTok">String</span>)
+  go <span class="fu" title="FunctionTok">_</span> [] <span class="fu" title="FunctionTok">=</span> [[]]
+  go blocks (c <span class="ot" title="OtherTok">::</span> cs) <span class="fu" title="FunctionTok">=</span> [ b <span class="ot" title="OtherTok">::</span> ans <span class="fu" title="FunctionTok">|</span> b <span class="ot" title="OtherTok">&lt;-</span> blocks, c <span class="fu" title="FunctionTok">`elem`</span> (unpack b), ans <span class="ot" title="OtherTok">&lt;-</span> go (delete b blocks) cs ]
+
+<span class="co" title="CommentTok">{-</span>
+<span class="co" title="CommentTok">This is a test of nested {- multiline</span>
+<span class="co" title="CommentTok">comment -}</span>
+<span class="co" title="CommentTok">-}</span>
+<span class="fu" title="FunctionTok">blocks</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> <span class="dv" title="DecValTok">20</span> <span class="dt" title="DataTypeTok">String</span>
+blocks <span class="fu" title="FunctionTok">=</span> [<span class="st" title="StringTok">&quot;BO&quot;</span>, <span class="st" title="StringTok">&quot;XK&quot;</span>, <span class="st" title="StringTok">&quot;DQ&quot;</span>, <span class="st" title="StringTok">&quot;CP&quot;</span>, <span class="st" title="StringTok">&quot;NA&quot;</span>, <span class="st" title="StringTok">&quot;GT&quot;</span>, <span class="st" title="StringTok">&quot;RE&quot;</span>, <span class="st" title="StringTok">&quot;TG&quot;</span>, <span class="st" title="StringTok">&quot;QD&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>,
+          <span class="st" title="StringTok">&quot;JW&quot;</span>, <span class="st" title="StringTok">&quot;HU&quot;</span>, <span class="st" title="StringTok">&quot;VI&quot;</span>, <span class="st" title="StringTok">&quot;AN&quot;</span>, <span class="st" title="StringTok">&quot;OB&quot;</span>, <span class="st" title="StringTok">&quot;ER&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>, <span class="st" title="StringTok">&quot;LY&quot;</span>, <span class="st" title="StringTok">&quot;PC&quot;</span>, <span class="st" title="StringTok">&quot;ZM&quot;</span>]
+
+<span class="kw" title="KeywordTok">public</span> <span class="fu" title="FunctionTok">main</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">IO</span> ()
+main <span class="fu" title="FunctionTok">=</span> traverse_ (<span class="fu" title="FunctionTok">\</span>w <span class="ot" title="OtherTok">=&gt;</span> print (w, not <span class="fu" title="FunctionTok">.</span> (<span class="fu" title="FunctionTok">==</span> <span class="dv" title="DecValTok">0</span>) <span class="fu" title="FunctionTok">.</span> length <span class="fu" title="FunctionTok">$</span> abc blocks <span class="fu" title="FunctionTok">$</span> toUpper w)) <span class="fu" title="FunctionTok">$</span>
+  the (<span class="dt" title="DataTypeTok">List</span> <span class="dt" title="DataTypeTok">String</span>) [ <span class="st" title="StringTok">&quot;&quot;</span>, <span class="st" title="StringTok">&quot;A&quot;</span>, <span class="st" title="StringTok">&quot;BARK&quot;</span>, <span class="st" title="StringTok">&quot;BoOK&quot;</span>, <span class="st" title="StringTok">&quot;TrEAT&quot;</span>, <span class="st" title="StringTok">&quot;COmMoN&quot;</span>, <span class="st" title="StringTok">&quot;SQUAD&quot;</span>, <span class="st" title="StringTok">&quot;conFUsE&quot;</span> ]
+
+<span class="co" title="CommentTok">---------- Proofs ----------</span>
+
+<span class="dt" title="DataTypeTok">Main</span><span class="fu" title="FunctionTok">.</span>lemma_plus_associativity_rhs <span class="fu" title="FunctionTok">=</span> <span class="kw" title="KeywordTok">proof</span>
+  <span class="kw" title="KeywordTok">intros</span>
+  <span class="kw" title="KeywordTok">induction</span> m
+  <span class="kw" title="KeywordTok">compute</span>
+  <span class="kw" title="KeywordTok">trivial</span>
+  <span class="kw" title="KeywordTok">intros</span>
+  <span class="kw" title="KeywordTok">compute</span>
+  <span class="kw" title="KeywordTok">rewrite</span> ihn__0 
+  <span class="kw" title="KeywordTok">trivial</span></code></pre></div></body>

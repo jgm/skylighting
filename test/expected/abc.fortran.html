@@ -1,0 +1,105 @@
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style></head><body><div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="co" title="CommentTok">!-*- mode: compilation; default-directory: &quot;/tmp/&quot; -*-</span>
+<span class="co" title="CommentTok">!Compilation started at Thu Jun  5 01:52:03</span>
+<span class="co" title="CommentTok">!</span>
+<span class="co" title="CommentTok">!make f &amp;&amp; for a in &#39;&#39; a bark book treat common squad confuse ; do echo $a | ./f ; done</span>
+<span class="co" title="CommentTok">!gfortran -std=f2008 -Wall -fopenmp -ffree-form -fall-intrinsics -fimplicit-none -g f.f08 -o f</span>
+<span class="co" title="CommentTok">! T                      </span>
+<span class="co" title="CommentTok">! T  A                    NA</span>
+<span class="co" title="CommentTok">! T  BARK                 BO NA RE XK</span>
+<span class="co" title="CommentTok">! F  BOOK                 OB BO -- --</span>
+<span class="co" title="CommentTok">! T  TREAT                GT RE ER NA TG</span>
+<span class="co" title="CommentTok">! F  COMMON               PC OB ZM -- -- --</span>
+<span class="co" title="CommentTok">! T  SQUAD                FS DQ HU NA QD</span>
+<span class="co" title="CommentTok">! T  CONFUSE              CP BO NA FS HU FS RE</span>
+<span class="co" title="CommentTok">!</span>
+<span class="co" title="CommentTok">!Compilation finished at Thu Jun  5 01:52:03</span>
+
+<span class="kw" title="KeywordTok">program</span> abc
+  <span class="kw" title="KeywordTok">implicit</span> <span class="kw" title="KeywordTok">none</span>
+  <span class="dt" title="DataTypeTok">integer</span>, <span class="dt" title="DataTypeTok">parameter</span> <span class="dt" title="DataTypeTok">::</span> nblocks <span class="kw" title="KeywordTok">=</span> <span class="dv" title="DecValTok">20</span>
+  <span class="dt" title="DataTypeTok">character(len=nblocks)</span> <span class="dt" title="DataTypeTok">::</span> goal
+  <span class="dt" title="DataTypeTok">integer</span>, <span class="dt" title="DataTypeTok">dimension(nblocks)</span> <span class="dt" title="DataTypeTok">::</span> solution
+  <span class="dt" title="DataTypeTok">character(len=2)</span>, <span class="dt" title="DataTypeTok">dimension(0:nblocks)</span> <span class="dt" title="DataTypeTok">::</span> blocks_copy, blocks <span class="kw" title="KeywordTok">=</span> <span class="kw" title="KeywordTok">&amp;</span>
+       <span class="kw" title="KeywordTok">&amp;(/</span><span class="st" title="StringTok">&#39;--&#39;</span>,<span class="st" title="StringTok">&#39;BO&#39;</span>,<span class="st" title="StringTok">&#39;XK&#39;</span>,<span class="st" title="StringTok">&#39;DQ&#39;</span>,<span class="st" title="StringTok">&#39;CP&#39;</span>,<span class="st" title="StringTok">&#39;NA&#39;</span>,<span class="st" title="StringTok">&#39;GT&#39;</span>,<span class="st" title="StringTok">&#39;RE&#39;</span>,<span class="st" title="StringTok">&#39;TG&#39;</span>,<span class="st" title="StringTok">&#39;QD&#39;</span>,<span class="st" title="StringTok">&#39;FS&#39;</span>,<span class="st" title="StringTok">&#39;JW&#39;</span>,<span class="st" title="StringTok">&#39;HU&#39;</span>,<span class="st" title="StringTok">&#39;VI&#39;</span>,<span class="st" title="StringTok">&#39;AN&#39;</span>,<span class="st" title="StringTok">&#39;OB&#39;</span>,<span class="st" title="StringTok">&#39;ER&#39;</span>,<span class="st" title="StringTok">&#39;FS&#39;</span>,<span class="st" title="StringTok">&#39;LY&#39;</span>,<span class="st" title="StringTok">&#39;PC&#39;</span>,<span class="st" title="StringTok">&#39;ZM&#39;</span><span class="kw" title="KeywordTok">/)</span>
+  <span class="dt" title="DataTypeTok">logical</span> <span class="dt" title="DataTypeTok">::</span> valid
+  <span class="dt" title="DataTypeTok">integer</span> <span class="dt" title="DataTypeTok">::</span> i, iostat
+  <span class="fu" title="FunctionTok">read(</span><span class="dv" title="DecValTok">5</span>,<span class="fu" title="FunctionTok">*</span>,<span class="fu" title="FunctionTok">iostat</span><span class="kw" title="KeywordTok">=</span><span class="fu" title="FunctionTok">iostat)</span> goal
+  <span class="kw" title="KeywordTok">if</span> (iostat <span class="op" title="OperatorTok">.ne.</span> <span class="dv" title="DecValTok">0</span>) goal <span class="kw" title="KeywordTok">=</span> <span class="st" title="StringTok">&#39;&#39;</span>
+  <span class="kw" title="KeywordTok">call</span> ucase(goal)
+  solution <span class="kw" title="KeywordTok">=</span> <span class="dv" title="DecValTok">0</span>
+  blocks_copy <span class="kw" title="KeywordTok">=</span> blocks
+  valid <span class="kw" title="KeywordTok">=</span> assign_block(goal(<span class="dv" title="DecValTok">1</span>:<span class="bu" title="BuiltInTok">len_trim</span>(goal)), blocks, solution, <span class="dv" title="DecValTok">1</span>)
+  <span class="fu" title="FunctionTok">write(</span><span class="dv" title="DecValTok">6</span>,<span class="fu" title="FunctionTok">*)</span> valid, <span class="st" title="StringTok">&#39; &#39;</span><span class="kw" title="KeywordTok">//</span>goal, (<span class="st" title="StringTok">&#39; &#39;</span><span class="kw" title="KeywordTok">//</span>blocks_copy(solution(i)), i<span class="kw" title="KeywordTok">=</span><span class="dv" title="DecValTok">1</span>,<span class="bu" title="BuiltInTok">len_trim</span>(goal))
+
+<span class="co" title="CommentTok">contains</span>
+
+  <span class="kw" title="KeywordTok">recursive</span> <span class="kw" title="KeywordTok">function</span> assign_block(goal, blocks, solution, n) <span class="kw" title="KeywordTok">result</span>(valid)
+    <span class="kw" title="KeywordTok">implicit</span> <span class="kw" title="KeywordTok">none</span>
+    <span class="dt" title="DataTypeTok">logical</span> <span class="dt" title="DataTypeTok">::</span> valid
+    <span class="dt" title="DataTypeTok">character(len=*)</span>, <span class="dt" title="DataTypeTok">intent(in)</span> <span class="dt" title="DataTypeTok">::</span> goal
+    <span class="dt" title="DataTypeTok">character(len=2)</span>, <span class="dt" title="DataTypeTok">dimension(0:)</span>, <span class="dt" title="DataTypeTok">intent(inout)</span> <span class="dt" title="DataTypeTok">::</span> blocks
+    <span class="dt" title="DataTypeTok">integer</span>, <span class="dt" title="DataTypeTok">dimension(:)</span>, <span class="dt" title="DataTypeTok">intent(out)</span> <span class="dt" title="DataTypeTok">::</span> solution
+    <span class="dt" title="DataTypeTok">integer</span>, <span class="dt" title="DataTypeTok">intent(in)</span> <span class="dt" title="DataTypeTok">::</span> n
+    <span class="dt" title="DataTypeTok">integer</span> <span class="dt" title="DataTypeTok">::</span> i
+    <span class="dt" title="DataTypeTok">character(len=2)</span> <span class="dt" title="DataTypeTok">::</span> backing_store
+    valid <span class="kw" title="KeywordTok">=</span> <span class="cn" title="ConstantTok">.true.</span>
+    <span class="kw" title="KeywordTok">if</span> (<span class="fu" title="FunctionTok">len</span>(goal)<span class="kw" title="KeywordTok">+</span><span class="dv" title="DecValTok">1</span> <span class="op" title="OperatorTok">.eq.</span> n) <span class="kw" title="KeywordTok">return</span>
+    <span class="kw" title="KeywordTok">do</span> i<span class="kw" title="KeywordTok">=</span><span class="dv" title="DecValTok">1</span>, <span class="fu" title="FunctionTok">size</span>(blocks)
+       <span class="kw" title="KeywordTok">if</span> (<span class="bu" title="BuiltInTok">index</span>(blocks(i),goal(n:n)) <span class="op" title="OperatorTok">.ne.</span> <span class="dv" title="DecValTok">0</span>) <span class="kw" title="KeywordTok">then</span>
+          backing_store <span class="kw" title="KeywordTok">=</span> blocks(i)
+          blocks(i) <span class="kw" title="KeywordTok">=</span> <span class="st" title="StringTok">&#39;&#39;</span>
+          solution(n) <span class="kw" title="KeywordTok">=</span> i
+          <span class="kw" title="KeywordTok">if</span> (assign_block(goal, blocks, solution, n<span class="kw" title="KeywordTok">+</span><span class="dv" title="DecValTok">1</span>)) <span class="kw" title="KeywordTok">return</span>
+          blocks(i) <span class="kw" title="KeywordTok">=</span> backing_store
+       <span class="kw" title="KeywordTok">end if</span>
+    <span class="kw" title="KeywordTok">end do</span>
+    valid <span class="kw" title="KeywordTok">=</span> <span class="cn" title="ConstantTok">.false.</span>
+    <span class="kw" title="KeywordTok">return</span>
+  <span class="kw" title="KeywordTok">end function</span> assign_block
+
+  <span class="kw" title="KeywordTok">subroutine</span> ucase(a)
+    <span class="kw" title="KeywordTok">implicit</span> <span class="kw" title="KeywordTok">none</span>
+    <span class="dt" title="DataTypeTok">character(len=*)</span>, <span class="dt" title="DataTypeTok">intent(inout)</span> <span class="dt" title="DataTypeTok">::</span> a
+    <span class="dt" title="DataTypeTok">integer</span> <span class="dt" title="DataTypeTok">::</span> i, j
+    <span class="kw" title="KeywordTok">do</span> i <span class="kw" title="KeywordTok">=</span> <span class="dv" title="DecValTok">1</span>, <span class="bu" title="BuiltInTok">len_trim</span>(a)
+       j <span class="kw" title="KeywordTok">=</span> <span class="bu" title="BuiltInTok">index</span>(<span class="st" title="StringTok">&#39;abcdefghijklmnopqrstuvwxyz&#39;</span>,a(i:i))
+       <span class="kw" title="KeywordTok">if</span> (j <span class="op" title="OperatorTok">.ne.</span> <span class="dv" title="DecValTok">0</span>) a(i:i) <span class="kw" title="KeywordTok">=</span> <span class="st" title="StringTok">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span>(j:j)
+    <span class="kw" title="KeywordTok">end do</span>
+  <span class="kw" title="KeywordTok">end subroutine</span> ucase
+
+<span class="kw" title="KeywordTok">end program</span> abc</code></pre></div></body>

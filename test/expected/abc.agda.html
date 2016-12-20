@@ -1,0 +1,75 @@
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style></head><body><div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">module</span> Reals <span class="kw" title="KeywordTok">where</span>
+
+  <span class="co" title="CommentTok">-- (a set with properties of) the reals</span>
+  <span class="kw" title="KeywordTok">data</span> ℝ <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Set</span> <span class="kw" title="KeywordTok">where</span>
+    r0 <span class="ot" title="OtherTok">:</span> ℝ
+    r1 <span class="ot" title="OtherTok">:</span> ℝ
+    <span class="ot" title="OtherTok">_</span>+<span class="ot" title="OtherTok">_</span> <span class="ot" title="OtherTok">:</span> ℝ <span class="ot" title="OtherTok">→</span> ℝ <span class="ot" title="OtherTok">→</span> ℝ
+
+  <span class="co" title="CommentTok">-- equality</span>
+  <span class="kw" title="KeywordTok">data</span> <span class="ot" title="OtherTok">_</span>==<span class="ot" title="OtherTok">_</span> <span class="ot" title="OtherTok">:</span> ℝ <span class="ot" title="OtherTok">→</span> ℝ <span class="ot" title="OtherTok">→</span> <span class="dt" title="DataTypeTok">Set</span> <span class="kw" title="KeywordTok">where</span>
+    AXrefl== <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">∀</span> <span class="ot" title="OtherTok">{</span>r<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r == r
+    AXsymm== <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">∀</span> <span class="ot" title="OtherTok">{</span>r s<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r == s <span class="ot" title="OtherTok">→</span> s == r
+    AXtrans== <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">∀</span> <span class="ot" title="OtherTok">{</span>r s t<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r == s <span class="ot" title="OtherTok">→</span> s == t <span class="ot" title="OtherTok">→</span> r == t
+    AX+0 <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">∀</span> <span class="ot" title="OtherTok">{</span>r<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> <span class="ot" title="OtherTok">(</span>r + r0<span class="ot" title="OtherTok">)</span> == r
+    AXsymm+ <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">∀</span> <span class="ot" title="OtherTok">{</span>r s<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> <span class="ot" title="OtherTok">(</span>r + s<span class="ot" title="OtherTok">)</span> == <span class="ot" title="OtherTok">(</span>s + r<span class="ot" title="OtherTok">)</span>
+    AX+== <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">∀</span> <span class="ot" title="OtherTok">{</span>r s t<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r == s <span class="ot" title="OtherTok">→</span> <span class="ot" title="OtherTok">(</span>r + t<span class="ot" title="OtherTok">)</span> == <span class="ot" title="OtherTok">(</span>s + t<span class="ot" title="OtherTok">)</span>
+
+  THM0+ <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">{</span>r <span class="ot" title="OtherTok">:</span> ℝ<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r == <span class="ot" title="OtherTok">(</span>r0 + r<span class="ot" title="OtherTok">)</span>
+  THM0+ <span class="ot" title="OtherTok">=</span> AXsymm== <span class="ot" title="OtherTok">(</span>AXtrans== AXsymm+ AX+0<span class="ot" title="OtherTok">)</span>
+  <span class="co" title="CommentTok">-- AXsymm+ AX+0   r0 + r == r + r0 and r + r0 == r</span>
+  <span class="co" title="CommentTok">-- AXtrans==      so r0 + r == r</span>
+  <span class="co" title="CommentTok">-- AXsymm==       so r == r0 + r</span>
+
+  THM0+alt <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">{</span>r <span class="ot" title="OtherTok">:</span> ℝ<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r == <span class="ot" title="OtherTok">(</span>r0 + r<span class="ot" title="OtherTok">)</span>
+  THM0+alt <span class="ot" title="OtherTok">{</span>r<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">=</span> AXsymm== <span class="ot" title="OtherTok">{</span>r0 + r<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">{</span>r<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">((</span>AXtrans== <span class="ot" title="OtherTok">{</span>r0 + r<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">{</span>r + r0<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">{</span>r<span class="ot" title="OtherTok">})</span> <span class="ot" title="OtherTok">(</span>AXsymm+ <span class="ot" title="OtherTok">{</span>r0<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">{</span>r<span class="ot" title="OtherTok">})</span> <span class="ot" title="OtherTok">(</span>AX+0 <span class="ot" title="OtherTok">{</span>r<span class="ot" title="OtherTok">}))</span>
+
+  <span class="co" title="CommentTok">-- strict partial ordering</span>
+  <span class="kw" title="KeywordTok">data</span> <span class="ot" title="OtherTok">_</span>&lt;<span class="ot" title="OtherTok">_</span> <span class="ot" title="OtherTok">:</span> ℝ <span class="ot" title="OtherTok">→</span> ℝ <span class="ot" title="OtherTok">→</span> <span class="dt" title="DataTypeTok">Set</span> <span class="kw" title="KeywordTok">where</span>
+    AXtrans&lt;&lt;&lt; <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">∀</span> <span class="ot" title="OtherTok">{</span>r s t<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r &lt; s <span class="ot" title="OtherTok">→</span> s &lt; t <span class="ot" title="OtherTok">→</span> r &lt; t
+    AX&lt;=&lt; <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">∀</span> <span class="ot" title="OtherTok">{</span>r s t<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r &lt; s <span class="ot" title="OtherTok">→</span> s == t <span class="ot" title="OtherTok">→</span> r &lt; t
+    AX=&lt;&lt; <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">∀</span> <span class="ot" title="OtherTok">{</span>r s t<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r == s <span class="ot" title="OtherTok">→</span> s &lt; t <span class="ot" title="OtherTok">→</span> r &lt; t
+    AX0&lt;1 <span class="ot" title="OtherTok">:</span> r0 &lt; r1
+    AX+&lt;&lt; <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">∀</span> <span class="ot" title="OtherTok">{</span>r s t<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r &lt; s <span class="ot" title="OtherTok">→</span> <span class="ot" title="OtherTok">(</span>r + t<span class="ot" title="OtherTok">)</span> &lt; <span class="ot" title="OtherTok">(</span>s + t<span class="ot" title="OtherTok">)</span>
+
+  THM&lt;+1 <span class="ot" title="OtherTok">:</span> <span class="ot" title="OtherTok">{</span>r <span class="ot" title="OtherTok">:</span> ℝ<span class="ot" title="OtherTok">}</span> <span class="ot" title="OtherTok">→</span> r &lt; <span class="ot" title="OtherTok">(</span>r + r1<span class="ot" title="OtherTok">)</span>
+  THM&lt;+1 <span class="ot" title="OtherTok">=</span> AX&lt;=&lt; <span class="ot" title="OtherTok">(</span>AX=&lt;&lt; THM0+ <span class="ot" title="OtherTok">(</span>AX+&lt;&lt; AX0&lt;1<span class="ot" title="OtherTok">))</span> AXsymm+
+  <span class="co" title="CommentTok">-- AX0&lt;1              0 &lt; 1</span>
+  <span class="co" title="CommentTok">-- AX&lt;+ %             so 0 + r &lt; 1 + r</span>
+  <span class="co" title="CommentTok">-- AX=&lt;&lt; lem0+ %      so r &lt; 1 + r</span>
+  <span class="co" title="CommentTok">-- AX&lt;=&lt; % AXsymm+    so r &lt; r + 1</span></code></pre></div></body>

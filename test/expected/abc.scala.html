@@ -1,0 +1,85 @@
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style></head><body><div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">object</span> AbcBlocks <span class="kw" title="KeywordTok">extends</span> App {
+
+  <span class="kw" title="KeywordTok">protected</span> <span class="kw" title="KeywordTok">class</span> <span class="fu" title="FunctionTok">Block</span>(face1: Char, face2: Char) {
+
+    <span class="kw" title="KeywordTok">def</span> <span class="fu" title="FunctionTok">isFacedWith</span>(that: Char) = { that == face1 || that == face2 }
+    <span class="kw" title="KeywordTok">override</span> <span class="kw" title="KeywordTok">def</span> <span class="fu" title="FunctionTok">toString</span>() = face1.<span class="fu" title="FunctionTok">toString</span> + face2
+  }
+  <span class="kw" title="KeywordTok">protected</span> <span class="kw" title="KeywordTok">object</span> Block {
+    <span class="kw" title="KeywordTok">def</span> <span class="fu" title="FunctionTok">apply</span>(faces: String) = <span class="kw" title="KeywordTok">new</span> <span class="fu" title="FunctionTok">Block</span>(faces.<span class="fu" title="FunctionTok">head</span>, faces.<span class="fu" title="FunctionTok">last</span>)
+  }
+
+  <span class="kw" title="KeywordTok">type</span> word = Seq[Block]
+
+  <span class="kw" title="KeywordTok">private</span> <span class="kw" title="KeywordTok">val</span> blocks = List(<span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;BO&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;XK&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;DQ&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;CP&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;NA&quot;</span>),
+    <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;GT&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;RE&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;TG&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;QD&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;FS&quot;</span>),
+    <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;JW&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;HU&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;VI&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;AN&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;OB&quot;</span>),
+    <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;ER&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;FS&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;LY&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;PC&quot;</span>), <span class="fu" title="FunctionTok">Block</span>(<span class="st" title="StringTok">&quot;ZM&quot;</span>))
+
+  <span class="kw" title="KeywordTok">private</span> <span class="kw" title="KeywordTok">def</span> <span class="fu" title="FunctionTok">isMakeable</span>(word: String, blocks: word) = {
+
+    <span class="kw" title="KeywordTok">def</span> <span class="fu" title="FunctionTok">getTheBlocks</span>(word: String, blocks: word) = {
+
+      <span class="kw" title="KeywordTok">def</span> <span class="fu" title="FunctionTok">inner</span>(word: String, toCompare: word, rest: word, accu: word): word = {
+        <span class="kw" title="KeywordTok">if</span> (word.<span class="fu" title="FunctionTok">isEmpty</span> || rest.<span class="fu" title="FunctionTok">isEmpty</span> || toCompare.<span class="fu" title="FunctionTok">isEmpty</span>) accu
+        <span class="kw" title="KeywordTok">else</span> <span class="kw" title="KeywordTok">if</span> (toCompare.<span class="fu" title="FunctionTok">head</span>.<span class="fu" title="FunctionTok">isFacedWith</span>(word.<span class="fu" title="FunctionTok">head</span>)) {
+          <span class="kw" title="KeywordTok">val</span> restant = rest diff List(toCompare.<span class="fu" title="FunctionTok">head</span>)
+          <span class="fu" title="FunctionTok">inner</span>(word.<span class="fu" title="FunctionTok">tail</span>, restant, restant, accu :+ toCompare.<span class="fu" title="FunctionTok">head</span>)
+        } <span class="kw" title="KeywordTok">else</span> <span class="fu" title="FunctionTok">inner</span>(word, toCompare.<span class="fu" title="FunctionTok">tail</span>, rest, accu)
+      }
+      <span class="fu" title="FunctionTok">inner</span>(word, blocks, blocks, Nil)
+    }
+
+    word.<span class="fu" title="FunctionTok">lengthCompare</span>(<span class="fu" title="FunctionTok">getTheBlocks</span>(word, blocks).<span class="fu" title="FunctionTok">size</span>) == <span class="dv" title="DecValTok">0</span>
+  }
+
+  <span class="kw" title="KeywordTok">val</span> words = List(<span class="st" title="StringTok">&quot;A&quot;</span>, <span class="st" title="StringTok">&quot;BARK&quot;</span>, <span class="st" title="StringTok">&quot;BOOK&quot;</span>, <span class="st" title="StringTok">&quot;TREAT&quot;</span>, <span class="st" title="StringTok">&quot;COMMON&quot;</span>, <span class="st" title="StringTok">&quot;SQUAD&quot;</span>, <span class="st" title="StringTok">&quot;CONFUSED&quot;</span>, <span class="st" title="StringTok">&quot;ANBOCPDQERSFTGUVWXLZ&quot;</span>)
+  <span class="co" title="CommentTok">// Automatic tests</span>
+  <span class="fu" title="FunctionTok">assert</span>(<span class="fu" title="FunctionTok">isMakeable</span>(<span class="fu" title="FunctionTok">words</span>(<span class="dv" title="DecValTok">0</span>), blocks))
+  <span class="fu" title="FunctionTok">assert</span>(<span class="fu" title="FunctionTok">isMakeable</span>(<span class="fu" title="FunctionTok">words</span>(<span class="dv" title="DecValTok">1</span>), blocks))
+  <span class="fu" title="FunctionTok">assert</span>(!<span class="fu" title="FunctionTok">isMakeable</span>(<span class="fu" title="FunctionTok">words</span>(<span class="dv" title="DecValTok">2</span>), blocks)) <span class="co" title="CommentTok">// BOOK not</span>
+  <span class="fu" title="FunctionTok">assert</span>(<span class="fu" title="FunctionTok">isMakeable</span>(<span class="fu" title="FunctionTok">words</span>(<span class="dv" title="DecValTok">3</span>), blocks))
+  <span class="fu" title="FunctionTok">assert</span>(!<span class="fu" title="FunctionTok">isMakeable</span>(<span class="fu" title="FunctionTok">words</span>(<span class="dv" title="DecValTok">4</span>), blocks)) <span class="co" title="CommentTok">// COMMON not</span>
+  <span class="fu" title="FunctionTok">assert</span>(<span class="fu" title="FunctionTok">isMakeable</span>(<span class="fu" title="FunctionTok">words</span>(<span class="dv" title="DecValTok">5</span>), blocks))
+  <span class="fu" title="FunctionTok">assert</span>(<span class="fu" title="FunctionTok">isMakeable</span>(<span class="fu" title="FunctionTok">words</span>(<span class="dv" title="DecValTok">6</span>), blocks))
+  <span class="fu" title="FunctionTok">assert</span>(<span class="fu" title="FunctionTok">isMakeable</span>(<span class="fu" title="FunctionTok">words</span>(<span class="dv" title="DecValTok">7</span>), blocks))
+
+  <span class="co" title="CommentTok">//words(7).mkString.permutations.foreach(s =&gt; assert(isMakeable(s, blocks)))</span>
+
+  words.<span class="fu" title="FunctionTok">foreach</span>(w =&gt; <span class="fu" title="FunctionTok">println</span>(s<span class="st" title="StringTok">&quot;$w can${if (isMakeable(w, blocks)) &quot;</span> <span class="st" title="StringTok">&quot; else &quot;</span>not <span class="st" title="StringTok">&quot;}be made.&quot;</span>))
+}</code></pre></div></body>

@@ -1,0 +1,75 @@
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style></head><body><div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">let</span> blocks = [
+  (<span class="ch" title="CharTok">&#39;B&#39;</span>, <span class="ch" title="CharTok">&#39;O&#39;</span>);  (<span class="ch" title="CharTok">&#39;X&#39;</span>, <span class="ch" title="CharTok">&#39;K&#39;</span>);  (<span class="ch" title="CharTok">&#39;D&#39;</span>, <span class="ch" title="CharTok">&#39;Q&#39;</span>);  (<span class="ch" title="CharTok">&#39;C&#39;</span>, <span class="ch" title="CharTok">&#39;P&#39;</span>);
+  (<span class="ch" title="CharTok">&#39;N&#39;</span>, <span class="ch" title="CharTok">&#39;A&#39;</span>);  (<span class="ch" title="CharTok">&#39;G&#39;</span>, <span class="ch" title="CharTok">&#39;T&#39;</span>);  (<span class="ch" title="CharTok">&#39;R&#39;</span>, <span class="ch" title="CharTok">&#39;E&#39;</span>);  (<span class="ch" title="CharTok">&#39;T&#39;</span>, <span class="ch" title="CharTok">&#39;G&#39;</span>);
+  (<span class="ch" title="CharTok">&#39;Q&#39;</span>, <span class="ch" title="CharTok">&#39;D&#39;</span>);  (<span class="ch" title="CharTok">&#39;F&#39;</span>, <span class="ch" title="CharTok">&#39;S&#39;</span>);  (<span class="ch" title="CharTok">&#39;J&#39;</span>, <span class="ch" title="CharTok">&#39;W&#39;</span>);  (<span class="ch" title="CharTok">&#39;H&#39;</span>, <span class="ch" title="CharTok">&#39;U&#39;</span>);
+  (<span class="ch" title="CharTok">&#39;V&#39;</span>, <span class="ch" title="CharTok">&#39;I&#39;</span>);  (<span class="ch" title="CharTok">&#39;A&#39;</span>, <span class="ch" title="CharTok">&#39;N&#39;</span>);  (<span class="ch" title="CharTok">&#39;O&#39;</span>, <span class="ch" title="CharTok">&#39;B&#39;</span>);  (<span class="ch" title="CharTok">&#39;E&#39;</span>, <span class="ch" title="CharTok">&#39;R&#39;</span>);
+  (<span class="ch" title="CharTok">&#39;F&#39;</span>, <span class="ch" title="CharTok">&#39;S&#39;</span>);  (<span class="ch" title="CharTok">&#39;L&#39;</span>, <span class="ch" title="CharTok">&#39;Y&#39;</span>);  (<span class="ch" title="CharTok">&#39;P&#39;</span>, <span class="ch" title="CharTok">&#39;C&#39;</span>);  (<span class="ch" title="CharTok">&#39;Z&#39;</span>, <span class="ch" title="CharTok">&#39;M&#39;</span>);
+]
+
+<span class="kw" title="KeywordTok">let</span> find_letter blocks c =
+  <span class="kw" title="KeywordTok">let</span> found, remaining =
+    <span class="dt" title="DataTypeTok">List</span>.partition (<span class="kw" title="KeywordTok">fun</span> (c1, c2) -&gt; c1 = c || c2 = c) blocks
+  <span class="kw" title="KeywordTok">in</span>
+  <span class="kw" title="KeywordTok">match</span> found <span class="kw" title="KeywordTok">with</span>
+  | _ :: res -&gt; <span class="dt" title="DataTypeTok">Some</span> (res @ remaining)
+  | _ -&gt; <span class="dt" title="DataTypeTok">None</span>
+
+<span class="kw" title="KeywordTok">let</span> can_make_word w =
+  <span class="kw" title="KeywordTok">let</span> n = <span class="dt" title="DataTypeTok">String</span>.length w <span class="kw" title="KeywordTok">in</span>
+  <span class="kw" title="KeywordTok">let</span> <span class="kw" title="KeywordTok">rec</span> aux i _blocks =
+    <span class="kw" title="KeywordTok">if</span> i &gt;= n <span class="kw" title="KeywordTok">then</span> <span class="kw" title="KeywordTok">true</span> <span class="kw" title="KeywordTok">else</span>
+      <span class="kw" title="KeywordTok">match</span> find_letter _blocks w.[i] <span class="kw" title="KeywordTok">with</span>
+      | <span class="dt" title="DataTypeTok">None</span> -&gt; <span class="kw" title="KeywordTok">false</span>
+      | <span class="dt" title="DataTypeTok">Some</span> rem_blocks -&gt;
+          aux (<span class="dt" title="DataTypeTok">succ</span> i) rem_blocks
+  <span class="kw" title="KeywordTok">in</span>
+  aux <span class="dv" title="DecValTok">0</span> blocks
+
+<span class="kw" title="KeywordTok">let</span> test label f (word, should) =
+  <span class="dt" title="DataTypeTok">Printf</span>.printf <span class="st" title="StringTok">&quot;- %s %S = %B  (should: %B)</span><span class="ch" title="CharTok">\n</span><span class="st" title="StringTok">&quot;</span> label word (f word) should
+
+<span class="kw" title="KeywordTok">let</span> () =
+  <span class="dt" title="DataTypeTok">List</span>.iter (test <span class="st" title="StringTok">&quot;can make word&quot;</span> can_make_word) [
+    <span class="st" title="StringTok">&quot;A&quot;</span>, <span class="kw" title="KeywordTok">true</span>;
+    <span class="st" title="StringTok">&quot;BARK&quot;</span>, <span class="kw" title="KeywordTok">true</span>;
+    <span class="st" title="StringTok">&quot;BOOK&quot;</span>, <span class="kw" title="KeywordTok">false</span>;
+    <span class="st" title="StringTok">&quot;TREAT&quot;</span>, <span class="kw" title="KeywordTok">true</span>;
+    <span class="st" title="StringTok">&quot;COMMON&quot;</span>, <span class="kw" title="KeywordTok">false</span>;
+    <span class="st" title="StringTok">&quot;SQUAD&quot;</span>, <span class="kw" title="KeywordTok">true</span>;
+    <span class="st" title="StringTok">&quot;CONFUSE&quot;</span>, <span class="kw" title="KeywordTok">true</span>;
+  ]</code></pre></div></body>
