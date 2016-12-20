@@ -5,4 +5,4 @@ words.each <span class="kw" title="KeywordTok">do</span> |word|
   res = word.each_char.all?{|c| blocks.sub!(<span class="ot" title="OtherTok">/\w?#{</span>c<span class="ot" title="OtherTok">}\w?/i</span>, <span class="st" title="StringTok">&quot;&quot;</span>)}  <span class="co" title="CommentTok">#regexps can be interpolated like strings</span>
   puts <span class="st" title="StringTok">&quot;</span><span class="ot" title="OtherTok">#{</span>word.inspect<span class="ot" title="OtherTok">}</span><span class="st" title="StringTok">: </span><span class="ot" title="OtherTok">#{</span>res<span class="ot" title="OtherTok">}</span><span class="st" title="StringTok">&quot;</span>
 <span class="kw" title="KeywordTok">end</span>
-</code></pre></div></body>
+</code></pre></div>
