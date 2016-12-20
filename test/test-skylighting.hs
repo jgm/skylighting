@@ -46,7 +46,7 @@ runTest regen inpFile = do
                  Just s  -> return s
                  Nothing -> fail $
                     "Could not find syntax definition for " ++ lang
-  actual <- case tokenizeWithTrace syntaxMap syntax code of
+  actual <- case tokenize syntaxMap syntax code of
                  Left e -> fail e
                  Right ls -> return $ renderHtml $
                                 formatHtmlBlock defaultFormatOpts ls
