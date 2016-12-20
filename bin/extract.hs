@@ -49,7 +49,7 @@ main = do
      [ ""
      , "defaultSyntaxMap :: SyntaxMap"
      , "defaultSyntaxMap = Map.fromList ["
-     ]) ++
+     ]) ++ "   " ++
      (intercalate "\n  ,"
        ["  (" ++ show (sName s) ++ ", "
               ++ "Skylighting.Syntax." ++ sShortname s ++ ".syntax)"
