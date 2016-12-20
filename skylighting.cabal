@@ -1,13 +1,19 @@
 name:                skylighting
 version:             0.1.0.0
-synopsis:            Experimental new version of highlighting-kate
--- description:         
+synopsis:            syntax highlighting library
+description:         skylighting is a syntax highlighting library with
+                     support for over one hundred languages.  It derives
+                     its tokenizers from XML syntax definitions used
+                     by KDE's KSyntaxHighlighting framework, so any
+                     syntax supported by that framework can be added.
+                     An optional command-line program is provided.
+
 homepage:            https://github.com/jgm/skylighting
 license:             GPL-2
 license-file:        LICENSE
 author:              John MacFarlane
 maintainer:          jgm@berkeley.edu
--- copyright:           
+copyright:           (C) 2016 John MacFarlane
 category:            Text
 build-type:          Simple
 extra-source-files:  changelog.md
@@ -47,6 +53,10 @@ extra-source-files:  changelog.md
                      tests/cases/life.lua
 
 cabal-version:       >=1.10
+
+source-repository head
+  type:              git
+  location:          https://github.com/jgm/skylighting.git
 
 library
   exposed-modules:     Skylighting
