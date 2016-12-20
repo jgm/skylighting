@@ -11,6 +11,41 @@ maintainer:          jgm@berkeley.edu
 category:            Text
 build-type:          Simple
 extra-source-files:  changelog.md
+                     README.md
+                     Makefile
+                     xml/language.dtd
+                     xml/*.xml
+                     xml/*.xml.patch
+                     tests/expected/*.html
+                     tests/cases/abc.ada
+                     tests/cases/abc.agda
+                     tests/cases/abc.c
+                     tests/cases/abc.clojure
+                     tests/cases/abc.cpp
+                     tests/cases/abc.cs
+                     tests/cases/abc.d
+                     tests/cases/abc.fortran
+                     tests/cases/abc.go
+                     tests/cases/abc.haskell
+                     tests/cases/abc.java
+                     tests/cases/abc.javascript
+                     tests/cases/abc.julia
+                     tests/cases/abc.kotlin
+                     tests/cases/abc.lisp
+                     tests/cases/abc.matlab
+                     tests/cases/abc.ocaml
+                     tests/cases/abc.perl
+                     tests/cases/abc.php
+                     tests/cases/abc.prolog
+                     tests/cases/abc.python
+                     tests/cases/abc.r
+                     tests/cases/abc.ruby
+                     tests/cases/abc.scala
+                     tests/cases/abc.scheme
+                     tests/cases/abc.tcl
+                     tests/cases/archive.rhtml
+                     tests/cases/life.lua
+
 cabal-version:       >=1.10
 
 library
