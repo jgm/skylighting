@@ -1,11 +1,16 @@
-_ fix hang on test/cases/abc.d
-  We have a loop:
-  Processing IncludeRules ("D","CommentRules")
-  Processing IncludeRules ("D","DdocNormal")
-  Processing IncludeRules ("D","CommentRules")
-  Processing IncludeRules ("D","DdocNormal")
-  Processing IncludeRules ("D","CommentRules")
 _ test against h-k for correctness
+  still failing relative to h-k expected output.
+  needs to be analyzed ; might be problems in h-k.
+  _ abc.ada
+  _ abc.c
+  _ abc.clojure
+  _ abc.cpp
+  _ abc.lisp
+  _ abc.ocaml
+  _ abc.r
+  _ abc.scheme
+  _ archive.rhtml
+  _ life.lua
 _ make faster
   (use Set for char and keyword matchers)
   (improve normalize fn?)
