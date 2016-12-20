@@ -76,10 +76,9 @@ extractSyntaxDefinition filename =
                     (arr toItemDataTable <<< getItemDatas) &&&
                     getLists &&&
                     (arr (headDef defaultKeywordAttr) <<< getKeywordAttrs) -< x
-     let startingContext =
-          case contexts of
-               (c:_) -> c
-               []    -> error "No contexts"
+     startingContext <- case contexts of
+                             (c:_) -> returnA -< c
+                             []    -> issueErr "No contexts" >>> none -< ()
      returnA -< Syntax{
                   sName     = lang
                 , sFilename = filename
@@ -247,30 +246,38 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
                case break (=='#') context of
                      (cont, '#':'#':lang) -> (lang, cont)
                      _ -> (syntaxname, context)
-       let matcher = case name of
-                          "DetectChar" -> DetectChar char0
-                          "Detect2Chars" -> Detect2Chars char0 char1
-                          "AnyChar" -> AnyChar str
-                          "RangeDetect" -> RangeDetect char0 char1
-                          "StringDetect" -> StringDetect str
-                          "WordDetect" -> WordDetect str
-                          "RegExpr" -> re
-                          "keyword" -> Keyword kwattr $
-                             maybe (WordSet Set.empty)
-                               (WordSet . Set.fromList)
-                               (lookup str lists)
-                          "Int" -> Int
-                          "Float" -> Float
-                          "HlCOct" -> HlCOct
-                          "HlCHex" -> HlCHex
-                          "HlCStringChar" -> HlCStringChar
-                          "HlCChar" -> HlCChar
-                          "LineContinue" -> LineContinue
-                          "IncludeRules" ->
-                            IncludeRules (incsyntax, inccontext)
-                          "DetectSpaces" -> DetectSpaces
-                          "DetectIdentifier" -> DetectIdentifier
-                          _ -> error $ "Unknown element " ++ name
+       let mbmatcher = case name of
+                         "DetectChar" -> Just $ DetectChar char0
+                         "Detect2Chars" -> Just $ Detect2Chars char0 char1
+                         "AnyChar" -> Just $ AnyChar str
+                         "RangeDetect" -> Just $ RangeDetect char0 char1
+                         "StringDetect" -> Just $ StringDetect str
+                         "WordDetect" -> Just $ WordDetect str
+                         "RegExpr" -> Just $ re
+                         "keyword" -> Just $ Keyword kwattr $
+                            maybe (WordSet Set.empty)
+                              (WordSet . Set.fromList)
+                              (lookup str lists)
+                         "Int" -> Just $ Int
+                         "Float" -> Just $ Float
+                         "HlCOct" -> Just $ HlCOct
+                         "HlCHex" -> Just $ HlCHex
+                         "HlCStringChar" -> Just $ HlCStringChar
+                         "HlCChar" -> Just $ HlCChar
+                         "LineContinue" -> Just $ LineContinue
+                         "IncludeRules" -> Just $
+                           IncludeRules (incsyntax, inccontext)
+                         "DetectSpaces" -> Just $ DetectSpaces
+                         "DetectIdentifier" -> Just $ DetectIdentifier
+                         _ -> Nothing
+
+       matcher <- case mbmatcher of
+                       Nothing -> none
+                                   <<< applyA (arr issueWarn)
+                                   <<< arr ("Unknown element " ++)
+                                   <<< getName -< x
+                       Just m  -> returnA -< m
+
        let contextSwitch = if name == "IncludeRules"
                               then []  -- is this right?
                               else parseContextSwitch syntaxname context
