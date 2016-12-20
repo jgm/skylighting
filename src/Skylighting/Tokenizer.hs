@@ -265,23 +265,33 @@ includeRules mbattr (syn, con) = do
 detectChar :: Bool -> Char -> TokenizerM String
 detectChar dynamic c = do
   c' <- if dynamic && c >= '0' && c <= '9'
-           then do
-             let capNum = ord c - ord '0'
-             res <- getCapture capNum
-             case res of
-                  []    -> mzero
-                  (d:_) -> return d
+           then getDynamicChar c
            else return c
   inp <- gets input
   case inp of
     (x:_) | x == c' -> takeChars [x]
     _ -> mzero
 
+getDynamicChar :: Char -> TokenizerM Char
+getDynamicChar c = do
+  let capNum = ord c - ord '0'
+  res <- getCapture capNum
+  case res of
+       []    -> mzero
+       (d:_) -> return d
+
 detect2Chars :: Bool -> Char -> Char -> TokenizerM String
 detect2Chars dynamic c d = do
-  x <- detectChar dynamic c
-  y <- detectChar dynamic d
-  return (x ++ y)
+  c' <- if dynamic && c >= '0' && c <= '9'
+           then getDynamicChar c
+           else return c
+  d' <- if dynamic && d >= '0' && d <= '9'
+           then getDynamicChar d
+           else return d
+  inp <- gets input
+  case inp of
+    (x:y:_) | x == c' && y == d' -> takeChars [x,y]
+    _ -> mzero
 
 rangeDetect :: Char -> Char -> TokenizerM String
 rangeDetect c d = do
