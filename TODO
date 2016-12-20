@@ -1,6 +1,4 @@
 _ test against h-k for correctness
-_ better exception handling in Parser
-_ better exception handling in Tokenizer
 _ make faster
   (use Set for char and keyword matchers)
   (improve normalize fn?)

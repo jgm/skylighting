@@ -50,7 +50,7 @@ popContextStack :: TokenizerM ()
 popContextStack = do
   ContextStack cs <- gets contextStack
   case cs of
-       []     -> error "Empty context stack" -- programming error
+       []     -> throwError "Empty context stack" -- programming error
        (_:[]) -> return ()  -- don't pop last context
        (_:rest) -> do
          modify (\st -> st{ contextStack = ContextStack rest })
@@ -66,7 +66,7 @@ currentContext :: TokenizerM Context
 currentContext = do
   ContextStack cs <- gets contextStack
   case cs of
-       []    -> error "Empty context stack" -- programming error
+       []    -> throwError "Empty context stack" -- programming error
        (c:_) -> return c
 
 doContextSwitch :: [ContextSwitch] -> TokenizerM ()
@@ -76,7 +76,7 @@ doContextSwitch (Push (syn,c) : xs) = do
   syntaxes <- ask
   case Map.lookup syn syntaxes >>= lookupContext c of
        Just con -> pushContextStack con >> doContextSwitch xs
-       Nothing  -> error $"Unknown syntax or context: " ++ show (syn, c) -- TODO handle better
+       Nothing  -> throwError $ "Unknown syntax or context: " ++ show (syn, c)
 
 lookupContext :: String -> Syntax -> Maybe Context
 lookupContext name syntax =
@@ -260,7 +260,8 @@ includeRules :: Maybe TokenType -> ContextName -> TokenizerM Token
 includeRules mbattr (syn, con) = do
   syntaxes <- ask
   (t,xs) <- case Map.lookup syn syntaxes >>= lookupContext con of
-                 Nothing  -> error $ "Context lookup failed " ++ show (syn, con)
+                 Nothing  -> throwError $ "Context lookup failed " ++
+                                            show (syn, con)
                  Just c   -> msum (map tryRule (cRules c))
   return (fromMaybe t mbattr, xs)
 
