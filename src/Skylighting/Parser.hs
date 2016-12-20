@@ -282,7 +282,7 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
                               then []  -- is this right?
                               else parseContextSwitch syntaxname context
        returnA -< Rule{ rMatcher = matcher,
-                        rAttribute = fromMaybe OtherTok $
+                        rAttribute = fromMaybe NormalTok $
                            Map.lookup attribute itemdatas,
                         rIncludeAttribute = includeAttrib,
                         rDynamic = dynamic,
