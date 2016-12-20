@@ -1,42 +1,42 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">import</span> std.stdio, std.ascii, std.algorithm, std.array, std.range;
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw">import</span> std.stdio, std.ascii, std.algorithm, std.array, std.range;
 
-<span class="kw" title="KeywordTok">alias</span> Block = <span class="dt" title="DataTypeTok">char</span>[<span class="dv" title="DecValTok">2</span>];
+<span class="kw">alias</span> Block = <span class="dt">char</span>[<span class="dv">2</span>];
 
-<span class="dt" title="DataTypeTok">bool</span> canMakeWord(<span class="kw" title="KeywordTok">immutable</span> Block[] blocks, <span class="kw" title="KeywordTok">in</span> <span class="bu" title="BuiltInTok">string</span> word) <span class="kw" title="KeywordTok">pure</span> <span class="kw" title="KeywordTok">nothrow</span>
-<span class="kw" title="KeywordTok">in </span>{
-    <span class="kw" title="KeywordTok">assert</span>(blocks.all!(w =&gt; w[].all!isAlpha));
-    <span class="kw" title="KeywordTok">assert</span>(word.all!isAlpha);
-} <span class="kw" title="KeywordTok">body</span> {
-    <span class="dt" title="DataTypeTok">bool</span> inner(<span class="bu" title="BuiltInTok">size_t</span>[] indexes, <span class="kw" title="KeywordTok">in</span> <span class="bu" title="BuiltInTok">string</span> w) <span class="kw" title="KeywordTok">pure</span> <span class="kw" title="KeywordTok">nothrow</span> {
-        <span class="kw" title="KeywordTok">if</span> (w.empty)
-            <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">true</span>;
+<span class="dt">bool</span> canMakeWord(<span class="kw">immutable</span> Block[] blocks, <span class="kw">in</span> <span class="bu">string</span> word) <span class="kw">pure</span> <span class="kw">nothrow</span>
+<span class="kw">in </span>{
+    <span class="kw">assert</span>(blocks.all!(w =&gt; w[].all!isAlpha));
+    <span class="kw">assert</span>(word.all!isAlpha);
+} <span class="kw">body</span> {
+    <span class="dt">bool</span> inner(<span class="bu">size_t</span>[] indexes, <span class="kw">in</span> <span class="bu">string</span> w) <span class="kw">pure</span> <span class="kw">nothrow</span> {
+        <span class="kw">if</span> (w.empty)
+            <span class="kw">return</span> <span class="kw">true</span>;
 
-        <span class="kw" title="KeywordTok">immutable</span> c = w[<span class="dv" title="DecValTok">0</span>].toUpper;
-        <span class="kw" title="KeywordTok">foreach</span> (<span class="kw" title="KeywordTok">ref</span> idx; indexes) {
-            <span class="kw" title="KeywordTok">if</span> (blocks[idx][<span class="dv" title="DecValTok">0</span>].toUpper != c &amp;&amp;
-                blocks[idx][<span class="dv" title="DecValTok">1</span>].toUpper != c)
-                <span class="kw" title="KeywordTok">continue</span>;
-            indexes[<span class="dv" title="DecValTok">0</span>].swap(idx);
-            <span class="kw" title="KeywordTok">if</span> (inner(indexes[<span class="dv" title="DecValTok">1</span> .. $], w[<span class="dv" title="DecValTok">1</span> .. $]))
-                <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">true</span>;
-            indexes[<span class="dv" title="DecValTok">0</span>].swap(idx);
+        <span class="kw">immutable</span> c = w[<span class="dv">0</span>].toUpper;
+        <span class="kw">foreach</span> (<span class="kw">ref</span> idx; indexes) {
+            <span class="kw">if</span> (blocks[idx][<span class="dv">0</span>].toUpper != c &amp;&amp;
+                blocks[idx][<span class="dv">1</span>].toUpper != c)
+                <span class="kw">continue</span>;
+            indexes[<span class="dv">0</span>].swap(idx);
+            <span class="kw">if</span> (inner(indexes[<span class="dv">1</span> .. $], w[<span class="dv">1</span> .. $]))
+                <span class="kw">return</span> <span class="kw">true</span>;
+            indexes[<span class="dv">0</span>].swap(idx);
         }
 
-        <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">false</span>;
+        <span class="kw">return</span> <span class="kw">false</span>;
     }
 
-    <span class="kw" title="KeywordTok">return</span> inner(blocks.<span class="dt" title="DataTypeTok">length</span>.iota.array, word);
+    <span class="kw">return</span> inner(blocks.<span class="dt">length</span>.iota.array, word);
 }
 
-<span class="dt" title="DataTypeTok">void</span> main() {
-    <span class="kw" title="KeywordTok">enum</span> Block[] blocks = <span class="st" title="StringTok">&quot;BO XK DQ CP NA GT RE TG QD FS</span>
-<span class="st" title="StringTok">                           JW HU VI AN OB ER FS LY PC ZM&quot;</span>.split;
+<span class="dt">void</span> main() {
+    <span class="kw">enum</span> Block[] blocks = <span class="st">&quot;BO XK DQ CP NA GT RE TG QD FS</span>
+<span class="st">                           JW HU VI AN OB ER FS LY PC ZM&quot;</span>.split;
 
-    <span class="kw" title="KeywordTok">foreach</span> (w; <span class="st" title="StringTok">&quot;&quot;</span> ~ <span class="st" title="StringTok">&quot;A BARK BoOK TrEAT COmMoN SQUAD conFUsE&quot;</span>.split)
-        writefln(<span class="ss" title="SpecialStringTok">`&quot;%s&quot; %s`</span>, w, blocks.canMakeWord(w));
+    <span class="kw">foreach</span> (w; <span class="st">&quot;&quot;</span> ~ <span class="st">&quot;A BARK BoOK TrEAT COmMoN SQUAD conFUsE&quot;</span>.split)
+        writefln(<span class="ss">`&quot;%s&quot; %s`</span>, w, blocks.canMakeWord(w));
 
-    <span class="co" title="CommentTok">// Extra test.</span>
-    <span class="kw" title="KeywordTok">immutable</span> Block[] blocks2 = [<span class="st" title="StringTok">&quot;AB&quot;</span>, <span class="st" title="StringTok">&quot;AB&quot;</span>, <span class="st" title="StringTok">&quot;AC&quot;</span>, <span class="st" title="StringTok">&quot;AC&quot;</span>];
-    <span class="kw" title="KeywordTok">immutable</span> word = <span class="st" title="StringTok">&quot;abba&quot;</span>;
-    writefln(<span class="ss" title="SpecialStringTok">`&quot;%s&quot; %s`</span>, word, blocks2.canMakeWord(word));
+    <span class="co">// Extra test.</span>
+    <span class="kw">immutable</span> Block[] blocks2 = [<span class="st">&quot;AB&quot;</span>, <span class="st">&quot;AB&quot;</span>, <span class="st">&quot;AC&quot;</span>, <span class="st">&quot;AC&quot;</span>];
+    <span class="kw">immutable</span> word = <span class="st">&quot;abba&quot;</span>;
+    writefln(<span class="ss">`&quot;%s&quot; %s`</span>, word, blocks2.canMakeWord(word));
 }</code></pre></div>

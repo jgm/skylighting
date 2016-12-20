@@ -1,41 +1,41 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="pp" title="PreprocessorTok">#include </span><span class="im" title="ImportTok">&lt;stdio.h&gt;</span>
-<span class="pp" title="PreprocessorTok">#include </span><span class="im" title="ImportTok">&lt;ctype.h&gt;</span>
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;ctype.h&gt;</span>
 
-<span class="dt" title="DataTypeTok">int</span> can_make_words(<span class="dt" title="DataTypeTok">char</span> **b, <span class="dt" title="DataTypeTok">char</span> *word)
+<span class="dt">int</span> can_make_words(<span class="dt">char</span> **b, <span class="dt">char</span> *word)
 {
-        <span class="dt" title="DataTypeTok">int</span> i, ret = <span class="dv" title="DecValTok">0</span>, c = toupper(*word);
+        <span class="dt">int</span> i, ret = <span class="dv">0</span>, c = toupper(*word);
 
-<span class="pp" title="PreprocessorTok">#define SWAP(a, b) if (a != b) { char * tmp = a; a = b; b = tmp; }</span>
+<span class="pp">#define SWAP(a, b) if (a != b) { char * tmp = a; a = b; b = tmp; }</span>
 
-        <span class="cf" title="ControlFlowTok">if</span> (!c) <span class="cf" title="ControlFlowTok">return</span> <span class="dv" title="DecValTok">1</span>;
-        <span class="cf" title="ControlFlowTok">if</span> (!b[<span class="dv" title="DecValTok">0</span>]) <span class="cf" title="ControlFlowTok">return</span> <span class="dv" title="DecValTok">0</span>;
+        <span class="cf">if</span> (!c) <span class="cf">return</span> <span class="dv">1</span>;
+        <span class="cf">if</span> (!b[<span class="dv">0</span>]) <span class="cf">return</span> <span class="dv">0</span>;
 
-        <span class="cf" title="ControlFlowTok">for</span> (i = <span class="dv" title="DecValTok">0</span>; b[i] &amp;&amp; !ret; i++) {
-                <span class="cf" title="ControlFlowTok">if</span> (b[i][<span class="dv" title="DecValTok">0</span>] != c &amp;&amp; b[i][<span class="dv" title="DecValTok">1</span>] != c) <span class="cf" title="ControlFlowTok">continue</span>;
-                SWAP(b[i], b[<span class="dv" title="DecValTok">0</span>]);
-                ret = can_make_words(b + <span class="dv" title="DecValTok">1</span>, word + <span class="dv" title="DecValTok">1</span>);
-                SWAP(b[i], b[<span class="dv" title="DecValTok">0</span>]);
+        <span class="cf">for</span> (i = <span class="dv">0</span>; b[i] &amp;&amp; !ret; i++) {
+                <span class="cf">if</span> (b[i][<span class="dv">0</span>] != c &amp;&amp; b[i][<span class="dv">1</span>] != c) <span class="cf">continue</span>;
+                SWAP(b[i], b[<span class="dv">0</span>]);
+                ret = can_make_words(b + <span class="dv">1</span>, word + <span class="dv">1</span>);
+                SWAP(b[i], b[<span class="dv">0</span>]);
         }
 
-        <span class="cf" title="ControlFlowTok">return</span> ret;
+        <span class="cf">return</span> ret;
 }
 
-<span class="dt" title="DataTypeTok">int</span> main(<span class="dt" title="DataTypeTok">void</span>)
+<span class="dt">int</span> main(<span class="dt">void</span>)
 {
-        <span class="dt" title="DataTypeTok">char</span>* blocks[] = {
-                <span class="st" title="StringTok">&quot;BO&quot;</span>, <span class="st" title="StringTok">&quot;XK&quot;</span>, <span class="st" title="StringTok">&quot;DQ&quot;</span>, <span class="st" title="StringTok">&quot;CP&quot;</span>, <span class="st" title="StringTok">&quot;NA&quot;</span>, 
-                <span class="st" title="StringTok">&quot;GT&quot;</span>, <span class="st" title="StringTok">&quot;RE&quot;</span>, <span class="st" title="StringTok">&quot;TG&quot;</span>, <span class="st" title="StringTok">&quot;QD&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>, 
-                <span class="st" title="StringTok">&quot;JW&quot;</span>, <span class="st" title="StringTok">&quot;HU&quot;</span>, <span class="st" title="StringTok">&quot;VI&quot;</span>, <span class="st" title="StringTok">&quot;AN&quot;</span>, <span class="st" title="StringTok">&quot;OB&quot;</span>, 
-                <span class="st" title="StringTok">&quot;ER&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>, <span class="st" title="StringTok">&quot;LY&quot;</span>, <span class="st" title="StringTok">&quot;PC&quot;</span>, <span class="st" title="StringTok">&quot;ZM&quot;</span>,
-                <span class="dv" title="DecValTok">0</span> };
+        <span class="dt">char</span>* blocks[] = {
+                <span class="st">&quot;BO&quot;</span>, <span class="st">&quot;XK&quot;</span>, <span class="st">&quot;DQ&quot;</span>, <span class="st">&quot;CP&quot;</span>, <span class="st">&quot;NA&quot;</span>, 
+                <span class="st">&quot;GT&quot;</span>, <span class="st">&quot;RE&quot;</span>, <span class="st">&quot;TG&quot;</span>, <span class="st">&quot;QD&quot;</span>, <span class="st">&quot;FS&quot;</span>, 
+                <span class="st">&quot;JW&quot;</span>, <span class="st">&quot;HU&quot;</span>, <span class="st">&quot;VI&quot;</span>, <span class="st">&quot;AN&quot;</span>, <span class="st">&quot;OB&quot;</span>, 
+                <span class="st">&quot;ER&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;LY&quot;</span>, <span class="st">&quot;PC&quot;</span>, <span class="st">&quot;ZM&quot;</span>,
+                <span class="dv">0</span> };
 
-        <span class="dt" title="DataTypeTok">char</span> *words[] = {
-                <span class="st" title="StringTok">&quot;&quot;</span>, <span class="st" title="StringTok">&quot;A&quot;</span>, <span class="st" title="StringTok">&quot;BARK&quot;</span>, <span class="st" title="StringTok">&quot;BOOK&quot;</span>, <span class="st" title="StringTok">&quot;TREAT&quot;</span>, <span class="st" title="StringTok">&quot;COMMON&quot;</span>, <span class="st" title="StringTok">&quot;SQUAD&quot;</span>, <span class="st" title="StringTok">&quot;Confuse&quot;</span>, <span class="dv" title="DecValTok">0</span>
+        <span class="dt">char</span> *words[] = {
+                <span class="st">&quot;&quot;</span>, <span class="st">&quot;A&quot;</span>, <span class="st">&quot;BARK&quot;</span>, <span class="st">&quot;BOOK&quot;</span>, <span class="st">&quot;TREAT&quot;</span>, <span class="st">&quot;COMMON&quot;</span>, <span class="st">&quot;SQUAD&quot;</span>, <span class="st">&quot;Confuse&quot;</span>, <span class="dv">0</span>
         };
 
-        <span class="dt" title="DataTypeTok">char</span> **w;
-        <span class="cf" title="ControlFlowTok">for</span> (w = words; *w; w++)
-                printf(<span class="st" title="StringTok">&quot;%s</span><span class="sc" title="SpecialCharTok">\t</span><span class="st" title="StringTok">%d</span><span class="sc" title="SpecialCharTok">\n</span><span class="st" title="StringTok">&quot;</span>, *w, can_make_words(blocks, *w));
+        <span class="dt">char</span> **w;
+        <span class="cf">for</span> (w = words; *w; w++)
+                printf(<span class="st">&quot;%s</span><span class="sc">\t</span><span class="st">%d</span><span class="sc">\n</span><span class="st">&quot;</span>, *w, can_make_words(blocks, *w));
 
-        <span class="cf" title="ControlFlowTok">return</span> <span class="dv" title="DecValTok">0</span>;
+        <span class="cf">return</span> <span class="dv">0</span>;
 }</code></pre></div>

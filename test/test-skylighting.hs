@@ -46,7 +46,7 @@ mkTest regen inpFile = localOption (mkTimeout 2000000) $
                  Left e -> fail e
                  Right ls -> return $ renderHtml
                                       (toHtml (formatHtmlBlock opts ls)) ++ "\n"
-        opts = defaultFormatOpts{ titleAttributes = True }
+        opts = defaultFormatOpts{ titleAttributes = False }
         updateGolden = if regen
                           then writeFile (expecteddir </> inpFile <.> "html")
                           else \_ -> return ()
@@ -60,13 +60,6 @@ mkTest regen inpFile = localOption (mkTimeout 2000000) $
                    [ "--- " ++ (expecteddir </> inpFile <.> "html")
                    , "+++ actual" ] ++
                    map vividize (getDiff (lines expected) (lines actual))
-
-formatHtml toks =
-  renderHtml $ H.head (metadata >> css) >> H.body (toHtml fragment)
-  where css = H.style ! A.type_ "text/css" $ toHtml $ styleToCss pygments
-        fragment = formatHtmlBlock opts toks
-        metadata = H.meta H.! A.charset "utf-8"
-        opts = defaultFormatOpts{ titleAttributes = True }
 
 vividize :: Diff String -> String
 vividize (Both s _) = "  " ++ s

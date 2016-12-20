@@ -1,55 +1,55 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">import</span> <span class="im" title="ImportTok">java.util.Arrays</span>
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw">import</span> <span class="im">java.util.Arrays</span>
 
-<span class="co" title="CommentTok">/*</span>
-<span class="co" title="CommentTok">    Swap elements i and j of a Kotlin Array.</span>
-<span class="co" title="CommentTok"> */</span>
-<span class="kw" title="KeywordTok">fun</span> &lt;<span class="dt" title="DataTypeTok">T</span>&gt; <span class="fu" title="FunctionTok">Array</span>&lt;<span class="dt" title="DataTypeTok">T</span>&gt;.<span class="fu" title="FunctionTok">swap</span>(<span class="va" title="VariableTok">i</span>: <span class="dt" title="DataTypeTok">Int</span>, <span class="va" title="VariableTok">j</span>: <span class="dt" title="DataTypeTok">Int</span>) {
-    <span class="kw" title="KeywordTok">val</span> <span class="va" title="VariableTok">tmp</span> = <span class="kw" title="KeywordTok">this</span>[i]
-    <span class="kw" title="KeywordTok">this</span>[i] = <span class="kw" title="KeywordTok">this</span>[j]
-    <span class="kw" title="KeywordTok">this</span>[j] = tmp
+<span class="co">/*</span>
+<span class="co">    Swap elements i and j of a Kotlin Array.</span>
+<span class="co"> */</span>
+<span class="kw">fun</span> &lt;<span class="dt">T</span>&gt; <span class="fu">Array</span>&lt;<span class="dt">T</span>&gt;.<span class="fu">swap</span>(<span class="va">i</span>: <span class="dt">Int</span>, <span class="va">j</span>: <span class="dt">Int</span>) {
+    <span class="kw">val</span> <span class="va">tmp</span> = <span class="kw">this</span>[i]
+    <span class="kw">this</span>[i] = <span class="kw">this</span>[j]
+    <span class="kw">this</span>[j] = tmp
 }
 
-<span class="kw" title="KeywordTok">data</span> <span class="kw" title="KeywordTok">class</span> Block(<span class="kw" title="KeywordTok">val</span> <span class="va" title="VariableTok">block</span>: <span class="dt" title="DataTypeTok">String</span>)
+<span class="kw">data</span> <span class="kw">class</span> Block(<span class="kw">val</span> <span class="va">block</span>: <span class="dt">String</span>)
 
 /*
  *  Not the most elegant way but interesting from an highlighting perspective ;)
  */
-<span class="kw" title="KeywordTok">public</span> <span class="kw" title="KeywordTok">class</span> ABC() {
-    <span class="kw" title="KeywordTok">class</span> <span class="kw" title="KeywordTok">object</span> {
+<span class="kw">public</span> <span class="kw">class</span> ABC() {
+    <span class="kw">class</span> <span class="kw">object</span> {
 
-        <span class="kw" title="KeywordTok">public</span> <span class="kw" title="KeywordTok">fun</span> <span class="fu" title="FunctionTok">canMakeWord</span>(<span class="va" title="VariableTok">word</span>: <span class="dt" title="DataTypeTok">String</span>, <span class="va" title="VariableTok">blocks</span>: <span class="dt" title="DataTypeTok">Array</span>&lt;<span class="va" title="VariableTok">Block</span>&gt;): <span class="dt" title="DataTypeTok">Boolean</span> {
-            <span class="cf" title="ControlFlowTok">if</span> (word.length() == <span class="dv" title="DecValTok">0</span>)
-                <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">true</span>
+        <span class="kw">public</span> <span class="kw">fun</span> <span class="fu">canMakeWord</span>(<span class="va">word</span>: <span class="dt">String</span>, <span class="va">blocks</span>: <span class="dt">Array</span>&lt;<span class="va">Block</span>&gt;): <span class="dt">Boolean</span> {
+            <span class="cf">if</span> (word.length() == <span class="dv">0</span>)
+                <span class="kw">return</span> <span class="kw">true</span>
 
-            <span class="kw" title="KeywordTok">val</span> <span class="va" title="VariableTok">c</span> = Character.toUpperCase(word.charAt(<span class="dv" title="DecValTok">0</span>))
-            <span class="cf" title="ControlFlowTok">for</span> (i <span class="kw" title="KeywordTok">in</span> <span class="dv" title="DecValTok">0</span>..blocks.size - <span class="dv" title="DecValTok">1</span>) {
-                <span class="kw" title="KeywordTok">val</span> <span class="va" title="VariableTok">b</span> = blocks[i]
-                <span class="cf" title="ControlFlowTok">if</span> (Character.toUpperCase(b.block.charAt(<span class="dv" title="DecValTok">0</span>)) != c &amp;&amp; Character.toUpperCase(b.block.charAt(<span class="dv" title="DecValTok">1</span>)) != c)
-                    <span class="cf" title="ControlFlowTok">continue</span>
-                blocks.swap(<span class="dv" title="DecValTok">0</span>, i)
-                <span class="cf" title="ControlFlowTok">if</span> (canMakeWord(word.substring(<span class="dv" title="DecValTok">1</span>), Arrays.copyOfRange(blocks, <span class="dv" title="DecValTok">1</span>, blocks.size)))
-                    <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">true</span>
-                blocks.swap(<span class="dv" title="DecValTok">0</span>, i)
+            <span class="kw">val</span> <span class="va">c</span> = Character.toUpperCase(word.charAt(<span class="dv">0</span>))
+            <span class="cf">for</span> (i <span class="kw">in</span> <span class="dv">0</span>..blocks.size - <span class="dv">1</span>) {
+                <span class="kw">val</span> <span class="va">b</span> = blocks[i]
+                <span class="cf">if</span> (Character.toUpperCase(b.block.charAt(<span class="dv">0</span>)) != c &amp;&amp; Character.toUpperCase(b.block.charAt(<span class="dv">1</span>)) != c)
+                    <span class="cf">continue</span>
+                blocks.swap(<span class="dv">0</span>, i)
+                <span class="cf">if</span> (canMakeWord(word.substring(<span class="dv">1</span>), Arrays.copyOfRange(blocks, <span class="dv">1</span>, blocks.size)))
+                    <span class="kw">return</span> <span class="kw">true</span>
+                blocks.swap(<span class="dv">0</span>, i)
             }
 
-            <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">false</span>
+            <span class="kw">return</span> <span class="kw">false</span>
         }
 
-        <span class="kw" title="KeywordTok">public</span> <span class="kw" title="KeywordTok">fun</span> <span class="fu" title="FunctionTok">main</span>(<span class="va" title="VariableTok">args</span>: <span class="dt" title="DataTypeTok">Array</span>&lt;<span class="va" title="VariableTok">String</span>&gt;) {
+        <span class="kw">public</span> <span class="kw">fun</span> <span class="fu">main</span>(<span class="va">args</span>: <span class="dt">Array</span>&lt;<span class="va">String</span>&gt;) {
 
-            <span class="kw" title="KeywordTok">val</span> <span class="va" title="VariableTok">blocksString</span> = array(<span class="st" title="StringTok">&quot;BO&quot;</span>, <span class="st" title="StringTok">&quot;XK&quot;</span>, <span class="st" title="StringTok">&quot;DQ&quot;</span>, <span class="st" title="StringTok">&quot;CP&quot;</span>, <span class="st" title="StringTok">&quot;NA&quot;</span>, <span class="st" title="StringTok">&quot;GT&quot;</span>, <span class="st" title="StringTok">&quot;RE&quot;</span>, <span class="st" title="StringTok">&quot;TG&quot;</span>, <span class="st" title="StringTok">&quot;QD&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>, <span class="st" title="StringTok">&quot;JW&quot;</span>,
-                                             <span class="st" title="StringTok">&quot;HU&quot;</span>, <span class="st" title="StringTok">&quot;VI&quot;</span>, <span class="st" title="StringTok">&quot;AN&quot;</span>, <span class="st" title="StringTok">&quot;OB&quot;</span>, <span class="st" title="StringTok">&quot;ER&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>, <span class="st" title="StringTok">&quot;LY&quot;</span>, <span class="st" title="StringTok">&quot;PC&quot;</span>, <span class="st" title="StringTok">&quot;ZM&quot;</span>);
+            <span class="kw">val</span> <span class="va">blocksString</span> = array(<span class="st">&quot;BO&quot;</span>, <span class="st">&quot;XK&quot;</span>, <span class="st">&quot;DQ&quot;</span>, <span class="st">&quot;CP&quot;</span>, <span class="st">&quot;NA&quot;</span>, <span class="st">&quot;GT&quot;</span>, <span class="st">&quot;RE&quot;</span>, <span class="st">&quot;TG&quot;</span>, <span class="st">&quot;QD&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;JW&quot;</span>,
+                                             <span class="st">&quot;HU&quot;</span>, <span class="st">&quot;VI&quot;</span>, <span class="st">&quot;AN&quot;</span>, <span class="st">&quot;OB&quot;</span>, <span class="st">&quot;ER&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;LY&quot;</span>, <span class="st">&quot;PC&quot;</span>, <span class="st">&quot;ZM&quot;</span>);
 
-            <span class="kw" title="KeywordTok">val</span> <span class="va" title="VariableTok">blocks</span> = Array(blocksString.size, { s -&gt; Block(blocksString[s])})
+            <span class="kw">val</span> <span class="va">blocks</span> = Array(blocksString.size, { s -&gt; Block(blocksString[s])})
 
-            <span class="kw" title="KeywordTok">val</span> <span class="va" title="VariableTok">words</span> = array(<span class="st" title="StringTok">&quot;&quot;</span>, <span class="st" title="StringTok">&quot;A&quot;</span>, <span class="st" title="StringTok">&quot;BARK&quot;</span>, <span class="st" title="StringTok">&quot;book&quot;</span>, <span class="st" title="StringTok">&quot;treat&quot;</span>, <span class="st" title="StringTok">&quot;COMMON&quot;</span>, <span class="st" title="StringTok">&quot;SQuAd&quot;</span>, <span class="st" title="StringTok">&quot;CONFUSE&quot;</span>);
+            <span class="kw">val</span> <span class="va">words</span> = array(<span class="st">&quot;&quot;</span>, <span class="st">&quot;A&quot;</span>, <span class="st">&quot;BARK&quot;</span>, <span class="st">&quot;book&quot;</span>, <span class="st">&quot;treat&quot;</span>, <span class="st">&quot;COMMON&quot;</span>, <span class="st">&quot;SQuAd&quot;</span>, <span class="st">&quot;CONFUSE&quot;</span>);
 
-            <span class="cf" title="ControlFlowTok">for</span> (word <span class="kw" title="KeywordTok">in</span> words) {
-                System.<span class="kw" title="KeywordTok">out</span>.println(<span class="st" title="StringTok">&quot;${word}: &quot;</span> + canMakeWord(<span class="st" title="StringTok">&quot;${word}&quot;</span>, blocks))
+            <span class="cf">for</span> (word <span class="kw">in</span> words) {
+                System.<span class="kw">out</span>.println(<span class="st">&quot;${word}: &quot;</span> + canMakeWord(<span class="st">&quot;${word}&quot;</span>, blocks))
             }
 
         }
     }
 }
 
-<span class="kw" title="KeywordTok">fun</span> <span class="fu" title="FunctionTok">main</span>(<span class="va" title="VariableTok">args</span>: <span class="dt" title="DataTypeTok">Array</span>&lt;<span class="va" title="VariableTok">String</span>&gt;) = ABC.main(args)</code></pre></div>
+<span class="kw">fun</span> <span class="fu">main</span>(<span class="va">args</span>: <span class="dt">Array</span>&lt;<span class="va">String</span>&gt;) = ABC.main(args)</code></pre></div>

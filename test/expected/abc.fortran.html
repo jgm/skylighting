@@ -1,70 +1,70 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="co" title="CommentTok">!-*- mode: compilation; default-directory: &quot;/tmp/&quot; -*-</span>
-<span class="co" title="CommentTok">!Compilation started at Thu Jun  5 01:52:03</span>
-<span class="co" title="CommentTok">!</span>
-<span class="co" title="CommentTok">!make f &amp;&amp; for a in &#39;&#39; a bark book treat common squad confuse ; do echo $a | ./f ; done</span>
-<span class="co" title="CommentTok">!gfortran -std=f2008 -Wall -fopenmp -ffree-form -fall-intrinsics -fimplicit-none -g f.f08 -o f</span>
-<span class="co" title="CommentTok">! T                      </span>
-<span class="co" title="CommentTok">! T  A                    NA</span>
-<span class="co" title="CommentTok">! T  BARK                 BO NA RE XK</span>
-<span class="co" title="CommentTok">! F  BOOK                 OB BO -- --</span>
-<span class="co" title="CommentTok">! T  TREAT                GT RE ER NA TG</span>
-<span class="co" title="CommentTok">! F  COMMON               PC OB ZM -- -- --</span>
-<span class="co" title="CommentTok">! T  SQUAD                FS DQ HU NA QD</span>
-<span class="co" title="CommentTok">! T  CONFUSE              CP BO NA FS HU FS RE</span>
-<span class="co" title="CommentTok">!</span>
-<span class="co" title="CommentTok">!Compilation finished at Thu Jun  5 01:52:03</span>
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="co">!-*- mode: compilation; default-directory: &quot;/tmp/&quot; -*-</span>
+<span class="co">!Compilation started at Thu Jun  5 01:52:03</span>
+<span class="co">!</span>
+<span class="co">!make f &amp;&amp; for a in &#39;&#39; a bark book treat common squad confuse ; do echo $a | ./f ; done</span>
+<span class="co">!gfortran -std=f2008 -Wall -fopenmp -ffree-form -fall-intrinsics -fimplicit-none -g f.f08 -o f</span>
+<span class="co">! T                      </span>
+<span class="co">! T  A                    NA</span>
+<span class="co">! T  BARK                 BO NA RE XK</span>
+<span class="co">! F  BOOK                 OB BO -- --</span>
+<span class="co">! T  TREAT                GT RE ER NA TG</span>
+<span class="co">! F  COMMON               PC OB ZM -- -- --</span>
+<span class="co">! T  SQUAD                FS DQ HU NA QD</span>
+<span class="co">! T  CONFUSE              CP BO NA FS HU FS RE</span>
+<span class="co">!</span>
+<span class="co">!Compilation finished at Thu Jun  5 01:52:03</span>
 
-<span class="kw" title="KeywordTok">program</span> abc
-  <span class="kw" title="KeywordTok">implicit</span> <span class="kw" title="KeywordTok">none</span>
-  <span class="dt" title="DataTypeTok">integer</span>, <span class="dt" title="DataTypeTok">parameter</span> <span class="dt" title="DataTypeTok">::</span> nblocks <span class="kw" title="KeywordTok">=</span> <span class="dv" title="DecValTok">20</span>
-  <span class="dt" title="DataTypeTok">character(len=nblocks)</span> <span class="dt" title="DataTypeTok">::</span> goal
-  <span class="dt" title="DataTypeTok">integer</span>, <span class="dt" title="DataTypeTok">dimension(nblocks)</span> <span class="dt" title="DataTypeTok">::</span> solution
-  <span class="dt" title="DataTypeTok">character(len=2)</span>, <span class="dt" title="DataTypeTok">dimension(0:nblocks)</span> <span class="dt" title="DataTypeTok">::</span> blocks_copy, blocks <span class="kw" title="KeywordTok">=</span> <span class="kw" title="KeywordTok">&amp;</span>
-       <span class="kw" title="KeywordTok">&amp;(/</span><span class="st" title="StringTok">&#39;--&#39;</span>,<span class="st" title="StringTok">&#39;BO&#39;</span>,<span class="st" title="StringTok">&#39;XK&#39;</span>,<span class="st" title="StringTok">&#39;DQ&#39;</span>,<span class="st" title="StringTok">&#39;CP&#39;</span>,<span class="st" title="StringTok">&#39;NA&#39;</span>,<span class="st" title="StringTok">&#39;GT&#39;</span>,<span class="st" title="StringTok">&#39;RE&#39;</span>,<span class="st" title="StringTok">&#39;TG&#39;</span>,<span class="st" title="StringTok">&#39;QD&#39;</span>,<span class="st" title="StringTok">&#39;FS&#39;</span>,<span class="st" title="StringTok">&#39;JW&#39;</span>,<span class="st" title="StringTok">&#39;HU&#39;</span>,<span class="st" title="StringTok">&#39;VI&#39;</span>,<span class="st" title="StringTok">&#39;AN&#39;</span>,<span class="st" title="StringTok">&#39;OB&#39;</span>,<span class="st" title="StringTok">&#39;ER&#39;</span>,<span class="st" title="StringTok">&#39;FS&#39;</span>,<span class="st" title="StringTok">&#39;LY&#39;</span>,<span class="st" title="StringTok">&#39;PC&#39;</span>,<span class="st" title="StringTok">&#39;ZM&#39;</span><span class="kw" title="KeywordTok">/)</span>
-  <span class="dt" title="DataTypeTok">logical</span> <span class="dt" title="DataTypeTok">::</span> valid
-  <span class="dt" title="DataTypeTok">integer</span> <span class="dt" title="DataTypeTok">::</span> i, iostat
-  <span class="fu" title="FunctionTok">read(</span><span class="dv" title="DecValTok">5</span>,<span class="fu" title="FunctionTok">*</span>,<span class="fu" title="FunctionTok">iostat</span><span class="kw" title="KeywordTok">=</span><span class="fu" title="FunctionTok">iostat)</span> goal
-  <span class="kw" title="KeywordTok">if</span> (iostat <span class="op" title="OperatorTok">.ne.</span> <span class="dv" title="DecValTok">0</span>) goal <span class="kw" title="KeywordTok">=</span> <span class="st" title="StringTok">&#39;&#39;</span>
-  <span class="kw" title="KeywordTok">call</span> ucase(goal)
-  solution <span class="kw" title="KeywordTok">=</span> <span class="dv" title="DecValTok">0</span>
-  blocks_copy <span class="kw" title="KeywordTok">=</span> blocks
-  valid <span class="kw" title="KeywordTok">=</span> assign_block(goal(<span class="dv" title="DecValTok">1</span>:<span class="bu" title="BuiltInTok">len_trim</span>(goal)), blocks, solution, <span class="dv" title="DecValTok">1</span>)
-  <span class="fu" title="FunctionTok">write(</span><span class="dv" title="DecValTok">6</span>,<span class="fu" title="FunctionTok">*)</span> valid, <span class="st" title="StringTok">&#39; &#39;</span><span class="kw" title="KeywordTok">//</span>goal, (<span class="st" title="StringTok">&#39; &#39;</span><span class="kw" title="KeywordTok">//</span>blocks_copy(solution(i)), i<span class="kw" title="KeywordTok">=</span><span class="dv" title="DecValTok">1</span>,<span class="bu" title="BuiltInTok">len_trim</span>(goal))
+<span class="kw">program</span> abc
+  <span class="kw">implicit</span> <span class="kw">none</span>
+  <span class="dt">integer</span>, <span class="dt">parameter</span> <span class="dt">::</span> nblocks <span class="kw">=</span> <span class="dv">20</span>
+  <span class="dt">character(len=nblocks)</span> <span class="dt">::</span> goal
+  <span class="dt">integer</span>, <span class="dt">dimension(nblocks)</span> <span class="dt">::</span> solution
+  <span class="dt">character(len=2)</span>, <span class="dt">dimension(0:nblocks)</span> <span class="dt">::</span> blocks_copy, blocks <span class="kw">=</span> <span class="kw">&amp;</span>
+       <span class="kw">&amp;(/</span><span class="st">&#39;--&#39;</span>,<span class="st">&#39;BO&#39;</span>,<span class="st">&#39;XK&#39;</span>,<span class="st">&#39;DQ&#39;</span>,<span class="st">&#39;CP&#39;</span>,<span class="st">&#39;NA&#39;</span>,<span class="st">&#39;GT&#39;</span>,<span class="st">&#39;RE&#39;</span>,<span class="st">&#39;TG&#39;</span>,<span class="st">&#39;QD&#39;</span>,<span class="st">&#39;FS&#39;</span>,<span class="st">&#39;JW&#39;</span>,<span class="st">&#39;HU&#39;</span>,<span class="st">&#39;VI&#39;</span>,<span class="st">&#39;AN&#39;</span>,<span class="st">&#39;OB&#39;</span>,<span class="st">&#39;ER&#39;</span>,<span class="st">&#39;FS&#39;</span>,<span class="st">&#39;LY&#39;</span>,<span class="st">&#39;PC&#39;</span>,<span class="st">&#39;ZM&#39;</span><span class="kw">/)</span>
+  <span class="dt">logical</span> <span class="dt">::</span> valid
+  <span class="dt">integer</span> <span class="dt">::</span> i, iostat
+  <span class="fu">read(</span><span class="dv">5</span>,<span class="fu">*</span>,<span class="fu">iostat</span><span class="kw">=</span><span class="fu">iostat)</span> goal
+  <span class="kw">if</span> (iostat <span class="op">.ne.</span> <span class="dv">0</span>) goal <span class="kw">=</span> <span class="st">&#39;&#39;</span>
+  <span class="kw">call</span> ucase(goal)
+  solution <span class="kw">=</span> <span class="dv">0</span>
+  blocks_copy <span class="kw">=</span> blocks
+  valid <span class="kw">=</span> assign_block(goal(<span class="dv">1</span>:<span class="bu">len_trim</span>(goal)), blocks, solution, <span class="dv">1</span>)
+  <span class="fu">write(</span><span class="dv">6</span>,<span class="fu">*)</span> valid, <span class="st">&#39; &#39;</span><span class="kw">//</span>goal, (<span class="st">&#39; &#39;</span><span class="kw">//</span>blocks_copy(solution(i)), i<span class="kw">=</span><span class="dv">1</span>,<span class="bu">len_trim</span>(goal))
 
-<span class="co" title="CommentTok">contains</span>
+<span class="co">contains</span>
 
-  <span class="kw" title="KeywordTok">recursive</span> <span class="kw" title="KeywordTok">function</span> assign_block(goal, blocks, solution, n) <span class="kw" title="KeywordTok">result</span>(valid)
-    <span class="kw" title="KeywordTok">implicit</span> <span class="kw" title="KeywordTok">none</span>
-    <span class="dt" title="DataTypeTok">logical</span> <span class="dt" title="DataTypeTok">::</span> valid
-    <span class="dt" title="DataTypeTok">character(len=*)</span>, <span class="dt" title="DataTypeTok">intent(in)</span> <span class="dt" title="DataTypeTok">::</span> goal
-    <span class="dt" title="DataTypeTok">character(len=2)</span>, <span class="dt" title="DataTypeTok">dimension(0:)</span>, <span class="dt" title="DataTypeTok">intent(inout)</span> <span class="dt" title="DataTypeTok">::</span> blocks
-    <span class="dt" title="DataTypeTok">integer</span>, <span class="dt" title="DataTypeTok">dimension(:)</span>, <span class="dt" title="DataTypeTok">intent(out)</span> <span class="dt" title="DataTypeTok">::</span> solution
-    <span class="dt" title="DataTypeTok">integer</span>, <span class="dt" title="DataTypeTok">intent(in)</span> <span class="dt" title="DataTypeTok">::</span> n
-    <span class="dt" title="DataTypeTok">integer</span> <span class="dt" title="DataTypeTok">::</span> i
-    <span class="dt" title="DataTypeTok">character(len=2)</span> <span class="dt" title="DataTypeTok">::</span> backing_store
-    valid <span class="kw" title="KeywordTok">=</span> <span class="cn" title="ConstantTok">.true.</span>
-    <span class="kw" title="KeywordTok">if</span> (<span class="fu" title="FunctionTok">len</span>(goal)<span class="kw" title="KeywordTok">+</span><span class="dv" title="DecValTok">1</span> <span class="op" title="OperatorTok">.eq.</span> n) <span class="kw" title="KeywordTok">return</span>
-    <span class="kw" title="KeywordTok">do</span> i<span class="kw" title="KeywordTok">=</span><span class="dv" title="DecValTok">1</span>, <span class="fu" title="FunctionTok">size</span>(blocks)
-       <span class="kw" title="KeywordTok">if</span> (<span class="bu" title="BuiltInTok">index</span>(blocks(i),goal(n:n)) <span class="op" title="OperatorTok">.ne.</span> <span class="dv" title="DecValTok">0</span>) <span class="kw" title="KeywordTok">then</span>
-          backing_store <span class="kw" title="KeywordTok">=</span> blocks(i)
-          blocks(i) <span class="kw" title="KeywordTok">=</span> <span class="st" title="StringTok">&#39;&#39;</span>
-          solution(n) <span class="kw" title="KeywordTok">=</span> i
-          <span class="kw" title="KeywordTok">if</span> (assign_block(goal, blocks, solution, n<span class="kw" title="KeywordTok">+</span><span class="dv" title="DecValTok">1</span>)) <span class="kw" title="KeywordTok">return</span>
-          blocks(i) <span class="kw" title="KeywordTok">=</span> backing_store
-       <span class="kw" title="KeywordTok">end if</span>
-    <span class="kw" title="KeywordTok">end do</span>
-    valid <span class="kw" title="KeywordTok">=</span> <span class="cn" title="ConstantTok">.false.</span>
-    <span class="kw" title="KeywordTok">return</span>
-  <span class="kw" title="KeywordTok">end function</span> assign_block
+  <span class="kw">recursive</span> <span class="kw">function</span> assign_block(goal, blocks, solution, n) <span class="kw">result</span>(valid)
+    <span class="kw">implicit</span> <span class="kw">none</span>
+    <span class="dt">logical</span> <span class="dt">::</span> valid
+    <span class="dt">character(len=*)</span>, <span class="dt">intent(in)</span> <span class="dt">::</span> goal
+    <span class="dt">character(len=2)</span>, <span class="dt">dimension(0:)</span>, <span class="dt">intent(inout)</span> <span class="dt">::</span> blocks
+    <span class="dt">integer</span>, <span class="dt">dimension(:)</span>, <span class="dt">intent(out)</span> <span class="dt">::</span> solution
+    <span class="dt">integer</span>, <span class="dt">intent(in)</span> <span class="dt">::</span> n
+    <span class="dt">integer</span> <span class="dt">::</span> i
+    <span class="dt">character(len=2)</span> <span class="dt">::</span> backing_store
+    valid <span class="kw">=</span> <span class="cn">.true.</span>
+    <span class="kw">if</span> (<span class="fu">len</span>(goal)<span class="kw">+</span><span class="dv">1</span> <span class="op">.eq.</span> n) <span class="kw">return</span>
+    <span class="kw">do</span> i<span class="kw">=</span><span class="dv">1</span>, <span class="fu">size</span>(blocks)
+       <span class="kw">if</span> (<span class="bu">index</span>(blocks(i),goal(n:n)) <span class="op">.ne.</span> <span class="dv">0</span>) <span class="kw">then</span>
+          backing_store <span class="kw">=</span> blocks(i)
+          blocks(i) <span class="kw">=</span> <span class="st">&#39;&#39;</span>
+          solution(n) <span class="kw">=</span> i
+          <span class="kw">if</span> (assign_block(goal, blocks, solution, n<span class="kw">+</span><span class="dv">1</span>)) <span class="kw">return</span>
+          blocks(i) <span class="kw">=</span> backing_store
+       <span class="kw">end if</span>
+    <span class="kw">end do</span>
+    valid <span class="kw">=</span> <span class="cn">.false.</span>
+    <span class="kw">return</span>
+  <span class="kw">end function</span> assign_block
 
-  <span class="kw" title="KeywordTok">subroutine</span> ucase(a)
-    <span class="kw" title="KeywordTok">implicit</span> <span class="kw" title="KeywordTok">none</span>
-    <span class="dt" title="DataTypeTok">character(len=*)</span>, <span class="dt" title="DataTypeTok">intent(inout)</span> <span class="dt" title="DataTypeTok">::</span> a
-    <span class="dt" title="DataTypeTok">integer</span> <span class="dt" title="DataTypeTok">::</span> i, j
-    <span class="kw" title="KeywordTok">do</span> i <span class="kw" title="KeywordTok">=</span> <span class="dv" title="DecValTok">1</span>, <span class="bu" title="BuiltInTok">len_trim</span>(a)
-       j <span class="kw" title="KeywordTok">=</span> <span class="bu" title="BuiltInTok">index</span>(<span class="st" title="StringTok">&#39;abcdefghijklmnopqrstuvwxyz&#39;</span>,a(i:i))
-       <span class="kw" title="KeywordTok">if</span> (j <span class="op" title="OperatorTok">.ne.</span> <span class="dv" title="DecValTok">0</span>) a(i:i) <span class="kw" title="KeywordTok">=</span> <span class="st" title="StringTok">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span>(j:j)
-    <span class="kw" title="KeywordTok">end do</span>
-  <span class="kw" title="KeywordTok">end subroutine</span> ucase
+  <span class="kw">subroutine</span> ucase(a)
+    <span class="kw">implicit</span> <span class="kw">none</span>
+    <span class="dt">character(len=*)</span>, <span class="dt">intent(inout)</span> <span class="dt">::</span> a
+    <span class="dt">integer</span> <span class="dt">::</span> i, j
+    <span class="kw">do</span> i <span class="kw">=</span> <span class="dv">1</span>, <span class="bu">len_trim</span>(a)
+       j <span class="kw">=</span> <span class="bu">index</span>(<span class="st">&#39;abcdefghijklmnopqrstuvwxyz&#39;</span>,a(i:i))
+       <span class="kw">if</span> (j <span class="op">.ne.</span> <span class="dv">0</span>) a(i:i) <span class="kw">=</span> <span class="st">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span>(j:j)
+    <span class="kw">end do</span>
+  <span class="kw">end subroutine</span> ucase
 
-<span class="kw" title="KeywordTok">end program</span> abc</code></pre></div>
+<span class="kw">end program</span> abc</code></pre></div>

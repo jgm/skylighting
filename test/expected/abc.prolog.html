@@ -1,23 +1,23 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode">abc_problem <span class="kw" title="KeywordTok">:-</span>
-        maplist(abc_problem<span class="kw" title="KeywordTok">,</span> [&#39;&#39;, &#39;<span class="er" title="ErrorTok">A</span>&#39;, bark, bOOk, treAT, &#39;<span class="er" title="ErrorTok">COmmon</span>&#39;, sQuaD, &#39;<span class="er" title="ErrorTok">CONFUSE</span>&#39;])<span class="kw" title="KeywordTok">.</span>
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode">abc_problem <span class="kw">:-</span>
+        maplist(abc_problem<span class="kw">,</span> [&#39;&#39;, &#39;<span class="er">A</span>&#39;, bark, bOOk, treAT, &#39;<span class="er">COmmon</span>&#39;, sQuaD, &#39;<span class="er">CONFUSE</span>&#39;])<span class="kw">.</span>
 
 
-abc_problem(<span class="dt" title="DataTypeTok">Word</span>) <span class="kw" title="KeywordTok">:-</span>
-        <span class="dt" title="DataTypeTok">L</span> <span class="kw" title="KeywordTok">=</span> [[b,o],[x,k],[d,q],[c,p],[n,a],[g,t],[r,e],[t,g],[q,d],[f,s],
-             [j,w],[h,u],[v,i],[a,n],[o,b],[e,r],[f,s],[l,y],[p,c],[z,m]]<span class="kw" title="KeywordTok">,</span>
+abc_problem(<span class="dt">Word</span>) <span class="kw">:-</span>
+        <span class="dt">L</span> <span class="kw">=</span> [[b,o],[x,k],[d,q],[c,p],[n,a],[g,t],[r,e],[t,g],[q,d],[f,s],
+             [j,w],[h,u],[v,i],[a,n],[o,b],[e,r],[f,s],[l,y],[p,c],[z,m]]<span class="kw">,</span>
 
-        (   abc_problem(<span class="dt" title="DataTypeTok">L</span><span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">Word</span>)
-        <span class="kw" title="KeywordTok">-&gt;</span>  format(&#39;~<span class="er" title="ErrorTok">w</span><span class="al" title="AlertTok"> </span><span class="er" title="ErrorTok">OK</span>~<span class="er" title="ErrorTok">n</span>&#39;<span class="kw" title="KeywordTok">,</span> [<span class="dt" title="DataTypeTok">Word</span>])
-        <span class="kw" title="KeywordTok">;</span>   format(&#39;~<span class="er" title="ErrorTok">w</span><span class="al" title="AlertTok"> </span><span class="er" title="ErrorTok">KO</span>~<span class="er" title="ErrorTok">n</span>&#39;<span class="kw" title="KeywordTok">,</span> [<span class="dt" title="DataTypeTok">Word</span>]))<span class="kw" title="KeywordTok">.</span>
+        (   abc_problem(<span class="dt">L</span><span class="kw">,</span> <span class="dt">Word</span>)
+        <span class="kw">-&gt;</span>  format(&#39;~<span class="er">w</span><span class="al"> </span><span class="er">OK</span>~<span class="er">n</span>&#39;<span class="kw">,</span> [<span class="dt">Word</span>])
+        <span class="kw">;</span>   format(&#39;~<span class="er">w</span><span class="al"> </span><span class="er">KO</span>~<span class="er">n</span>&#39;<span class="kw">,</span> [<span class="dt">Word</span>]))<span class="kw">.</span>
 
-abc_problem(<span class="dt" title="DataTypeTok">L</span><span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">Word</span>) <span class="kw" title="KeywordTok">:-</span>
-        <span class="fu" title="FunctionTok">atom_chars</span>(<span class="dt" title="DataTypeTok">Word</span><span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">C_Words</span>)<span class="kw" title="KeywordTok">,</span>
-        maplist(downcase_atom<span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">C_Words</span><span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">D_Words</span>)<span class="kw" title="KeywordTok">,</span>
-        can_makeword(<span class="dt" title="DataTypeTok">L</span><span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">D_Words</span>)<span class="kw" title="KeywordTok">.</span>
+abc_problem(<span class="dt">L</span><span class="kw">,</span> <span class="dt">Word</span>) <span class="kw">:-</span>
+        <span class="fu">atom_chars</span>(<span class="dt">Word</span><span class="kw">,</span> <span class="dt">C_Words</span>)<span class="kw">,</span>
+        maplist(downcase_atom<span class="kw">,</span> <span class="dt">C_Words</span><span class="kw">,</span> <span class="dt">D_Words</span>)<span class="kw">,</span>
+        can_makeword(<span class="dt">L</span><span class="kw">,</span> <span class="dt">D_Words</span>)<span class="kw">.</span>
 
-can_makeword(<span class="dt" title="DataTypeTok">_L</span><span class="kw" title="KeywordTok">,</span> [])<span class="kw" title="KeywordTok">.</span>
+can_makeword(<span class="dt">_L</span><span class="kw">,</span> [])<span class="kw">.</span>
 
-can_makeword(<span class="dt" title="DataTypeTok">L</span><span class="kw" title="KeywordTok">,</span> [<span class="dt" title="DataTypeTok">H</span> <span class="fu" title="FunctionTok">|</span> <span class="dt" title="DataTypeTok">T</span>]) <span class="kw" title="KeywordTok">:-</span>
-        (   select([<span class="dt" title="DataTypeTok">H</span>, <span class="dt" title="DataTypeTok">_</span>]<span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">L</span><span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">L1</span>)<span class="kw" title="KeywordTok">;</span> select([<span class="dt" title="DataTypeTok">_</span>, <span class="dt" title="DataTypeTok">H</span>]<span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">L</span><span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">L1</span>))<span class="kw" title="KeywordTok">,</span>
-        can_makeword(<span class="dt" title="DataTypeTok">L1</span><span class="kw" title="KeywordTok">,</span> <span class="dt" title="DataTypeTok">T</span>)<span class="kw" title="KeywordTok">.</span>
+can_makeword(<span class="dt">L</span><span class="kw">,</span> [<span class="dt">H</span> <span class="fu">|</span> <span class="dt">T</span>]) <span class="kw">:-</span>
+        (   select([<span class="dt">H</span>, <span class="dt">_</span>]<span class="kw">,</span> <span class="dt">L</span><span class="kw">,</span> <span class="dt">L1</span>)<span class="kw">;</span> select([<span class="dt">_</span>, <span class="dt">H</span>]<span class="kw">,</span> <span class="dt">L</span><span class="kw">,</span> <span class="dt">L1</span>))<span class="kw">,</span>
+        can_makeword(<span class="dt">L1</span><span class="kw">,</span> <span class="dt">T</span>)<span class="kw">.</span>
 </code></pre></div>

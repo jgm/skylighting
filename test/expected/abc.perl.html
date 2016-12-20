@@ -1,14 +1,14 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="fu" title="FunctionTok">use</span> <span class="fu" title="FunctionTok">Test::More</span> tests =&gt; <span class="dv" title="DecValTok">8</span>;
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="fu">use</span> <span class="fu">Test::More</span> tests =&gt; <span class="dv">8</span>;
 
-<span class="kw" title="KeywordTok">my</span> <span class="dt" title="DataTypeTok">@blocks1</span> = <span class="kw" title="KeywordTok">qw(</span>BO XK DQ CP NA GT RE TG QD FS JW HU VI AN OB ER FS LY PC ZM<span class="kw" title="KeywordTok">)</span>;
-is(can_make_word(<span class="kw" title="KeywordTok">&quot;</span><span class="st" title="StringTok">A</span><span class="kw" title="KeywordTok">&quot;</span>,       <span class="dt" title="DataTypeTok">@blocks1</span>), <span class="dv" title="DecValTok">1</span>);
-is(can_make_word(<span class="kw" title="KeywordTok">&quot;</span><span class="st" title="StringTok">BARK</span><span class="kw" title="KeywordTok">&quot;</span>,    <span class="dt" title="DataTypeTok">@blocks1</span>), <span class="dv" title="DecValTok">1</span>);
-is(can_make_word(<span class="kw" title="KeywordTok">&quot;</span><span class="st" title="StringTok">BOOK</span><span class="kw" title="KeywordTok">&quot;</span>,    <span class="dt" title="DataTypeTok">@blocks1</span>), <span class="fu" title="FunctionTok">undef</span>);
-is(can_make_word(<span class="kw" title="KeywordTok">&quot;</span><span class="st" title="StringTok">TREAT</span><span class="kw" title="KeywordTok">&quot;</span>,   <span class="dt" title="DataTypeTok">@blocks1</span>), <span class="dv" title="DecValTok">1</span>);
-is(can_make_word(<span class="kw" title="KeywordTok">&quot;</span><span class="st" title="StringTok">COMMON</span><span class="kw" title="KeywordTok">&quot;</span>,  <span class="dt" title="DataTypeTok">@blocks1</span>), <span class="fu" title="FunctionTok">undef</span>);
-is(can_make_word(<span class="kw" title="KeywordTok">&quot;</span><span class="st" title="StringTok">SQUAD</span><span class="kw" title="KeywordTok">&quot;</span>,   <span class="dt" title="DataTypeTok">@blocks1</span>), <span class="dv" title="DecValTok">1</span>);
-is(can_make_word(<span class="kw" title="KeywordTok">&quot;</span><span class="st" title="StringTok">CONFUSE</span><span class="kw" title="KeywordTok">&quot;</span>, <span class="dt" title="DataTypeTok">@blocks1</span>), <span class="dv" title="DecValTok">1</span>);
+<span class="kw">my</span> <span class="dt">@blocks1</span> = <span class="kw">qw(</span>BO XK DQ CP NA GT RE TG QD FS JW HU VI AN OB ER FS LY PC ZM<span class="kw">)</span>;
+is(can_make_word(<span class="kw">&quot;</span><span class="st">A</span><span class="kw">&quot;</span>,       <span class="dt">@blocks1</span>), <span class="dv">1</span>);
+is(can_make_word(<span class="kw">&quot;</span><span class="st">BARK</span><span class="kw">&quot;</span>,    <span class="dt">@blocks1</span>), <span class="dv">1</span>);
+is(can_make_word(<span class="kw">&quot;</span><span class="st">BOOK</span><span class="kw">&quot;</span>,    <span class="dt">@blocks1</span>), <span class="fu">undef</span>);
+is(can_make_word(<span class="kw">&quot;</span><span class="st">TREAT</span><span class="kw">&quot;</span>,   <span class="dt">@blocks1</span>), <span class="dv">1</span>);
+is(can_make_word(<span class="kw">&quot;</span><span class="st">COMMON</span><span class="kw">&quot;</span>,  <span class="dt">@blocks1</span>), <span class="fu">undef</span>);
+is(can_make_word(<span class="kw">&quot;</span><span class="st">SQUAD</span><span class="kw">&quot;</span>,   <span class="dt">@blocks1</span>), <span class="dv">1</span>);
+is(can_make_word(<span class="kw">&quot;</span><span class="st">CONFUSE</span><span class="kw">&quot;</span>, <span class="dt">@blocks1</span>), <span class="dv">1</span>);
 
-<span class="kw" title="KeywordTok">my</span> <span class="dt" title="DataTypeTok">@blocks2</span> = <span class="kw" title="KeywordTok">qw(</span>US TZ AO QA<span class="kw" title="KeywordTok">)</span>;
-is(can_make_word(<span class="kw" title="KeywordTok">&#39;</span><span class="st" title="StringTok">auto</span><span class="kw" title="KeywordTok">&#39;</span>, <span class="dt" title="DataTypeTok">@blocks2</span>), <span class="dv" title="DecValTok">1</span>);
+<span class="kw">my</span> <span class="dt">@blocks2</span> = <span class="kw">qw(</span>US TZ AO QA<span class="kw">)</span>;
+is(can_make_word(<span class="kw">&#39;</span><span class="st">auto</span><span class="kw">&#39;</span>, <span class="dt">@blocks2</span>), <span class="dv">1</span>);
 </code></pre></div>

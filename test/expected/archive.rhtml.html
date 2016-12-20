@@ -1,23 +1,23 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">&lt;h1&gt;</span>Event Archive<span class="kw" title="KeywordTok">&lt;/h1&gt;</span>
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw">&lt;h1&gt;</span>Event Archive<span class="kw">&lt;/h1&gt;</span>
 
 
-<span class="kw" title="KeywordTok">&lt;%</span> form_for <span class="st" title="StringTok">:to_date</span>, <span class="ot" title="OtherTok">@to_date</span>, <span class="st" title="StringTok">:url</span> <span class="ch" title="CharTok">=&gt;</span> <span class="ch" title="CharTok">{</span><span class="st" title="StringTok">:action</span> <span class="ch" title="CharTok">=&gt;</span> <span class="st" title="StringTok">&#39;archive&#39;</span><span class="ch" title="CharTok">}</span> <span class="kw" title="KeywordTok">do</span> <span class="ch" title="CharTok">|</span>f<span class="ch" title="CharTok">|</span> <span class="kw" title="KeywordTok">%&gt;</span>
-  <span class="kw" title="KeywordTok">&lt;p&gt;&lt;label</span><span class="ot" title="OtherTok"> for=</span><span class="st" title="StringTok">&quot;start_date&quot;</span><span class="kw" title="KeywordTok">&gt;</span>From<span class="kw" title="KeywordTok">&lt;/label&gt;</span>
-  <span class="kw" title="KeywordTok">&lt;%=</span> select_date <span class="ot" title="OtherTok">@from_date</span>, <span class="st" title="StringTok">:prefix</span> <span class="ch" title="CharTok">=&gt;</span> <span class="st" title="StringTok">&#39;from&#39;</span> <span class="kw" title="KeywordTok">%&gt;</span>
-  <span class="kw" title="KeywordTok">&lt;label</span><span class="ot" title="OtherTok"> for=</span><span class="st" title="StringTok">&quot;end_date&quot;</span><span class="kw" title="KeywordTok">&gt;</span>To<span class="kw" title="KeywordTok">&lt;/label&gt;</span>
-  <span class="kw" title="KeywordTok">&lt;%=</span> select_date <span class="ot" title="OtherTok">@to_date</span>, <span class="st" title="StringTok">:prefix</span> <span class="ch" title="CharTok">=&gt;</span> <span class="st" title="StringTok">&#39;to&#39;</span>, <span class="st" title="StringTok">:start_year</span> <span class="ch" title="CharTok">=&gt;</span> <span class="dv" title="DecValTok">2000</span> <span class="kw" title="KeywordTok">%&gt;&lt;/p&gt;</span>
-  <span class="kw" title="KeywordTok">&lt;p&gt;&lt;label</span><span class="ot" title="OtherTok"> for=</span><span class="st" title="StringTok">&quot;event_series&quot;</span><span class="kw" title="KeywordTok">&gt;</span>Series<span class="kw" title="KeywordTok">&lt;/label&gt;</span>
-  <span class="kw" title="KeywordTok">&lt;%=</span> select_tag <span class="st" title="StringTok">&quot;series&quot;</span>, options_for_select(series_list(<span class="st" title="StringTok">&#39;All&#39;</span>), <span class="ot" title="OtherTok">@series</span>) <span class="kw" title="KeywordTok">%&gt;</span>
-  <span class="kw" title="KeywordTok">&lt;%=</span> f.submit <span class="st" title="StringTok">&#39;Show events&#39;</span> <span class="kw" title="KeywordTok">%&gt;</span>
-  <span class="kw" title="KeywordTok">&lt;/p&gt;</span>
-<span class="kw" title="KeywordTok">&lt;%</span> <span class="kw" title="KeywordTok">end</span> <span class="kw" title="KeywordTok">%&gt;</span>
+<span class="kw">&lt;%</span> form_for <span class="st">:to_date</span>, <span class="ot">@to_date</span>, <span class="st">:url</span> <span class="ch">=&gt;</span> <span class="ch">{</span><span class="st">:action</span> <span class="ch">=&gt;</span> <span class="st">&#39;archive&#39;</span><span class="ch">}</span> <span class="kw">do</span> <span class="ch">|</span>f<span class="ch">|</span> <span class="kw">%&gt;</span>
+  <span class="kw">&lt;p&gt;&lt;label</span><span class="ot"> for=</span><span class="st">&quot;start_date&quot;</span><span class="kw">&gt;</span>From<span class="kw">&lt;/label&gt;</span>
+  <span class="kw">&lt;%=</span> select_date <span class="ot">@from_date</span>, <span class="st">:prefix</span> <span class="ch">=&gt;</span> <span class="st">&#39;from&#39;</span> <span class="kw">%&gt;</span>
+  <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;end_date&quot;</span><span class="kw">&gt;</span>To<span class="kw">&lt;/label&gt;</span>
+  <span class="kw">&lt;%=</span> select_date <span class="ot">@to_date</span>, <span class="st">:prefix</span> <span class="ch">=&gt;</span> <span class="st">&#39;to&#39;</span>, <span class="st">:start_year</span> <span class="ch">=&gt;</span> <span class="dv">2000</span> <span class="kw">%&gt;&lt;/p&gt;</span>
+  <span class="kw">&lt;p&gt;&lt;label</span><span class="ot"> for=</span><span class="st">&quot;event_series&quot;</span><span class="kw">&gt;</span>Series<span class="kw">&lt;/label&gt;</span>
+  <span class="kw">&lt;%=</span> select_tag <span class="st">&quot;series&quot;</span>, options_for_select(series_list(<span class="st">&#39;All&#39;</span>), <span class="ot">@series</span>) <span class="kw">%&gt;</span>
+  <span class="kw">&lt;%=</span> f.submit <span class="st">&#39;Show events&#39;</span> <span class="kw">%&gt;</span>
+  <span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;%</span> <span class="kw">end</span> <span class="kw">%&gt;</span>
 
-<span class="kw" title="KeywordTok">&lt;ul&gt;</span>
-<span class="kw" title="KeywordTok">&lt;%</span>
-<span class="kw" title="KeywordTok">if</span> <span class="ot" title="OtherTok">@events</span>
-<span class="kw" title="KeywordTok">%&gt;</span>
-  <span class="kw" title="KeywordTok">&lt;%=</span> render <span class="st" title="StringTok">:partial</span> <span class="ch" title="CharTok">=&gt;</span> <span class="st" title="StringTok">&#39;events&#39;</span> <span class="kw" title="KeywordTok">%&gt;</span>
-<span class="kw" title="KeywordTok">&lt;%</span>
-<span class="kw" title="KeywordTok">end</span>
-<span class="kw" title="KeywordTok">%&gt;</span>
-<span class="kw" title="KeywordTok">&lt;/ul&gt;</span></code></pre></div>
+<span class="kw">&lt;ul&gt;</span>
+<span class="kw">&lt;%</span>
+<span class="kw">if</span> <span class="ot">@events</span>
+<span class="kw">%&gt;</span>
+  <span class="kw">&lt;%=</span> render <span class="st">:partial</span> <span class="ch">=&gt;</span> <span class="st">&#39;events&#39;</span> <span class="kw">%&gt;</span>
+<span class="kw">&lt;%</span>
+<span class="kw">end</span>
+<span class="kw">%&gt;</span>
+<span class="kw">&lt;/ul&gt;</span></code></pre></div>

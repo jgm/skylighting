@@ -1,61 +1,61 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="co" title="CommentTok">||| Blatantly copied from abc.haskell with some extra constructs</span>
-<span class="co" title="CommentTok">|||</span>
-<span class="co" title="CommentTok">||| Main module</span>
-<span class="kw" title="KeywordTok">module</span> <span class="dt" title="DataTypeTok">Main</span>
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="co">||| Blatantly copied from abc.haskell with some extra constructs</span>
+<span class="co">|||</span>
+<span class="co">||| Main module</span>
+<span class="kw">module</span> <span class="dt">Main</span>
 
-<span class="kw" title="KeywordTok">%default</span> <span class="kw" title="KeywordTok">total</span>
-<span class="kw" title="KeywordTok">%access</span> <span class="kw" title="KeywordTok">private</span>
+<span class="kw">%default</span> <span class="kw">total</span>
+<span class="kw">%access</span> <span class="kw">private</span>
 
-<span class="kw" title="KeywordTok">data</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Nat</span> <span class="ot" title="OtherTok">-&gt;</span> a <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">Type</span> <span class="kw" title="KeywordTok">where</span>
-  <span class="dt" title="DataTypeTok">Nil</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> <span class="dv" title="DecValTok">0</span> a
-  <span class="fu" title="FunctionTok">(::)</span> <span class="ot" title="OtherTok">:</span> (x <span class="ot" title="OtherTok">:</span> a) <span class="ot" title="OtherTok">-&gt;</span> (xs <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> n a) <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> (<span class="dt" title="DataTypeTok">S</span> n) a
+<span class="kw">data</span> <span class="dt">Vect&#39;</span> <span class="ot">:</span> <span class="dt">Nat</span> <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Type</span> <span class="kw">where</span>
+  <span class="dt">Nil</span> <span class="ot">:</span> <span class="dt">Vect&#39;</span> <span class="dv">0</span> a
+  <span class="fu">(::)</span> <span class="ot">:</span> (x <span class="ot">:</span> a) <span class="ot">-&gt;</span> (xs <span class="ot">:</span> <span class="dt">Vect&#39;</span> n a) <span class="ot">-&gt;</span> <span class="dt">Vect&#39;</span> (<span class="dt">S</span> n) a
 
-<span class="kw" title="KeywordTok">instance</span> <span class="dt" title="DataTypeTok">Foldable</span> (<span class="dt" title="DataTypeTok">Vect&#39;</span> n) <span class="kw" title="KeywordTok">where</span>
-  foldr f e xs <span class="fu" title="FunctionTok">=</span> go f e id xs
-   <span class="kw" title="KeywordTok">where</span>
-    <span class="fu" title="FunctionTok">go</span> <span class="ot" title="OtherTok">:</span> (t <span class="ot" title="OtherTok">-&gt;</span> acc <span class="ot" title="OtherTok">-&gt;</span> acc) <span class="ot" title="OtherTok">-&gt;</span> acc <span class="ot" title="OtherTok">-&gt;</span> (acc <span class="ot" title="OtherTok">-&gt;</span> acc) <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> n t <span class="ot" title="OtherTok">-&gt;</span> acc
-    go f e g [] <span class="fu" title="FunctionTok">=</span> g e
-    go f e g (x <span class="ot" title="OtherTok">::</span> xs) <span class="fu" title="FunctionTok">=</span> go f e (g <span class="fu" title="FunctionTok">.</span> (f x)) xs
+<span class="kw">instance</span> <span class="dt">Foldable</span> (<span class="dt">Vect&#39;</span> n) <span class="kw">where</span>
+  foldr f e xs <span class="fu">=</span> go f e id xs
+   <span class="kw">where</span>
+    <span class="fu">go</span> <span class="ot">:</span> (t <span class="ot">-&gt;</span> acc <span class="ot">-&gt;</span> acc) <span class="ot">-&gt;</span> acc <span class="ot">-&gt;</span> (acc <span class="ot">-&gt;</span> acc) <span class="ot">-&gt;</span> <span class="dt">Vect&#39;</span> n t <span class="ot">-&gt;</span> acc
+    go f e g [] <span class="fu">=</span> g e
+    go f e g (x <span class="ot">::</span> xs) <span class="fu">=</span> go f e (g <span class="fu">.</span> (f x)) xs
 
-<span class="kw" title="KeywordTok">infixr</span> <span class="dv" title="DecValTok">7</span> <span class="fu" title="FunctionTok">++</span>
+<span class="kw">infixr</span> <span class="dv">7</span> <span class="fu">++</span>
 
-<span class="fu" title="FunctionTok">(++)</span> <span class="ot" title="OtherTok">:</span> (xs&#39; <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> m a) <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> n a <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> (m <span class="fu" title="FunctionTok">+</span> n) a
-[] <span class="fu" title="FunctionTok">++</span> ys <span class="fu" title="FunctionTok">=</span> ys
-(x <span class="ot" title="OtherTok">::</span> xs&#39;) <span class="fu" title="FunctionTok">++</span> ys <span class="fu" title="FunctionTok">=</span> x <span class="ot" title="OtherTok">::</span> (xs&#39; <span class="fu" title="FunctionTok">++</span> ys)
+<span class="fu">(++)</span> <span class="ot">:</span> (xs&#39; <span class="ot">:</span> <span class="dt">Vect&#39;</span> m a) <span class="ot">-&gt;</span> <span class="dt">Vect&#39;</span> n a <span class="ot">-&gt;</span> <span class="dt">Vect&#39;</span> (m <span class="fu">+</span> n) a
+[] <span class="fu">++</span> ys <span class="fu">=</span> ys
+(x <span class="ot">::</span> xs&#39;) <span class="fu">++</span> ys <span class="fu">=</span> x <span class="ot">::</span> (xs&#39; <span class="fu">++</span> ys)
 
-<span class="fu" title="FunctionTok">lemma_plus_associativity</span> <span class="ot" title="OtherTok">:</span> (m <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Nat</span>) <span class="ot" title="OtherTok">-&gt;</span> (n <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Nat</span>) <span class="ot" title="OtherTok">-&gt;</span> (k <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Nat</span>) <span class="ot" title="OtherTok">-&gt;</span> m <span class="fu" title="FunctionTok">+</span> (n <span class="fu" title="FunctionTok">+</span> k) <span class="fu" title="FunctionTok">=</span> (m <span class="fu" title="FunctionTok">+</span> n) <span class="fu" title="FunctionTok">+</span> k
-lemma_plus_associativity m n k <span class="fu" title="FunctionTok">=</span> <span class="ot" title="OtherTok">?lemma_plus_associativity_rhs</span>
+<span class="fu">lemma_plus_associativity</span> <span class="ot">:</span> (m <span class="ot">:</span> <span class="dt">Nat</span>) <span class="ot">-&gt;</span> (n <span class="ot">:</span> <span class="dt">Nat</span>) <span class="ot">-&gt;</span> (k <span class="ot">:</span> <span class="dt">Nat</span>) <span class="ot">-&gt;</span> m <span class="fu">+</span> (n <span class="fu">+</span> k) <span class="fu">=</span> (m <span class="fu">+</span> n) <span class="fu">+</span> k
+lemma_plus_associativity m n k <span class="fu">=</span> <span class="ot">?lemma_plus_associativity_rhs</span>
 
-<span class="co" title="CommentTok">-- returns list of all solutions</span>
-<span class="co" title="CommentTok">--</span>
-<span class="co" title="CommentTok">-- each solution being a list of blocks</span>
-<span class="fu" title="FunctionTok">abc</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> n <span class="dt" title="DataTypeTok">String</span> <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">String</span> <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">List</span> (<span class="dt" title="DataTypeTok">List</span> <span class="dt" title="DataTypeTok">String</span>)
-abc blocks <span class="fu" title="FunctionTok">=</span> go (toList blocks) <span class="fu" title="FunctionTok">.</span> unpack
- <span class="kw" title="KeywordTok">where</span>
-  <span class="fu" title="FunctionTok">go</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">List</span> <span class="dt" title="DataTypeTok">String</span> <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">List</span> <span class="dt" title="DataTypeTok">Char</span> <span class="ot" title="OtherTok">-&gt;</span> <span class="dt" title="DataTypeTok">List</span> (<span class="dt" title="DataTypeTok">List</span> <span class="dt" title="DataTypeTok">String</span>)
-  go <span class="fu" title="FunctionTok">_</span> [] <span class="fu" title="FunctionTok">=</span> [[]]
-  go blocks (c <span class="ot" title="OtherTok">::</span> cs) <span class="fu" title="FunctionTok">=</span> [ b <span class="ot" title="OtherTok">::</span> ans <span class="fu" title="FunctionTok">|</span> b <span class="ot" title="OtherTok">&lt;-</span> blocks, c <span class="fu" title="FunctionTok">`elem`</span> (unpack b), ans <span class="ot" title="OtherTok">&lt;-</span> go (delete b blocks) cs ]
+<span class="co">-- returns list of all solutions</span>
+<span class="co">--</span>
+<span class="co">-- each solution being a list of blocks</span>
+<span class="fu">abc</span> <span class="ot">:</span> <span class="dt">Vect&#39;</span> n <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">List</span> (<span class="dt">List</span> <span class="dt">String</span>)
+abc blocks <span class="fu">=</span> go (toList blocks) <span class="fu">.</span> unpack
+ <span class="kw">where</span>
+  <span class="fu">go</span> <span class="ot">:</span> <span class="dt">List</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">List</span> <span class="dt">Char</span> <span class="ot">-&gt;</span> <span class="dt">List</span> (<span class="dt">List</span> <span class="dt">String</span>)
+  go <span class="fu">_</span> [] <span class="fu">=</span> [[]]
+  go blocks (c <span class="ot">::</span> cs) <span class="fu">=</span> [ b <span class="ot">::</span> ans <span class="fu">|</span> b <span class="ot">&lt;-</span> blocks, c <span class="fu">`elem`</span> (unpack b), ans <span class="ot">&lt;-</span> go (delete b blocks) cs ]
 
-<span class="co" title="CommentTok">{-</span>
-<span class="co" title="CommentTok">This is a test of nested {- multiline</span>
-<span class="co" title="CommentTok">comment -}</span>
-<span class="co" title="CommentTok">-}</span>
-<span class="fu" title="FunctionTok">blocks</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">Vect&#39;</span> <span class="dv" title="DecValTok">20</span> <span class="dt" title="DataTypeTok">String</span>
-blocks <span class="fu" title="FunctionTok">=</span> [<span class="st" title="StringTok">&quot;BO&quot;</span>, <span class="st" title="StringTok">&quot;XK&quot;</span>, <span class="st" title="StringTok">&quot;DQ&quot;</span>, <span class="st" title="StringTok">&quot;CP&quot;</span>, <span class="st" title="StringTok">&quot;NA&quot;</span>, <span class="st" title="StringTok">&quot;GT&quot;</span>, <span class="st" title="StringTok">&quot;RE&quot;</span>, <span class="st" title="StringTok">&quot;TG&quot;</span>, <span class="st" title="StringTok">&quot;QD&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>,
-          <span class="st" title="StringTok">&quot;JW&quot;</span>, <span class="st" title="StringTok">&quot;HU&quot;</span>, <span class="st" title="StringTok">&quot;VI&quot;</span>, <span class="st" title="StringTok">&quot;AN&quot;</span>, <span class="st" title="StringTok">&quot;OB&quot;</span>, <span class="st" title="StringTok">&quot;ER&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>, <span class="st" title="StringTok">&quot;LY&quot;</span>, <span class="st" title="StringTok">&quot;PC&quot;</span>, <span class="st" title="StringTok">&quot;ZM&quot;</span>]
+<span class="co">{-</span>
+<span class="co">This is a test of nested {- multiline</span>
+<span class="co">comment -}</span>
+<span class="co">-}</span>
+<span class="fu">blocks</span> <span class="ot">:</span> <span class="dt">Vect&#39;</span> <span class="dv">20</span> <span class="dt">String</span>
+blocks <span class="fu">=</span> [<span class="st">&quot;BO&quot;</span>, <span class="st">&quot;XK&quot;</span>, <span class="st">&quot;DQ&quot;</span>, <span class="st">&quot;CP&quot;</span>, <span class="st">&quot;NA&quot;</span>, <span class="st">&quot;GT&quot;</span>, <span class="st">&quot;RE&quot;</span>, <span class="st">&quot;TG&quot;</span>, <span class="st">&quot;QD&quot;</span>, <span class="st">&quot;FS&quot;</span>,
+          <span class="st">&quot;JW&quot;</span>, <span class="st">&quot;HU&quot;</span>, <span class="st">&quot;VI&quot;</span>, <span class="st">&quot;AN&quot;</span>, <span class="st">&quot;OB&quot;</span>, <span class="st">&quot;ER&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;LY&quot;</span>, <span class="st">&quot;PC&quot;</span>, <span class="st">&quot;ZM&quot;</span>]
 
-<span class="kw" title="KeywordTok">public</span> <span class="fu" title="FunctionTok">main</span> <span class="ot" title="OtherTok">:</span> <span class="dt" title="DataTypeTok">IO</span> ()
-main <span class="fu" title="FunctionTok">=</span> traverse_ (<span class="fu" title="FunctionTok">\</span>w <span class="ot" title="OtherTok">=&gt;</span> print (w, not <span class="fu" title="FunctionTok">.</span> (<span class="fu" title="FunctionTok">==</span> <span class="dv" title="DecValTok">0</span>) <span class="fu" title="FunctionTok">.</span> length <span class="fu" title="FunctionTok">$</span> abc blocks <span class="fu" title="FunctionTok">$</span> toUpper w)) <span class="fu" title="FunctionTok">$</span>
-  the (<span class="dt" title="DataTypeTok">List</span> <span class="dt" title="DataTypeTok">String</span>) [ <span class="st" title="StringTok">&quot;&quot;</span>, <span class="st" title="StringTok">&quot;A&quot;</span>, <span class="st" title="StringTok">&quot;BARK&quot;</span>, <span class="st" title="StringTok">&quot;BoOK&quot;</span>, <span class="st" title="StringTok">&quot;TrEAT&quot;</span>, <span class="st" title="StringTok">&quot;COmMoN&quot;</span>, <span class="st" title="StringTok">&quot;SQUAD&quot;</span>, <span class="st" title="StringTok">&quot;conFUsE&quot;</span> ]
+<span class="kw">public</span> <span class="fu">main</span> <span class="ot">:</span> <span class="dt">IO</span> ()
+main <span class="fu">=</span> traverse_ (<span class="fu">\</span>w <span class="ot">=&gt;</span> print (w, not <span class="fu">.</span> (<span class="fu">==</span> <span class="dv">0</span>) <span class="fu">.</span> length <span class="fu">$</span> abc blocks <span class="fu">$</span> toUpper w)) <span class="fu">$</span>
+  the (<span class="dt">List</span> <span class="dt">String</span>) [ <span class="st">&quot;&quot;</span>, <span class="st">&quot;A&quot;</span>, <span class="st">&quot;BARK&quot;</span>, <span class="st">&quot;BoOK&quot;</span>, <span class="st">&quot;TrEAT&quot;</span>, <span class="st">&quot;COmMoN&quot;</span>, <span class="st">&quot;SQUAD&quot;</span>, <span class="st">&quot;conFUsE&quot;</span> ]
 
-<span class="co" title="CommentTok">---------- Proofs ----------</span>
+<span class="co">---------- Proofs ----------</span>
 
-<span class="dt" title="DataTypeTok">Main</span><span class="fu" title="FunctionTok">.</span>lemma_plus_associativity_rhs <span class="fu" title="FunctionTok">=</span> <span class="kw" title="KeywordTok">proof</span>
-  <span class="kw" title="KeywordTok">intros</span>
-  <span class="kw" title="KeywordTok">induction</span> m
-  <span class="kw" title="KeywordTok">compute</span>
-  <span class="kw" title="KeywordTok">trivial</span>
-  <span class="kw" title="KeywordTok">intros</span>
-  <span class="kw" title="KeywordTok">compute</span>
-  <span class="kw" title="KeywordTok">rewrite</span> ihn__0 
-  <span class="kw" title="KeywordTok">trivial</span></code></pre></div>
+<span class="dt">Main</span><span class="fu">.</span>lemma_plus_associativity_rhs <span class="fu">=</span> <span class="kw">proof</span>
+  <span class="kw">intros</span>
+  <span class="kw">induction</span> m
+  <span class="kw">compute</span>
+  <span class="kw">trivial</span>
+  <span class="kw">intros</span>
+  <span class="kw">compute</span>
+  <span class="kw">rewrite</span> ihn__0 
+  <span class="kw">trivial</span></code></pre></div>

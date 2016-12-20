@@ -1,16 +1,16 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">def</span> mkword(w, b):
-    <span class="cf" title="ControlFlowTok">if</span> <span class="kw" title="KeywordTok">not</span> w: <span class="cf" title="ControlFlowTok">return</span> []
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw">def</span> mkword(w, b):
+    <span class="cf">if</span> <span class="kw">not</span> w: <span class="cf">return</span> []
 
-    c,w <span class="op" title="OperatorTok">=</span> w[<span class="dv" title="DecValTok">0</span>],w[<span class="dv" title="DecValTok">1</span>:]
-    <span class="cf" title="ControlFlowTok">for</span> i <span class="kw" title="KeywordTok">in</span> <span class="bu" title="BuiltInTok">range</span>(<span class="bu" title="BuiltInTok">len</span>(b)):
-        <span class="cf" title="ControlFlowTok">if</span> c <span class="kw" title="KeywordTok">in</span> b[i]:
-            m <span class="op" title="OperatorTok">=</span> mkword(w, b[<span class="dv" title="DecValTok">0</span>:i] <span class="op" title="OperatorTok">+</span> b[i<span class="dv" title="DecValTok">+1</span>:])
-            <span class="cf" title="ControlFlowTok">if</span> m <span class="op" title="OperatorTok">!=</span> <span class="va" title="VariableTok">None</span>: <span class="cf" title="ControlFlowTok">return</span> [b[i]] <span class="op" title="OperatorTok">+</span> m
+    c,w <span class="op">=</span> w[<span class="dv">0</span>],w[<span class="dv">1</span>:]
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(b)):
+        <span class="cf">if</span> c <span class="kw">in</span> b[i]:
+            m <span class="op">=</span> mkword(w, b[<span class="dv">0</span>:i] <span class="op">+</span> b[i<span class="dv">+1</span>:])
+            <span class="cf">if</span> m <span class="op">!=</span> <span class="va">None</span>: <span class="cf">return</span> [b[i]] <span class="op">+</span> m
 
-<span class="kw" title="KeywordTok">def</span> abc(w, blk):
-    <span class="cf" title="ControlFlowTok">return</span> mkword(w.upper(), [a.upper() <span class="cf" title="ControlFlowTok">for</span> a <span class="kw" title="KeywordTok">in</span> blk])
+<span class="kw">def</span> abc(w, blk):
+    <span class="cf">return</span> mkword(w.upper(), [a.upper() <span class="cf">for</span> a <span class="kw">in</span> blk])
 
-blocks <span class="op" title="OperatorTok">=</span> <span class="st" title="StringTok">&#39;BO XK DQ CP NA GT RE TG QD FS JW HU VI AN OB ER FS LY PC ZM&#39;</span>.split()
+blocks <span class="op">=</span> <span class="st">&#39;BO XK DQ CP NA GT RE TG QD FS JW HU VI AN OB ER FS LY PC ZM&#39;</span>.split()
 
-<span class="cf" title="ControlFlowTok">for</span> w <span class="kw" title="KeywordTok">in</span> <span class="st" title="StringTok">&quot;, A, bark, book, treat, common, SQUAD, conFUsEd&quot;</span>.split(<span class="st" title="StringTok">&#39;, &#39;</span>):
-    <span class="bu" title="BuiltInTok">print</span> <span class="st" title="StringTok">&#39;</span><span class="ch" title="CharTok">\&#39;</span><span class="st" title="StringTok">&#39;</span> <span class="op" title="OperatorTok">+</span> w <span class="op" title="OperatorTok">+</span> <span class="st" title="StringTok">&#39;</span><span class="ch" title="CharTok">\&#39;</span><span class="st" title="StringTok">&#39;</span> <span class="op" title="OperatorTok">+</span> <span class="st" title="StringTok">&#39; -&gt;&#39;</span>, abc(w, blocks)</code></pre></div>
+<span class="cf">for</span> w <span class="kw">in</span> <span class="st">&quot;, A, bark, book, treat, common, SQUAD, conFUsEd&quot;</span>.split(<span class="st">&#39;, &#39;</span>):
+    <span class="bu">print</span> <span class="st">&#39;</span><span class="ch">\&#39;</span><span class="st">&#39;</span> <span class="op">+</span> w <span class="op">+</span> <span class="st">&#39;</span><span class="ch">\&#39;</span><span class="st">&#39;</span> <span class="op">+</span> <span class="st">&#39; -&gt;&#39;</span>, abc(w, blocks)</code></pre></div>

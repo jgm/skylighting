@@ -1,11 +1,11 @@
 <div class="sourceCode"><pre class="sourceCode"><code class="sourceCode">function testABC
-    combos = [<span class="st" title="StringTok">&#39;BO&#39;</span> ; <span class="st" title="StringTok">&#39;XK&#39;</span> ; <span class="st" title="StringTok">&#39;DQ&#39;</span> ; <span class="st" title="StringTok">&#39;CP&#39;</span> ; <span class="st" title="StringTok">&#39;NA&#39;</span> ; <span class="st" title="StringTok">&#39;GT&#39;</span> ; <span class="st" title="StringTok">&#39;RE&#39;</span> ; <span class="st" title="StringTok">&#39;TG&#39;</span> ; <span class="st" title="StringTok">&#39;QD&#39;</span> ; ...
-        <span class="st" title="StringTok">&#39;FS&#39;</span> ; <span class="st" title="StringTok">&#39;JW&#39;</span> ; <span class="st" title="StringTok">&#39;HU&#39;</span> ; <span class="st" title="StringTok">&#39;VI&#39;</span> ; <span class="st" title="StringTok">&#39;AN&#39;</span> ; <span class="st" title="StringTok">&#39;OB&#39;</span> ; <span class="st" title="StringTok">&#39;ER&#39;</span> ; <span class="st" title="StringTok">&#39;FS&#39;</span> ; <span class="st" title="StringTok">&#39;LY&#39;</span> ; ...
-        <span class="st" title="StringTok">&#39;PC&#39;</span> ; <span class="st" title="StringTok">&#39;ZM&#39;</span>];
-    words = {<span class="st" title="StringTok">&#39;A&#39;</span> <span class="st" title="StringTok">&#39;BARK&#39;</span> <span class="st" title="StringTok">&#39;BOOK&#39;</span> <span class="st" title="StringTok">&#39;TREAT&#39;</span> <span class="st" title="StringTok">&#39;COMMON&#39;</span> <span class="st" title="StringTok">&#39;SQUAD&#39;</span> <span class="st" title="StringTok">&#39;CONFUSE&#39;</span>};
-    for k = <span class="fl" title="FloatTok">1</span>:length(words)
+    combos = [<span class="st">&#39;BO&#39;</span> ; <span class="st">&#39;XK&#39;</span> ; <span class="st">&#39;DQ&#39;</span> ; <span class="st">&#39;CP&#39;</span> ; <span class="st">&#39;NA&#39;</span> ; <span class="st">&#39;GT&#39;</span> ; <span class="st">&#39;RE&#39;</span> ; <span class="st">&#39;TG&#39;</span> ; <span class="st">&#39;QD&#39;</span> ; ...
+        <span class="st">&#39;FS&#39;</span> ; <span class="st">&#39;JW&#39;</span> ; <span class="st">&#39;HU&#39;</span> ; <span class="st">&#39;VI&#39;</span> ; <span class="st">&#39;AN&#39;</span> ; <span class="st">&#39;OB&#39;</span> ; <span class="st">&#39;ER&#39;</span> ; <span class="st">&#39;FS&#39;</span> ; <span class="st">&#39;LY&#39;</span> ; ...
+        <span class="st">&#39;PC&#39;</span> ; <span class="st">&#39;ZM&#39;</span>];
+    words = {<span class="st">&#39;A&#39;</span> <span class="st">&#39;BARK&#39;</span> <span class="st">&#39;BOOK&#39;</span> <span class="st">&#39;TREAT&#39;</span> <span class="st">&#39;COMMON&#39;</span> <span class="st">&#39;SQUAD&#39;</span> <span class="st">&#39;CONFUSE&#39;</span>};
+    for k = <span class="fl">1</span>:length(words)
         possible = canMakeWord(words{k}, combos);
-        fprintf(<span class="st" title="StringTok">&#39;Can%s make word %s.\n&#39;</span>, char(~possible.*<span class="st" title="StringTok">&#39;NOT&#39;</span>), words{k})
+        fprintf(<span class="st">&#39;Can%s make word %s.\n&#39;</span>, char(~possible.*<span class="st">&#39;NOT&#39;</span>), words{k})
     end
 end
 
@@ -13,14 +13,14 @@ function isPossible = canMakeWord(word, combos)
     word = lower(word);
     combos = lower(combos);
     isPossible = true;
-    k = <span class="fl" title="FloatTok">1</span>;
+    k = <span class="fl">1</span>;
     while isPossible &amp;&amp; k &lt;= length(word)
-        [r, c] = find(combos == word(k), <span class="fl" title="FloatTok">1</span>);
+        [r, c] = find(combos == word(k), <span class="fl">1</span>);
         if ~isempty(r)
-            combos(r, :) = <span class="st" title="StringTok">&#39;&#39;</span>;
+            combos(r, :) = <span class="st">&#39;&#39;</span>;
         else
             isPossible = false;
         end
-        k = k+<span class="fl" title="FloatTok">1</span>;
+        k = k+<span class="fl">1</span>;
     end
 end</code></pre></div>

@@ -1,12 +1,12 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">defmodule</span> <span class="cn" title="ConstantTok">Geometry</span> <span class="kw" title="KeywordTok">do</span>
-  <span class="kw" title="KeywordTok">def</span> area_loop <span class="kw" title="KeywordTok">do</span>
-    <span class="kw" title="KeywordTok">receive</span> <span class="kw" title="KeywordTok">do</span>
-      {<span class="va" title="VariableTok">:rectangle</span>, w, h} <span class="op" title="OperatorTok">-&gt;</span>
-        <span class="cn" title="ConstantTok">IO</span><span class="op" title="OperatorTok">.</span>puts(<span class="st" title="StringTok">&quot;Area = </span><span class="ot" title="OtherTok">#{</span>w <span class="op" title="OperatorTok">*</span> h<span class="ot" title="OtherTok">}</span><span class="st" title="StringTok">&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw">defmodule</span> <span class="cn">Geometry</span> <span class="kw">do</span>
+  <span class="kw">def</span> area_loop <span class="kw">do</span>
+    <span class="kw">receive</span> <span class="kw">do</span>
+      {<span class="va">:rectangle</span>, w, h} <span class="op">-&gt;</span>
+        <span class="cn">IO</span><span class="op">.</span>puts(<span class="st">&quot;Area = </span><span class="ot">#{</span>w <span class="op">*</span> h<span class="ot">}</span><span class="st">&quot;</span>)
         area_loop()
-      {<span class="va" title="VariableTok">:circle</span>, r} <span class="op" title="OperatorTok">-&gt;</span>
-        <span class="cn" title="ConstantTok">IO</span><span class="op" title="OperatorTok">.</span>puts(<span class="st" title="StringTok">&quot;Area = </span><span class="ot" title="OtherTok">#{</span><span class="fl" title="FloatTok">3.14</span> <span class="op" title="OperatorTok">*</span> r <span class="op" title="OperatorTok">*</span> r<span class="ot" title="OtherTok">}</span><span class="st" title="StringTok">&quot;</span>)
+      {<span class="va">:circle</span>, r} <span class="op">-&gt;</span>
+        <span class="cn">IO</span><span class="op">.</span>puts(<span class="st">&quot;Area = </span><span class="ot">#{</span><span class="fl">3.14</span> <span class="op">*</span> r <span class="op">*</span> r<span class="ot">}</span><span class="st">&quot;</span>)
         area_loop()
-    <span class="kw" title="KeywordTok">end</span>
-  <span class="kw" title="KeywordTok">end</span>
-<span class="kw" title="KeywordTok">end</span></code></pre></div>
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre></div>

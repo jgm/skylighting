@@ -1,79 +1,79 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">with</span> Ada.Characters.Handling;
-<span class="kw" title="KeywordTok">use</span> Ada.Characters.Handling;
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw">with</span> Ada.Characters.Handling;
+<span class="kw">use</span> Ada.Characters.Handling;
 
 
-<span class="kw" title="KeywordTok">package</span> Abc <span class="kw" title="KeywordTok">is</span>
-    <span class="kw" title="KeywordTok">type</span> Block_Faces <span class="kw" title="KeywordTok">is</span> <span class="kw" title="KeywordTok">array</span>(<span class="dv" title="DecValTok">1</span>..<span class="dv" title="DecValTok">2</span>) <span class="kw" title="KeywordTok">of</span> <span class="dt" title="DataTypeTok">Character</span>;
-    <span class="kw" title="KeywordTok">type</span> Block_List <span class="kw" title="KeywordTok">is</span> <span class="kw" title="KeywordTok">array</span>(positive <span class="kw" title="KeywordTok">range</span> &lt;&gt;) <span class="kw" title="KeywordTok">of</span> Block_Faces;
-    <span class="kw" title="KeywordTok">function</span> Can_Make_Word(W: <span class="dt" title="DataTypeTok">String</span>; Blocks: Block_List) <span class="kw" title="KeywordTok">return</span> <span class="dt" title="DataTypeTok">Boolean</span>;
-<span class="kw" title="KeywordTok">end</span> Abc;
+<span class="kw">package</span> Abc <span class="kw">is</span>
+    <span class="kw">type</span> Block_Faces <span class="kw">is</span> <span class="kw">array</span>(<span class="dv">1</span>..<span class="dv">2</span>) <span class="kw">of</span> <span class="dt">Character</span>;
+    <span class="kw">type</span> Block_List <span class="kw">is</span> <span class="kw">array</span>(positive <span class="kw">range</span> &lt;&gt;) <span class="kw">of</span> Block_Faces;
+    <span class="kw">function</span> Can_Make_Word(W: <span class="dt">String</span>; Blocks: Block_List) <span class="kw">return</span> <span class="dt">Boolean</span>;
+<span class="kw">end</span> Abc;
 
 
-<span class="kw" title="KeywordTok">package</span> <span class="kw" title="KeywordTok">body</span> Abc <span class="kw" title="KeywordTok">is</span>
+<span class="kw">package</span> <span class="kw">body</span> Abc <span class="kw">is</span>
 
-<span class="kw" title="KeywordTok">function</span> Can_Make_Word(W: <span class="dt" title="DataTypeTok">String</span>; Blocks: Block_List) <span class="kw" title="KeywordTok">return</span> <span class="dt" title="DataTypeTok">Boolean</span> <span class="kw" title="KeywordTok">is</span>
-    Used : <span class="kw" title="KeywordTok">array</span>(Blocks&#39;Range) <span class="kw" title="KeywordTok">of</span> <span class="dt" title="DataTypeTok">Boolean</span> := (<span class="kw" title="KeywordTok">Others</span> =&gt; False);
-    <span class="kw" title="KeywordTok">subtype</span> wIndex <span class="kw" title="KeywordTok">is</span> <span class="dt" title="DataTypeTok">Integer</span> <span class="kw" title="KeywordTok">range</span> W&#39;First..W&#39;Last;
+<span class="kw">function</span> Can_Make_Word(W: <span class="dt">String</span>; Blocks: Block_List) <span class="kw">return</span> <span class="dt">Boolean</span> <span class="kw">is</span>
+    Used : <span class="kw">array</span>(Blocks&#39;Range) <span class="kw">of</span> <span class="dt">Boolean</span> := (<span class="kw">Others</span> =&gt; False);
+    <span class="kw">subtype</span> wIndex <span class="kw">is</span> <span class="dt">Integer</span> <span class="kw">range</span> W&#39;First..W&#39;Last;
     wPos : wIndex;
-<span class="kw" title="KeywordTok">begin</span>
-    <span class="kw" title="KeywordTok">if</span> W&#39;Length = <span class="dv" title="DecValTok">0</span> <span class="kw" title="KeywordTok">then</span>
-        <span class="kw" title="KeywordTok">return</span> True;
-    <span class="kw" title="KeywordTok">end if</span>;
+<span class="kw">begin</span>
+    <span class="kw">if</span> W&#39;Length = <span class="dv">0</span> <span class="kw">then</span>
+        <span class="kw">return</span> True;
+    <span class="kw">end if</span>;
     wPos := W&#39;First;
-    <span class="kw" title="KeywordTok">while</span> True <span class="kw" title="KeywordTok">loop</span>
-        <span class="kw" title="KeywordTok">declare</span>
-            C : <span class="dt" title="DataTypeTok">Character</span> := To_Upper(W(wPos));
-            X : <span class="kw" title="KeywordTok">constant</span> wIndex := wPos;
-        <span class="kw" title="KeywordTok">begin</span>
-            <span class="kw" title="KeywordTok">for</span> I <span class="kw" title="KeywordTok">in</span> Blocks&#39;Range <span class="kw" title="KeywordTok">loop</span>
-                <span class="kw" title="KeywordTok">if</span> (<span class="kw" title="KeywordTok">not</span> Used(I)) <span class="kw" title="KeywordTok">then</span>
-                    <span class="kw" title="KeywordTok">if</span> C = To_Upper(Blocks(I)(<span class="dv" title="DecValTok">1</span>)) <span class="kw" title="KeywordTok">or</span> C = To_Upper(Blocks(I)(<span class="dv" title="DecValTok">2</span>)) <span class="kw" title="KeywordTok">then</span>
+    <span class="kw">while</span> True <span class="kw">loop</span>
+        <span class="kw">declare</span>
+            C : <span class="dt">Character</span> := To_Upper(W(wPos));
+            X : <span class="kw">constant</span> wIndex := wPos;
+        <span class="kw">begin</span>
+            <span class="kw">for</span> I <span class="kw">in</span> Blocks&#39;Range <span class="kw">loop</span>
+                <span class="kw">if</span> (<span class="kw">not</span> Used(I)) <span class="kw">then</span>
+                    <span class="kw">if</span> C = To_Upper(Blocks(I)(<span class="dv">1</span>)) <span class="kw">or</span> C = To_Upper(Blocks(I)(<span class="dv">2</span>)) <span class="kw">then</span>
                         Used(I) := True;
-                        <span class="kw" title="KeywordTok">if</span> wPos = W&#39;Last <span class="kw" title="KeywordTok">then</span>
-                            <span class="kw" title="KeywordTok">return</span> True;
-                        <span class="kw" title="KeywordTok">end if</span>;
+                        <span class="kw">if</span> wPos = W&#39;Last <span class="kw">then</span>
+                            <span class="kw">return</span> True;
+                        <span class="kw">end if</span>;
                         wPos := wIndex&#39;Succ(wPos);
-                        <span class="kw" title="KeywordTok">exit</span>;
-                    <span class="kw" title="KeywordTok">end if</span>;
-                <span class="kw" title="KeywordTok">end if</span>;
-            <span class="kw" title="KeywordTok">end loop</span>;
-            <span class="kw" title="KeywordTok">if</span> X = wPos <span class="kw" title="KeywordTok">then</span>
-                <span class="kw" title="KeywordTok">return</span> False;
-            <span class="kw" title="KeywordTok">end if</span>;
-        <span class="kw" title="KeywordTok">end</span>;
-    <span class="kw" title="KeywordTok">end loop</span>;
-    <span class="kw" title="KeywordTok">return</span> False;
-<span class="kw" title="KeywordTok">end</span> Can_Make_Word;
+                        <span class="kw">exit</span>;
+                    <span class="kw">end if</span>;
+                <span class="kw">end if</span>;
+            <span class="kw">end loop</span>;
+            <span class="kw">if</span> X = wPos <span class="kw">then</span>
+                <span class="kw">return</span> False;
+            <span class="kw">end if</span>;
+        <span class="kw">end</span>;
+    <span class="kw">end loop</span>;
+    <span class="kw">return</span> False;
+<span class="kw">end</span> Can_Make_Word;
 
-<span class="kw" title="KeywordTok">end</span> Abc;
+<span class="kw">end</span> Abc;
 
-<span class="kw" title="KeywordTok">with</span> Ada.Text_IO, Ada.Strings.Unbounded, Abc;
-<span class="kw" title="KeywordTok">use</span> Ada.Text_IO, Ada.Strings.Unbounded, Abc;
+<span class="kw">with</span> Ada.Text_IO, Ada.Strings.Unbounded, Abc;
+<span class="kw">use</span> Ada.Text_IO, Ada.Strings.Unbounded, Abc;
 
-<span class="kw" title="KeywordTok">procedure</span> Abc_Problem <span class="kw" title="KeywordTok">is</span>
+<span class="kw">procedure</span> Abc_Problem <span class="kw">is</span>
     Blocks : Block_List := (
-          (<span class="ch" title="CharTok">&#39;B&#39;</span>,<span class="ch" title="CharTok">&#39;O&#39;</span>), (<span class="ch" title="CharTok">&#39;X&#39;</span>,<span class="ch" title="CharTok">&#39;K&#39;</span>), (<span class="ch" title="CharTok">&#39;D&#39;</span>,<span class="ch" title="CharTok">&#39;Q&#39;</span>), (<span class="ch" title="CharTok">&#39;C&#39;</span>,<span class="ch" title="CharTok">&#39;P&#39;</span>)
-        , (<span class="ch" title="CharTok">&#39;N&#39;</span>,<span class="ch" title="CharTok">&#39;A&#39;</span>), (<span class="ch" title="CharTok">&#39;G&#39;</span>,<span class="ch" title="CharTok">&#39;T&#39;</span>), (<span class="ch" title="CharTok">&#39;R&#39;</span>,<span class="ch" title="CharTok">&#39;E&#39;</span>), (<span class="ch" title="CharTok">&#39;T&#39;</span>,<span class="ch" title="CharTok">&#39;G&#39;</span>)
-        , (<span class="ch" title="CharTok">&#39;Q&#39;</span>,<span class="ch" title="CharTok">&#39;D&#39;</span>), (<span class="ch" title="CharTok">&#39;F&#39;</span>,<span class="ch" title="CharTok">&#39;S&#39;</span>), (<span class="ch" title="CharTok">&#39;J&#39;</span>,<span class="ch" title="CharTok">&#39;W&#39;</span>), (<span class="ch" title="CharTok">&#39;H&#39;</span>,<span class="ch" title="CharTok">&#39;U&#39;</span>)
-        , (<span class="ch" title="CharTok">&#39;V&#39;</span>,<span class="ch" title="CharTok">&#39;I&#39;</span>), (<span class="ch" title="CharTok">&#39;A&#39;</span>,<span class="ch" title="CharTok">&#39;N&#39;</span>), (<span class="ch" title="CharTok">&#39;O&#39;</span>,<span class="ch" title="CharTok">&#39;B&#39;</span>), (<span class="ch" title="CharTok">&#39;E&#39;</span>,<span class="ch" title="CharTok">&#39;R&#39;</span>)
-        , (<span class="ch" title="CharTok">&#39;F&#39;</span>,<span class="ch" title="CharTok">&#39;S&#39;</span>), (<span class="ch" title="CharTok">&#39;L&#39;</span>,<span class="ch" title="CharTok">&#39;Y&#39;</span>), (<span class="ch" title="CharTok">&#39;P&#39;</span>,<span class="ch" title="CharTok">&#39;C&#39;</span>), (<span class="ch" title="CharTok">&#39;Z&#39;</span>,<span class="ch" title="CharTok">&#39;M&#39;</span>)
+          (<span class="ch">&#39;B&#39;</span>,<span class="ch">&#39;O&#39;</span>), (<span class="ch">&#39;X&#39;</span>,<span class="ch">&#39;K&#39;</span>), (<span class="ch">&#39;D&#39;</span>,<span class="ch">&#39;Q&#39;</span>), (<span class="ch">&#39;C&#39;</span>,<span class="ch">&#39;P&#39;</span>)
+        , (<span class="ch">&#39;N&#39;</span>,<span class="ch">&#39;A&#39;</span>), (<span class="ch">&#39;G&#39;</span>,<span class="ch">&#39;T&#39;</span>), (<span class="ch">&#39;R&#39;</span>,<span class="ch">&#39;E&#39;</span>), (<span class="ch">&#39;T&#39;</span>,<span class="ch">&#39;G&#39;</span>)
+        , (<span class="ch">&#39;Q&#39;</span>,<span class="ch">&#39;D&#39;</span>), (<span class="ch">&#39;F&#39;</span>,<span class="ch">&#39;S&#39;</span>), (<span class="ch">&#39;J&#39;</span>,<span class="ch">&#39;W&#39;</span>), (<span class="ch">&#39;H&#39;</span>,<span class="ch">&#39;U&#39;</span>)
+        , (<span class="ch">&#39;V&#39;</span>,<span class="ch">&#39;I&#39;</span>), (<span class="ch">&#39;A&#39;</span>,<span class="ch">&#39;N&#39;</span>), (<span class="ch">&#39;O&#39;</span>,<span class="ch">&#39;B&#39;</span>), (<span class="ch">&#39;E&#39;</span>,<span class="ch">&#39;R&#39;</span>)
+        , (<span class="ch">&#39;F&#39;</span>,<span class="ch">&#39;S&#39;</span>), (<span class="ch">&#39;L&#39;</span>,<span class="ch">&#39;Y&#39;</span>), (<span class="ch">&#39;P&#39;</span>,<span class="ch">&#39;C&#39;</span>), (<span class="ch">&#39;Z&#39;</span>,<span class="ch">&#39;M&#39;</span>)
     );
-    <span class="kw" title="KeywordTok">function</span> <span class="st" title="StringTok">&quot;+&quot;</span> (S : <span class="dt" title="DataTypeTok">String</span>) <span class="kw" title="KeywordTok">return</span> Unbounded_String <span class="kw" title="KeywordTok">renames</span> To_Unbounded_String;
-    words : <span class="kw" title="KeywordTok">array</span>(positive <span class="kw" title="KeywordTok">range</span> &lt;&gt;) <span class="kw" title="KeywordTok">of</span> Unbounded_String := (
-          +<span class="st" title="StringTok">&quot;A&quot;</span>
-        , +<span class="st" title="StringTok">&quot;BARK&quot;</span>
-        , +<span class="st" title="StringTok">&quot;BOOK&quot;</span>
-        , +<span class="st" title="StringTok">&quot;TREAT&quot;</span>
-        , +<span class="st" title="StringTok">&quot;COMMON&quot;</span>
-        , +<span class="st" title="StringTok">&quot;SQUAD&quot;</span>
-        , +<span class="st" title="StringTok">&quot;CONFUSE&quot;</span>
-        <span class="co" title="CommentTok">-- Border cases:</span>
-        <span class="co" title="CommentTok">-- , +&quot;CONFUSE2&quot;</span>
-        <span class="co" title="CommentTok">-- , +&quot;&quot;</span>
+    <span class="kw">function</span> <span class="st">&quot;+&quot;</span> (S : <span class="dt">String</span>) <span class="kw">return</span> Unbounded_String <span class="kw">renames</span> To_Unbounded_String;
+    words : <span class="kw">array</span>(positive <span class="kw">range</span> &lt;&gt;) <span class="kw">of</span> Unbounded_String := (
+          +<span class="st">&quot;A&quot;</span>
+        , +<span class="st">&quot;BARK&quot;</span>
+        , +<span class="st">&quot;BOOK&quot;</span>
+        , +<span class="st">&quot;TREAT&quot;</span>
+        , +<span class="st">&quot;COMMON&quot;</span>
+        , +<span class="st">&quot;SQUAD&quot;</span>
+        , +<span class="st">&quot;CONFUSE&quot;</span>
+        <span class="co">-- Border cases:</span>
+        <span class="co">-- , +&quot;CONFUSE2&quot;</span>
+        <span class="co">-- , +&quot;&quot;</span>
     );
-<span class="kw" title="KeywordTok">begin</span>
-    <span class="kw" title="KeywordTok">for</span> I <span class="kw" title="KeywordTok">in</span> words&#39;Range <span class="kw" title="KeywordTok">loop</span>
-        Put_Line ( To_String(words(I)) &amp; <span class="st" title="StringTok">&quot;: &quot;</span> &amp; Boolean&#39;Image(Can_Make_Word(To_String(words(I)),Blocks)) );
-    <span class="kw" title="KeywordTok">end loop</span>;
-<span class="kw" title="KeywordTok">end</span> Abc_Problem;
+<span class="kw">begin</span>
+    <span class="kw">for</span> I <span class="kw">in</span> words&#39;Range <span class="kw">loop</span>
+        Put_Line ( To_String(words(I)) &amp; <span class="st">&quot;: &quot;</span> &amp; Boolean&#39;Image(Can_Make_Word(To_String(words(I)),Blocks)) );
+    <span class="kw">end loop</span>;
+<span class="kw">end</span> Abc_Problem;
 </code></pre></div>

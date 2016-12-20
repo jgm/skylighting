@@ -1,43 +1,43 @@
 <div class="sourceCode"><pre class="sourceCode"><code class="sourceCode">#lang racket
-(<span class="kw" title="KeywordTok">define</span><span class="fu" title="FunctionTok"> block-strings</span>
-  (<span class="kw" title="KeywordTok">list</span> <span class="st" title="StringTok">&quot;BO&quot;</span> <span class="st" title="StringTok">&quot;XK&quot;</span> <span class="st" title="StringTok">&quot;DQ&quot;</span> <span class="st" title="StringTok">&quot;CP&quot;</span> <span class="st" title="StringTok">&quot;NA&quot;</span>
-        <span class="st" title="StringTok">&quot;GT&quot;</span> <span class="st" title="StringTok">&quot;RE&quot;</span> <span class="st" title="StringTok">&quot;TG&quot;</span> <span class="st" title="StringTok">&quot;QD&quot;</span> <span class="st" title="StringTok">&quot;FS&quot;</span>
-        <span class="st" title="StringTok">&quot;JW&quot;</span> <span class="st" title="StringTok">&quot;HU&quot;</span> <span class="st" title="StringTok">&quot;VI&quot;</span> <span class="st" title="StringTok">&quot;AN&quot;</span> <span class="st" title="StringTok">&quot;OB&quot;</span>
-        <span class="st" title="StringTok">&quot;ER&quot;</span> <span class="st" title="StringTok">&quot;FS&quot;</span> <span class="st" title="StringTok">&quot;LY&quot;</span> <span class="st" title="StringTok">&quot;PC&quot;</span> <span class="st" title="StringTok">&quot;ZM&quot;</span>))
-(<span class="kw" title="KeywordTok">define</span><span class="fu" title="FunctionTok"> BLOCKS </span>(map <span class="kw" title="KeywordTok">string-&gt;list</span> block-strings))
+(<span class="kw">define</span><span class="fu"> block-strings</span>
+  (<span class="kw">list</span> <span class="st">&quot;BO&quot;</span> <span class="st">&quot;XK&quot;</span> <span class="st">&quot;DQ&quot;</span> <span class="st">&quot;CP&quot;</span> <span class="st">&quot;NA&quot;</span>
+        <span class="st">&quot;GT&quot;</span> <span class="st">&quot;RE&quot;</span> <span class="st">&quot;TG&quot;</span> <span class="st">&quot;QD&quot;</span> <span class="st">&quot;FS&quot;</span>
+        <span class="st">&quot;JW&quot;</span> <span class="st">&quot;HU&quot;</span> <span class="st">&quot;VI&quot;</span> <span class="st">&quot;AN&quot;</span> <span class="st">&quot;OB&quot;</span>
+        <span class="st">&quot;ER&quot;</span> <span class="st">&quot;FS&quot;</span> <span class="st">&quot;LY&quot;</span> <span class="st">&quot;PC&quot;</span> <span class="st">&quot;ZM&quot;</span>))
+(<span class="kw">define</span><span class="fu"> BLOCKS </span>(map <span class="kw">string-&gt;list</span> block-strings))
 
-(<span class="kw" title="KeywordTok">define</span><span class="fu" title="FunctionTok"> </span>(can-make-word? w)
-  (<span class="kw" title="KeywordTok">define</span><span class="fu" title="FunctionTok"> </span>(usable-block blocks word-char)
-    (for/first ((b (in-list blocks)) #:when (memf (curry <span class="kw" title="KeywordTok">char-ci=?</span> word-char) b)) b))
+(<span class="kw">define</span><span class="fu"> </span>(can-make-word? w)
+  (<span class="kw">define</span><span class="fu"> </span>(usable-block blocks word-char)
+    (for/first ((b (in-list blocks)) #:when (memf (curry <span class="kw">char-ci=?</span> word-char) b)) b))
   
-  (<span class="kw" title="KeywordTok">define</span><span class="fu" title="FunctionTok"> </span>(inner word-chars blocks tried-blocks)
-    (<span class="kw" title="KeywordTok">cond</span>
-      [(<span class="kw" title="KeywordTok">null?</span> word-chars) <span class="dv" title="DecValTok">#t</span>]
-      [(usable-block blocks (<span class="kw" title="KeywordTok">car</span> word-chars))
-       <span class="kw" title="KeywordTok">=&gt;</span>
-       (<span class="kw" title="KeywordTok">lambda</span> (b)
-         (<span class="kw" title="KeywordTok">or</span>
-          (inner (<span class="kw" title="KeywordTok">cdr</span> word-chars) (<span class="kw" title="KeywordTok">append</span> tried-blocks (remove b blocks)) null)
-          (inner word-chars (remove b blocks) (<span class="kw" title="KeywordTok">cons</span> b tried-blocks))))]
-      [<span class="kw" title="KeywordTok">else</span> <span class="dv" title="DecValTok">#f</span>]))
-  (inner (<span class="kw" title="KeywordTok">string-&gt;list</span> w) BLOCKS null))
+  (<span class="kw">define</span><span class="fu"> </span>(inner word-chars blocks tried-blocks)
+    (<span class="kw">cond</span>
+      [(<span class="kw">null?</span> word-chars) <span class="dv">#t</span>]
+      [(usable-block blocks (<span class="kw">car</span> word-chars))
+       <span class="kw">=&gt;</span>
+       (<span class="kw">lambda</span> (b)
+         (<span class="kw">or</span>
+          (inner (<span class="kw">cdr</span> word-chars) (<span class="kw">append</span> tried-blocks (remove b blocks)) null)
+          (inner word-chars (remove b blocks) (<span class="kw">cons</span> b tried-blocks))))]
+      [<span class="kw">else</span> <span class="dv">#f</span>]))
+  (inner (<span class="kw">string-&gt;list</span> w) BLOCKS null))
 
-(<span class="kw" title="KeywordTok">define</span><span class="fu" title="FunctionTok"> WORD-LIST </span>&#39;(<span class="st" title="StringTok">&quot;&quot;</span> <span class="st" title="StringTok">&quot;A&quot;</span> <span class="st" title="StringTok">&quot;BARK&quot;</span> <span class="st" title="StringTok">&quot;BOOK&quot;</span> <span class="st" title="StringTok">&quot;TREAT&quot;</span> <span class="st" title="StringTok">&quot;COMMON&quot;</span> <span class="st" title="StringTok">&quot;SQUAD&quot;</span> <span class="st" title="StringTok">&quot;CONFUSE&quot;</span>))
-(<span class="kw" title="KeywordTok">define</span><span class="fu" title="FunctionTok"> </span>(report-word w)
-  (printf <span class="st" title="StringTok">&quot;Can we make: ~a? ~a~%&quot;</span>
-          (~s w #:min-width <span class="dv" title="DecValTok">9</span>)
-          (<span class="kw" title="KeywordTok">if</span> (can-make-word? w) <span class="st" title="StringTok">&quot;yes&quot;</span> <span class="st" title="StringTok">&quot;no&quot;</span>)))
+(<span class="kw">define</span><span class="fu"> WORD-LIST </span>&#39;(<span class="st">&quot;&quot;</span> <span class="st">&quot;A&quot;</span> <span class="st">&quot;BARK&quot;</span> <span class="st">&quot;BOOK&quot;</span> <span class="st">&quot;TREAT&quot;</span> <span class="st">&quot;COMMON&quot;</span> <span class="st">&quot;SQUAD&quot;</span> <span class="st">&quot;CONFUSE&quot;</span>))
+(<span class="kw">define</span><span class="fu"> </span>(report-word w)
+  (printf <span class="st">&quot;Can we make: ~a? ~a~%&quot;</span>
+          (~s w #:min-width <span class="dv">9</span>)
+          (<span class="kw">if</span> (can-make-word? w) <span class="st">&quot;yes&quot;</span> <span class="st">&quot;no&quot;</span>)))
 
 (module+ main
-  (<span class="kw" title="KeywordTok">for-each</span> report-word WORD-LIST))  
+  (<span class="kw">for-each</span> report-word WORD-LIST))  
 
 (module+ test
   (require rackunit)
-  (check-true  (can-make-word? <span class="st" title="StringTok">&quot;&quot;</span>))
-  (check-true  (can-make-word? <span class="st" title="StringTok">&quot;A&quot;</span>))
-  (check-true  (can-make-word? <span class="st" title="StringTok">&quot;BARK&quot;</span>))
-  (check-false (can-make-word? <span class="st" title="StringTok">&quot;BOOK&quot;</span>))
-  (check-true  (can-make-word? <span class="st" title="StringTok">&quot;TREAT&quot;</span>))
-  (check-false (can-make-word? <span class="st" title="StringTok">&quot;COMMON&quot;</span>))
-  (check-true  (can-make-word? <span class="st" title="StringTok">&quot;SQUAD&quot;</span>))
-  (check-true  (can-make-word? <span class="st" title="StringTok">&quot;CONFUSE&quot;</span>)))</code></pre></div>
+  (check-true  (can-make-word? <span class="st">&quot;&quot;</span>))
+  (check-true  (can-make-word? <span class="st">&quot;A&quot;</span>))
+  (check-true  (can-make-word? <span class="st">&quot;BARK&quot;</span>))
+  (check-false (can-make-word? <span class="st">&quot;BOOK&quot;</span>))
+  (check-true  (can-make-word? <span class="st">&quot;TREAT&quot;</span>))
+  (check-false (can-make-word? <span class="st">&quot;COMMON&quot;</span>))
+  (check-true  (can-make-word? <span class="st">&quot;SQUAD&quot;</span>))
+  (check-true  (can-make-word? <span class="st">&quot;CONFUSE&quot;</span>)))</code></pre></div>

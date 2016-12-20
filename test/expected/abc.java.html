@@ -1,44 +1,44 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">import</span><span class="im" title="ImportTok"> java.util.Arrays;</span>
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw">import</span><span class="im"> java.util.Arrays;</span>
 
-<span class="kw" title="KeywordTok">public</span> <span class="kw" title="KeywordTok">class</span> ABC{
-        <span class="kw" title="KeywordTok">private</span> <span class="dt" title="DataTypeTok">static</span> <span class="dt" title="DataTypeTok">void</span> <span class="fu" title="FunctionTok">swap</span>(<span class="dt" title="DataTypeTok">int</span> i, <span class="dt" title="DataTypeTok">int</span> j, <span class="bu" title="BuiltInTok">Object</span><span class="kw" title="KeywordTok">... </span>arr){
-                <span class="bu" title="BuiltInTok">Object</span> tmp = arr[i];
+<span class="kw">public</span> <span class="kw">class</span> ABC{
+        <span class="kw">private</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">swap</span>(<span class="dt">int</span> i, <span class="dt">int</span> j, <span class="bu">Object</span><span class="kw">... </span>arr){
+                <span class="bu">Object</span> tmp = arr[i];
                 arr[i] = arr[j];
                 arr[j] = tmp;
         }
         
-        <span class="kw" title="KeywordTok">public</span> <span class="dt" title="DataTypeTok">static</span> <span class="dt" title="DataTypeTok">boolean</span> <span class="fu" title="FunctionTok">canMakeWord</span>(<span class="bu" title="BuiltInTok">String</span> word, <span class="bu" title="BuiltInTok">String</span><span class="kw" title="KeywordTok">... </span>blocks) {
-            <span class="kw" title="KeywordTok">if</span>(word.<span class="fu" title="FunctionTok">length</span>() == <span class="dv" title="DecValTok">0</span>)
-                <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">true</span>;
+        <span class="kw">public</span> <span class="dt">static</span> <span class="dt">boolean</span> <span class="fu">canMakeWord</span>(<span class="bu">String</span> word, <span class="bu">String</span><span class="kw">... </span>blocks) {
+            <span class="kw">if</span>(word.<span class="fu">length</span>() == <span class="dv">0</span>)
+                <span class="kw">return</span> <span class="kw">true</span>;
          
-            <span class="dt" title="DataTypeTok">char</span> c = <span class="bu" title="BuiltInTok">Character</span>.<span class="fu" title="FunctionTok">toUpperCase</span>(word.<span class="fu" title="FunctionTok">charAt</span>(<span class="dv" title="DecValTok">0</span>));
-            <span class="kw" title="KeywordTok">for</span>(<span class="dt" title="DataTypeTok">int</span> i = <span class="dv" title="DecValTok">0</span>; i &lt; blocks.<span class="fu" title="FunctionTok">length</span>; i++) {
-                <span class="bu" title="BuiltInTok">String</span> b = blocks[i];
-                <span class="kw" title="KeywordTok">if</span>(<span class="bu" title="BuiltInTok">Character</span>.<span class="fu" title="FunctionTok">toUpperCase</span>(b.<span class="fu" title="FunctionTok">charAt</span>(<span class="dv" title="DecValTok">0</span>)) != c &amp;&amp; <span class="bu" title="BuiltInTok">Character</span>.<span class="fu" title="FunctionTok">toUpperCase</span>(b.<span class="fu" title="FunctionTok">charAt</span>(<span class="dv" title="DecValTok">1</span>)) != c)
-                    <span class="kw" title="KeywordTok">continue</span>;
-                <span class="fu" title="FunctionTok">swap</span>(<span class="dv" title="DecValTok">0</span>, i, blocks);
-                <span class="kw" title="KeywordTok">if</span>(<span class="fu" title="FunctionTok">canMakeWord</span>(word.<span class="fu" title="FunctionTok">substring</span>(<span class="dv" title="DecValTok">1</span>), <span class="bu" title="BuiltInTok">Arrays</span>.<span class="fu" title="FunctionTok">copyOfRange</span>(blocks, <span class="dv" title="DecValTok">1</span>, blocks.<span class="fu" title="FunctionTok">length</span>)))
-                    <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">true</span>;
-                <span class="fu" title="FunctionTok">swap</span>(<span class="dv" title="DecValTok">0</span>, i, blocks);
+            <span class="dt">char</span> c = <span class="bu">Character</span>.<span class="fu">toUpperCase</span>(word.<span class="fu">charAt</span>(<span class="dv">0</span>));
+            <span class="kw">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; blocks.<span class="fu">length</span>; i++) {
+                <span class="bu">String</span> b = blocks[i];
+                <span class="kw">if</span>(<span class="bu">Character</span>.<span class="fu">toUpperCase</span>(b.<span class="fu">charAt</span>(<span class="dv">0</span>)) != c &amp;&amp; <span class="bu">Character</span>.<span class="fu">toUpperCase</span>(b.<span class="fu">charAt</span>(<span class="dv">1</span>)) != c)
+                    <span class="kw">continue</span>;
+                <span class="fu">swap</span>(<span class="dv">0</span>, i, blocks);
+                <span class="kw">if</span>(<span class="fu">canMakeWord</span>(word.<span class="fu">substring</span>(<span class="dv">1</span>), <span class="bu">Arrays</span>.<span class="fu">copyOfRange</span>(blocks, <span class="dv">1</span>, blocks.<span class="fu">length</span>)))
+                    <span class="kw">return</span> <span class="kw">true</span>;
+                <span class="fu">swap</span>(<span class="dv">0</span>, i, blocks);
             }
          
-            <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">false</span>;
+            <span class="kw">return</span> <span class="kw">false</span>;
         }
         
-        <span class="kw" title="KeywordTok">public</span> <span class="dt" title="DataTypeTok">static</span> <span class="dt" title="DataTypeTok">void</span> <span class="fu" title="FunctionTok">main</span>(<span class="bu" title="BuiltInTok">String</span>[] args){
-                <span class="bu" title="BuiltInTok">String</span>[] blocks = {<span class="st" title="StringTok">&quot;BO&quot;</span>, <span class="st" title="StringTok">&quot;XK&quot;</span>, <span class="st" title="StringTok">&quot;DQ&quot;</span>, <span class="st" title="StringTok">&quot;CP&quot;</span>, <span class="st" title="StringTok">&quot;NA&quot;</span>, 
-                                <span class="st" title="StringTok">&quot;GT&quot;</span>, <span class="st" title="StringTok">&quot;RE&quot;</span>, <span class="st" title="StringTok">&quot;TG&quot;</span>, <span class="st" title="StringTok">&quot;QD&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>, 
-                                <span class="st" title="StringTok">&quot;JW&quot;</span>, <span class="st" title="StringTok">&quot;HU&quot;</span>, <span class="st" title="StringTok">&quot;VI&quot;</span>, <span class="st" title="StringTok">&quot;AN&quot;</span>, <span class="st" title="StringTok">&quot;OB&quot;</span>, 
-                                <span class="st" title="StringTok">&quot;ER&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>, <span class="st" title="StringTok">&quot;LY&quot;</span>, <span class="st" title="StringTok">&quot;PC&quot;</span>, <span class="st" title="StringTok">&quot;ZM&quot;</span>};
+        <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args){
+                <span class="bu">String</span>[] blocks = {<span class="st">&quot;BO&quot;</span>, <span class="st">&quot;XK&quot;</span>, <span class="st">&quot;DQ&quot;</span>, <span class="st">&quot;CP&quot;</span>, <span class="st">&quot;NA&quot;</span>, 
+                                <span class="st">&quot;GT&quot;</span>, <span class="st">&quot;RE&quot;</span>, <span class="st">&quot;TG&quot;</span>, <span class="st">&quot;QD&quot;</span>, <span class="st">&quot;FS&quot;</span>, 
+                                <span class="st">&quot;JW&quot;</span>, <span class="st">&quot;HU&quot;</span>, <span class="st">&quot;VI&quot;</span>, <span class="st">&quot;AN&quot;</span>, <span class="st">&quot;OB&quot;</span>, 
+                                <span class="st">&quot;ER&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;LY&quot;</span>, <span class="st">&quot;PC&quot;</span>, <span class="st">&quot;ZM&quot;</span>};
 
-                <span class="bu" title="BuiltInTok">System</span>.<span class="fu" title="FunctionTok">out</span>.<span class="fu" title="FunctionTok">println</span>(<span class="st" title="StringTok">&quot;</span><span class="sc" title="SpecialCharTok">\&quot;\&quot;</span><span class="st" title="StringTok">: &quot;</span> + <span class="fu" title="FunctionTok">canMakeWord</span>(<span class="st" title="StringTok">&quot;&quot;</span>, blocks));
-                <span class="bu" title="BuiltInTok">System</span>.<span class="fu" title="FunctionTok">out</span>.<span class="fu" title="FunctionTok">println</span>(<span class="st" title="StringTok">&quot;A: &quot;</span> + <span class="fu" title="FunctionTok">canMakeWord</span>(<span class="st" title="StringTok">&quot;A&quot;</span>, blocks));
-                <span class="bu" title="BuiltInTok">System</span>.<span class="fu" title="FunctionTok">out</span>.<span class="fu" title="FunctionTok">println</span>(<span class="st" title="StringTok">&quot;BARK: &quot;</span> + <span class="fu" title="FunctionTok">canMakeWord</span>(<span class="st" title="StringTok">&quot;BARK&quot;</span>, blocks));
-                <span class="bu" title="BuiltInTok">System</span>.<span class="fu" title="FunctionTok">out</span>.<span class="fu" title="FunctionTok">println</span>(<span class="st" title="StringTok">&quot;book: &quot;</span> + <span class="fu" title="FunctionTok">canMakeWord</span>(<span class="st" title="StringTok">&quot;book&quot;</span>, blocks));
-                <span class="bu" title="BuiltInTok">System</span>.<span class="fu" title="FunctionTok">out</span>.<span class="fu" title="FunctionTok">println</span>(<span class="st" title="StringTok">&quot;treat: &quot;</span> + <span class="fu" title="FunctionTok">canMakeWord</span>(<span class="st" title="StringTok">&quot;treat&quot;</span>, blocks));
-                <span class="bu" title="BuiltInTok">System</span>.<span class="fu" title="FunctionTok">out</span>.<span class="fu" title="FunctionTok">println</span>(<span class="st" title="StringTok">&quot;COMMON: &quot;</span> + <span class="fu" title="FunctionTok">canMakeWord</span>(<span class="st" title="StringTok">&quot;COMMON&quot;</span>, blocks));
-                <span class="bu" title="BuiltInTok">System</span>.<span class="fu" title="FunctionTok">out</span>.<span class="fu" title="FunctionTok">println</span>(<span class="st" title="StringTok">&quot;SQuAd: &quot;</span> + <span class="fu" title="FunctionTok">canMakeWord</span>(<span class="st" title="StringTok">&quot;SQuAd&quot;</span>, blocks));
-                <span class="bu" title="BuiltInTok">System</span>.<span class="fu" title="FunctionTok">out</span>.<span class="fu" title="FunctionTok">println</span>(<span class="st" title="StringTok">&quot;CONFUSE: &quot;</span> + <span class="fu" title="FunctionTok">canMakeWord</span>(<span class="st" title="StringTok">&quot;CONFUSE&quot;</span>, blocks));
+                <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;</span><span class="sc">\&quot;\&quot;</span><span class="st">: &quot;</span> + <span class="fu">canMakeWord</span>(<span class="st">&quot;&quot;</span>, blocks));
+                <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;A: &quot;</span> + <span class="fu">canMakeWord</span>(<span class="st">&quot;A&quot;</span>, blocks));
+                <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;BARK: &quot;</span> + <span class="fu">canMakeWord</span>(<span class="st">&quot;BARK&quot;</span>, blocks));
+                <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;book: &quot;</span> + <span class="fu">canMakeWord</span>(<span class="st">&quot;book&quot;</span>, blocks));
+                <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;treat: &quot;</span> + <span class="fu">canMakeWord</span>(<span class="st">&quot;treat&quot;</span>, blocks));
+                <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;COMMON: &quot;</span> + <span class="fu">canMakeWord</span>(<span class="st">&quot;COMMON&quot;</span>, blocks));
+                <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;SQuAd: &quot;</span> + <span class="fu">canMakeWord</span>(<span class="st">&quot;SQuAd&quot;</span>, blocks));
+                <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;CONFUSE: &quot;</span> + <span class="fu">canMakeWord</span>(<span class="st">&quot;CONFUSE&quot;</span>, blocks));
                 
         }
 }</code></pre></div>

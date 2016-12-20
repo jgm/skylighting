@@ -1,15 +1,15 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">import </span><span class="dt" title="DataTypeTok">Data.List</span> (delete)
-<span class="kw" title="KeywordTok">import </span><span class="dt" title="DataTypeTok">Data.Char</span> (toUpper)
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw">import </span><span class="dt">Data.List</span> (delete)
+<span class="kw">import </span><span class="dt">Data.Char</span> (toUpper)
 
-<span class="co" title="CommentTok">-- returns list of all solutions, each solution being a list of blocks</span>
-<span class="ot" title="OtherTok">abc ::</span> (<span class="dt" title="DataTypeTok">Eq</span> a) <span class="ot" title="OtherTok">=&gt;</span> [[a]] <span class="ot" title="OtherTok">-&gt;</span> [a] <span class="ot" title="OtherTok">-&gt;</span> [[[a]]]
-abc _ [] <span class="fu" title="FunctionTok">=</span> [[]]
-abc blocks (c<span class="fu" title="FunctionTok">:</span>cs) <span class="fu" title="FunctionTok">=</span> [b<span class="fu" title="FunctionTok">:</span>ans <span class="fu" title="FunctionTok">|</span> b <span class="ot" title="OtherTok">&lt;-</span> blocks, c <span class="ot" title="OtherTok">`elem`</span> b,
-                             ans <span class="ot" title="OtherTok">&lt;-</span> abc (delete b blocks) cs]
+<span class="co">-- returns list of all solutions, each solution being a list of blocks</span>
+<span class="ot">abc ::</span> (<span class="dt">Eq</span> a) <span class="ot">=&gt;</span> [[a]] <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [[[a]]]
+abc _ [] <span class="fu">=</span> [[]]
+abc blocks (c<span class="fu">:</span>cs) <span class="fu">=</span> [b<span class="fu">:</span>ans <span class="fu">|</span> b <span class="ot">&lt;-</span> blocks, c <span class="ot">`elem`</span> b,
+                             ans <span class="ot">&lt;-</span> abc (delete b blocks) cs]
 
-blocks <span class="fu" title="FunctionTok">=</span> [<span class="st" title="StringTok">&quot;BO&quot;</span>, <span class="st" title="StringTok">&quot;XK&quot;</span>, <span class="st" title="StringTok">&quot;DQ&quot;</span>, <span class="st" title="StringTok">&quot;CP&quot;</span>, <span class="st" title="StringTok">&quot;NA&quot;</span>, <span class="st" title="StringTok">&quot;GT&quot;</span>, <span class="st" title="StringTok">&quot;RE&quot;</span>, <span class="st" title="StringTok">&quot;TG&quot;</span>, <span class="st" title="StringTok">&quot;QD&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>,
-          <span class="st" title="StringTok">&quot;JW&quot;</span>, <span class="st" title="StringTok">&quot;HU&quot;</span>, <span class="st" title="StringTok">&quot;VI&quot;</span>, <span class="st" title="StringTok">&quot;AN&quot;</span>, <span class="st" title="StringTok">&quot;OB&quot;</span>, <span class="st" title="StringTok">&quot;ER&quot;</span>, <span class="st" title="StringTok">&quot;FS&quot;</span>, <span class="st" title="StringTok">&quot;LY&quot;</span>, <span class="st" title="StringTok">&quot;PC&quot;</span>, <span class="st" title="StringTok">&quot;ZM&quot;</span>]
+blocks <span class="fu">=</span> [<span class="st">&quot;BO&quot;</span>, <span class="st">&quot;XK&quot;</span>, <span class="st">&quot;DQ&quot;</span>, <span class="st">&quot;CP&quot;</span>, <span class="st">&quot;NA&quot;</span>, <span class="st">&quot;GT&quot;</span>, <span class="st">&quot;RE&quot;</span>, <span class="st">&quot;TG&quot;</span>, <span class="st">&quot;QD&quot;</span>, <span class="st">&quot;FS&quot;</span>,
+          <span class="st">&quot;JW&quot;</span>, <span class="st">&quot;HU&quot;</span>, <span class="st">&quot;VI&quot;</span>, <span class="st">&quot;AN&quot;</span>, <span class="st">&quot;OB&quot;</span>, <span class="st">&quot;ER&quot;</span>, <span class="st">&quot;FS&quot;</span>, <span class="st">&quot;LY&quot;</span>, <span class="st">&quot;PC&quot;</span>, <span class="st">&quot;ZM&quot;</span>]
 
-<span class="ot" title="OtherTok">main ::</span> <span class="dt" title="DataTypeTok">IO</span> ()
-main <span class="fu" title="FunctionTok">=</span> mapM_ (\w <span class="ot" title="OtherTok">-&gt;</span> print (w, not <span class="fu" title="FunctionTok">.</span> null <span class="fu" title="FunctionTok">$</span> abc blocks (map toUpper w)))
-         [<span class="st" title="StringTok">&quot;&quot;</span>, <span class="st" title="StringTok">&quot;A&quot;</span>, <span class="st" title="StringTok">&quot;BARK&quot;</span>, <span class="st" title="StringTok">&quot;BoOK&quot;</span>, <span class="st" title="StringTok">&quot;TrEAT&quot;</span>, <span class="st" title="StringTok">&quot;COmMoN&quot;</span>, <span class="st" title="StringTok">&quot;SQUAD&quot;</span>, <span class="st" title="StringTok">&quot;conFUsE&quot;</span>]</code></pre></div>
+<span class="ot">main ::</span> <span class="dt">IO</span> ()
+main <span class="fu">=</span> mapM_ (\w <span class="ot">-&gt;</span> print (w, not <span class="fu">.</span> null <span class="fu">$</span> abc blocks (map toUpper w)))
+         [<span class="st">&quot;&quot;</span>, <span class="st">&quot;A&quot;</span>, <span class="st">&quot;BARK&quot;</span>, <span class="st">&quot;BoOK&quot;</span>, <span class="st">&quot;TrEAT&quot;</span>, <span class="st">&quot;COmMoN&quot;</span>, <span class="st">&quot;SQUAD&quot;</span>, <span class="st">&quot;conFUsE&quot;</span>]</code></pre></div>

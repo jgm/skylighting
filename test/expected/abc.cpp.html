@@ -1,37 +1,37 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="pp" title="PreprocessorTok">#include </span><span class="im" title="ImportTok">&lt;iostream&gt;</span>
-<span class="pp" title="PreprocessorTok">#include </span><span class="im" title="ImportTok">&lt;vector&gt;</span>
-<span class="pp" title="PreprocessorTok">#include </span><span class="im" title="ImportTok">&lt;string&gt;</span>
-<span class="pp" title="PreprocessorTok">#include </span><span class="im" title="ImportTok">&lt;set&gt;</span>
-<span class="pp" title="PreprocessorTok">#include </span><span class="im" title="ImportTok">&lt;cctype&gt;</span>
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;vector&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;string&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;set&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;cctype&gt;</span>
 
 
-<span class="kw" title="KeywordTok">typedef</span> <span class="bu" title="BuiltInTok">std::</span>pair&lt;<span class="dt" title="DataTypeTok">char</span>,<span class="dt" title="DataTypeTok">char</span>&gt; <span class="dt" title="DataTypeTok">item_t</span>;
-<span class="kw" title="KeywordTok">typedef</span> <span class="bu" title="BuiltInTok">std::</span>vector&lt;<span class="dt" title="DataTypeTok">item_t</span>&gt; <span class="dt" title="DataTypeTok">list_t</span>;
+<span class="kw">typedef</span> <span class="bu">std::</span>pair&lt;<span class="dt">char</span>,<span class="dt">char</span>&gt; <span class="dt">item_t</span>;
+<span class="kw">typedef</span> <span class="bu">std::</span>vector&lt;<span class="dt">item_t</span>&gt; <span class="dt">list_t</span>;
 
-<span class="dt" title="DataTypeTok">bool</span> can_make_word(<span class="at" title="AttributeTok">const</span> <span class="bu" title="BuiltInTok">std::</span>string&amp; w, <span class="at" title="AttributeTok">const</span> <span class="dt" title="DataTypeTok">list_t</span>&amp; vals) {
-    <span class="bu" title="BuiltInTok">std::</span>set&lt;<span class="dt" title="DataTypeTok">uint32_t</span>&gt; used;
-    <span class="cf" title="ControlFlowTok">while</span> (used.size() &lt; w.size()) {
-        <span class="at" title="AttributeTok">const</span> <span class="dt" title="DataTypeTok">char</span> c = toupper(w[used.size()]);
-        <span class="dt" title="DataTypeTok">uint32_t</span> x = used.size();
-        <span class="cf" title="ControlFlowTok">for</span> (<span class="dt" title="DataTypeTok">uint32_t</span> i = <span class="dv" title="DecValTok">0</span>, ii = vals.size(); i &lt; ii; ++i) {
-            <span class="cf" title="ControlFlowTok">if</span> (used.find(i) == used.end()) {
-                <span class="cf" title="ControlFlowTok">if</span> (toupper(vals[i].first) == c || toupper(vals[i].second) == c) {
+<span class="dt">bool</span> can_make_word(<span class="at">const</span> <span class="bu">std::</span>string&amp; w, <span class="at">const</span> <span class="dt">list_t</span>&amp; vals) {
+    <span class="bu">std::</span>set&lt;<span class="dt">uint32_t</span>&gt; used;
+    <span class="cf">while</span> (used.size() &lt; w.size()) {
+        <span class="at">const</span> <span class="dt">char</span> c = toupper(w[used.size()]);
+        <span class="dt">uint32_t</span> x = used.size();
+        <span class="cf">for</span> (<span class="dt">uint32_t</span> i = <span class="dv">0</span>, ii = vals.size(); i &lt; ii; ++i) {
+            <span class="cf">if</span> (used.find(i) == used.end()) {
+                <span class="cf">if</span> (toupper(vals[i].first) == c || toupper(vals[i].second) == c) {
                     used.insert(i);
-                    <span class="cf" title="ControlFlowTok">break</span>;
+                    <span class="cf">break</span>;
                 }
             }
         }
-        <span class="cf" title="ControlFlowTok">if</span> (x == used.size()) <span class="cf" title="ControlFlowTok">break</span>;
+        <span class="cf">if</span> (x == used.size()) <span class="cf">break</span>;
     }
-    <span class="cf" title="ControlFlowTok">return</span> used.size() == w.size();
+    <span class="cf">return</span> used.size() == w.size();
 }
 
 
-<span class="dt" title="DataTypeTok">int</span> main() {
-    <span class="dt" title="DataTypeTok">list_t</span> vals{ {<span class="st" title="StringTok">&#39;B&#39;</span>,<span class="st" title="StringTok">&#39;O&#39;</span>}, {<span class="st" title="StringTok">&#39;X&#39;</span>,<span class="st" title="StringTok">&#39;K&#39;</span>}, {<span class="st" title="StringTok">&#39;D&#39;</span>,<span class="st" title="StringTok">&#39;Q&#39;</span>}, {<span class="st" title="StringTok">&#39;C&#39;</span>,<span class="st" title="StringTok">&#39;P&#39;</span>}, {<span class="st" title="StringTok">&#39;N&#39;</span>,<span class="st" title="StringTok">&#39;A&#39;</span>}, {<span class="st" title="StringTok">&#39;G&#39;</span>,<span class="st" title="StringTok">&#39;T&#39;</span>}, {<span class="st" title="StringTok">&#39;R&#39;</span>,<span class="st" title="StringTok">&#39;E&#39;</span>}, {<span class="st" title="StringTok">&#39;T&#39;</span>,<span class="st" title="StringTok">&#39;G&#39;</span>}, {<span class="st" title="StringTok">&#39;Q&#39;</span>,<span class="st" title="StringTok">&#39;D&#39;</span>}, {<span class="st" title="StringTok">&#39;F&#39;</span>,<span class="st" title="StringTok">&#39;S&#39;</span>}, {<span class="st" title="StringTok">&#39;J&#39;</span>,<span class="st" title="StringTok">&#39;W&#39;</span>}, {<span class="st" title="StringTok">&#39;H&#39;</span>,<span class="st" title="StringTok">&#39;U&#39;</span>}, {<span class="st" title="StringTok">&#39;V&#39;</span>,<span class="st" title="StringTok">&#39;I&#39;</span>}, {<span class="st" title="StringTok">&#39;A&#39;</span>,<span class="st" title="StringTok">&#39;N&#39;</span>}, {<span class="st" title="StringTok">&#39;O&#39;</span>,<span class="st" title="StringTok">&#39;B&#39;</span>}, {<span class="st" title="StringTok">&#39;E&#39;</span>,<span class="st" title="StringTok">&#39;R&#39;</span>}, {<span class="st" title="StringTok">&#39;F&#39;</span>,<span class="st" title="StringTok">&#39;S&#39;</span>}, {<span class="st" title="StringTok">&#39;L&#39;</span>,<span class="st" title="StringTok">&#39;Y&#39;</span>}, {<span class="st" title="StringTok">&#39;P&#39;</span>,<span class="st" title="StringTok">&#39;C&#39;</span>}, {<span class="st" title="StringTok">&#39;Z&#39;</span>,<span class="st" title="StringTok">&#39;M&#39;</span>} };
-    <span class="bu" title="BuiltInTok">std::</span>vector&lt;<span class="bu" title="BuiltInTok">std::</span>string&gt; words{<span class="st" title="StringTok">&quot;A&quot;</span>,<span class="st" title="StringTok">&quot;BARK&quot;</span>,<span class="st" title="StringTok">&quot;BOOK&quot;</span>,<span class="st" title="StringTok">&quot;TREAT&quot;</span>,<span class="st" title="StringTok">&quot;COMMON&quot;</span>,<span class="st" title="StringTok">&quot;SQUAD&quot;</span>,<span class="st" title="StringTok">&quot;CONFUSE&quot;</span>};
-    <span class="cf" title="ControlFlowTok">for</span> (<span class="at" title="AttributeTok">const</span> <span class="bu" title="BuiltInTok">std::</span>string&amp; w : words) {
-        <span class="bu" title="BuiltInTok">std::</span>cout &lt;&lt; w &lt;&lt; <span class="st" title="StringTok">&quot;: &quot;</span> &lt;&lt; <span class="bu" title="BuiltInTok">std::</span>boolalpha &lt;&lt; can_make_word(w,vals) &lt;&lt; <span class="st" title="StringTok">&quot;.</span><span class="sc" title="SpecialCharTok">\n</span><span class="st" title="StringTok">&quot;</span>;
+<span class="dt">int</span> main() {
+    <span class="dt">list_t</span> vals{ {<span class="st">&#39;B&#39;</span>,<span class="st">&#39;O&#39;</span>}, {<span class="st">&#39;X&#39;</span>,<span class="st">&#39;K&#39;</span>}, {<span class="st">&#39;D&#39;</span>,<span class="st">&#39;Q&#39;</span>}, {<span class="st">&#39;C&#39;</span>,<span class="st">&#39;P&#39;</span>}, {<span class="st">&#39;N&#39;</span>,<span class="st">&#39;A&#39;</span>}, {<span class="st">&#39;G&#39;</span>,<span class="st">&#39;T&#39;</span>}, {<span class="st">&#39;R&#39;</span>,<span class="st">&#39;E&#39;</span>}, {<span class="st">&#39;T&#39;</span>,<span class="st">&#39;G&#39;</span>}, {<span class="st">&#39;Q&#39;</span>,<span class="st">&#39;D&#39;</span>}, {<span class="st">&#39;F&#39;</span>,<span class="st">&#39;S&#39;</span>}, {<span class="st">&#39;J&#39;</span>,<span class="st">&#39;W&#39;</span>}, {<span class="st">&#39;H&#39;</span>,<span class="st">&#39;U&#39;</span>}, {<span class="st">&#39;V&#39;</span>,<span class="st">&#39;I&#39;</span>}, {<span class="st">&#39;A&#39;</span>,<span class="st">&#39;N&#39;</span>}, {<span class="st">&#39;O&#39;</span>,<span class="st">&#39;B&#39;</span>}, {<span class="st">&#39;E&#39;</span>,<span class="st">&#39;R&#39;</span>}, {<span class="st">&#39;F&#39;</span>,<span class="st">&#39;S&#39;</span>}, {<span class="st">&#39;L&#39;</span>,<span class="st">&#39;Y&#39;</span>}, {<span class="st">&#39;P&#39;</span>,<span class="st">&#39;C&#39;</span>}, {<span class="st">&#39;Z&#39;</span>,<span class="st">&#39;M&#39;</span>} };
+    <span class="bu">std::</span>vector&lt;<span class="bu">std::</span>string&gt; words{<span class="st">&quot;A&quot;</span>,<span class="st">&quot;BARK&quot;</span>,<span class="st">&quot;BOOK&quot;</span>,<span class="st">&quot;TREAT&quot;</span>,<span class="st">&quot;COMMON&quot;</span>,<span class="st">&quot;SQUAD&quot;</span>,<span class="st">&quot;CONFUSE&quot;</span>};
+    <span class="cf">for</span> (<span class="at">const</span> <span class="bu">std::</span>string&amp; w : words) {
+        <span class="bu">std::</span>cout &lt;&lt; w &lt;&lt; <span class="st">&quot;: &quot;</span> &lt;&lt; <span class="bu">std::</span>boolalpha &lt;&lt; can_make_word(w,vals) &lt;&lt; <span class="st">&quot;.</span><span class="sc">\n</span><span class="st">&quot;</span>;
     }
 
 }</code></pre></div>

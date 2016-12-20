@@ -1,83 +1,83 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">using</span> System.<span class="fu" title="FunctionTok">Collections</span>.<span class="fu" title="FunctionTok">Generic</span>;
-<span class="kw" title="KeywordTok">using</span> System.<span class="fu" title="FunctionTok">Linq</span>;
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw">using</span> System.<span class="fu">Collections</span>.<span class="fu">Generic</span>;
+<span class="kw">using</span> System.<span class="fu">Linq</span>;
 
-<span class="dt" title="DataTypeTok">void</span> <span class="fu" title="FunctionTok">Main</span>()
+<span class="dt">void</span> <span class="fu">Main</span>()
 {
-        List&lt;<span class="dt" title="DataTypeTok">string</span>&gt; blocks =
-        <span class="kw" title="KeywordTok">new</span> List&lt;<span class="dt" title="DataTypeTok">string</span>&gt;() { <span class="st" title="StringTok">&quot;bo&quot;</span>, <span class="st" title="StringTok">&quot;xk&quot;</span>, <span class="st" title="StringTok">&quot;dq&quot;</span>, <span class="st" title="StringTok">&quot;cp&quot;</span>, <span class="st" title="StringTok">&quot;na&quot;</span>, <span class="st" title="StringTok">&quot;gt&quot;</span>, <span class="st" title="StringTok">&quot;re&quot;</span>, <span class="st" title="StringTok">&quot;tg&quot;</span>, <span class="st" title="StringTok">&quot;qd&quot;</span>, <span class="st" title="StringTok">&quot;fs&quot;</span>,
-                <span class="st" title="StringTok">&quot;jw&quot;</span>, <span class="st" title="StringTok">&quot;hu&quot;</span>, <span class="st" title="StringTok">&quot;vi&quot;</span>, <span class="st" title="StringTok">&quot;an&quot;</span>, <span class="st" title="StringTok">&quot;ob&quot;</span>, <span class="st" title="StringTok">&quot;er&quot;</span>, <span class="st" title="StringTok">&quot;fs&quot;</span>, <span class="st" title="StringTok">&quot;ly&quot;</span>, <span class="st" title="StringTok">&quot;pc&quot;</span>, <span class="st" title="StringTok">&quot;zm&quot;</span> };
-        List&lt;<span class="dt" title="DataTypeTok">string</span>&gt; words = <span class="kw" title="KeywordTok">new</span> List&lt;<span class="dt" title="DataTypeTok">string</span>&gt;() {
-                <span class="st" title="StringTok">&quot;A&quot;</span>, <span class="st" title="StringTok">&quot;BARK&quot;</span>, <span class="st" title="StringTok">&quot;BOOK&quot;</span>, <span class="st" title="StringTok">&quot;TREAT&quot;</span>, <span class="st" title="StringTok">&quot;COMMON&quot;</span>, <span class="st" title="StringTok">&quot;SQUAD&quot;</span>, <span class="st" title="StringTok">&quot;CONFUSE&quot;</span>};
+        List&lt;<span class="dt">string</span>&gt; blocks =
+        <span class="kw">new</span> List&lt;<span class="dt">string</span>&gt;() { <span class="st">&quot;bo&quot;</span>, <span class="st">&quot;xk&quot;</span>, <span class="st">&quot;dq&quot;</span>, <span class="st">&quot;cp&quot;</span>, <span class="st">&quot;na&quot;</span>, <span class="st">&quot;gt&quot;</span>, <span class="st">&quot;re&quot;</span>, <span class="st">&quot;tg&quot;</span>, <span class="st">&quot;qd&quot;</span>, <span class="st">&quot;fs&quot;</span>,
+                <span class="st">&quot;jw&quot;</span>, <span class="st">&quot;hu&quot;</span>, <span class="st">&quot;vi&quot;</span>, <span class="st">&quot;an&quot;</span>, <span class="st">&quot;ob&quot;</span>, <span class="st">&quot;er&quot;</span>, <span class="st">&quot;fs&quot;</span>, <span class="st">&quot;ly&quot;</span>, <span class="st">&quot;pc&quot;</span>, <span class="st">&quot;zm&quot;</span> };
+        List&lt;<span class="dt">string</span>&gt; words = <span class="kw">new</span> List&lt;<span class="dt">string</span>&gt;() {
+                <span class="st">&quot;A&quot;</span>, <span class="st">&quot;BARK&quot;</span>, <span class="st">&quot;BOOK&quot;</span>, <span class="st">&quot;TREAT&quot;</span>, <span class="st">&quot;COMMON&quot;</span>, <span class="st">&quot;SQUAD&quot;</span>, <span class="st">&quot;CONFUSE&quot;</span>};
         
-        <span class="dt" title="DataTypeTok">var</span> solver = <span class="kw" title="KeywordTok">new</span> <span class="fu" title="FunctionTok">ABC</span>(blocks);
+        <span class="dt">var</span> solver = <span class="kw">new</span> <span class="fu">ABC</span>(blocks);
         
-        <span class="kw" title="KeywordTok">foreach</span>( var word <span class="kw" title="KeywordTok">in</span> words)
+        <span class="kw">foreach</span>( var word <span class="kw">in</span> words)
         {
-                Console.<span class="fu" title="FunctionTok">WriteLine</span>(<span class="st" title="StringTok">&quot;{0} :{1}&quot;</span>, word, solver.<span class="fu" title="FunctionTok">CanMake</span>(word));
+                Console.<span class="fu">WriteLine</span>(<span class="st">&quot;{0} :{1}&quot;</span>, word, solver.<span class="fu">CanMake</span>(word));
         }
 }
 
-<span class="kw" title="KeywordTok">class</span> ABC
+<span class="kw">class</span> ABC
 {
-        <span class="kw" title="KeywordTok">readonly</span> Dictionary&lt;<span class="dt" title="DataTypeTok">char</span>, List&lt;<span class="dt" title="DataTypeTok">int</span>&gt;&gt; _blockDict = <span class="kw" title="KeywordTok">new</span> Dictionary&lt;<span class="dt" title="DataTypeTok">char</span>, List&lt;<span class="dt" title="DataTypeTok">int</span>&gt;&gt;();
-        <span class="dt" title="DataTypeTok">bool</span>[] _used;
-        <span class="dt" title="DataTypeTok">int</span> _nextBlock;
+        <span class="kw">readonly</span> Dictionary&lt;<span class="dt">char</span>, List&lt;<span class="dt">int</span>&gt;&gt; _blockDict = <span class="kw">new</span> Dictionary&lt;<span class="dt">char</span>, List&lt;<span class="dt">int</span>&gt;&gt;();
+        <span class="dt">bool</span>[] _used;
+        <span class="dt">int</span> _nextBlock;
 
-        <span class="kw" title="KeywordTok">readonly</span> List&lt;<span class="dt" title="DataTypeTok">string</span>&gt; _blocks;
+        <span class="kw">readonly</span> List&lt;<span class="dt">string</span>&gt; _blocks;
 
-        <span class="kw" title="KeywordTok">private</span> <span class="dt" title="DataTypeTok">void</span> <span class="fu" title="FunctionTok">AddBlockChar</span>(<span class="dt" title="DataTypeTok">char</span> c)
+        <span class="kw">private</span> <span class="dt">void</span> <span class="fu">AddBlockChar</span>(<span class="dt">char</span> c)
         {
-                <span class="kw" title="KeywordTok">if</span> (!_blockDict.<span class="fu" title="FunctionTok">ContainsKey</span>(c))
+                <span class="kw">if</span> (!_blockDict.<span class="fu">ContainsKey</span>(c))
                 {
-                        _blockDict[c] = <span class="kw" title="KeywordTok">new</span> List&lt;<span class="dt" title="DataTypeTok">int</span>&gt;();
+                        _blockDict[c] = <span class="kw">new</span> List&lt;<span class="dt">int</span>&gt;();
                 }
-                _blockDict[c].<span class="fu" title="FunctionTok">Add</span>(_nextBlock);
+                _blockDict[c].<span class="fu">Add</span>(_nextBlock);
         }
 
-        <span class="kw" title="KeywordTok">private</span> <span class="dt" title="DataTypeTok">void</span> <span class="fu" title="FunctionTok">AddBlock</span>(<span class="dt" title="DataTypeTok">string</span> block)
+        <span class="kw">private</span> <span class="dt">void</span> <span class="fu">AddBlock</span>(<span class="dt">string</span> block)
         {
-                <span class="fu" title="FunctionTok">AddBlockChar</span>(block[<span class="dv" title="DecValTok">0</span>]);
-                <span class="fu" title="FunctionTok">AddBlockChar</span>(block[<span class="dv" title="DecValTok">1</span>]);
+                <span class="fu">AddBlockChar</span>(block[<span class="dv">0</span>]);
+                <span class="fu">AddBlockChar</span>(block[<span class="dv">1</span>]);
                 _nextBlock++;
         }
 
-        <span class="kw" title="KeywordTok">public</span> <span class="fu" title="FunctionTok">ABC</span>(List&lt;<span class="dt" title="DataTypeTok">string</span>&gt; blocks)
+        <span class="kw">public</span> <span class="fu">ABC</span>(List&lt;<span class="dt">string</span>&gt; blocks)
         {
                 _blocks = blocks;
-                <span class="kw" title="KeywordTok">foreach</span> (var block <span class="kw" title="KeywordTok">in</span> blocks)
+                <span class="kw">foreach</span> (var block <span class="kw">in</span> blocks)
                 {
-                        <span class="fu" title="FunctionTok">AddBlock</span>(block);
+                        <span class="fu">AddBlock</span>(block);
                 }
         }
 
-        <span class="kw" title="KeywordTok">public</span> <span class="dt" title="DataTypeTok">bool</span> <span class="fu" title="FunctionTok">CanMake</span>(<span class="dt" title="DataTypeTok">string</span> word)
+        <span class="kw">public</span> <span class="dt">bool</span> <span class="fu">CanMake</span>(<span class="dt">string</span> word)
         {
-                word = word.<span class="fu" title="FunctionTok">ToLower</span>();
-                <span class="kw" title="KeywordTok">if</span> (word.<span class="fu" title="FunctionTok">Length</span> &gt; _blockDict.<span class="fu" title="FunctionTok">Count</span>)
+                word = word.<span class="fu">ToLower</span>();
+                <span class="kw">if</span> (word.<span class="fu">Length</span> &gt; _blockDict.<span class="fu">Count</span>)
                 {
-                        <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">false</span>;
+                        <span class="kw">return</span> <span class="kw">false</span>;
                 }
-                _used = <span class="kw" title="KeywordTok">new</span> <span class="dt" title="DataTypeTok">bool</span>[_blocks.<span class="fu" title="FunctionTok">Count</span>];
-                <span class="kw" title="KeywordTok">return</span> <span class="fu" title="FunctionTok">TryMake</span>(word);
+                _used = <span class="kw">new</span> <span class="dt">bool</span>[_blocks.<span class="fu">Count</span>];
+                <span class="kw">return</span> <span class="fu">TryMake</span>(word);
         }
 
-        <span class="kw" title="KeywordTok">public</span> <span class="dt" title="DataTypeTok">bool</span> <span class="fu" title="FunctionTok">TryMake</span>(<span class="dt" title="DataTypeTok">string</span> word)
+        <span class="kw">public</span> <span class="dt">bool</span> <span class="fu">TryMake</span>(<span class="dt">string</span> word)
         {
-                <span class="kw" title="KeywordTok">if</span> (word == <span class="dt" title="DataTypeTok">string</span>.<span class="fu" title="FunctionTok">Empty</span>)
+                <span class="kw">if</span> (word == <span class="dt">string</span>.<span class="fu">Empty</span>)
                 {
-                        <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">true</span>;
+                        <span class="kw">return</span> <span class="kw">true</span>;
                 }
-                <span class="dt" title="DataTypeTok">var</span> blocks = _blockDict[word[<span class="dv" title="DecValTok">0</span>]].<span class="fu" title="FunctionTok">Where</span>(b =&gt; !_used[b]);
-                <span class="kw" title="KeywordTok">foreach</span> (var block <span class="kw" title="KeywordTok">in</span> blocks)
+                <span class="dt">var</span> blocks = _blockDict[word[<span class="dv">0</span>]].<span class="fu">Where</span>(b =&gt; !_used[b]);
+                <span class="kw">foreach</span> (var block <span class="kw">in</span> blocks)
                 {
-                        _used[block] = <span class="kw" title="KeywordTok">true</span>;
-                        <span class="kw" title="KeywordTok">if</span> (<span class="fu" title="FunctionTok">TryMake</span>(word.<span class="fu" title="FunctionTok">Substring</span>(<span class="dv" title="DecValTok">1</span>)))
+                        _used[block] = <span class="kw">true</span>;
+                        <span class="kw">if</span> (<span class="fu">TryMake</span>(word.<span class="fu">Substring</span>(<span class="dv">1</span>)))
                         {
-                                <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">true</span>;
+                                <span class="kw">return</span> <span class="kw">true</span>;
                         }
-                        _used[block] = <span class="kw" title="KeywordTok">false</span>;
+                        _used[block] = <span class="kw">false</span>;
                 }
-                <span class="kw" title="KeywordTok">return</span> <span class="kw" title="KeywordTok">false</span>;
+                <span class="kw">return</span> <span class="kw">false</span>;
         }
 }
 </code></pre></div>

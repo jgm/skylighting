@@ -1,9 +1,9 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw" title="KeywordTok">function</span> abc (str, list)
-  isempty(str) &amp;&amp; <span class="kw" title="KeywordTok">return</span> true
-  <span class="kw" title="KeywordTok">for</span> i = <span class="fl" title="FloatTok">1</span>:length(list)
-    str[<span class="kw" title="KeywordTok">end</span>] <span class="kw" title="KeywordTok">in</span> list[i] &amp;&amp; 
-    any([abc(str[<span class="fl" title="FloatTok">1</span>:<span class="kw" title="KeywordTok">end</span>-<span class="fl" title="FloatTok">1</span>], deleteat!(copy(list), i))]) &amp;&amp;
-    <span class="kw" title="KeywordTok">return</span> true
-  <span class="kw" title="KeywordTok">end</span>
+<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode"><span class="kw">function</span> abc (str, list)
+  isempty(str) &amp;&amp; <span class="kw">return</span> true
+  <span class="kw">for</span> i = <span class="fl">1</span>:length(list)
+    str[<span class="kw">end</span>] <span class="kw">in</span> list[i] &amp;&amp; 
+    any([abc(str[<span class="fl">1</span>:<span class="kw">end</span>-<span class="fl">1</span>], deleteat!(copy(list), i))]) &amp;&amp;
+    <span class="kw">return</span> true
+  <span class="kw">end</span>
   false
-<span class="kw" title="KeywordTok">end</span></code></pre></div>
+<span class="kw">end</span></code></pre></div>
