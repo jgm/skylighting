@@ -44,9 +44,9 @@ mkTest regen inpFile = localOption (mkTimeout 2000000) $
                              traceOutput = False
                            , syntaxMap = defaultSyntaxMap } syntax $! code of
                  Left e -> fail e
-                 Right ls -> return $ renderHtml $
-                                formatHtmlBlock defaultFormatOpts{
-                                  titleAttributes = True } ls
+                 Right ls -> return $ renderHtml
+                                      (toHtml (formatHtmlBlock opts ls)) ++ "\n"
+        opts = defaultFormatOpts{ titleAttributes = True }
         updateGolden = if regen
                           then writeFile (expecteddir </> inpFile <.> "html")
                           else \_ -> return ()
