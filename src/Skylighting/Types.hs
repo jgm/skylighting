@@ -119,6 +119,7 @@ data Context = Context{
   , cSyntax :: String
   , cRules :: [Rule]
   , cAttribute :: TokenType
+  , cLineEmptyContext :: [ContextSwitch]
   , cLineEndContext :: [ContextSwitch]
   , cLineBeginContext :: [ContextSwitch]
   , cFallthrough :: Bool

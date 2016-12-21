@@ -175,6 +175,7 @@ getContexts (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
      proc x -> do
        name <- getAttrValue "name" -< x
        attribute <- getAttrValue "attribute" -< x
+       lineEmptyContext <- getAttrValue "lineEmptyContext" -< x
        lineEndContext <- getAttrValue "lineEndContext" -< x
        lineBeginContext <- getAttrValue "lineBeginContext" -< x
        fallthrough <- arr (vBool False) <<< getAttrValue "fallthrough" -< x
@@ -189,6 +190,8 @@ getContexts (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
                    , cRules = parsers
                    , cAttribute = fromMaybe NormalTok $
                            Map.lookup attribute itemdatas
+                   , cLineEmptyContext =
+                        parseContextSwitch syntaxname lineEmptyContext
                    , cLineEndContext =
                         parseContextSwitch syntaxname lineEndContext
                    , cLineBeginContext =

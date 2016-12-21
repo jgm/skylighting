@@ -129,7 +129,9 @@ tokenizeLine (ln, linenum) = do
                          , firstNonspaceColumn =
                               findIndex (not . isSpace) ln }
        doContextSwitch (cLineBeginContext cur)
-  doContextSwitch (cLineBeginContext cur)
+  if null ln
+     then doContextSwitch (cLineEmptyContext cur)
+     else doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
   ts <- normalizeHighlighting . catMaybes <$> many getToken
   currentContext >>= checkLineEnd
