@@ -100,7 +100,7 @@ tokenize :: TokenizerConfig -> Syntax -> String -> Either String [SourceLine]
 tokenize config syntax inp =
   evalState
     (runReaderT
-      (runExceptT (mapM tokenizeLine (lines inp))) config)
+      (runExceptT (mapM tokenizeLine $ zip (lines inp) [1..])) config)
     startingState{ input = inp
                  , contextStack = ContextStack [sStartingContext syntax] }
 
@@ -115,8 +115,8 @@ startingState =
                 , firstNonspaceColumn = Nothing
                 }
 
-tokenizeLine :: String -> TokenizerM [Token]
-tokenizeLine ln = do
+tokenizeLine :: (String, Int) -> TokenizerM [Token]
+tokenizeLine (ln, linenum) = do
   cur <- currentContext
   lineCont <- gets lineContinuation
   if lineCont
@@ -130,9 +130,14 @@ tokenizeLine ln = do
   modify $ \st -> st{ input = ln, prevChar = '\n' }
   ts <- normalizeHighlighting . catMaybes <$> many getToken
   currentContext >>= checkLineEnd
-  -- TODO perhaps we should just fail in this case?
+  -- fail if we haven't consumed whole line
   inp <- gets input
-  return $ ts ++ [(ErrorTok, inp) | not (null inp)]
+  if not (null inp)
+     then do
+       col <- gets column
+       throwError $ "Could not match anything at line " ++
+         show linenum ++ " column " ++ show col
+     else return ts
 
 getToken :: TokenizerM (Maybe Token)
 getToken = do
@@ -416,8 +421,6 @@ keyword kwattr kws = do
        CaseInsensitiveWords ws | mk w `Set.member` ws -> takeChars w
        _ -> mzero
 
--- TODO better as a monad instance for token
--- perhaps use Seq?
 normalizeHighlighting :: [Token] -> [Token]
 normalizeHighlighting [] = []
 normalizeHighlighting ((_,""):xs) = normalizeHighlighting xs
