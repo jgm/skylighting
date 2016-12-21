@@ -1,16 +1,32 @@
 _ test against h-k for correctness
   _ life.lua
+  for:
+    -- local i=os.clock()+1 while(os.clock()<i) do end
+  end
+  we get:
+  , [ ( NormalTok , "  " )
+    , ( DocumentationTok , "-- local i=os.clock()+1 while(os.clock()" )
+    , ( KeywordTok , "<i" )
+    , ( OtherTok , ") do end" )
+    ]
+  , [ ( DocumentationTok , "end" ) ]
 
-    - <span class="kw">function</span> delay<span class="ot">()</span> <span class="do">-- NOTE: SYSTEM-DEPENDENT, adjust as necessary</span>
-    + <span class="kw">function</span> delay<span class="ot">()</span> <span class="do">-- </span><span class="al">NOTE</span><span class="do">: SYSTEM-DEPENDENT, adjust as necessary</span>
-        <span class="kw">for</span> i<span class="ot">=</span><span class="dv">1</span><span class="ot">,</span><span class="dv">10000</span> <span class="kw">do</span> <span class="kw">end</span>
-        <span class="do">-- local i=os.clock()+1 while(os.clock()</span><span class="kw">&lt;i</span><span class="ot">) do end</span>
-    - <span class="kw">end</span>
-    + <span class="do">end</span>
+  Partly this is a bug in kate, which also highlights the doc line
+  as above. however, kate correctly formats th final 'end'.
+
+  ok, looks like this is a matter of applying the lineEndContext
+  shift in the included context (doxygenlua); so maybe we should check for
+  line-end after applying a rule?
+  the keyword tag is because lua likes to highlight HTML in doxygen.
 
 _ make insensitive attribute work with StringDetect
 
 _ set column = 0 for regexes starting with ^
+
+_ separate out tokenizer/formatter tests
+  tokenizer tests should go to native rather than HTML
+
+_ add a separate formatter test (for both html and latex)
 
 _ fix FromJSON instance for Style, Color, and
   add a function to read a KDE theme as a style
