@@ -683,7 +683,7 @@
       <context attribute="Normal Text" lineEndContext="#pop" name="CmdSetEnv" fallthrough="true" fallthroughContext="#pop">
         <!-- handle command line options -->
         <RegExpr attribute="Variable" context="#pop" String="\b&varname;" />
-        <DetectChar attribute="Variable" context="Assign" char="\s" />
+        <DetectChar attribute="Variable" context="Assign" char=" " />
         <IncludeRules context="FindMost" />
       </context>
 

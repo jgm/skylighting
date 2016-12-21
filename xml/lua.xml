@@ -280,14 +280,14 @@
       <itemData name="Alerts"          defStyleNum="dsAlert" spellChecking="false"/>
       <itemData name="BFunc"           defStyleNum="dsFunction" spellChecking="false"/>
       <itemData name="Comment"         defStyleNum="dsComment"/>
-      <itemData name="Constant"        defStyleNum="dsKeyword" spellChecking="false"/>
+      <itemData name="Constant"        defStyleNum="dsNormal" /> <!-- JGM -->
       <itemData name="Control"         defStyleNum="dsKeyword" color="#A1A100" selColor="#ffffff" bold="0" italic="0" spellChecking="false"/>
       <itemData name="Error"           defStyleNum="dsError" spellChecking="false"/>
       <itemData name="Keyword"         defStyleNum="dsKeyword" spellChecking="false"/>
       <itemData name="Numbers"         defStyleNum="dsDecVal" spellChecking="false"/>
       <itemData name="Strings"         defStyleNum="dsString"/>
       <itemData name="Symbols"         defStyleNum="dsOthers" spellChecking="false"/>
-      <itemData name="Variable"        defStyleNum="dsKeyword" color="#5555FF" selColor="#ffffff" bold="0" italic="0" spellChecking="false"/>
+      <itemData name="Variable"        defStyleNum="dsNormal" /> <!-- JGM -->
     </itemDatas>
   </highlighting>
   <general>
