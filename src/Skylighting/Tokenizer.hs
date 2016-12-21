@@ -16,6 +16,7 @@ import Data.Char (isSpace, isLetter, isAlphaNum, ord)
 import qualified Data.Map as Map
 import Debug.Trace
 import Data.CaseInsensitive (mk)
+import Data.Maybe (catMaybes)
 
 info :: String -> TokenizerM ()
 info s = do
@@ -127,13 +128,13 @@ tokenizeLine ln = do
        doContextSwitch (cLineBeginContext cur)
   doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
-  ts <- normalizeHighlighting . traceShowId <$> many getToken
+  ts <- normalizeHighlighting . catMaybes <$> many getToken
   currentContext >>= checkLineEnd
   -- TODO perhaps we should just fail in this case?
   inp <- gets input
   return $ ts ++ [(ErrorTok, inp) | not (null inp)]
 
-getToken :: TokenizerM Token
+getToken :: TokenizerM (Maybe Token)
 getToken = do
   inp <- gets input
   guard $ not (null inp)
@@ -141,7 +142,7 @@ getToken = do
   msum (map tryRule (cRules context)) <|>
      if cFallthrough context
         then doContextSwitch (cFallthroughContext context) >> getToken
-        else (cAttribute context, ) <$> normalChunk
+        else (\x -> Just (cAttribute context, x)) <$> normalChunk
 
 takeChars :: String -> TokenizerM String
 takeChars [] = mzero
@@ -152,7 +153,7 @@ takeChars xs = do
                       column = column st + numchars }
   return xs
 
-tryRule :: Rule -> TokenizerM Token
+tryRule :: Rule -> TokenizerM (Maybe Token)
 tryRule rule = do
   case rColumn rule of
        Nothing -> return ()
@@ -168,7 +169,7 @@ tryRule rule = do
   oldstate <- get -- needed for lookahead rules
 
   let attr = rAttribute rule
-  (tt, s) <- case rMatcher rule of
+  mbtok <- case rMatcher rule of
                 DetectChar c -> withAttr attr $ detectChar (rDynamic rule) c
                 Detect2Chars c d -> withAttr attr $
                                       detect2Chars (rDynamic rule) c d
@@ -192,23 +193,32 @@ tryRule rule = do
                 IncludeRules cname -> includeRules
                    (if rIncludeAttribute rule then Just attr else Nothing)
                    cname
-  (_, cresult) <- msum (map tryRule (rChildren rule))
-              <|> return (NormalTok, "")
+  mbchildren <- msum (map tryRule (rChildren rule))
+                 <|> return Nothing
 
-  tok <- if rLookahead rule
-            then do
-              modify $ \st -> st{ input = input oldstate
-                                , prevChar = prevChar oldstate
-                                , column = column oldstate }
-              return (tt, "")
-            else return (tt, s ++ cresult)
+  mbtok' <- case mbtok of
+                 Nothing -> return Nothing
+                 Just (tt, s)
+                   | rLookahead rule -> do
+                     modify $ \st -> st{ input = input oldstate
+                                       , prevChar = prevChar oldstate
+                                       , column = column oldstate }
+                     return Nothing
+                   | otherwise -> do
+                     case mbchildren of
+                          Nothing -> return $ Just (tt, s)
+                          Just (_, cresult) -> return $ Just (tt, s ++ cresult)
 
-  info $ takeWhile (/=' ') (show (rMatcher rule)) ++ " MATCHED " ++ show tok
+  info $ takeWhile (/=' ') (show (rMatcher rule)) ++ " MATCHED " ++ show mbtok'
   doContextSwitch (rContextSwitch rule)
-  return tok
+  return mbtok'
 
-withAttr :: TokenType -> TokenizerM String -> TokenizerM Token
-withAttr tt p = (tt,) <$> p
+withAttr :: TokenType -> TokenizerM String -> TokenizerM (Maybe Token)
+withAttr tt p = do
+  res <- p
+  case res of
+       ""  -> return Nothing
+       xs  -> return $ Just (tt, xs)
 
 hlCStringCharRegex :: RE
 hlCStringCharRegex = RE{
@@ -258,18 +268,18 @@ normalChunk = do
     (x:xs) | isAlphaNum x -> takeChars $ x : takeWhile isAlphaNum xs
     (x:_) -> takeChars [x]
 
-includeRules :: Maybe TokenType -> ContextName -> TokenizerM Token
+includeRules :: Maybe TokenType -> ContextName -> TokenizerM (Maybe Token)
 includeRules mbattr (syn, con) = do
   syntaxes <- asks syntaxMap
   case Map.lookup syn syntaxes >>= lookupContext con of
-       Nothing  -> throwError $ "Context lookup failed " ++
-                                  show (syn, con)
+       Nothing  -> throwError $ "Context lookup failed " ++ show (syn, con)
        Just c   -> do
-         (t,xs) <- msum (map tryRule (cRules c))
+         mbtok <- msum (map tryRule (cRules c))
          checkLineEnd c
-         return $ case (t, mbattr) of
-                       (NormalTok, Just attr)  -> (attr, xs)
-                       _ -> (t, xs)
+         return $ case (mbtok, mbattr) of
+                    (Just (NormalTok, xs), Just attr) ->
+                       Just (attr, xs)
+                    _ -> mbtok
 
 checkLineEnd :: Context -> TokenizerM ()
 checkLineEnd c = do
