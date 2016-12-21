@@ -1,10 +1,6 @@
 _ test against h-k for correctness
   still failing relative to h-k expected output.
   needs to be analyzed ; might be problems in h-k.
-  _ abc.c
-    <span class="pp">#include </span><span class="im">ctype.h&gt;</span><span class="pp">&gt;</span>
-  _ abc.cpp
-    same issue as for abc.c
   _ archive.rhtml
     <span class="ch">&#39;</span>archive<span class="ch">&#39;}</span> - this should be st not ch!
   _ life.lua

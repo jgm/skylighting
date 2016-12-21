@@ -300,7 +300,9 @@ rangeDetect :: Char -> Char -> TokenizerM String
 rangeDetect c d = do
   inp <- gets input
   case inp of
-    (x:rest) | x == c -> takeChars (takeWhile (/= d) rest ++ [d])
+    (x:rest) | x == c -> case span (/= d) rest of
+                              (xs, y:_) -> takeChars (x : xs ++ [y])
+                              (_, [])   -> mzero
     _ -> mzero
 
 detectSpaces :: TokenizerM String
