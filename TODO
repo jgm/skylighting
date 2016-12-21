@@ -1,11 +1,14 @@
+_ make insensitive work with StringDetect
 _ test against h-k for correctness
-  still failing relative to h-k expected output.
-  needs to be analyzed ; might be problems in h-k.
-  _ archive.rhtml
-    <span class="ch">&#39;</span>archive<span class="ch">&#39;}</span> - this should be st not ch!
   _ life.lua
-    maybe need the patch life.lua.patch?
-  _ look at other patch files too, and generate new patches
+
+    - <span class="kw">function</span> delay<span class="ot">()</span> <span class="do">-- NOTE: SYSTEM-DEPENDENT, adjust as necessary</span>
+    + <span class="kw">function</span> delay<span class="ot">()</span> <span class="do">-- </span><span class="al">NOTE</span><span class="do">: SYSTEM-DEPENDENT, adjust as necessary</span>
+        <span class="kw">for</span> i<span class="ot">=</span><span class="dv">1</span><span class="ot">,</span><span class="dv">10000</span> <span class="kw">do</span> <span class="kw">end</span>
+        <span class="do">-- local i=os.clock()+1 while(os.clock()</span><span class="kw">&lt;i</span><span class="ot">) do end</span>
+    - <span class="kw">end</span>
+    + <span class="do">end</span>
+
 _ make faster
   (use Set for Char matchers)
   (improve normalize fn?)
