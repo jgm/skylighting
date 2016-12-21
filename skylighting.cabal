@@ -18,10 +18,6 @@ category:            Text
 build-type:          Simple
 extra-source-files:  changelog.md
                      README.md
-                     Makefile
-                     xml/language.dtd
-                     xml/*.xml
-                     xml/*.xml.patch
                      tests/expected/*.html
                      tests/cases/abc.ada
                      tests/cases/abc.agda
