@@ -75,11 +75,17 @@ currentContext = do
 
 doContextSwitch :: [ContextSwitch] -> TokenizerM ()
 doContextSwitch [] = return ()
-doContextSwitch (Pop : xs) = popContextStack >> doContextSwitch xs
+doContextSwitch (Pop : xs) = do
+  popContextStack
+  currentContext >>= checkLineEnd
+  doContextSwitch xs
 doContextSwitch (Push (syn,c) : xs) = do
   syntaxes <- asks syntaxMap
   case Map.lookup syn syntaxes >>= lookupContext c of
-       Just con -> pushContextStack con >> doContextSwitch xs
+       Just con -> do
+         pushContextStack con
+         checkLineEnd con
+         doContextSwitch xs
        Nothing  -> throwError $ "Unknown syntax or context: " ++ show (syn, c)
 
 lookupContext :: String -> Syntax -> Maybe Context
@@ -122,9 +128,7 @@ tokenizeLine ln = do
   doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
   ts <- normalizeHighlighting <$> many getToken
-  cur' <- currentContext
-  lineCont' <- gets lineContinuation
-  unless lineCont' $ doContextSwitch (cLineEndContext cur')
+  currentContext >>= checkLineEnd
   -- TODO perhaps we should just fail in this case?
   inp <- gets input
   return $ ts ++ [(ErrorTok, inp) | not (null inp)]
@@ -257,14 +261,22 @@ normalChunk = do
 includeRules :: Maybe TokenType -> ContextName -> TokenizerM Token
 includeRules mbattr (syn, con) = do
   syntaxes <- asks syntaxMap
-  (t,xs) <- case Map.lookup syn syntaxes >>= lookupContext con of
-                 Nothing  -> throwError $ "Context lookup failed " ++
-                                            show (syn, con)
-                 Just c   -> msum (map tryRule (cRules c))
-  let t' = case (t, mbattr) of
-                (NormalTok, Just attr)  -> attr
-                _ -> t
-  return (t', xs)
+  case Map.lookup syn syntaxes >>= lookupContext con of
+       Nothing  -> throwError $ "Context lookup failed " ++
+                                  show (syn, con)
+       Just c   -> do
+         (t,xs) <- msum (map tryRule (cRules c))
+         checkLineEnd c
+         return $ case (t, mbattr) of
+                       (NormalTok, Just attr)  -> (attr, xs)
+                       _ -> (t, xs)
+
+checkLineEnd :: Context -> TokenizerM ()
+checkLineEnd c = do
+  inp <- gets input
+  when (null inp) $ do
+    lineCont' <- gets lineContinuation
+    unless lineCont' $ doContextSwitch (cLineEndContext c)
 
 detectChar :: Bool -> Char -> TokenizerM String
 detectChar dynamic c = do
