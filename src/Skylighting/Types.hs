@@ -1,5 +1,5 @@
 {-# LANGUAGE ScopedTypeVariables, DeriveDataTypeable, TypeSynonymInstances,
-    FlexibleInstances #-}
+    FlexibleInstances, OverloadedStrings #-}
 
 module Skylighting.Types (
                 ContextName
@@ -28,12 +28,15 @@ module Skylighting.Types (
 import Skylighting.Regex
 import qualified Data.Map as Map
 import qualified Data.Set as Set
+import Data.Aeson
 import Data.Word
 import Text.Printf
 import Data.Bits
 import Data.Data (Data)
 import Data.Typeable (Typeable)
 import Data.CaseInsensitive (CI, mk)
+import qualified Data.Text as Text
+import Safe (readMay)
 
 type ContextName = (String, String)
 
@@ -159,6 +162,13 @@ data TokenType = KeywordTok
                | NormalTok
                deriving (Read, Show, Eq, Enum, Data, Typeable)
 
+instance FromJSON TokenType where
+  parseJSON (String t) =
+    case readMay (Text.unpack t ++ "Tok") of
+         Just tt -> return tt
+         Nothing -> fail "Not a token type"
+  parseJSON _ = mempty
+
 -- | A line of source, list of labeled source items.
 type SourceLine = [Token]
 
@@ -169,6 +179,20 @@ data TokenStyle = TokenStyle {
   , tokenItalic     :: Bool
   , tokenUnderline  :: Bool
   } deriving (Show, Read, Data, Typeable)
+
+instance FromJSON TokenStyle where
+  parseJSON (Object v) = do
+    tcolor <- v .:? "text-color"
+    tbold <- v .:? "bold" .!= False
+    titalic <- v .:? "italic" .!= False
+    tunderline <- v .:? "underline" .!= False
+    return TokenStyle{
+               tokenColor = tcolor
+             , tokenBackground = Nothing
+             , tokenBold = tbold
+             , tokenItalic = titalic
+             , tokenUnderline = tunderline }
+  parseJSON _ = mempty
 
 defStyle :: TokenStyle
 defStyle = TokenStyle {
@@ -207,6 +231,10 @@ instance ToColor (Double, Double, Double) where
           Just $ RGB (floor $ r * 255) (floor $ g * 255) (floor $ b * 255)
   toColor _ = Nothing
 
+instance FromJSON Color where
+  parseJSON (String t) = maybe mempty return $ toColor (Text.unpack t)
+  parseJSON _ = mempty
+
 class FromColor a where
   fromColor :: Color -> a
 
@@ -226,6 +254,21 @@ data Style = Style {
   , lineNumberColor           :: Maybe Color
   , lineNumberBackgroundColor :: Maybe Color
   } deriving (Read, Show, Data, Typeable)
+
+instance FromJSON Style where
+  parseJSON (Object v) = do
+    tokstyles <- v .: "text-styles"
+    backgroundCol <- v .:? "background-color"
+    lineNumberCol <- v .:? "line-numbers"
+    lineNumberBgCol <- v .:? "background-color"
+    return Style{ defaultColor = case lookup NormalTok tokstyles of
+                                      Nothing -> Nothing
+                                      Just ts -> tokenColor ts
+                , backgroundColor = backgroundCol
+                , lineNumberColor = lineNumberCol
+                , lineNumberBackgroundColor = lineNumberBgCol
+                , tokenStyles = tokstyles }
+  parseJSON _ = mempty
 
 -- | Options for formatting source code.
 data FormatOptions = FormatOptions{

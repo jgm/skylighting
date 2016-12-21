@@ -190,10 +190,12 @@ library
   other-extensions:    CPP, Arrows
   build-depends:       base,
                        mtl,
+                       text,
                        bytestring,
                        regex-pcre-builtin,
                        directory,
                        filepath,
+                       aeson,
                        case-insensitive,
                        utf8-string,
                        hxt,
@@ -219,6 +221,7 @@ executable skylighting-extract
                        hxt,
                        utf8-string,
                        case-insensitive,
+                       aeson,
                        pretty-show,
                        containers,
                        directory
