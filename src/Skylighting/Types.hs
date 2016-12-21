@@ -93,6 +93,7 @@ data Rule = Rule{
   , rAttribute :: TokenType
   , rIncludeAttribute :: Bool
   , rDynamic   :: Bool
+  , rCaseSensitive :: Bool
   , rChildren  :: [Rule]
   , rLookahead :: Bool
   , rFirstNonspace :: Bool

@@ -294,6 +294,7 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
                               else Map.lookup attribute itemdatas,
                         rIncludeAttribute = includeAttrib,
                         rDynamic = dynamic,
+                        rCaseSensitive = not insensitive,
                         rChildren = children,
                         rContextSwitch = contextSwitch,
                         rLookahead = lookahead,
