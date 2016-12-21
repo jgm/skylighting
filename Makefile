@@ -6,8 +6,8 @@ DEFS=$(patsubst %,xml/%,$(XMLS))
 quick:
 	stack install --test --fast
 
-trace:
-	stack install --test --fast --flag 'skylighting:trace'
+test:
+	stack test
 
 bootstrap: $(DEFS)
 	-rm -rf src/Skylighting/Syntax
@@ -24,5 +24,5 @@ update-xml: syntax-highlighting
 clean:
 	stack clean
 
-.PHONY: all update-xml quick clean
+.PHONY: all update-xml quick clean test
 
