@@ -7,7 +7,7 @@ module Skylighting.Tokenizer (
 import qualified Data.Set as Set
 import Skylighting.Regex
 import Skylighting.Types
-import Data.List (isPrefixOf, findIndex)
+import Data.List (findIndex)
 import Control.Monad.Except
 import Control.Monad.State
 import Control.Monad.Reader
@@ -195,8 +195,10 @@ tryRule rule = do
                 Float -> withAttr attr $ regExpr False floatRegex
                 Keyword kwattr kws ->
                   withAttr attr $ keyword kwattr kws
-                StringDetect s -> withAttr attr $ stringDetect s
-                WordDetect s -> withAttr attr $ wordDetect s
+                StringDetect s -> withAttr attr $
+                                    stringDetect (rCaseSensitive rule) s
+                WordDetect s -> withAttr attr $
+                                    wordDetect (rCaseSensitive rule) s
                 LineContinue -> withAttr attr $ lineContinue
                 DetectSpaces -> withAttr attr $ detectSpaces
                 DetectIdentifier -> withAttr attr $ detectIdentifier
@@ -248,19 +250,23 @@ hlCCharRegex = RE{
   }
   where reStr = "'(?:" ++ reHlCStringChar ++ "|[^'\\\\])'"
 
-wordDetect :: String -> TokenizerM String
-wordDetect s = do
-  res <- stringDetect s
+wordDetect :: Bool -> String -> TokenizerM String
+wordDetect caseSensitive s = do
+  res <- stringDetect caseSensitive s
   -- now check for word boundary:  (TODO: check to make sure this is correct)
   inp <- gets input
   case inp of
        (c:_) | not (isAlphaNum c) -> return res
        _ -> mzero
 
-stringDetect :: String -> TokenizerM String
-stringDetect s = do
+stringDetect :: Bool -> String -> TokenizerM String
+stringDetect caseSensitive s = do
   inp <- gets input
-  if s `isPrefixOf` inp
+  let t = take (length s) inp
+  let matches = if caseSensitive
+                   then s == t
+                   else mk s == mk t
+  if matches
      then takeChars s
      else mzero
 
