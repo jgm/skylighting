@@ -8,7 +8,7 @@ _ test against h-k for correctness
     - <span class="kw">end</span>
     + <span class="do">end</span>
 
-_ make insensitive work with StringDetect
+_ make insensitive attribute work with StringDetect
 
 _ set column = 0 for regexes starting with ^
 
@@ -20,7 +20,7 @@ _ make faster
   _ can we compile some modules with optimizations, others without?
   _ benchmark and profile
   _ use Text instead of String
-  _ use Set for Char matchers
+  _ use Set for Char matchers (parameterize WordSet?)
   _ improve normalize fn?
   _ avoid creating empty tokens?
 
