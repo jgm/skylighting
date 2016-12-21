@@ -1,4 +1,3 @@
-_ make insensitive work with StringDetect
 _ test against h-k for correctness
   _ life.lua
 
@@ -9,9 +8,24 @@ _ test against h-k for correctness
     - <span class="kw">end</span>
     + <span class="do">end</span>
 
+_ make insensitive work with StringDetect
+
+_ set column = 0 for regexes starting with ^
+
+_ fix FromJSON instance for Style, Color, and
+  add a function to read a KDE theme as a style
+  (also add the standard ones to the library)
+
 _ make faster
-  (use Set for Char matchers)
-  (improve normalize fn?)
+  _ can we compile some modules with optimizations, others without?
+  _ benchmark and profile
+  _ use Text instead of String
+  _ use Set for Char matchers
+  _ improve normalize fn?
+  _ avoid creating empty tokens?
+
 _ proper haddock documentation
+
 _ proper README.md
+
 _ proper tests
