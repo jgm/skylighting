@@ -109,7 +109,7 @@ data Syntax = Syntax{
   , sVersion  :: String
   , sLicense  :: String
   , sExtensions :: [String]
-  , sStartingContext :: Context
+  , sStartingContext :: String
   } deriving (Show)
 
 type SyntaxMap = Map.Map String Syntax

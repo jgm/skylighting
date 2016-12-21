@@ -1,6 +1,3 @@
-_ for startingContext, store a name; otherwise we have big
-  code duplicaiton. then do a name lookup.
-
 _ handle lineEmptyContext
 
 _ make insensitive attribute work with StringDetect

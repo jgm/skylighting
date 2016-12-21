@@ -90,11 +90,11 @@ doContextSwitch (Push (syn,c) : xs) = do
        Nothing  -> throwError $ "Unknown syntax or context: " ++ show (syn, c)
 
 lookupContext :: String -> Syntax -> Maybe Context
-lookupContext name syntax =
-  if null name
-     then Just $ sStartingContext syntax
-     else Map.lookup name $ sContexts syntax
-
+lookupContext "" syntax =
+  case sStartingContext syntax of
+       "" -> Nothing
+       n  -> lookupContext n syntax
+lookupContext name syntax = Map.lookup name $ sContexts syntax
 
 tokenize :: TokenizerConfig -> Syntax -> String -> Either String [SourceLine]
 tokenize config syntax inp =
@@ -102,7 +102,10 @@ tokenize config syntax inp =
     (runReaderT
       (runExceptT (mapM tokenizeLine $ zip (lines inp) [1..])) config)
     startingState{ input = inp
-                 , contextStack = ContextStack [sStartingContext syntax] }
+                 , contextStack = case lookupContext
+                                       (sStartingContext syntax) syntax of
+                                       Just c -> ContextStack [c]
+                                       Nothing -> ContextStack [] }
 
 startingState :: TokenizerState
 startingState =

@@ -77,7 +77,7 @@ extractSyntaxDefinition filename =
                     getLists &&&
                     (arr (headDef defaultKeywordAttr) <<< getKeywordAttrs) -< x
      startingContext <- case contexts of
-                             (c:_) -> returnA -< c
+                             (c:_) -> returnA -< cName c
                              []    -> issueErr "No contexts" >>> none -< ()
      returnA -< Syntax{
                   sName     = lang
