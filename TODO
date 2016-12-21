@@ -19,6 +19,8 @@ _ test against h-k for correctness
   line-end after applying a rule?
   the keyword tag is because lua likes to highlight HTML in doxygen.
 
+_ handle lineEmptyContext
+
 _ make insensitive attribute work with StringDetect
 
 _ set column = 0 for regexes starting with ^
