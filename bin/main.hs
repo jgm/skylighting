@@ -40,11 +40,11 @@ options =
           ["style"]
           (ReqArg Sty "STYLE")
           "specify style"
-  ,Option ['F']
+  ,Option ['f']
           ["format"]
           (ReqArg Format "FORMAT")
           "output format (html|latex|native)"
-  ,Option ['f']
+  ,Option ['r']
           ["fragment"]
           (NoArg Fragment)
           "fragment, without document header"
