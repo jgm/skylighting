@@ -221,7 +221,7 @@ hlCCharRegex = RE{
   , reCompiled = Just $ compileRegex False reStr
   , reCaseSensitive = False
   }
-  where reStr = '\'' : reHlCStringChar ++ "|[^'\\\\]'"
+  where reStr = "'(?:" ++ reHlCStringChar ++ "|[^'\\\\])'"
 
 wordDetect :: String -> TokenizerM String
 wordDetect s = do
