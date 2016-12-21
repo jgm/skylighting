@@ -1,0 +1,370 @@
+[ [ ( KeywordTok , "with" )
+  , ( NormalTok , " Ada.Characters.Handling;" )
+  ]
+, [ ( KeywordTok , "use" )
+  , ( NormalTok , " Ada.Characters.Handling;" )
+  ]
+, []
+, []
+, [ ( KeywordTok , "package" )
+  , ( NormalTok , " Abc " )
+  , ( KeywordTok , "is" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "type" )
+  , ( NormalTok , " Block_Faces " )
+  , ( KeywordTok , "is" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "array" )
+  , ( NormalTok , "(" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ".." )
+  , ( DecValTok , "2" )
+  , ( NormalTok , ") " )
+  , ( KeywordTok , "of" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "Character" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "type" )
+  , ( NormalTok , " Block_List " )
+  , ( KeywordTok , "is" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "array" )
+  , ( NormalTok , "(positive " )
+  , ( KeywordTok , "range" )
+  , ( NormalTok , " <>) " )
+  , ( KeywordTok , "of" )
+  , ( NormalTok , " Block_Faces;" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "function" )
+  , ( NormalTok , " Can_Make_Word(W: " )
+  , ( DataTypeTok , "String" )
+  , ( NormalTok , "; Blocks: Block_List) " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "Boolean" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( KeywordTok , "end" ) , ( NormalTok , " Abc;" ) ]
+, []
+, []
+, [ ( KeywordTok , "package" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "body" )
+  , ( NormalTok , " Abc " )
+  , ( KeywordTok , "is" )
+  ]
+, []
+, [ ( KeywordTok , "function" )
+  , ( NormalTok , " Can_Make_Word(W: " )
+  , ( DataTypeTok , "String" )
+  , ( NormalTok , "; Blocks: Block_List) " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "Boolean" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "is" )
+  ]
+, [ ( NormalTok , "    Used : " )
+  , ( KeywordTok , "array" )
+  , ( NormalTok , "(Blocks'Range) " )
+  , ( KeywordTok , "of" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "Boolean" )
+  , ( NormalTok , " := (" )
+  , ( KeywordTok , "Others" )
+  , ( NormalTok , " => False);" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "subtype" )
+  , ( NormalTok , " wIndex " )
+  , ( KeywordTok , "is" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "Integer" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "range" )
+  , ( NormalTok , " W'First..W'Last;" )
+  ]
+, [ ( NormalTok , "    wPos : wIndex;" ) ]
+, [ ( KeywordTok , "begin" ) ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " W'Length = " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "then" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " True;" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "end if" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "    wPos := W'First;" ) ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "while" )
+  , ( NormalTok , " True " )
+  , ( KeywordTok , "loop" )
+  ]
+, [ ( NormalTok , "        " ) , ( KeywordTok , "declare" ) ]
+, [ ( NormalTok , "            C : " )
+  , ( DataTypeTok , "Character" )
+  , ( NormalTok , " := To_Upper(W(wPos));" )
+  ]
+, [ ( NormalTok , "            X : " )
+  , ( KeywordTok , "constant" )
+  , ( NormalTok , " wIndex := wPos;" )
+  ]
+, [ ( NormalTok , "        " ) , ( KeywordTok , "begin" ) ]
+, [ ( NormalTok , "            " )
+  , ( KeywordTok , "for" )
+  , ( NormalTok , " I " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " Blocks'Range " )
+  , ( KeywordTok , "loop" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (" )
+  , ( KeywordTok , "not" )
+  , ( NormalTok , " Used(I)) " )
+  , ( KeywordTok , "then" )
+  ]
+, [ ( NormalTok , "                    " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " C = To_Upper(Blocks(I)(" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ")) " )
+  , ( KeywordTok , "or" )
+  , ( NormalTok , " C = To_Upper(Blocks(I)(" )
+  , ( DecValTok , "2" )
+  , ( NormalTok , ")) " )
+  , ( KeywordTok , "then" )
+  ]
+, [ ( NormalTok , "                        Used(I) := True;" ) ]
+, [ ( NormalTok , "                        " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " wPos = W'Last " )
+  , ( KeywordTok , "then" )
+  ]
+, [ ( NormalTok , "                            " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " True;" )
+  ]
+, [ ( NormalTok , "                        " )
+  , ( KeywordTok , "end if" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok
+    , "                        wPos := wIndex'Succ(wPos);"
+    )
+  ]
+, [ ( NormalTok , "                        " )
+  , ( KeywordTok , "exit" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "                    " )
+  , ( KeywordTok , "end if" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "end if" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "            " )
+  , ( KeywordTok , "end loop" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "            " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " X = wPos " )
+  , ( KeywordTok , "then" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " False;" )
+  ]
+, [ ( NormalTok , "            " )
+  , ( KeywordTok , "end if" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "end" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "end loop" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " False;" )
+  ]
+, [ ( KeywordTok , "end" ) , ( NormalTok , " Can_Make_Word;" ) ]
+, []
+, [ ( KeywordTok , "end" ) , ( NormalTok , " Abc;" ) ]
+, []
+, [ ( KeywordTok , "with" )
+  , ( NormalTok , " Ada.Text_IO, Ada.Strings.Unbounded, Abc;" )
+  ]
+, [ ( KeywordTok , "use" )
+  , ( NormalTok , " Ada.Text_IO, Ada.Strings.Unbounded, Abc;" )
+  ]
+, []
+, [ ( KeywordTok , "procedure" )
+  , ( NormalTok , " Abc_Problem " )
+  , ( KeywordTok , "is" )
+  ]
+, [ ( NormalTok , "    Blocks : Block_List := (" ) ]
+, [ ( NormalTok , "          (" )
+  , ( CharTok , "'B'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'O'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'X'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'K'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'D'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'Q'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'C'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'P'" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "        , (" )
+  , ( CharTok , "'N'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'A'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'G'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'T'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'R'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'E'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'T'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'G'" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "        , (" )
+  , ( CharTok , "'Q'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'D'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'F'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'S'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'J'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'W'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'H'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'U'" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "        , (" )
+  , ( CharTok , "'V'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'I'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'A'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'N'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'O'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'B'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'E'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'R'" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "        , (" )
+  , ( CharTok , "'F'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'S'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'L'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'Y'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'P'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'C'" )
+  , ( NormalTok , "), (" )
+  , ( CharTok , "'Z'" )
+  , ( NormalTok , "," )
+  , ( CharTok , "'M'" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "    );" ) ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "function" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"+\"" )
+  , ( NormalTok , " (S : " )
+  , ( DataTypeTok , "String" )
+  , ( NormalTok , ") " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " Unbounded_String " )
+  , ( KeywordTok , "renames" )
+  , ( NormalTok , " To_Unbounded_String;" )
+  ]
+, [ ( NormalTok , "    words : " )
+  , ( KeywordTok , "array" )
+  , ( NormalTok , "(positive " )
+  , ( KeywordTok , "range" )
+  , ( NormalTok , " <>) " )
+  , ( KeywordTok , "of" )
+  , ( NormalTok , " Unbounded_String := (" )
+  ]
+, [ ( NormalTok , "          +" ) , ( StringTok , "\"A\"" ) ]
+, [ ( NormalTok , "        , +" ) , ( StringTok , "\"BARK\"" ) ]
+, [ ( NormalTok , "        , +" ) , ( StringTok , "\"BOOK\"" ) ]
+, [ ( NormalTok , "        , +" ) , ( StringTok , "\"TREAT\"" ) ]
+, [ ( NormalTok , "        , +" ) , ( StringTok , "\"COMMON\"" ) ]
+, [ ( NormalTok , "        , +" ) , ( StringTok , "\"SQUAD\"" ) ]
+, [ ( NormalTok , "        , +" ) , ( StringTok , "\"CONFUSE\"" ) ]
+, [ ( NormalTok , "        " )
+  , ( CommentTok , "-- Border cases:" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( CommentTok , "-- , +\"CONFUSE2\"" )
+  ]
+, [ ( NormalTok , "        " ) , ( CommentTok , "-- , +\"\"" ) ]
+, [ ( NormalTok , "    );" ) ]
+, [ ( KeywordTok , "begin" ) ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "for" )
+  , ( NormalTok , " I " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " words'Range " )
+  , ( KeywordTok , "loop" )
+  ]
+, [ ( NormalTok , "        Put_Line ( To_String(words(I)) & " )
+  , ( StringTok , "\": \"" )
+  , ( NormalTok
+    , " & Boolean'Image(Can_Make_Word(To_String(words(I)),Blocks)) );"
+    )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "end loop" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( KeywordTok , "end" ) , ( NormalTok , " Abc_Problem;" ) ]
+, []
+]

@@ -1,0 +1,362 @@
+[ [ ( KeywordTok , "using" )
+  , ( NormalTok , " System." )
+  , ( FunctionTok , "Collections" )
+  , ( NormalTok , "." )
+  , ( FunctionTok , "Generic" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( KeywordTok , "using" )
+  , ( NormalTok , " System." )
+  , ( FunctionTok , "Linq" )
+  , ( NormalTok , ";" )
+  ]
+, []
+, [ ( DataTypeTok , "void" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "Main" )
+  , ( NormalTok , "()" )
+  ]
+, [ ( NormalTok , "{" ) ]
+, [ ( NormalTok , "        List<" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , "> blocks =" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "new" )
+  , ( NormalTok , " List<" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , ">() { " )
+  , ( StringTok , "\"bo\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"xk\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"dq\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"cp\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"na\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"gt\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"re\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"tg\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"qd\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"fs\"" )
+  , ( NormalTok , "," )
+  ]
+, [ ( NormalTok , "                " )
+  , ( StringTok , "\"jw\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"hu\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"vi\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"an\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"ob\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"er\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"fs\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"ly\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"pc\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"zm\"" )
+  , ( NormalTok , " };" )
+  ]
+, [ ( NormalTok , "        List<" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , "> words = " )
+  , ( KeywordTok , "new" )
+  , ( NormalTok , " List<" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , ">() {" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( StringTok , "\"A\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"BARK\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"BOOK\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"TREAT\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"COMMON\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"SQUAD\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"CONFUSE\"" )
+  , ( NormalTok , "};" )
+  ]
+, [ ( NormalTok , "        " ) ]
+, [ ( NormalTok , "        " )
+  , ( DataTypeTok , "var" )
+  , ( NormalTok , " solver = " )
+  , ( KeywordTok , "new" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "ABC" )
+  , ( NormalTok , "(blocks);" )
+  ]
+, [ ( NormalTok , "        " ) ]
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "foreach" )
+  , ( NormalTok , "( var word " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " words)" )
+  ]
+, [ ( NormalTok , "        {" ) ]
+, [ ( NormalTok , "                Console." )
+  , ( FunctionTok , "WriteLine" )
+  , ( NormalTok , "(" )
+  , ( StringTok , "\"{0} :{1}\"" )
+  , ( NormalTok , ", word, solver." )
+  , ( FunctionTok , "CanMake" )
+  , ( NormalTok , "(word));" )
+  ]
+, [ ( NormalTok , "        }" ) ]
+, [ ( NormalTok , "}" ) ]
+, []
+, [ ( KeywordTok , "class" ) , ( NormalTok , " ABC" ) ]
+, [ ( NormalTok , "{" ) ]
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "readonly" )
+  , ( NormalTok , " Dictionary<" )
+  , ( DataTypeTok , "char" )
+  , ( NormalTok , ", List<" )
+  , ( DataTypeTok , "int" )
+  , ( NormalTok , ">> _blockDict = " )
+  , ( KeywordTok , "new" )
+  , ( NormalTok , " Dictionary<" )
+  , ( DataTypeTok , "char" )
+  , ( NormalTok , ", List<" )
+  , ( DataTypeTok , "int" )
+  , ( NormalTok , ">>();" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( DataTypeTok , "bool" )
+  , ( NormalTok , "[] _used;" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( DataTypeTok , "int" )
+  , ( NormalTok , " _nextBlock;" )
+  ]
+, []
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "readonly" )
+  , ( NormalTok , " List<" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , "> _blocks;" )
+  ]
+, []
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "private" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "void" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "AddBlockChar" )
+  , ( NormalTok , "(" )
+  , ( DataTypeTok , "char" )
+  , ( NormalTok , " c)" )
+  ]
+, [ ( NormalTok , "        {" ) ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (!_blockDict." )
+  , ( FunctionTok , "ContainsKey" )
+  , ( NormalTok , "(c))" )
+  ]
+, [ ( NormalTok , "                {" ) ]
+, [ ( NormalTok , "                        _blockDict[c] = " )
+  , ( KeywordTok , "new" )
+  , ( NormalTok , " List<" )
+  , ( DataTypeTok , "int" )
+  , ( NormalTok , ">();" )
+  ]
+, [ ( NormalTok , "                }" ) ]
+, [ ( NormalTok , "                _blockDict[c]." )
+  , ( FunctionTok , "Add" )
+  , ( NormalTok , "(_nextBlock);" )
+  ]
+, [ ( NormalTok , "        }" ) ]
+, []
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "private" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "void" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "AddBlock" )
+  , ( NormalTok , "(" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , " block)" )
+  ]
+, [ ( NormalTok , "        {" ) ]
+, [ ( NormalTok , "                " )
+  , ( FunctionTok , "AddBlockChar" )
+  , ( NormalTok , "(block[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "]);" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( FunctionTok , "AddBlockChar" )
+  , ( NormalTok , "(block[" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , "]);" )
+  ]
+, [ ( NormalTok , "                _nextBlock++;" ) ]
+, [ ( NormalTok , "        }" ) ]
+, []
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "public" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "ABC" )
+  , ( NormalTok , "(List<" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , "> blocks)" )
+  ]
+, [ ( NormalTok , "        {" ) ]
+, [ ( NormalTok , "                _blocks = blocks;" ) ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "foreach" )
+  , ( NormalTok , " (var block " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " blocks)" )
+  ]
+, [ ( NormalTok , "                {" ) ]
+, [ ( NormalTok , "                        " )
+  , ( FunctionTok , "AddBlock" )
+  , ( NormalTok , "(block);" )
+  ]
+, [ ( NormalTok , "                }" ) ]
+, [ ( NormalTok , "        }" ) ]
+, []
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "public" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "bool" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "CanMake" )
+  , ( NormalTok , "(" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , " word)" )
+  ]
+, [ ( NormalTok , "        {" ) ]
+, [ ( NormalTok , "                word = word." )
+  , ( FunctionTok , "ToLower" )
+  , ( NormalTok , "();" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (word." )
+  , ( FunctionTok , "Length" )
+  , ( NormalTok , " > _blockDict." )
+  , ( FunctionTok , "Count" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "                {" ) ]
+, [ ( NormalTok , "                        " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "false" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "                }" ) ]
+, [ ( NormalTok , "                _used = " )
+  , ( KeywordTok , "new" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "bool" )
+  , ( NormalTok , "[_blocks." )
+  , ( FunctionTok , "Count" )
+  , ( NormalTok , "];" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "TryMake" )
+  , ( NormalTok , "(word);" )
+  ]
+, [ ( NormalTok , "        }" ) ]
+, []
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "public" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "bool" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "TryMake" )
+  , ( NormalTok , "(" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , " word)" )
+  ]
+, [ ( NormalTok , "        {" ) ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (word == " )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , "." )
+  , ( FunctionTok , "Empty" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "                {" ) ]
+, [ ( NormalTok , "                        " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "true" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "                }" ) ]
+, [ ( NormalTok , "                " )
+  , ( DataTypeTok , "var" )
+  , ( NormalTok , " blocks = _blockDict[word[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "]]." )
+  , ( FunctionTok , "Where" )
+  , ( NormalTok , "(b => !_used[b]);" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "foreach" )
+  , ( NormalTok , " (var block " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " blocks)" )
+  ]
+, [ ( NormalTok , "                {" ) ]
+, [ ( NormalTok , "                        _used[block] = " )
+  , ( KeywordTok , "true" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "                        " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (" )
+  , ( FunctionTok , "TryMake" )
+  , ( NormalTok , "(word." )
+  , ( FunctionTok , "Substring" )
+  , ( NormalTok , "(" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ")))" )
+  ]
+, [ ( NormalTok , "                        {" ) ]
+, [ ( NormalTok , "                                " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "true" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "                        }" ) ]
+, [ ( NormalTok , "                        _used[block] = " )
+  , ( KeywordTok , "false" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "                }" ) ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "false" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "        }" ) ]
+, [ ( NormalTok , "}" ) ]
+, []
+]

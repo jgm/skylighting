@@ -1,0 +1,108 @@
+[ [ ( KeywordTok , "def" ) , ( NormalTok , " mkword(w, b):" ) ]
+, [ ( NormalTok , "    " )
+  , ( ControlFlowTok , "if" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "not" )
+  , ( NormalTok , " w: " )
+  , ( ControlFlowTok , "return" )
+  , ( NormalTok , " []" )
+  ]
+, []
+, [ ( NormalTok , "    c,w " )
+  , ( OperatorTok , "=" )
+  , ( NormalTok , " w[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "],w[" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ":]" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( ControlFlowTok , "for" )
+  , ( NormalTok , " i " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " " )
+  , ( BuiltInTok , "range" )
+  , ( NormalTok , "(" )
+  , ( BuiltInTok , "len" )
+  , ( NormalTok , "(b)):" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( ControlFlowTok , "if" )
+  , ( NormalTok , " c " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " b[i]:" )
+  ]
+, [ ( NormalTok , "            m " )
+  , ( OperatorTok , "=" )
+  , ( NormalTok , " mkword(w, b[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ":i] " )
+  , ( OperatorTok , "+" )
+  , ( NormalTok , " b[i" )
+  , ( DecValTok , "+1" )
+  , ( NormalTok , ":])" )
+  ]
+, [ ( NormalTok , "            " )
+  , ( ControlFlowTok , "if" )
+  , ( NormalTok , " m " )
+  , ( OperatorTok , "!=" )
+  , ( NormalTok , " " )
+  , ( VariableTok , "None" )
+  , ( NormalTok , ": " )
+  , ( ControlFlowTok , "return" )
+  , ( NormalTok , " [b[i]] " )
+  , ( OperatorTok , "+" )
+  , ( NormalTok , " m" )
+  ]
+, []
+, [ ( KeywordTok , "def" ) , ( NormalTok , " abc(w, blk):" ) ]
+, [ ( NormalTok , "    " )
+  , ( ControlFlowTok , "return" )
+  , ( NormalTok , " mkword(w.upper(), [a.upper() " )
+  , ( ControlFlowTok , "for" )
+  , ( NormalTok , " a " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " blk])" )
+  ]
+, []
+, [ ( NormalTok , "blocks " )
+  , ( OperatorTok , "=" )
+  , ( NormalTok , " " )
+  , ( StringTok
+    , "'BO XK DQ CP NA GT RE TG QD FS JW HU VI AN OB ER FS LY PC ZM'"
+    )
+  , ( NormalTok , ".split()" )
+  ]
+, []
+, [ ( ControlFlowTok , "for" )
+  , ( NormalTok , " w " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " " )
+  , ( StringTok
+    , "\", A, bark, book, treat, common, SQUAD, conFUsEd\""
+    )
+  , ( NormalTok , ".split(" )
+  , ( StringTok , "', '" )
+  , ( NormalTok , "):" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( BuiltInTok , "print" )
+  , ( NormalTok , " " )
+  , ( StringTok , "'" )
+  , ( CharTok , "\\'" )
+  , ( StringTok , "'" )
+  , ( NormalTok , " " )
+  , ( OperatorTok , "+" )
+  , ( NormalTok , " w " )
+  , ( OperatorTok , "+" )
+  , ( NormalTok , " " )
+  , ( StringTok , "'" )
+  , ( CharTok , "\\'" )
+  , ( StringTok , "'" )
+  , ( NormalTok , " " )
+  , ( OperatorTok , "+" )
+  , ( NormalTok , " " )
+  , ( StringTok , "' ->'" )
+  , ( NormalTok , ", abc(w, blocks)" )
+  ]
+]

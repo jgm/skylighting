@@ -1,0 +1,153 @@
+[ [ ( KeywordTok , "package" ) , ( NormalTok , " main" ) ]
+, []
+, [ ( KeywordTok , "import" ) , ( NormalTok , " (" ) ]
+, [ ( NormalTok , "        " ) , ( StringTok , "\"fmt\"" ) ]
+, [ ( NormalTok , "        " ) , ( StringTok , "\"strings\"" ) ]
+, [ ( NormalTok , ")" ) ]
+, []
+, [ ( KeywordTok , "func" )
+  , ( NormalTok , " newSpeller(blocks " )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , ") " )
+  , ( KeywordTok , "func" )
+  , ( NormalTok , "(" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , ") " )
+  , ( DataTypeTok , "bool" )
+  , ( NormalTok , " {" )
+  ]
+, [ ( NormalTok , "        bl := strings.Fields(blocks)" ) ]
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "func" )
+  , ( NormalTok , "(word " )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , ") " )
+  , ( DataTypeTok , "bool" )
+  , ( NormalTok , " {" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " r(word, bl)" )
+  ]
+, [ ( NormalTok , "        }" ) ]
+, [ ( NormalTok , "}" ) ]
+, []
+, [ ( KeywordTok , "func" )
+  , ( NormalTok , " r(word " )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , ", bl []" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , ") " )
+  , ( DataTypeTok , "bool" )
+  , ( NormalTok , " {" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " word == " )
+  , ( StringTok , "\"\"" )
+  , ( NormalTok , " {" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( OtherTok , "true" )
+  ]
+, [ ( NormalTok , "        }" ) ]
+, [ ( NormalTok , "        c := word[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "] | " )
+  , ( DecValTok , "32" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "for" )
+  , ( NormalTok , " i, b := " )
+  , ( KeywordTok , "range" )
+  , ( NormalTok , " bl {" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " c == b[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "]|" )
+  , ( DecValTok , "32" )
+  , ( NormalTok , " || c == b[" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , "]|" )
+  , ( DecValTok , "32" )
+  , ( NormalTok , " {" )
+  ]
+, [ ( NormalTok , "                        bl[i], bl[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "] = bl[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "], b" )
+  ]
+, [ ( NormalTok , "                        " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " r(word[" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ":], bl[" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ":]) == " )
+  , ( OtherTok , "true" )
+  , ( NormalTok , " {" )
+  ]
+, [ ( NormalTok , "                                " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( OtherTok , "true" )
+  ]
+, [ ( NormalTok , "                        }" ) ]
+, [ ( NormalTok , "                        bl[i], bl[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "] = bl[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "], bl[i]" )
+  ]
+, [ ( NormalTok , "                }" ) ]
+, [ ( NormalTok , "        }" ) ]
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( OtherTok , "false" )
+  ]
+, [ ( NormalTok , "}" ) ]
+, []
+, [ ( KeywordTok , "func" ) , ( NormalTok , " main() {" ) ]
+, [ ( NormalTok , "        sp := newSpeller(" ) ]
+, [ ( NormalTok , "                " )
+  , ( StringTok
+    , "\"BO XK DQ CP NA GT RE TG QD FS JW HU VI AN OB ER FS LY PC ZM\""
+    )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "for" )
+  , ( NormalTok , " _, word := " )
+  , ( KeywordTok , "range" )
+  , ( NormalTok , " []" )
+  , ( DataTypeTok , "string" )
+  , ( NormalTok , "{" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( StringTok , "\"A\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"BARK\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"BOOK\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"TREAT\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"COMMON\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"SQUAD\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"CONFUSE\"" )
+  , ( NormalTok , "} {" )
+  ]
+, [ ( NormalTok , "                fmt.Println(word, sp(word))" ) ]
+, [ ( NormalTok , "        }" ) ]
+, [ ( NormalTok , "}" ) ]
+]

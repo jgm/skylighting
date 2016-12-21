@@ -127,7 +127,7 @@ tokenizeLine ln = do
        doContextSwitch (cLineBeginContext cur)
   doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
-  ts <- normalizeHighlighting <$> many getToken
+  ts <- normalizeHighlighting . traceShowId <$> many getToken
   currentContext >>= checkLineEnd
   -- TODO perhaps we should just fail in this case?
   inp <- gets input

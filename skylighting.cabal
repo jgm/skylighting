@@ -18,7 +18,7 @@ category:            Text
 build-type:          Simple
 extra-source-files:  changelog.md
                      README.md
-                     tests/expected/*.html
+                     tests/expected/*.native
                      tests/cases/abc.ada
                      tests/cases/abc.agda
                      tests/cases/abc.c
@@ -266,7 +266,7 @@ test-suite test-skylighting
                   tasty-golden,
                   tasty,
                   Diff,
-                  blaze-html >= 0.5,
+                  pretty-show,
                   directory,
                   filepath,
                   QuickCheck,

@@ -1,8 +1,0 @@
-<div class="sourceCode"><pre class="sourceCode"><code class="sourceCode">words =<span class="ot"> %w(</span><span class="st">A BaRK BOoK tREaT COmMOn SqUAD CoNfuSE</span><span class="ot">)</span> &lt;&lt; <span class="st">&quot;&quot;</span>
-
-words.each <span class="kw">do</span> |word|
-  blocks = <span class="st">&quot;BO XK DQ CP NA GT RE TG QD FS JW HU VI AN OB ER FS LY PC ZM&quot;</span>
-  res = word.each_char.all?{|c| blocks.sub!(<span class="ot">/\w?#{</span>c<span class="ot">}\w?/i</span>, <span class="st">&quot;&quot;</span>)}  <span class="co">#regexps can be interpolated like strings</span>
-  puts <span class="st">&quot;</span><span class="ot">#{</span>word.inspect<span class="ot">}</span><span class="st">: </span><span class="ot">#{</span>res<span class="ot">}</span><span class="st">&quot;</span>
-<span class="kw">end</span>
-</code></pre></div>

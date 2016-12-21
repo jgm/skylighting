@@ -1,0 +1,305 @@
+[ [ ( KeywordTok , "import" )
+  , ( NormalTok , " " )
+  , ( ImportTok , "java.util.Arrays" )
+  ]
+, []
+, [ ( CommentTok , "/*" ) ]
+, [ ( CommentTok , "    Swap elements i and j of a Kotlin Array." )
+  ]
+, [ ( CommentTok , " */" ) ]
+, [ ( KeywordTok , "fun" )
+  , ( NormalTok , " <" )
+  , ( DataTypeTok , "T" )
+  , ( NormalTok , "> " )
+  , ( FunctionTok , "Array" )
+  , ( NormalTok , "<" )
+  , ( DataTypeTok , "T" )
+  , ( NormalTok , ">." )
+  , ( FunctionTok , "swap" )
+  , ( NormalTok , "(" )
+  , ( VariableTok , "i" )
+  , ( NormalTok , ": " )
+  , ( DataTypeTok , "Int" )
+  , ( NormalTok , ", " )
+  , ( VariableTok , "j" )
+  , ( NormalTok , ": " )
+  , ( DataTypeTok , "Int" )
+  , ( NormalTok , ") {" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "val" )
+  , ( NormalTok , " " )
+  , ( VariableTok , "tmp" )
+  , ( NormalTok , " = " )
+  , ( KeywordTok , "this" )
+  , ( NormalTok , "[i]" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "this" )
+  , ( NormalTok , "[i] = " )
+  , ( KeywordTok , "this" )
+  , ( NormalTok , "[j]" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "this" )
+  , ( NormalTok , "[j] = tmp" )
+  ]
+, [ ( NormalTok , "}" ) ]
+, []
+, [ ( KeywordTok , "data" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "class" )
+  , ( NormalTok , " Block(" )
+  , ( KeywordTok , "val" )
+  , ( NormalTok , " " )
+  , ( VariableTok , "block" )
+  , ( NormalTok , ": " )
+  , ( DataTypeTok , "String" )
+  , ( NormalTok , ")" )
+  ]
+, []
+, [ ( NormalTok , "/*" ) ]
+, [ ( NormalTok
+    , " *  Not the most elegant way but interesting from an highlighting perspective ;)"
+    )
+  ]
+, [ ( NormalTok , " */" ) ]
+, [ ( KeywordTok , "public" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "class" )
+  , ( NormalTok , " ABC() {" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "class" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "object" )
+  , ( NormalTok , " {" )
+  ]
+, []
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "public" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "fun" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "canMakeWord" )
+  , ( NormalTok , "(" )
+  , ( VariableTok , "word" )
+  , ( NormalTok , ": " )
+  , ( DataTypeTok , "String" )
+  , ( NormalTok , ", " )
+  , ( VariableTok , "blocks" )
+  , ( NormalTok , ": " )
+  , ( DataTypeTok , "Array" )
+  , ( NormalTok , "<" )
+  , ( VariableTok , "Block" )
+  , ( NormalTok , ">): " )
+  , ( DataTypeTok , "Boolean" )
+  , ( NormalTok , " {" )
+  ]
+, [ ( NormalTok , "            " )
+  , ( ControlFlowTok , "if" )
+  , ( NormalTok , " (word.length() == " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "true" )
+  ]
+, []
+, [ ( NormalTok , "            " )
+  , ( KeywordTok , "val" )
+  , ( NormalTok , " " )
+  , ( VariableTok , "c" )
+  , ( NormalTok , " = Character.toUpperCase(word.charAt(" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "            " )
+  , ( ControlFlowTok , "for" )
+  , ( NormalTok , " (i " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "..blocks.size - " )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ") {" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( KeywordTok , "val" )
+  , ( NormalTok , " " )
+  , ( VariableTok , "b" )
+  , ( NormalTok , " = blocks[i]" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( ControlFlowTok , "if" )
+  , ( NormalTok , " (Character.toUpperCase(b.block.charAt(" )
+  , ( DecValTok , "0" )
+  , ( NormalTok
+    , ")) != c && Character.toUpperCase(b.block.charAt("
+    )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ")) != c)" )
+  ]
+, [ ( NormalTok , "                    " )
+  , ( ControlFlowTok , "continue" )
+  ]
+, [ ( NormalTok , "                blocks.swap(" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ", i)" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( ControlFlowTok , "if" )
+  , ( NormalTok , " (canMakeWord(word.substring(" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , "), Arrays.copyOfRange(blocks, " )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ", blocks.size)))" )
+  ]
+, [ ( NormalTok , "                    " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "true" )
+  ]
+, [ ( NormalTok , "                blocks.swap(" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ", i)" )
+  ]
+, [ ( NormalTok , "            }" ) ]
+, []
+, [ ( NormalTok , "            " )
+  , ( KeywordTok , "return" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "false" )
+  ]
+, [ ( NormalTok , "        }" ) ]
+, []
+, [ ( NormalTok , "        " )
+  , ( KeywordTok , "public" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "fun" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "main" )
+  , ( NormalTok , "(" )
+  , ( VariableTok , "args" )
+  , ( NormalTok , ": " )
+  , ( DataTypeTok , "Array" )
+  , ( NormalTok , "<" )
+  , ( VariableTok , "String" )
+  , ( NormalTok , ">) {" )
+  ]
+, []
+, [ ( NormalTok , "            " )
+  , ( KeywordTok , "val" )
+  , ( NormalTok , " " )
+  , ( VariableTok , "blocksString" )
+  , ( NormalTok , " = array(" )
+  , ( StringTok , "\"BO\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"XK\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"DQ\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"CP\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"NA\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"GT\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"RE\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"TG\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"QD\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"FS\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"JW\"" )
+  , ( NormalTok , "," )
+  ]
+, [ ( NormalTok , "                                             " )
+  , ( StringTok , "\"HU\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"VI\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"AN\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"OB\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"ER\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"FS\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"LY\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"PC\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"ZM\"" )
+  , ( NormalTok , ");" )
+  ]
+, []
+, [ ( NormalTok , "            " )
+  , ( KeywordTok , "val" )
+  , ( NormalTok , " " )
+  , ( VariableTok , "blocks" )
+  , ( NormalTok
+    , " = Array(blocksString.size, { s -> Block(blocksString[s])})"
+    )
+  ]
+, []
+, [ ( NormalTok , "            " )
+  , ( KeywordTok , "val" )
+  , ( NormalTok , " " )
+  , ( VariableTok , "words" )
+  , ( NormalTok , " = array(" )
+  , ( StringTok , "\"\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"A\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"BARK\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"book\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"treat\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"COMMON\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"SQuAd\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"CONFUSE\"" )
+  , ( NormalTok , ");" )
+  ]
+, []
+, [ ( NormalTok , "            " )
+  , ( ControlFlowTok , "for" )
+  , ( NormalTok , " (word " )
+  , ( KeywordTok , "in" )
+  , ( NormalTok , " words) {" )
+  ]
+, [ ( NormalTok , "                System." )
+  , ( KeywordTok , "out" )
+  , ( NormalTok , ".println(" )
+  , ( StringTok , "\"${word}: \"" )
+  , ( NormalTok , " + canMakeWord(" )
+  , ( StringTok , "\"${word}\"" )
+  , ( NormalTok , ", blocks))" )
+  ]
+, [ ( NormalTok , "            }" ) ]
+, []
+, [ ( NormalTok , "        }" ) ]
+, [ ( NormalTok , "    }" ) ]
+, [ ( NormalTok , "}" ) ]
+, []
+, [ ( KeywordTok , "fun" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "main" )
+  , ( NormalTok , "(" )
+  , ( VariableTok , "args" )
+  , ( NormalTok , ": " )
+  , ( DataTypeTok , "Array" )
+  , ( NormalTok , "<" )
+  , ( VariableTok , "String" )
+  , ( NormalTok , ">) = ABC.main(args)" )
+  ]
+]

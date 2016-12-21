@@ -1,0 +1,197 @@
+[ [ ( PreprocessorTok , "#include " )
+  , ( ImportTok , "<stdio.h>" )
+  ]
+, [ ( PreprocessorTok , "#include " )
+  , ( ImportTok , "<ctype.h>" )
+  ]
+, []
+, [ ( DataTypeTok , "int" )
+  , ( NormalTok , " can_make_words(" )
+  , ( DataTypeTok , "char" )
+  , ( NormalTok , " **b, " )
+  , ( DataTypeTok , "char" )
+  , ( NormalTok , " *word)" )
+  ]
+, [ ( NormalTok , "{" ) ]
+, [ ( NormalTok , "        " )
+  , ( DataTypeTok , "int" )
+  , ( NormalTok , " i, ret = " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ", c = toupper(*word);" )
+  ]
+, []
+, [ ( PreprocessorTok
+    , "#define SWAP(a, b) if (a != b) { char * tmp = a; a = b; b = tmp; }"
+    )
+  ]
+, []
+, [ ( NormalTok , "        " )
+  , ( ControlFlowTok , "if" )
+  , ( NormalTok , " (!c) " )
+  , ( ControlFlowTok , "return" )
+  , ( NormalTok , " " )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( ControlFlowTok , "if" )
+  , ( NormalTok , " (!b[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "]) " )
+  , ( ControlFlowTok , "return" )
+  , ( NormalTok , " " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ";" )
+  ]
+, []
+, [ ( NormalTok , "        " )
+  , ( ControlFlowTok , "for" )
+  , ( NormalTok , " (i = " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "; b[i] && !ret; i++) {" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( ControlFlowTok , "if" )
+  , ( NormalTok , " (b[i][" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "] != c && b[i][" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , "] != c) " )
+  , ( ControlFlowTok , "continue" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "                SWAP(b[i], b[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "]);" )
+  ]
+, [ ( NormalTok , "                ret = can_make_words(b + " )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ", word + " )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ");" )
+  ]
+, [ ( NormalTok , "                SWAP(b[i], b[" )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "]);" )
+  ]
+, [ ( NormalTok , "        }" ) ]
+, []
+, [ ( NormalTok , "        " )
+  , ( ControlFlowTok , "return" )
+  , ( NormalTok , " ret;" )
+  ]
+, [ ( NormalTok , "}" ) ]
+, []
+, [ ( DataTypeTok , "int" )
+  , ( NormalTok , " main(" )
+  , ( DataTypeTok , "void" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "{" ) ]
+, [ ( NormalTok , "        " )
+  , ( DataTypeTok , "char" )
+  , ( NormalTok , "* blocks[] = {" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( StringTok , "\"BO\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"XK\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"DQ\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"CP\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"NA\"" )
+  , ( NormalTok , ", " )
+  ]
+, [ ( NormalTok , "                " )
+  , ( StringTok , "\"GT\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"RE\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"TG\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"QD\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"FS\"" )
+  , ( NormalTok , ", " )
+  ]
+, [ ( NormalTok , "                " )
+  , ( StringTok , "\"JW\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"HU\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"VI\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"AN\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"OB\"" )
+  , ( NormalTok , ", " )
+  ]
+, [ ( NormalTok , "                " )
+  , ( StringTok , "\"ER\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"FS\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"LY\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"PC\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"ZM\"" )
+  , ( NormalTok , "," )
+  ]
+, [ ( NormalTok , "                " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , " };" )
+  ]
+, []
+, [ ( NormalTok , "        " )
+  , ( DataTypeTok , "char" )
+  , ( NormalTok , " *words[] = {" )
+  ]
+, [ ( NormalTok , "                " )
+  , ( StringTok , "\"\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"A\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"BARK\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"BOOK\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"TREAT\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"COMMON\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"SQUAD\"" )
+  , ( NormalTok , ", " )
+  , ( StringTok , "\"Confuse\"" )
+  , ( NormalTok , ", " )
+  , ( DecValTok , "0" )
+  ]
+, [ ( NormalTok , "        };" ) ]
+, []
+, [ ( NormalTok , "        " )
+  , ( DataTypeTok , "char" )
+  , ( NormalTok , " **w;" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( ControlFlowTok , "for" )
+  , ( NormalTok , " (w = words; *w; w++)" )
+  ]
+, [ ( NormalTok , "                printf(" )
+  , ( StringTok , "\"%s" )
+  , ( SpecialCharTok , "\\t" )
+  , ( StringTok , "%d" )
+  , ( SpecialCharTok , "\\n" )
+  , ( StringTok , "\"" )
+  , ( NormalTok , ", *w, can_make_words(blocks, *w));" )
+  ]
+, []
+, [ ( NormalTok , "        " )
+  , ( ControlFlowTok , "return" )
+  , ( NormalTok , " " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "}" ) ]
+]

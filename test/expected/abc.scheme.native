@@ -1,0 +1,205 @@
+[ [ ( NormalTok , "#lang racket" ) ]
+, [ ( NormalTok , "(" )
+  , ( KeywordTok , "define" )
+  , ( FunctionTok , " block-strings" )
+  ]
+, [ ( NormalTok , "  (" )
+  , ( KeywordTok , "list" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"BO\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"XK\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"DQ\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"CP\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"NA\"" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( StringTok , "\"GT\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"RE\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"TG\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"QD\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"FS\"" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( StringTok , "\"JW\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"HU\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"VI\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"AN\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"OB\"" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( StringTok , "\"ER\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"FS\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"LY\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"PC\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"ZM\"" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "(" )
+  , ( KeywordTok , "define" )
+  , ( FunctionTok , " BLOCKS " )
+  , ( NormalTok , "(map " )
+  , ( KeywordTok , "string->list" )
+  , ( NormalTok , " block-strings))" )
+  ]
+, []
+, [ ( NormalTok , "(" )
+  , ( KeywordTok , "define" )
+  , ( FunctionTok , " " )
+  , ( NormalTok , "(can-make-word? w)" )
+  ]
+, [ ( NormalTok , "  (" )
+  , ( KeywordTok , "define" )
+  , ( FunctionTok , " " )
+  , ( NormalTok , "(usable-block blocks word-char)" )
+  ]
+, [ ( NormalTok
+    , "    (for/first ((b (in-list blocks)) #:when (memf (curry "
+    )
+  , ( KeywordTok , "char-ci=?" )
+  , ( NormalTok , " word-char) b)) b))" )
+  ]
+, [ ( NormalTok , "  " ) ]
+, [ ( NormalTok , "  (" )
+  , ( KeywordTok , "define" )
+  , ( FunctionTok , " " )
+  , ( NormalTok , "(inner word-chars blocks tried-blocks)" )
+  ]
+, [ ( NormalTok , "    (" ) , ( KeywordTok , "cond" ) ]
+, [ ( NormalTok , "      [(" )
+  , ( KeywordTok , "null?" )
+  , ( NormalTok , " word-chars) " )
+  , ( DecValTok , "#t" )
+  , ( NormalTok , "]" )
+  ]
+, [ ( NormalTok , "      [(usable-block blocks (" )
+  , ( KeywordTok , "car" )
+  , ( NormalTok , " word-chars))" )
+  ]
+, [ ( NormalTok , "       " ) , ( KeywordTok , "=>" ) ]
+, [ ( NormalTok , "       (" )
+  , ( KeywordTok , "lambda" )
+  , ( NormalTok , " (b)" )
+  ]
+, [ ( NormalTok , "         (" ) , ( KeywordTok , "or" ) ]
+, [ ( NormalTok , "          (inner (" )
+  , ( KeywordTok , "cdr" )
+  , ( NormalTok , " word-chars) (" )
+  , ( KeywordTok , "append" )
+  , ( NormalTok , " tried-blocks (remove b blocks)) null)" )
+  ]
+, [ ( NormalTok
+    , "          (inner word-chars (remove b blocks) ("
+    )
+  , ( KeywordTok , "cons" )
+  , ( NormalTok , " b tried-blocks))))]" )
+  ]
+, [ ( NormalTok , "      [" )
+  , ( KeywordTok , "else" )
+  , ( NormalTok , " " )
+  , ( DecValTok , "#f" )
+  , ( NormalTok , "]))" )
+  ]
+, [ ( NormalTok , "  (inner (" )
+  , ( KeywordTok , "string->list" )
+  , ( NormalTok , " w) BLOCKS null))" )
+  ]
+, []
+, [ ( NormalTok , "(" )
+  , ( KeywordTok , "define" )
+  , ( FunctionTok , " WORD-LIST " )
+  , ( NormalTok , "'(" )
+  , ( StringTok , "\"\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"A\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"BARK\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"BOOK\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"TREAT\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"COMMON\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"SQUAD\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"CONFUSE\"" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "(" )
+  , ( KeywordTok , "define" )
+  , ( FunctionTok , " " )
+  , ( NormalTok , "(report-word w)" )
+  ]
+, [ ( NormalTok , "  (printf " )
+  , ( StringTok , "\"Can we make: ~a? ~a~%\"" )
+  ]
+, [ ( NormalTok , "          (~s w #:min-width " )
+  , ( DecValTok , "9" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "          (" )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (can-make-word? w) " )
+  , ( StringTok , "\"yes\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"no\"" )
+  , ( NormalTok , ")))" )
+  ]
+, []
+, [ ( NormalTok , "(module+ main" ) ]
+, [ ( NormalTok , "  (" )
+  , ( KeywordTok , "for-each" )
+  , ( NormalTok , " report-word WORD-LIST))  " )
+  ]
+, []
+, [ ( NormalTok , "(module+ test" ) ]
+, [ ( NormalTok , "  (require rackunit)" ) ]
+, [ ( NormalTok , "  (check-true  (can-make-word? " )
+  , ( StringTok , "\"\"" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "  (check-true  (can-make-word? " )
+  , ( StringTok , "\"A\"" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "  (check-true  (can-make-word? " )
+  , ( StringTok , "\"BARK\"" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "  (check-false (can-make-word? " )
+  , ( StringTok , "\"BOOK\"" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "  (check-true  (can-make-word? " )
+  , ( StringTok , "\"TREAT\"" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "  (check-false (can-make-word? " )
+  , ( StringTok , "\"COMMON\"" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "  (check-true  (can-make-word? " )
+  , ( StringTok , "\"SQUAD\"" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "  (check-true  (can-make-word? " )
+  , ( StringTok , "\"CONFUSE\"" )
+  , ( NormalTok , ")))" )
+  ]
+]

@@ -1,0 +1,101 @@
+[ []
+, [ ( NormalTok , "(" )
+  , ( BuiltInTok , "def" )
+  , ( FunctionTok , " blocks" )
+  ]
+, [ ( NormalTok , "  (" )
+  , ( KeywordTok , "->" )
+  , ( NormalTok , " " )
+  , ( StringTok
+    , "\"BO XK DQ CP NA GT RE TG QD FS JW HU VI AN OB ER FS LY PC ZM\""
+    )
+  , ( NormalTok , " (.split " )
+  , ( StringTok , "\" \"" )
+  , ( NormalTok , ") " )
+  , ( KeywordTok , "vec" )
+  , ( NormalTok , "))" )
+  ]
+, []
+, [ ( NormalTok , "(" )
+  , ( BuiltInTok , "defn" )
+  , ( FunctionTok , " omit " )
+  ]
+, [ ( NormalTok , "  " )
+  , ( StringTok , "\"return bs with (one instance of) b omitted\"" )
+  ]
+, [ ( NormalTok , "  [bs b] " ) ]
+, [ ( NormalTok , "  (" )
+  , ( KeywordTok , "let" )
+  , ( NormalTok , " [[before after] (" )
+  , ( KeywordTok , "split-with" )
+  , ( NormalTok , " #(" )
+  , ( KeywordTok , "not=" )
+  , ( NormalTok , " b %) bs)]" )
+  ]
+, [ ( NormalTok , "    (" )
+  , ( KeywordTok , "concat" )
+  , ( NormalTok , " before (" )
+  , ( KeywordTok , "rest" )
+  , ( NormalTok , " after))))" )
+  ]
+, []
+, [ ( NormalTok , "(" )
+  , ( BuiltInTok , "defn" )
+  , ( FunctionTok , " abc " )
+  ]
+, [ ( NormalTok , "  " )
+  , ( StringTok
+    , "\"return lazy sequence of solutions (i.e. block lists)\""
+    )
+  ]
+, [ ( NormalTok , "  [blocks [c & cs]]" ) ]
+, [ ( NormalTok , "  (if-some c" ) ]
+, [ ( NormalTok , "    (" )
+  , ( KeywordTok , "for" )
+  , ( NormalTok , " [b blocks " )
+  , ( AttributeTok , ":when" )
+  , ( NormalTok , " (" )
+  , ( KeywordTok , "some" )
+  , ( NormalTok , " #(" )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " c %) b)" )
+  ]
+, [ ( NormalTok , "          bs (abc (omit blocks b) cs)]" ) ]
+, [ ( NormalTok , "      (" )
+  , ( KeywordTok , "cons" )
+  , ( NormalTok , " b bs))" )
+  ]
+, [ ( NormalTok , "    [[]]))" ) ]
+, [ ( NormalTok , "    " ) ]
+, [ ( NormalTok , "      " ) ]
+, [ ( NormalTok , "(" )
+  , ( KeywordTok , "doseq" )
+  , ( NormalTok , " [word [" )
+  , ( StringTok , "\"A\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"BARK\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"Book\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"treat\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"COMMON\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"SQUAD\"" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"CONFUSE\"" )
+  , ( NormalTok , "]]" )
+  ]
+, [ ( NormalTok , "  (" )
+  , ( KeywordTok , "->>" )
+  , ( NormalTok , " word .toUpperCase (abc blocks) " )
+  , ( KeywordTok , "first" )
+  , ( NormalTok , " (" )
+  , ( KeywordTok , "printf" )
+  , ( NormalTok , " " )
+  , ( StringTok , "\"%s: %b" )
+  , ( NormalTok , "\\n" )
+  , ( StringTok , "\"" )
+  , ( NormalTok , " word)))" )
+  ]
+]

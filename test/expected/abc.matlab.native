@@ -1,0 +1,111 @@
+[ [ ( NormalTok , "function testABC" ) ]
+, [ ( NormalTok , "    combos = [" )
+  , ( StringTok , "'BO'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'XK'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'DQ'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'CP'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'NA'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'GT'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'RE'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'TG'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'QD'" )
+  , ( NormalTok , " ; ..." )
+  ]
+, [ ( NormalTok , "        " )
+  , ( StringTok , "'FS'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'JW'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'HU'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'VI'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'AN'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'OB'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'ER'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'FS'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'LY'" )
+  , ( NormalTok , " ; ..." )
+  ]
+, [ ( NormalTok , "        " )
+  , ( StringTok , "'PC'" )
+  , ( NormalTok , " ; " )
+  , ( StringTok , "'ZM'" )
+  , ( NormalTok , "];" )
+  ]
+, [ ( NormalTok , "    words = {" )
+  , ( StringTok , "'A'" )
+  , ( NormalTok , " " )
+  , ( StringTok , "'BARK'" )
+  , ( NormalTok , " " )
+  , ( StringTok , "'BOOK'" )
+  , ( NormalTok , " " )
+  , ( StringTok , "'TREAT'" )
+  , ( NormalTok , " " )
+  , ( StringTok , "'COMMON'" )
+  , ( NormalTok , " " )
+  , ( StringTok , "'SQUAD'" )
+  , ( NormalTok , " " )
+  , ( StringTok , "'CONFUSE'" )
+  , ( NormalTok , "};" )
+  ]
+, [ ( NormalTok , "    for k = " )
+  , ( FloatTok , "1" )
+  , ( NormalTok , ":length(words)" )
+  ]
+, [ ( NormalTok
+    , "        possible = canMakeWord(words{k}, combos);"
+    )
+  ]
+, [ ( NormalTok , "        fprintf(" )
+  , ( StringTok , "'Can%s make word %s.\\n'" )
+  , ( NormalTok , ", char(~possible.*" )
+  , ( StringTok , "'NOT'" )
+  , ( NormalTok , "), words{k})" )
+  ]
+, [ ( NormalTok , "    end" ) ]
+, [ ( NormalTok , "end" ) ]
+, []
+, [ ( NormalTok
+    , "function isPossible = canMakeWord(word, combos)"
+    )
+  ]
+, [ ( NormalTok , "    word = lower(word);" ) ]
+, [ ( NormalTok , "    combos = lower(combos);" ) ]
+, [ ( NormalTok , "    isPossible = true;" ) ]
+, [ ( NormalTok , "    k = " )
+  , ( FloatTok , "1" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "    while isPossible && k <= length(word)" ) ]
+, [ ( NormalTok , "        [r, c] = find(combos == word(k), " )
+  , ( FloatTok , "1" )
+  , ( NormalTok , ");" )
+  ]
+, [ ( NormalTok , "        if ~isempty(r)" ) ]
+, [ ( NormalTok , "            combos(r, :) = " )
+  , ( StringTok , "''" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "        else" ) ]
+, [ ( NormalTok , "            isPossible = false;" ) ]
+, [ ( NormalTok , "        end" ) ]
+, [ ( NormalTok , "        k = k+" )
+  , ( FloatTok , "1" )
+  , ( NormalTok , ";" )
+  ]
+, [ ( NormalTok , "    end" ) ]
+, [ ( NormalTok , "end" ) ]
+]

@@ -1,0 +1,61 @@
+[ [ ( KeywordTok , "defmodule" )
+  , ( NormalTok , " " )
+  , ( ConstantTok , "Geometry" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "do" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( KeywordTok , "def" )
+  , ( NormalTok , " area_loop " )
+  , ( KeywordTok , "do" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "receive" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "do" )
+  ]
+, [ ( NormalTok , "      {" )
+  , ( VariableTok , ":rectangle" )
+  , ( NormalTok , ", w, h} " )
+  , ( OperatorTok , "->" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( ConstantTok , "IO" )
+  , ( OperatorTok , "." )
+  , ( NormalTok , "puts(" )
+  , ( StringTok , "\"Area = " )
+  , ( OtherTok , "#{" )
+  , ( NormalTok , "w " )
+  , ( OperatorTok , "*" )
+  , ( NormalTok , " h" )
+  , ( OtherTok , "}" )
+  , ( StringTok , "\"" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "        area_loop()" ) ]
+, [ ( NormalTok , "      {" )
+  , ( VariableTok , ":circle" )
+  , ( NormalTok , ", r} " )
+  , ( OperatorTok , "->" )
+  ]
+, [ ( NormalTok , "        " )
+  , ( ConstantTok , "IO" )
+  , ( OperatorTok , "." )
+  , ( NormalTok , "puts(" )
+  , ( StringTok , "\"Area = " )
+  , ( OtherTok , "#{" )
+  , ( FloatTok , "3.14" )
+  , ( NormalTok , " " )
+  , ( OperatorTok , "*" )
+  , ( NormalTok , " r " )
+  , ( OperatorTok , "*" )
+  , ( NormalTok , " r" )
+  , ( OtherTok , "}" )
+  , ( StringTok , "\"" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "        area_loop()" ) ]
+, [ ( NormalTok , "    " ) , ( KeywordTok , "end" ) ]
+, [ ( NormalTok , "  " ) , ( KeywordTok , "end" ) ]
+, [ ( KeywordTok , "end" ) ]
+]

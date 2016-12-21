@@ -1,0 +1,72 @@
+[ []
+, [ ( NormalTok , "(" )
+  , ( KeywordTok , "defun" )
+  , ( FunctionTok , " word-possible-p " )
+  , ( NormalTok , "(word blocks)" )
+  ]
+, [ ( NormalTok , "  (" )
+  , ( KeywordTok , "cond" )
+  , ( NormalTok , " " )
+  ]
+, [ ( NormalTok , "    ((" )
+  , ( OperatorTok , "=" )
+  , ( NormalTok , " (" )
+  , ( KeywordTok , "length" )
+  , ( NormalTok , " word) " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ") " )
+  , ( KeywordTok , "t" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "    ((" )
+  , ( KeywordTok , "null" )
+  , ( NormalTok , " blocks) " )
+  , ( KeywordTok , "nil" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "    (" )
+  , ( KeywordTok , "t" )
+  , ( NormalTok , " (" )
+  , ( KeywordTok , "let*" )
+  , ( NormalTok , " " )
+  ]
+, [ ( NormalTok , "         ((c (" )
+  , ( KeywordTok , "aref" )
+  , ( NormalTok , " word " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , "))" )
+  ]
+, [ ( NormalTok , "          (bs (" )
+  , ( KeywordTok , "remove-if-not" )
+  , ( NormalTok , " #'(" )
+  , ( KeywordTok , "lambda" )
+  , ( NormalTok , " (b) " )
+  ]
+, [ ( NormalTok , "                                 (" )
+  , ( KeywordTok , "find" )
+  , ( NormalTok , " c b " )
+  , ( BuiltInTok , ":test" )
+  , ( NormalTok , " #'char-equal))" )
+  ]
+, [ ( NormalTok , "                             blocks)))" ) ]
+, [ ( NormalTok , "         (" )
+  , ( KeywordTok , "some" )
+  , ( NormalTok , " #'identity " )
+  ]
+, [ ( NormalTok , "               (" )
+  , ( KeywordTok , "loop" )
+  , ( NormalTok , " for b in bs" )
+  ]
+, [ ( NormalTok , "                     collect (word-possible-p" )
+  ]
+, [ ( NormalTok , "                               (" )
+  , ( KeywordTok , "subseq" )
+  , ( NormalTok , " word " )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "                               (" )
+  , ( KeywordTok , "remove" )
+  , ( NormalTok , " b blocks))))))))" )
+  ]
+]

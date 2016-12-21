@@ -1,0 +1,399 @@
+[ [ ( CommentTok
+    , "!-*- mode: compilation; default-directory: \"/tmp/\" -*-"
+    )
+  ]
+, [ ( CommentTok , "!Compilation started at Thu Jun  5 01:52:03" )
+  ]
+, [ ( CommentTok , "!" ) ]
+, [ ( CommentTok
+    , "!make f && for a in '' a bark book treat common squad confuse ; do echo $a | ./f ; done"
+    )
+  ]
+, [ ( CommentTok
+    , "!gfortran -std=f2008 -Wall -fopenmp -ffree-form -fall-intrinsics -fimplicit-none -g f.f08 -o f"
+    )
+  ]
+, [ ( CommentTok , "! T                      " ) ]
+, [ ( CommentTok , "! T  A                    NA" ) ]
+, [ ( CommentTok , "! T  BARK                 BO NA RE XK" ) ]
+, [ ( CommentTok , "! F  BOOK                 OB BO -- --" ) ]
+, [ ( CommentTok , "! T  TREAT                GT RE ER NA TG" ) ]
+, [ ( CommentTok , "! F  COMMON               PC OB ZM -- -- --" )
+  ]
+, [ ( CommentTok , "! T  SQUAD                FS DQ HU NA QD" ) ]
+, [ ( CommentTok
+    , "! T  CONFUSE              CP BO NA FS HU FS RE"
+    )
+  ]
+, [ ( CommentTok , "!" ) ]
+, [ ( CommentTok , "!Compilation finished at Thu Jun  5 01:52:03" )
+  ]
+, []
+, [ ( KeywordTok , "program" ) , ( NormalTok , " abc" ) ]
+, [ ( NormalTok , "  " )
+  , ( KeywordTok , "implicit" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "none" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( DataTypeTok , "integer" )
+  , ( NormalTok , ", " )
+  , ( DataTypeTok , "parameter" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " nblocks " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " " )
+  , ( DecValTok , "20" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( DataTypeTok , "character(len=nblocks)" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " goal" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( DataTypeTok , "integer" )
+  , ( NormalTok , ", " )
+  , ( DataTypeTok , "dimension(nblocks)" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " solution" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( DataTypeTok , "character(len=2)" )
+  , ( NormalTok , ", " )
+  , ( DataTypeTok , "dimension(0:nblocks)" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " blocks_copy, blocks " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "&" )
+  ]
+, [ ( NormalTok , "       " )
+  , ( KeywordTok , "&(/" )
+  , ( StringTok , "'--'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'BO'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'XK'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'DQ'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'CP'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'NA'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'GT'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'RE'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'TG'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'QD'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'FS'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'JW'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'HU'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'VI'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'AN'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'OB'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'ER'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'FS'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'LY'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'PC'" )
+  , ( NormalTok , "," )
+  , ( StringTok , "'ZM'" )
+  , ( KeywordTok , "/)" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( DataTypeTok , "logical" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " valid" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( DataTypeTok , "integer" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " i, iostat" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( FunctionTok , "read(" )
+  , ( DecValTok , "5" )
+  , ( NormalTok , "," )
+  , ( FunctionTok , "*" )
+  , ( NormalTok , "," )
+  , ( FunctionTok , "iostat" )
+  , ( KeywordTok , "=" )
+  , ( FunctionTok , "iostat)" )
+  , ( NormalTok , " goal" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (iostat " )
+  , ( OperatorTok , ".ne." )
+  , ( NormalTok , " " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ") goal " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " " )
+  , ( StringTok , "''" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( KeywordTok , "call" )
+  , ( NormalTok , " ucase(goal)" )
+  ]
+, [ ( NormalTok , "  solution " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " " )
+  , ( DecValTok , "0" )
+  ]
+, [ ( NormalTok , "  blocks_copy " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " blocks" )
+  ]
+, [ ( NormalTok , "  valid " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " assign_block(goal(" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ":" )
+  , ( BuiltInTok , "len_trim" )
+  , ( NormalTok , "(goal)), blocks, solution, " )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ")" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( FunctionTok , "write(" )
+  , ( DecValTok , "6" )
+  , ( NormalTok , "," )
+  , ( FunctionTok , "*)" )
+  , ( NormalTok , " valid, " )
+  , ( StringTok , "' '" )
+  , ( KeywordTok , "//" )
+  , ( NormalTok , "goal, (" )
+  , ( StringTok , "' '" )
+  , ( KeywordTok , "//" )
+  , ( NormalTok , "blocks_copy(solution(i)), i" )
+  , ( KeywordTok , "=" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , "," )
+  , ( BuiltInTok , "len_trim" )
+  , ( NormalTok , "(goal))" )
+  ]
+, []
+, [ ( CommentTok , "contains" ) ]
+, []
+, [ ( NormalTok , "  " )
+  , ( KeywordTok , "recursive" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "function" )
+  , ( NormalTok , " assign_block(goal, blocks, solution, n) " )
+  , ( KeywordTok , "result" )
+  , ( NormalTok , "(valid)" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "implicit" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "none" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( DataTypeTok , "logical" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " valid" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( DataTypeTok , "character(len=*)" )
+  , ( NormalTok , ", " )
+  , ( DataTypeTok , "intent(in)" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " goal" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( DataTypeTok , "character(len=2)" )
+  , ( NormalTok , ", " )
+  , ( DataTypeTok , "dimension(0:)" )
+  , ( NormalTok , ", " )
+  , ( DataTypeTok , "intent(inout)" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " blocks" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( DataTypeTok , "integer" )
+  , ( NormalTok , ", " )
+  , ( DataTypeTok , "dimension(:)" )
+  , ( NormalTok , ", " )
+  , ( DataTypeTok , "intent(out)" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " solution" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( DataTypeTok , "integer" )
+  , ( NormalTok , ", " )
+  , ( DataTypeTok , "intent(in)" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " n" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( DataTypeTok , "integer" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " i" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( DataTypeTok , "character(len=2)" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " backing_store" )
+  ]
+, [ ( NormalTok , "    valid " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " " )
+  , ( ConstantTok , ".true." )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (" )
+  , ( FunctionTok , "len" )
+  , ( NormalTok , "(goal)" )
+  , ( KeywordTok , "+" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , " " )
+  , ( OperatorTok , ".eq." )
+  , ( NormalTok , " n) " )
+  , ( KeywordTok , "return" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "do" )
+  , ( NormalTok , " i" )
+  , ( KeywordTok , "=" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ", " )
+  , ( FunctionTok , "size" )
+  , ( NormalTok , "(blocks)" )
+  ]
+, [ ( NormalTok , "       " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (" )
+  , ( BuiltInTok , "index" )
+  , ( NormalTok , "(blocks(i),goal(n:n)) " )
+  , ( OperatorTok , ".ne." )
+  , ( NormalTok , " " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ") " )
+  , ( KeywordTok , "then" )
+  ]
+, [ ( NormalTok , "          backing_store " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " blocks(i)" )
+  ]
+, [ ( NormalTok , "          blocks(i) " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " " )
+  , ( StringTok , "''" )
+  ]
+, [ ( NormalTok , "          solution(n) " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " i" )
+  ]
+, [ ( NormalTok , "          " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (assign_block(goal, blocks, solution, n" )
+  , ( KeywordTok , "+" )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ")) " )
+  , ( KeywordTok , "return" )
+  ]
+, [ ( NormalTok , "          blocks(i) " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " backing_store" )
+  ]
+, [ ( NormalTok , "       " ) , ( KeywordTok , "end if" ) ]
+, [ ( NormalTok , "    " ) , ( KeywordTok , "end do" ) ]
+, [ ( NormalTok , "    valid " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " " )
+  , ( ConstantTok , ".false." )
+  ]
+, [ ( NormalTok , "    " ) , ( KeywordTok , "return" ) ]
+, [ ( NormalTok , "  " )
+  , ( KeywordTok , "end function" )
+  , ( NormalTok , " assign_block" )
+  ]
+, []
+, [ ( NormalTok , "  " )
+  , ( KeywordTok , "subroutine" )
+  , ( NormalTok , " ucase(a)" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "implicit" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "none" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( DataTypeTok , "character(len=*)" )
+  , ( NormalTok , ", " )
+  , ( DataTypeTok , "intent(inout)" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " a" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( DataTypeTok , "integer" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "::" )
+  , ( NormalTok , " i, j" )
+  ]
+, [ ( NormalTok , "    " )
+  , ( KeywordTok , "do" )
+  , ( NormalTok , " i " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " " )
+  , ( DecValTok , "1" )
+  , ( NormalTok , ", " )
+  , ( BuiltInTok , "len_trim" )
+  , ( NormalTok , "(a)" )
+  ]
+, [ ( NormalTok , "       j " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " " )
+  , ( BuiltInTok , "index" )
+  , ( NormalTok , "(" )
+  , ( StringTok , "'abcdefghijklmnopqrstuvwxyz'" )
+  , ( NormalTok , ",a(i:i))" )
+  ]
+, [ ( NormalTok , "       " )
+  , ( KeywordTok , "if" )
+  , ( NormalTok , " (j " )
+  , ( OperatorTok , ".ne." )
+  , ( NormalTok , " " )
+  , ( DecValTok , "0" )
+  , ( NormalTok , ") a(i:i) " )
+  , ( KeywordTok , "=" )
+  , ( NormalTok , " " )
+  , ( StringTok , "'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" )
+  , ( NormalTok , "(j:j)" )
+  ]
+, [ ( NormalTok , "    " ) , ( KeywordTok , "end do" ) ]
+, [ ( NormalTok , "  " )
+  , ( KeywordTok , "end subroutine" )
+  , ( NormalTok , " ucase" )
+  ]
+, []
+, [ ( KeywordTok , "end program" ) , ( NormalTok , " abc" ) ]
+]
