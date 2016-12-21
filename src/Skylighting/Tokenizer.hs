@@ -125,6 +125,7 @@ tokenizeLine ln = do
   cur' <- currentContext
   lineCont' <- gets lineContinuation
   unless lineCont' $ doContextSwitch (cLineEndContext cur')
+  -- TODO perhaps we should just fail in this case?
   inp <- gets input
   return $ ts ++ [(ErrorTok, inp) | not (null inp)]
 
