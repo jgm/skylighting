@@ -205,7 +205,8 @@ defStyle = TokenStyle {
   , tokenUnderline  = False
   }
 
-data Color = RGB Word8 Word8 Word8 deriving (Show, Read, Data, Typeable)
+data Color = RGB Word8 Word8 Word8
+  deriving (Show, Read, Ord, Eq, Data, Typeable)
 
 class ToColor a where
   toColor :: a -> Maybe Color
