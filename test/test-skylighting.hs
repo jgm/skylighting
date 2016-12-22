@@ -24,13 +24,24 @@ main = do
          <$> getDirectoryContents ("test" </> "cases")
   args <- getArgs
   let regen = "--regenerate" `elem` args
-  defaultMain $ testGroup "Golden tests" $ map (mkTest regen) inputs
+  defaultMain $ testGroup "tokenizer tests" $
+                  map (tokenizerTest regen) inputs
 
-mkTest :: Bool -> FilePath -> TestTree
-mkTest regen inpFile = localOption (mkTimeout 2000000) $
-  goldenTest testname getExpected getActual compareValues updateGolden
-  where testname = lang ++ " highlighting of " ++ inpFile
-        getExpected = readFile (expecteddir </> inpFile <.> "native")
+compareValues :: FilePath -> String -> String -> IO (Maybe String)
+compareValues referenceFile expected actual =
+   if expected == actual
+      then return $ Nothing
+      else return $ Just $ unlines $
+           [ "--- " ++ referenceFile
+           , "+++ actual" ] ++
+           map vividize (getDiff (lines expected) (lines actual))
+
+tokenizerTest :: Bool -> FilePath -> TestTree
+tokenizerTest regen inpFile = localOption (mkTimeout 2000000) $
+  goldenTest testname getExpected getActual
+      (compareValues referenceFile) updateGolden
+  where testname = lang ++ " tokenizing of " ++ inpFile
+        getExpected = readFile referenceFile
         getActual = do
           code <- readFile (casesdir </> inpFile)
           syntax <- case lookupSyntax lang defaultSyntaxMap of
@@ -44,18 +55,12 @@ mkTest regen inpFile = localOption (mkTimeout 2000000) $
                  Right ls -> return $ ppShow ls ++ "\n"
         opts = defaultFormatOpts{ titleAttributes = False }
         updateGolden = if regen
-                          then writeFile (expecteddir </> inpFile <.> "native")
+                          then writeFile referenceFile
                           else \_ -> return ()
         expecteddir = "test" </> "expected"
         casesdir = "test" </> "cases"
+        referenceFile = expecteddir </> inpFile <.> "native"
         lang = drop 1 $ takeExtension inpFile
-        compareValues expected actual = do
-           if expected == actual
-              then return Nothing
-              else return $ Just $ unlines $
-                   [ "--- " ++ (expecteddir </> inpFile <.> "native")
-                   , "+++ actual" ] ++
-                   map vividize (getDiff (lines expected) (lines actual))
 
 vividize :: Diff String -> String
 vividize (Both s _) = "  " ++ s

@@ -1,5 +1,3 @@
-_ add a separate formatter test (for both html and latex)
-
 _ fix FromJSON instance for Style, Color, and
   add a function to read a KDE theme as a style
   (also add the standard ones to the library)
