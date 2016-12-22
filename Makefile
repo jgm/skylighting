@@ -9,6 +9,11 @@ quick:
 test:
 	stack test
 
+format:
+	stylish-haskell -i -c .stylish-haskell \
+	      bin/*.hs test/test-skylighting.hs \
+	      src/Skylighting/*.hs src/Skylighting/Format/*.hs src/Skylighting.hs
+
 bootstrap: $(DEFS)
 	-rm -rf src/Skylighting/Syntax
 	stack install --fast --flag 'skylighting:bootstrap'
@@ -24,5 +29,5 @@ update-xml: syntax-highlighting
 clean:
 	stack clean
 
-.PHONY: all update-xml quick clean test
+.PHONY: all update-xml quick clean test format
 
