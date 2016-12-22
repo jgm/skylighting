@@ -1,4 +1,4 @@
-{-# LANGUAGE CPP, OverloadedStrings #-}
+{-# LANGUAGE CPP, OverloadedStrings, ScopedTypeVariables #-}
 module Main where
 import Skylighting
 import Text.Show.Pretty
@@ -19,7 +19,7 @@ import Test.Tasty
 import Test.Tasty.Golden.Advanced (goldenTest)
 import Test.Tasty.HUnit
 import Data.Aeson (decode)
-import Data.ByteString.Lazy ()
+import qualified Data.ByteString.Lazy as BL
 
 main :: IO ()
 main = do
@@ -27,12 +27,22 @@ main = do
          <$> getDirectoryContents ("test" </> "cases")
   args <- getArgs
   let regen = "--regenerate" `elem` args
+  defaultTheme <- BL.readFile ("test" </> "default.theme")
   defaultMain $ testGroup "skylighting tests" $
     [ testGroup "tokenizer tests" $
         map (tokenizerTest regen) inputs
     , testGroup "FromJSON instance tests"
        [ testCase "decode simple color" $
             Just (RGB 0x15 0xff 0xa0) @=? decode "\"#15ffa0\""
+       , testCase "decode TokenStyle" $
+            Just (TokenStyle{tokenColor = Just (RGB 0x1f 0x1c 0x1b),
+                             tokenBackground = Nothing,
+                             tokenBold = True,
+                             tokenItalic = False,
+                             tokenUnderline = False }) @=?
+            decode "{ \"text-color\": \"#1f1c1b\", \"bold\": true }"
+       , testCase "decode KDE theme to Style" $
+            Just kate @=? decode defaultTheme
        ]
     ]
 

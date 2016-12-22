@@ -162,7 +162,7 @@ data TokenType = KeywordTok
                | AlertTok
                | ErrorTok
                | NormalTok
-               deriving (Read, Show, Eq, Enum, Data, Typeable)
+               deriving (Read, Show, Eq, Ord, Enum, Data, Typeable)
 
 instance FromJSON TokenType where
   parseJSON (String t) =
@@ -180,7 +180,7 @@ data TokenStyle = TokenStyle {
   , tokenBold       :: Bool
   , tokenItalic     :: Bool
   , tokenUnderline  :: Bool
-  } deriving (Show, Read, Data, Typeable)
+  } deriving (Show, Read, Ord, Eq, Data, Typeable)
 
 instance FromJSON TokenStyle where
   parseJSON (Object v) = do
@@ -256,21 +256,22 @@ data Style = Style {
   , backgroundColor           :: Maybe Color
   , lineNumberColor           :: Maybe Color
   , lineNumberBackgroundColor :: Maybe Color
-  } deriving (Read, Show, Data, Typeable)
+  } deriving (Read, Show, Eq, Ord, Data, Typeable)
 
 instance FromJSON Style where
   parseJSON (Object v) = do
-    tokstyles <- v .: "text-styles"
-    backgroundCol <- v .:? "background-color"
-    lineNumberCol <- v .:? "line-numbers"
-    lineNumberBgCol <- v .:? "background-color"
-    return Style{ defaultColor = case lookup NormalTok tokstyles of
+    (tokstyles :: Map.Map String TokenStyle) <- v .: "text-styles"
+    (editorColors :: Map.Map String Color) <- v .: "editor-colors"
+    return Style{ defaultColor = case Map.lookup "Normal" tokstyles of
                                       Nothing -> Nothing
                                       Just ts -> tokenColor ts
-                , backgroundColor = backgroundCol
-                , lineNumberColor = lineNumberCol
-                , lineNumberBackgroundColor = lineNumberBgCol
-                , tokenStyles = tokstyles }
+                , backgroundColor = Map.lookup "background-color" editorColors
+                , lineNumberColor = Map.lookup "line-numbers" editorColors
+                , lineNumberBackgroundColor = Map.lookup "background-color"
+                                                editorColors
+                , tokenStyles = Map.toList $
+                     Map.mapKeys (\s -> maybe OtherTok id $
+                                     readMay (s ++ "Tok")) tokstyles }
   parseJSON _ = mempty
 
 -- | Options for formatting source code.
