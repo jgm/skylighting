@@ -55,41 +55,44 @@ pygments = Style{
 -- | Style based on kate's default colors.
 kate :: Style
 kate = Style{
-    backgroundColor = Nothing
-  , defaultColor = Nothing
-  , lineNumberColor = Nothing
-  , lineNumberBackgroundColor = color 0xdddddd
-  , tokenStyles =
-    [ (KeywordTok, defStyle{ tokenBold = True })
-    , (DataTypeTok, defStyle{ tokenColor = color 0x800000 })
-    , (DecValTok, defStyle{ tokenColor = color 0x0000FF })
-    , (BaseNTok, defStyle{ tokenColor = color 0x0000FF })
-    , (FloatTok, defStyle{ tokenColor = color 0x800080 })
-    , (CharTok, defStyle{ tokenColor = color 0xFF00FF })
-    , (StringTok, defStyle{ tokenColor = color 0xDD0000 })
-    , (CommentTok, defStyle{ tokenColor = color 0x808080, tokenItalic = True })
-    , (AlertTok, defStyle{ tokenColor = color 0x00ff00, tokenBold = True })
-    , (FunctionTok, defStyle{ tokenColor = color 0x000080 })
-    , (ErrorTok, defStyle{ tokenColor = color 0xff0000, tokenBold = True })
-    , (WarningTok, defStyle{ tokenColor = color 0xff0000, tokenBold = True })
-    , (ConstantTok, defStyle{ tokenColor = color 0x000000 })
-    , (SpecialCharTok, defStyle{ tokenColor = color 0xFF00FF })
-    , (VerbatimStringTok, defStyle{ tokenColor = color 0xDD0000 })
-    , (SpecialStringTok, defStyle{ tokenColor = color 0xDD0000 })
-    , (ImportTok, defStyle)
-    , (VariableTok, defStyle)
-    , (ControlFlowTok, defStyle)
-    , (OperatorTok, defStyle)
-    , (BuiltInTok, defStyle)
-    , (ExtensionTok, defStyle)
-    , (PreprocessorTok, defStyle{ tokenBold = True })
-    , (AttributeTok, defStyle)
-    , (DocumentationTok, defStyle{ tokenColor = color 0x808080, tokenItalic = True })
-    , (AnnotationTok, defStyle{ tokenColor = color 0x808080, tokenItalic = True, tokenBold = True })
-    , (CommentVarTok, defStyle{ tokenColor = color 0x808080, tokenItalic = True, tokenBold = True })
-    , (InformationTok, defStyle{ tokenColor = color 0x808080, tokenItalic = True, tokenBold = True })
-    ]
-  }
+      tokenStyles =
+        [ ( KeywordTok, defStyle { tokenColor = Just (RGB 31 28 27), tokenBold = True })
+        , ( DataTypeTok, defStyle { tokenColor = Just (RGB 0 87 174) })
+        , ( DecValTok, defStyle { tokenColor = Just (RGB 176 128 0) })
+        , ( BaseNTok, defStyle { tokenColor = Just (RGB 176 128 0) })
+        , ( FloatTok, defStyle { tokenColor = Just (RGB 176 128 0) })
+        , ( ConstantTok, defStyle { tokenColor = Just (RGB 170 85 0) })
+        , ( CharTok, defStyle { tokenColor = Just (RGB 146 76 157) })
+        , ( SpecialCharTok, defStyle { tokenColor = Just (RGB 61 174 233) })
+        , ( StringTok, defStyle { tokenColor = Just (RGB 191 3 3) })
+        , ( VerbatimStringTok, defStyle { tokenColor = Just (RGB 191 3 3) })
+        , ( SpecialStringTok, defStyle { tokenColor = Just (RGB 255 85 0) })
+        , ( ImportTok, defStyle { tokenColor = Just (RGB 255 85 0) })
+        , ( CommentTok, defStyle { tokenColor = Just (RGB 137 136 135) })
+        , ( DocumentationTok, defStyle { tokenColor = Just (RGB 96 120 128) })
+        , ( AnnotationTok, defStyle { tokenColor = Just (RGB 202 96 202) })
+        , ( CommentVarTok, defStyle { tokenColor = Just (RGB 0 149 255) })
+        , ( OtherTok, defStyle { tokenColor = Just (RGB 0 110 40) })
+        , ( FunctionTok, defStyle { tokenColor = Just (RGB 100 74 155) })
+        , ( VariableTok, defStyle { tokenColor = Just (RGB 0 87 174) })
+        , ( ControlFlowTok, defStyle { tokenColor = Just (RGB 31 28 27), tokenBold = True })
+        , ( OperatorTok, defStyle { tokenColor = Just (RGB 31 28 27) })
+        , ( BuiltInTok, defStyle { tokenColor = Just (RGB 100 74 155), tokenBold = True })
+        , ( ExtensionTok, defStyle { tokenColor = Just (RGB 0 149 255), tokenBold = True })
+        , ( PreprocessorTok, defStyle { tokenColor = Just (RGB 0 110 40) })
+        , ( AttributeTok, defStyle { tokenColor = Just (RGB 0 87 174) })
+        , ( RegionMarkerTok, defStyle { tokenColor = Just (RGB 0 87 174) })
+        , ( InformationTok, defStyle { tokenColor = Just (RGB 176 128 0) })
+        , ( WarningTok, defStyle { tokenColor = Just (RGB 191 3 3) })
+        , ( AlertTok, defStyle { tokenColor = Just (RGB 191 3 3), tokenBold = True })
+        , ( ErrorTok, defStyle { tokenColor = Just (RGB 191 3 3), tokenUnderline = True })
+        , ( NormalTok, defStyle { tokenColor = Just (RGB 31 28 27) })
+        ]
+    , defaultColor = Just (RGB 31 28 27)
+    , backgroundColor = Just (RGB 255 255 255)
+    , lineNumberColor = Just (RGB 160 160 160)
+    , lineNumberBackgroundColor = Just (RGB 255 255 255)
+    }
 
 -- | Style based on pygments's tango colors.
 tango :: Style
