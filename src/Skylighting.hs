@@ -12,20 +12,20 @@ module Skylighting (
   , module Skylighting.Format.HTML
   , module Skylighting.Format.LaTeX
   ) where
-import Skylighting.Types
-import Skylighting.Tokenizer
-import Skylighting.Parser
-import Skylighting.Regex
-import Skylighting.Syntax
-import Skylighting.Styles
+import Control.Monad
+import Data.List (tails)
+import qualified Data.Map as Map
+import Data.Maybe (listToMaybe)
+import Data.Text (Text)
+import qualified Data.Text as Text
 import Skylighting.Format.HTML
 import Skylighting.Format.LaTeX
-import Control.Monad
-import qualified Data.Map as Map
-import Data.List (tails)
-import Data.Maybe (listToMaybe)
-import qualified Data.Text as Text
-import Data.Text (Text)
+import Skylighting.Parser
+import Skylighting.Regex
+import Skylighting.Styles
+import Skylighting.Syntax
+import Skylighting.Tokenizer
+import Skylighting.Types
 
 -- | Returns a list of languages appropriate for the given file extension.
 syntaxesByExtension :: SyntaxMap -> String -> [Syntax]
@@ -63,7 +63,7 @@ matchGlobs fn globs = any (flip matchGlob fn) globs
 
 -- | Match filename against a glob pattern with asterisks.
 matchGlob :: String -> String -> Bool
-matchGlob ('*':xs) fn = any (matchGlob xs) (tails fn)
+matchGlob ('*':xs) fn   = any (matchGlob xs) (tails fn)
 matchGlob (x:xs) (y:ys) = x == y && matchGlob xs ys
-matchGlob "" "" = True
-matchGlob _ _   = False
+matchGlob "" ""         = True
+matchGlob _ _           = False

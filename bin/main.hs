@@ -1,24 +1,24 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import Skylighting
-import qualified Data.ByteString.Lazy as BL
-import System.IO (hPutStrLn, stderr)
-import Text.Printf (printf)
-import Data.Char (toLower)
-import Data.Monoid
 import Control.Monad
-import Text.Show.Pretty (ppShow)
+import qualified Data.ByteString.Lazy as BL
+import Data.Char (toLower)
 import qualified Data.Map as Map
-import qualified Text.Blaze.Html5 as H
-import qualified Text.Blaze.Html5.Attributes as A
-import Text.Blaze.Html.Renderer.String
-import System.Environment
-import System.Console.GetOpt
-import System.Exit
-import Data.Version (showVersion)
-import Paths_skylighting (version)
+import Data.Monoid
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
+import Data.Version (showVersion)
+import Paths_skylighting (version)
+import Skylighting
+import System.Console.GetOpt
+import System.Environment
+import System.Exit
+import System.IO (hPutStrLn, stderr)
+import Text.Blaze.Html.Renderer.String
+import qualified Text.Blaze.Html5 as H
+import qualified Text.Blaze.Html5.Attributes as A
+import Text.Printf (printf)
+import Text.Show.Pretty (ppShow)
 
 data Flag = Sty String
           | Theme String
@@ -105,7 +105,7 @@ styleOf [] = return pygments
 styleOf (Theme fp : _) = do
   raw <- BL.readFile fp
   case parseTheme raw of
-       Left e -> err e
+       Left e    -> err e
        Right sty -> return sty
 styleOf (Sty s : _) = case map toLower s of
                             "pygments"   -> return pygments
@@ -198,12 +198,12 @@ main = do
                                , syntaxMap = syntaxMap' }
 
   sourceLines <- case tokenize config syntax code of
-                      Left e -> err e
+                      Left e   -> err e
                       Right ls -> return ls
 
   case format of
-       FormatHtml -> hlHtml fragment fname highlightOpts style sourceLines
-       FormatLaTeX -> hlLaTeX fragment fname highlightOpts style sourceLines
+       FormatHtml   -> hlHtml fragment fname highlightOpts style sourceLines
+       FormatLaTeX  -> hlLaTeX fragment fname highlightOpts style sourceLines
        FormatNative -> putStrLn $ ppShow sourceLines
 
 hlHtml :: Bool               -- ^ Fragment

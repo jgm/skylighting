@@ -8,9 +8,9 @@ module Skylighting.Styles (
   , monochrome
   , zenburn) where
 
-import Skylighting.Types
-import Data.ByteString.Lazy (ByteString)
 import Data.Aeson (eitherDecode)
+import Data.ByteString.Lazy (ByteString)
+import Skylighting.Types
 
 -- | Parse a KDE theme JSON document into a skylighting Style.
 parseTheme :: ByteString -> Either String Style

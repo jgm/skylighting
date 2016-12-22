@@ -1,5 +1,8 @@
-{-# LANGUAGE ScopedTypeVariables, DeriveDataTypeable, TypeSynonymInstances,
-    FlexibleInstances, OverloadedStrings #-}
+{-# LANGUAGE DeriveDataTypeable   #-}
+{-# LANGUAGE FlexibleInstances    #-}
+{-# LANGUAGE OverloadedStrings    #-}
+{-# LANGUAGE ScopedTypeVariables  #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 
 module Skylighting.Types (
                 ContextName
@@ -25,25 +28,25 @@ module Skylighting.Types (
               , defaultFormatOpts
               ) where
 
-import Skylighting.Regex
+import Data.Aeson
+import Data.Bits
+import Data.CaseInsensitive (CI, FoldCase, mk)
+import Data.Data (Data)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Data.Aeson
-import Data.Word
-import Text.Printf
-import Data.Bits
-import Data.Data (Data)
-import Data.Typeable (Typeable)
-import Data.CaseInsensitive (CI, mk, FoldCase)
-import qualified Data.Text as Text
 import Data.Text (Text)
+import qualified Data.Text as Text
+import Data.Typeable (Typeable)
+import Data.Word
 import Safe (readMay)
+import Skylighting.Regex
+import Text.Printf
 
 type ContextName = (Text, Text)
 
 data KeywordAttr =
-  KeywordAttr  { keywordCaseSensitive   :: Bool
-               , keywordDelims          :: Set.Set Char
+  KeywordAttr  { keywordCaseSensitive :: Bool
+               , keywordDelims        :: Set.Set Char
                }
 
 instance Show KeywordAttr where
@@ -55,7 +58,7 @@ data WordSet a = CaseSensitiveWords (Set.Set a)
                | CaseInsensitiveWords (Set.Set (CI a))
 
 makeWordSet :: (FoldCase a, Ord a) => Bool -> [a] -> WordSet a
-makeWordSet True ws = CaseSensitiveWords (Set.fromList ws)
+makeWordSet True ws  = CaseSensitiveWords (Set.fromList ws)
 makeWordSet False ws = CaseInsensitiveWords (Set.map mk (Set.fromList ws))
 
 instance Show a => Show (WordSet a) where
@@ -90,43 +93,43 @@ data ContextSwitch =
   deriving Show
 
 data Rule = Rule{
-    rMatcher :: Matcher
-  , rAttribute :: TokenType
+    rMatcher          :: Matcher
+  , rAttribute        :: TokenType
   , rIncludeAttribute :: Bool
-  , rDynamic   :: Bool
-  , rCaseSensitive :: Bool
-  , rChildren  :: [Rule]
-  , rLookahead :: Bool
-  , rFirstNonspace :: Bool
-  , rColumn    :: Maybe Int
-  , rContextSwitch :: [ContextSwitch]
+  , rDynamic          :: Bool
+  , rCaseSensitive    :: Bool
+  , rChildren         :: [Rule]
+  , rLookahead        :: Bool
+  , rFirstNonspace    :: Bool
+  , rColumn           :: Maybe Int
+  , rContextSwitch    :: [ContextSwitch]
   } deriving (Show)
 
 data Syntax = Syntax{
-    sName     :: Text
-  , sFilename :: String
-  , sShortname :: Text
-  , sContexts :: Map.Map Text Context
-  , sAuthor   :: Text
-  , sVersion  :: Text
-  , sLicense  :: Text
-  , sExtensions :: [String]
+    sName            :: Text
+  , sFilename        :: String
+  , sShortname       :: Text
+  , sContexts        :: Map.Map Text Context
+  , sAuthor          :: Text
+  , sVersion         :: Text
+  , sLicense         :: Text
+  , sExtensions      :: [String]
   , sStartingContext :: Text
   } deriving (Show)
 
 type SyntaxMap = Map.Map Text Syntax
 
 data Context = Context{
-    cName  :: Text
-  , cSyntax :: Text
-  , cRules :: [Rule]
-  , cAttribute :: TokenType
-  , cLineEmptyContext :: [ContextSwitch]
-  , cLineEndContext :: [ContextSwitch]
-  , cLineBeginContext :: [ContextSwitch]
-  , cFallthrough :: Bool
+    cName               :: Text
+  , cSyntax             :: Text
+  , cRules              :: [Rule]
+  , cAttribute          :: TokenType
+  , cLineEmptyContext   :: [ContextSwitch]
+  , cLineEndContext     :: [ContextSwitch]
+  , cLineBeginContext   :: [ContextSwitch]
+  , cFallthrough        :: Bool
   , cFallthroughContext :: [ContextSwitch]
-  , cDynamic :: Bool
+  , cDynamic            :: Bool
 } deriving (Show)
 
 -- | A pair consisting of a list of attributes and some text.
@@ -216,7 +219,7 @@ instance ToColor String where
   toColor ['#',r1,r2,g1,g2,b1,b2] =
      case reads ['(','0','x',r1,r2,',','0','x',g1,g2,',','0','x',b1,b2,')'] of
            ((r,g,b),_) : _ -> Just $ RGB r g b
-           _                                         -> Nothing
+           _               -> Nothing
   toColor _        = Nothing
 
 instance ToColor Int where
@@ -237,7 +240,7 @@ instance ToColor (Double, Double, Double) where
 
 instance FromJSON Color where
   parseJSON (String t) = maybe mempty return $ toColor (Text.unpack t)
-  parseJSON _ = mempty
+  parseJSON _          = mempty
 
 class FromColor a where
   fromColor :: Color -> a

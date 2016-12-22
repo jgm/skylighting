@@ -1,15 +1,15 @@
 {-# LANGUAGE Arrows #-}
 
-import Skylighting.Parser (parseSyntaxDefinition, missingIncludes)
-import Text.Show.Pretty (ppShow)
-import Skylighting.Types
-import System.Exit
-import System.Environment (getArgs)
-import System.Directory
-import Data.List (isInfixOf, intercalate)
 import Data.Either (partitionEithers)
-import System.IO (hPutStrLn, stderr)
+import Data.List (intercalate, isInfixOf)
 import qualified Data.Text as Text
+import Skylighting.Parser (missingIncludes, parseSyntaxDefinition)
+import Skylighting.Types
+import System.Directory
+import System.Environment (getArgs)
+import System.Exit
+import System.IO (hPutStrLn, stderr)
+import Text.Show.Pretty (ppShow)
 
 main :: IO ()
 main = do
@@ -63,9 +63,9 @@ writeModuleFor syn = do
   let fp = toPathName syn
   putStrLn $ "Writing " ++ fp
   let isregex (RegExpr{}) = True
-      isregex _ = False
+      isregex _           = False
   let iskeyword (Keyword{}) = True
-      iskeyword _ = False
+      iskeyword _           = False
   let matchers = map rMatcher $ concatMap cRules $ sContexts syn
   let usesRegex = any isregex matchers
   let usesSet = any iskeyword matchers

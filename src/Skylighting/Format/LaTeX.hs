@@ -1,18 +1,19 @@
-{-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Skylighting.Format.LaTeX (
          formatLaTeXInline
        , formatLaTeXBlock
        , styleToLaTeX
        ) where
 
-import Skylighting.Types
-import Text.Printf
-import Data.List (intercalate)
 import Control.Monad (mplus)
 import Data.Char (isSpace)
+import Data.List (intercalate)
+import Data.Monoid
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Monoid
+import Skylighting.Types
+import Text.Printf
 
 formatLaTeX :: Bool -> [SourceLine] -> Text
 formatLaTeX inline = Text.intercalate (Text.singleton '\n')

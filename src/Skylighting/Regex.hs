@@ -1,6 +1,6 @@
+{-# LANGUAGE DeriveDataTypeable  #-}
+{-# LANGUAGE DeriveGeneric       #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE DeriveDataTypeable #-}
-{-# LANGUAGE DeriveGeneric #-}
 
 module Skylighting.Regex (
                 Regex
@@ -11,13 +11,13 @@ module Skylighting.Regex (
               , convertOctal
               ) where
 
-import Text.Printf
-import GHC.Generics (Generic)
-import System.IO.Unsafe (unsafePerformIO)
-import Text.Regex.PCRE.ByteString
-import Data.ByteString.UTF8 (toString)
 import qualified Control.Exception as E
 import qualified Data.ByteString.Char8 as BS
+import Data.ByteString.UTF8 (toString)
+import GHC.Generics (Generic)
+import System.IO.Unsafe (unsafePerformIO)
+import Text.Printf
+import Text.Regex.PCRE.ByteString
 
 newtype RegexException = RegexException String
       deriving (Show, Generic)
@@ -25,8 +25,8 @@ newtype RegexException = RegexException String
 instance E.Exception RegexException
 
 data RE = RE{
-    reString :: BS.ByteString
-  , reCompiled :: Maybe Regex
+    reString        :: BS.ByteString
+  , reCompiled      :: Maybe Regex
   , reCaseSensitive :: Bool
 }
 

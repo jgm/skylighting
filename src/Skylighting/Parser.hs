@@ -5,19 +5,19 @@ module Skylighting.Parser ( parseSyntaxDefinition
                           , missingIncludes
                           ) where
 
-import Safe
-import Data.Char (toUpper, isAlphaNum)
-import System.FilePath
-import Text.XML.HXT.Core
+import Data.ByteString.UTF8 (fromString)
+import Data.Char (isAlphaNum, toUpper)
+import Data.List (nub)
+import qualified Data.Map as Map
 import Data.Maybe (fromMaybe)
 import qualified Data.Set as Set
-import Skylighting.Types
-import Skylighting.Regex
-import qualified Data.Map as Map
-import Data.List (nub)
-import qualified Data.Text as Text
 import Data.Text (Text)
-import Data.ByteString.UTF8 (fromString)
+import qualified Data.Text as Text
+import Safe
+import Skylighting.Regex
+import Skylighting.Types
+import System.FilePath
+import Text.XML.HXT.Core
 
 addSyntaxDefinition :: Syntax -> SyntaxMap -> SyntaxMap
 addSyntaxDefinition s = Map.insert (sName s) s
@@ -54,8 +54,8 @@ parseSyntaxDefinition :: String -> IO (Either String Syntax)
 parseSyntaxDefinition xml = do
   res <- runX (application xml)
   case res of
-       [s]   -> return $ Right s
-       _     -> return $ Left $ "Could not parse syntax definition " ++ xml
+       [s] -> return $ Right s
+       _   -> return $ Left $ "Could not parse syntax definition " ++ xml
 
 application :: String -> IOSArrow b Syntax
 application fp
@@ -114,38 +114,38 @@ getItemDatas =
 toTokenType :: String -> TokenType
 toTokenType s =
   case s of
-       "dsNormal" -> NormalTok
-       "dsKeyword" -> KeywordTok
-       "dsDataType" -> DataTypeTok
-       "dsDecVal" -> DecValTok
-       "dsBaseN" -> BaseNTok
-       "dsFloat" -> FloatTok
-       "dsConstant" -> ConstantTok
-       "dsChar" -> CharTok
-       "dsSpecialChar" -> SpecialCharTok
-       "dsString" -> StringTok
+       "dsNormal"         -> NormalTok
+       "dsKeyword"        -> KeywordTok
+       "dsDataType"       -> DataTypeTok
+       "dsDecVal"         -> DecValTok
+       "dsBaseN"          -> BaseNTok
+       "dsFloat"          -> FloatTok
+       "dsConstant"       -> ConstantTok
+       "dsChar"           -> CharTok
+       "dsSpecialChar"    -> SpecialCharTok
+       "dsString"         -> StringTok
        "dsVerbatimString" -> VerbatimStringTok
-       "dsSpecialString" -> SpecialStringTok
-       "dsImport" -> ImportTok
-       "dsComment" -> CommentTok
-       "dsDocumentation" -> DocumentationTok
-       "dsAnnotation" -> AnnotationTok
-       "dsCommentVar" -> CommentVarTok
-       "dsOthers" -> OtherTok
-       "dsFunction" -> FunctionTok
-       "dsVariable" -> VariableTok
-       "dsControlFlow" -> ControlFlowTok
-       "dsOperator" -> OperatorTok
-       "dsBuiltIn" -> BuiltInTok
-       "dsExtension" -> ExtensionTok
-       "dsPreprocessor" -> PreprocessorTok
-       "dsAttribute" -> AttributeTok
-       "dsRegionMarker" -> RegionMarkerTok
-       "dsInformation" -> InformationTok
-       "dsWarning" -> WarningTok
-       "dsAlert" -> AlertTok
-       "dsError" -> ErrorTok
-       _ -> NormalTok
+       "dsSpecialString"  -> SpecialStringTok
+       "dsImport"         -> ImportTok
+       "dsComment"        -> CommentTok
+       "dsDocumentation"  -> DocumentationTok
+       "dsAnnotation"     -> AnnotationTok
+       "dsCommentVar"     -> CommentVarTok
+       "dsOthers"         -> OtherTok
+       "dsFunction"       -> FunctionTok
+       "dsVariable"       -> VariableTok
+       "dsControlFlow"    -> ControlFlowTok
+       "dsOperator"       -> OperatorTok
+       "dsBuiltIn"        -> BuiltInTok
+       "dsExtension"      -> ExtensionTok
+       "dsPreprocessor"   -> PreprocessorTok
+       "dsAttribute"      -> AttributeTok
+       "dsRegionMarker"   -> RegionMarkerTok
+       "dsInformation"    -> InformationTok
+       "dsWarning"        -> WarningTok
+       "dsAlert"          -> AlertTok
+       "dsError"          -> ErrorTok
+       _                  -> NormalTok
 
 getLists :: IOSArrow XmlTree [(String, [String])]
 getLists =
@@ -253,7 +253,7 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
        let (incsyntax, inccontext) =
                case break (=='#') context of
                      (cont, '#':'#':lang) -> (lang, cont)
-                     _ -> (syntaxname, context)
+                     _                    -> (syntaxname, context)
        let mbmatcher = case name of
                          "DetectChar" -> Just $ DetectChar char0
                          "Detect2Chars" -> Just $ Detect2Chars char0 char1
@@ -330,9 +330,9 @@ pathToLangName s = capitalize (camelize (takeBaseName s))
 
 camelize :: String -> String
 camelize (d:c:cs) | not (isAlphaNum d) = toUpper c : camelize cs
-camelize (c:cs) = c : camelize cs
-camelize [] = []
+camelize (c:cs)   = c : camelize cs
+camelize []       = []
 
 capitalize :: String -> String
 capitalize (c:cs) = toUpper c : cs
-capitalize [] = []
+capitalize []     = []

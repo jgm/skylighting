@@ -4,12 +4,12 @@ module Skylighting.Format.HTML (
     , styleToCss
     ) where
 
+import Data.List (intersperse)
+import qualified Data.Text as Text
 import Skylighting.Types
 import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
-import Data.List (intersperse)
-import qualified Data.Text as Text
 
 -- | Format tokens using HTML spans inside @code@ tags. For example,
 -- A @KeywordTok@ is rendered as a span with class @kw@.

@@ -4,23 +4,23 @@ module Skylighting.Tokenizer (
   , TokenizerConfig(..)
   ) where
 
-import qualified Data.Set as Set
-import Skylighting.Regex
-import Skylighting.Types
-import Data.Monoid
-import Control.Monad.Except
-import Control.Monad.State
-import Control.Monad.Reader
 import Control.Applicative
-import Data.Char (isSpace, isLetter, isAlphaNum, ord)
-import qualified Data.Map as Map
-import Debug.Trace
+import Control.Monad.Except
+import Control.Monad.Reader
+import Control.Monad.State
+import qualified Data.ByteString.Char8 as BS
 import Data.CaseInsensitive (mk)
+import Data.Char (isAlphaNum, isLetter, isSpace, ord)
+import qualified Data.Map as Map
 import Data.Maybe (catMaybes)
+import Data.Monoid
+import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Text.Encoding (encodeUtf8, decodeUtf8')
-import qualified Data.ByteString.Char8 as BS
+import Data.Text.Encoding (decodeUtf8', encodeUtf8)
+import Debug.Trace
+import Skylighting.Regex
+import Skylighting.Types
 
 info :: String -> TokenizerM ()
 info s = do
@@ -38,18 +38,18 @@ newtype ContextStack = ContextStack{ unContextStack :: [Context] }
   deriving (Show)
 
 data TokenizerState = TokenizerState{
-    input        :: Text
-  , prevChar     :: Char
-  , contextStack :: ContextStack
-  , captures     :: [Text]
-  , column       :: Int
-  , lineContinuation :: Bool
+    input               :: Text
+  , prevChar            :: Char
+  , contextStack        :: ContextStack
+  , captures            :: [Text]
+  , column              :: Int
+  , lineContinuation    :: Bool
   , firstNonspaceColumn :: Maybe Int
 } deriving (Show)
 
 data TokenizerConfig = TokenizerConfig{
-    syntaxMap     :: SyntaxMap
-  , traceOutput   :: Bool
+    syntaxMap   :: SyntaxMap
+  , traceOutput :: Bool
 } deriving (Show)
 
 type TokenizerM =
@@ -108,7 +108,7 @@ tokenize config syntax inp =
     startingState{ input = inp
                  , contextStack = case lookupContext
                                        (sStartingContext syntax) syntax of
-                                       Just c -> ContextStack [c]
+                                       Just c  -> ContextStack [c]
                                        Nothing -> ContextStack [] }
 
 startingState :: TokenizerState
@@ -235,8 +235,8 @@ withAttr :: TokenType -> TokenizerM Text -> TokenizerM (Maybe Token)
 withAttr tt p = do
   res <- p
   case res of
-       ""  -> return Nothing
-       xs  -> return $ Just (tt, xs)
+       "" -> return Nothing
+       xs -> return $ Just (tt, xs)
 
 hlCStringCharRegex :: RE
 hlCStringCharRegex = RE{
@@ -263,7 +263,7 @@ wordDetect caseSensitive s = do
   inp <- gets input
   case Text.uncons inp of
        Just (c, _) | not (isAlphaNum c) -> return res
-       _ -> mzero
+       _           -> mzero
 
 stringDetect :: Bool -> Text -> TokenizerM Text
 stringDetect caseSensitive s = do
@@ -324,7 +324,7 @@ detectChar dynamic c = do
   inp <- gets input
   case Text.uncons inp of
     Just (x,_) | x == c' -> takeChars 1
-    _ -> mzero
+    _          -> mzero
 
 getDynamicChar :: Char -> TokenizerM Char
 getDynamicChar c = do
@@ -389,7 +389,7 @@ anyChar cs = do
   inp <- gets input
   case Text.uncons inp of
      Just (x, _) | x `elem` cs -> takeChars 1
-     _ -> mzero
+     _           -> mzero
 
 regExpr :: Bool -> RE -> TokenizerM Text
 regExpr dynamic re = do
@@ -458,9 +458,9 @@ keyword kwattr kws = do
   guard $ not (Text.null w)
   let numchars = Text.length w
   case kws of
-       CaseSensitiveWords ws | w `Set.member` ws -> takeChars numchars
+       CaseSensitiveWords ws   | w `Set.member` ws -> takeChars numchars
        CaseInsensitiveWords ws | mk w `Set.member` ws -> takeChars numchars
-       _ -> mzero
+       _                       -> mzero
 
 normalizeHighlighting :: [Token] -> [Token]
 normalizeHighlighting [] = []
