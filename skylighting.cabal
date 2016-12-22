@@ -246,6 +246,7 @@ executable skylighting
                        pretty-show,
                        containers,
                        directory,
+                       bytestring,
                        blaze-html >= 0.5,
                        skylighting
   hs-source-dirs:      bin

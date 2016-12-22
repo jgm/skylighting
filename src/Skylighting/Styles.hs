@@ -1,5 +1,6 @@
 module Skylighting.Styles (
-    pygments
+    parseTheme
+  , pygments
   , kate
   , espresso
   , tango
@@ -8,6 +9,12 @@ module Skylighting.Styles (
   , zenburn) where
 
 import Skylighting.Types
+import Data.ByteString.Lazy (ByteString)
+import Data.Aeson (eitherDecode)
+
+-- | Parse a KDE theme JSON document into a skylighting Style.
+parseTheme :: ByteString -> Either String Style
+parseTheme = eitherDecode
 
 color :: Int -> Maybe Color
 color = toColor

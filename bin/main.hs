@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Skylighting
+import qualified Data.ByteString.Lazy as BL
 import System.IO (hPutStrLn, stderr)
 import Text.Printf (printf)
 import Data.Char (toLower)
@@ -17,6 +18,7 @@ import Data.Version (showVersion)
 import Paths_skylighting (version)
 
 data Flag = Sty String
+          | Theme String
           | Format String
           | Help
           | Fragment
@@ -40,6 +42,10 @@ options =
           ["style"]
           (ReqArg Sty "STYLE")
           "specify style"
+  ,Option ['t']
+          ["theme"]
+          (ReqArg Theme "PATH")
+          "KDE theme file to be used as style"
   ,Option ['f']
           ["format"]
           (ReqArg Format "FORMAT")
@@ -64,7 +70,7 @@ options =
           ["syntax"]
           (ReqArg Syn "SYNTAX")
           "specify language syntax to use"
-  ,Option ['t']
+  ,Option ['a']
           ["title-attributes"]
           (NoArg TitleAttributes)
           "include structure in title attributes"
@@ -93,6 +99,11 @@ syntaxOf smap fps (_:xs) = syntaxOf smap fps xs
 
 styleOf :: [Flag] -> IO Style
 styleOf [] = return pygments
+styleOf (Theme fp : _) = do
+  raw <- BL.readFile fp
+  case parseTheme raw of
+       Left e -> err e
+       Right sty -> return sty
 styleOf (Sty s : _) = case map toLower s of
                             "pygments"   -> return pygments
                             "espresso"   -> return espresso
