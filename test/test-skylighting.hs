@@ -61,7 +61,7 @@ compareValues referenceFile expected actual =
              (getDiff (Text.lines expected) (Text.lines actual))
 
 tokenizerTest :: Bool -> FilePath -> TestTree
-tokenizerTest regen inpFile = localOption (mkTimeout 2000000) $
+tokenizerTest regen inpFile = localOption (mkTimeout 1000000) $
   goldenTest testname getExpected getActual
       (compareValues referenceFile) updateGolden
   where testname = lang ++ " tokenizing of " ++ inpFile

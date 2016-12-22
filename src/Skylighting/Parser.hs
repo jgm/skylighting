@@ -17,6 +17,7 @@ import qualified Data.Map as Map
 import Data.List (nub)
 import qualified Data.Text as Text
 import Data.Text (Text)
+import Data.ByteString.UTF8 (fromString)
 
 addSyntaxDefinition :: Syntax -> SyntaxMap -> SyntaxMap
 addSyntaxDefinition s = Map.insert (sName s) s
@@ -245,8 +246,8 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
                        else readMay column'
        let compiledRe = if dynamic
                            then Nothing
-                           else Just $ compileRegex True str
-       let re = RegExpr RE{ reString = str
+                           else Just $ compileRegex True (fromString str)
+       let re = RegExpr RE{ reString = fromString $ convertOctal str
                           , reCompiled = compiledRe
                           , reCaseSensitive = not insensitive }
        let (incsyntax, inccontext) =

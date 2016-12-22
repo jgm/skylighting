@@ -19,6 +19,8 @@ import Data.CaseInsensitive (mk)
 import Data.Maybe (catMaybes)
 import Data.Text (Text)
 import qualified Data.Text as Text
+import Data.Text.Encoding (encodeUtf8, decodeUtf8')
+import qualified Data.ByteString.Char8 as BS
 
 info :: String -> TokenizerM ()
 info s = do
@@ -39,7 +41,7 @@ data TokenizerState = TokenizerState{
     input        :: Text
   , prevChar     :: Char
   , contextStack :: ContextStack
-  , captures     :: [String]  -- TODO Text-ize
+  , captures     :: [Text]
   , column       :: Int
   , lineContinuation :: Bool
   , firstNonspaceColumn :: Maybe Int
@@ -243,7 +245,7 @@ hlCStringCharRegex = RE{
   , reCaseSensitive = False
   }
 
-reHlCStringChar :: [Char]
+reHlCStringChar :: BS.ByteString
 reHlCStringChar = "\\\\(?:[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)"
 
 hlCCharRegex :: RE
@@ -252,7 +254,7 @@ hlCCharRegex = RE{
   , reCompiled = Just $ compileRegex False reStr
   , reCaseSensitive = False
   }
-  where reStr = "'(?:" ++ reHlCStringChar ++ "|[^'\\\\])'"
+  where reStr = "'(?:" <> reHlCStringChar <> "|[^'\\\\])'"
 
 wordDetect :: Bool -> Text -> TokenizerM Text
 wordDetect caseSensitive s = do
@@ -328,9 +330,9 @@ getDynamicChar :: Char -> TokenizerM Char
 getDynamicChar c = do
   let capNum = ord c - ord '0'
   res <- getCapture capNum
-  case res of
-       []    -> mzero
-       (d:_) -> return d
+  case Text.uncons res of
+       Nothing    -> mzero
+       Just (d,_) -> return d
 
 detect2Chars :: Bool -> Char -> Char -> TokenizerM Text
 detect2Chars dynamic c d = do
@@ -400,33 +402,47 @@ regExpr dynamic re = do
   inp <- gets input
   prev <- gets prevChar
   -- we keep one preceding character, so initial \b can match:
-  let target = if prev == '\n'
-                  then ' ':(Text.unpack inp)  -- TODO Text-ize regex stuff
-                  else prev:(Text.unpack inp)
+  let target = encodeUtf8 $
+               if prev == '\n'
+                  then Text.cons ' ' inp
+                  else Text.cons prev inp
   case matchRegex regex target of
-       Just ((_:match):capts) -> do
-         modify $ \st -> st{ captures = capts }
-         takeChars (length match)
+       Just (match:capts) -> do
+         match' <- decodeBS $ BS.drop 1 match -- drop the prevchar
+         capts' <- mapM decodeBS capts
+         modify $ \st -> st{ captures = capts' }
+         takeChars (Text.length match')
        _ -> mzero
+
+decodeBS :: BS.ByteString -> TokenizerM Text
+decodeBS bs = case decodeUtf8' bs of
+                    Left _ -> throwError ("ByteString " ++
+                                show bs ++ "is not UTF8")
+                    Right t -> return t
 
 -- Substitute out %1, %2, etc. in regex string, escaping
 -- appropriately..
-subDynamic :: String -> TokenizerM String
-subDynamic ('%':x:xs) | x >= '0' && x <= '9' = do
-  let capNum = ord x - ord '0'
-  let escapeRegexChar c
-       | c `elem` ['^','$','\\','[',']','(',')','{','}','*','+','.','?']
-                   = ['\\',c]
-       | otherwise = [c]
-  let escapeRegex = concatMap escapeRegexChar
-  replacement <- getCapture capNum
-  (escapeRegex replacement ++) <$> subDynamic xs
-subDynamic xs = case break (=='%') xs of
-                     ([],('%':zs)) -> ('%':) <$> subDynamic zs
-                     (ys,(z:zs)) -> (ys ++) <$> subDynamic (z:zs)
-                     (ys,[]) -> return ys
+subDynamic :: BS.ByteString -> TokenizerM BS.ByteString
+subDynamic bs
+  | BS.null bs = return BS.empty
+  | otherwise  =
+    case BS.unpack (BS.take 2 bs) of
+        ['%',x] | x >= '0' && x <= '9' -> do
+           let capNum = ord x - ord '0'
+           let escapeRegexChar c
+                | c `elem` ['^','$','\\','[',']','(',')','{','}','*','+','.','?']
+                            = BS.pack ['\\',c]
+                | otherwise = BS.singleton c
+           let escapeRegex = BS.concatMap escapeRegexChar
+           replacement <- getCapture capNum
+           (escapeRegex (encodeUtf8 replacement) <>) <$> subDynamic (BS.drop 2 bs)
+        _ -> case BS.break (=='%') bs of
+                  (y,z)
+                    | BS.null y -> BS.cons '%' <$> subDynamic z
+                    | BS.null z -> return y
+                    | otherwise -> (y <>) <$> subDynamic z
 
-getCapture :: Int -> TokenizerM String -- TODO Text-ize
+getCapture :: Int -> TokenizerM Text
 getCapture capnum = do
   capts <- gets captures
   if length capts < capnum

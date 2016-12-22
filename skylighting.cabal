@@ -216,6 +216,7 @@ Flag bootstrap
 executable skylighting-extract
   build-depends:       base,
                        filepath,
+                       bytestring,
                        text,
                        regex-pcre-builtin,
                        safe,
