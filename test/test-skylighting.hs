@@ -1,29 +1,31 @@
-{-# LANGUAGE CPP, OverloadedStrings, ScopedTypeVariables #-}
+{-# LANGUAGE CPP                 #-}
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Main where
-import Skylighting
-import Text.Show.Pretty
-import Data.Char (toLower)
-import Data.Monoid hiding (First)
-import Control.Monad
-import System.Exit
-import System.Directory
-import System.FilePath
-import Data.Maybe (fromMaybe)
-import Text.Printf
-import System.IO
-import Data.Monoid (mempty)
-import Text.Printf
-import Data.Algorithm.Diff
 import Control.Applicative
+import Control.Monad
+import Data.Aeson (decode)
+import Data.Algorithm.Diff
+import qualified Data.ByteString.Lazy as BL
+import Data.Char (toLower)
+import Data.Maybe (fromMaybe)
+import Data.Monoid hiding (First)
+import Data.Monoid (mempty)
+import Data.Text (Text)
+import qualified Data.Text as Text
+import qualified Data.Text.IO as Text
+import Skylighting
+import System.Directory
 import System.Environment (getArgs)
+import System.Exit
+import System.FilePath
+import System.IO
 import Test.Tasty
 import Test.Tasty.Golden.Advanced (goldenTest)
 import Test.Tasty.HUnit
-import Data.Aeson (decode)
-import qualified Data.ByteString.Lazy as BL
-import qualified Data.Text as Text
-import qualified Data.Text.IO as Text
-import Data.Text (Text)
+import Text.Printf
+import Text.Printf
+import Text.Show.Pretty
 
 main :: IO ()
 main = do
@@ -75,7 +77,7 @@ tokenizerTest regen inpFile = localOption (mkTimeout 1000000) $
           case tokenize TokenizerConfig{
                              traceOutput = False
                            , syntaxMap = defaultSyntaxMap } syntax $! code of
-                 Left e -> fail e
+                 Left e   -> fail e
                  Right ls -> return $ Text.pack $ ppShow ls ++ "\n"
         opts = defaultFormatOpts{ titleAttributes = False }
         updateGolden = if regen
