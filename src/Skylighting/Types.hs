@@ -34,7 +34,7 @@ import Text.Printf
 import Data.Bits
 import Data.Data (Data)
 import Data.Typeable (Typeable)
-import Data.CaseInsensitive (CI, mk)
+import Data.CaseInsensitive (CI, mk, FoldCase)
 import qualified Data.Text as Text
 import Safe (readMay)
 
@@ -50,14 +50,14 @@ instance Show KeywordAttr where
             show (keywordCaseSensitive k) ++
            ", keywordDelims = (Data.Set." ++ show (keywordDelims k) ++ ")}"
 
-data WordSet = CaseSensitiveWords (Set.Set String)
-             | CaseInsensitiveWords (Set.Set (CI String))
+data WordSet a = CaseSensitiveWords (Set.Set a)
+               | CaseInsensitiveWords (Set.Set (CI a))
 
-makeWordSet :: Bool -> [String] -> WordSet
+makeWordSet :: (FoldCase a, Ord a) => Bool -> [a] -> WordSet a
 makeWordSet True ws = CaseSensitiveWords (Set.fromList ws)
 makeWordSet False ws = CaseInsensitiveWords (Set.map mk (Set.fromList ws))
 
-instance Show WordSet where
+instance Show a => Show (WordSet a) where
   show (CaseSensitiveWords s) =
     "(makeWordSet True " ++ show (Set.toList s) ++ ")"
   show (CaseInsensitiveWords s) =
@@ -71,7 +71,7 @@ data Matcher =
   | StringDetect String
   | WordDetect String
   | RegExpr RE
-  | Keyword KeywordAttr WordSet
+  | Keyword KeywordAttr (WordSet String)
   | Int
   | Float
   | HlCOct

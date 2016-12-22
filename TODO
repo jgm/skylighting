@@ -1,10 +1,10 @@
 _ make faster
-  _ can we compile some modules with optimizations, others without?
   _ benchmark and profile
+    (profiling shows a lot of time spent in UTF-8 decoding,
+     in utf8-string -- using text might help?)
   _ use Text instead of String
   _ use Set for Char matchers (parameterize WordSet?)
   _ improve normalize fn?
-  _ avoid creating empty tokens?
 
 _ proper haddock documentation
 

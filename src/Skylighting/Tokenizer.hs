@@ -418,9 +418,7 @@ getCapture capnum = do
      then mzero
      else return $ capts !! (capnum - 1)
 
--- TODO eventually the keywords need to be a set
--- though this complicates code generation
-keyword :: KeywordAttr -> WordSet -> TokenizerM String
+keyword :: KeywordAttr -> WordSet String -> TokenizerM String
 keyword kwattr kws = do
   prev <- gets prevChar
   guard $ prev `Set.member` (keywordDelims kwattr)
