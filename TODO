@@ -1,5 +1,18 @@
 _ proper haddock documentation
+  _ haddock comments on every exported function and type
+  _ include a basic example of use in main module
 
-_ proper README.md
+_ README.md
+  _ add fuller description of why changes to h-k, and what this
+    library does better
 
 _ proper tests
+  _ test formatters
+  _ hpc coverage stats?
+
+_ publish to Hackage
+
+_ change to use this in pandoc
+
+_ add deprecation notice on jgm/highlighting-kate and Hackage
+
