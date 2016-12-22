@@ -9,6 +9,7 @@ import System.Directory
 import Data.List (isInfixOf, intercalate)
 import Data.Either (partitionEithers)
 import System.IO (hPutStrLn, stderr)
+import qualified Data.Text as Text
 
 main :: IO ()
 main = do
@@ -22,8 +23,8 @@ main = do
        [] -> return ()
        ns -> do
          mapM_ (\(syn,dep) -> hPutStrLn stderr
-             ("Missing syntax definition: " ++ syn ++ " requires " ++
-               dep ++ " through IncludeRules.")) ns
+             ("Missing syntax definition: " ++ Text.unpack syn ++ " requires " ++
+               Text.unpack dep ++ " through IncludeRules.")) ns
          hPutStrLn stderr "Fatal error."
          exitWith (ExitFailure 1)
 
@@ -34,14 +35,16 @@ main = do
   cabalLines <- lines <$> readFile "skylighting.cabal.orig"
   let (top, rest) = break ("other-modules:" `isInfixOf`) cabalLines
   let (_, bottom) = span ("Skylighting.Syntax." `isInfixOf`) (drop 1 rest)
-  let modulenames = map (\s -> "Skylighting.Syntax." ++ sShortname s) syntaxes
+  let modulenames = map (\s -> "Skylighting.Syntax." ++
+                          Text.unpack (sShortname s)) syntaxes
   let autogens = map ((replicate 23 ' ') ++) modulenames
   let newcabal = unlines $ top ++ ("  other-modules:" : autogens) ++ bottom
   writeFile "skylighting.cabal" newcabal
 
   putStrLn "Writing src/Skylighting/Syntax.hs"
   writeFile "src/Skylighting/Syntax.hs" $ unlines (
-     [ "module Skylighting.Syntax (defaultSyntaxMap) where"
+     [ "{-# LANGUAGE OverloadedStrings #-}"
+     , "module Skylighting.Syntax (defaultSyntaxMap) where"
      , "import qualified Data.Map as Map"
      , "import Skylighting.Types" ] ++
      [ "import qualified " ++ m | m <- modulenames ]
@@ -51,8 +54,8 @@ main = do
      , "defaultSyntaxMap = Map.fromList ["
      ]) ++ "   " ++
      (intercalate "\n  ,"
-       ["  (" ++ show (sName s) ++ ", "
-              ++ "Skylighting.Syntax." ++ sShortname s ++ ".syntax)"
+       ["  (" ++ show (Text.unpack $ sName s) ++ ", "
+              ++ "Skylighting.Syntax." ++ Text.unpack (sShortname s) ++ ".syntax)"
                   | s <- syntaxes ]) ++ " ]"
 
 writeModuleFor :: Syntax -> IO ()
@@ -67,7 +70,9 @@ writeModuleFor syn = do
   let usesRegex = any isregex matchers
   let usesSet = any iskeyword matchers
   writeFile fp $ unlines $
-    [ "module Skylighting.Syntax." ++ sShortname syn ++ " (syntax) where"
+    [ "{-# LANGUAGE OverloadedStrings #-}"
+    , "module Skylighting.Syntax." ++ Text.unpack (sShortname syn) ++
+        " (syntax) where"
     , ""
     , "import Skylighting.Types"
     , "import Data.Map" ] ++
@@ -81,4 +86,4 @@ toPathName :: Syntax -> String
 toPathName s =
   "src/Skylighting/Syntax/" ++
   map (\c -> if c == '.' then '/' else c)
-      (sShortname s) ++ ".hs"
+      (Text.unpack (sShortname s)) ++ ".hs"

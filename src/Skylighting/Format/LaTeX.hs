@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
 module Skylighting.Format.LaTeX (
          formatLaTeXInline
        , formatLaTeXBlock
@@ -9,33 +10,39 @@ import Text.Printf
 import Data.List (intercalate)
 import Control.Monad (mplus)
 import Data.Char (isSpace)
+import Data.Text (Text)
+import qualified Data.Text as Text
+import Data.Monoid
 
-formatLaTeX :: Bool -> [SourceLine] -> String
-formatLaTeX inline = intercalate "\n" . map (sourceLineToLaTeX inline)
+formatLaTeX :: Bool -> [SourceLine] -> Text
+formatLaTeX inline = Text.intercalate (Text.singleton '\n')
+                       . map (sourceLineToLaTeX inline)
 
 -- | Formats tokens as LaTeX using custom commands inside
 -- @|@ characters. Assumes that @|@ is defined as a short verbatim
 -- command by the macros produced by 'styleToLaTeX'.
 -- A @KeywordTok@ is rendered using @\\KeywordTok{..}@, and so on.
-formatLaTeXInline :: FormatOptions -> [SourceLine] -> String
-formatLaTeXInline _opts ls = "\\VERB|" ++ formatLaTeX True ls ++ "|"
+formatLaTeXInline :: FormatOptions -> [SourceLine] -> Text
+formatLaTeXInline _opts ls = "\\VERB|" <> formatLaTeX True ls <> "|"
 
-sourceLineToLaTeX :: Bool -> SourceLine -> String
-sourceLineToLaTeX inline contents = concatMap (tokenToLaTeX inline) contents
+sourceLineToLaTeX :: Bool -> SourceLine -> Text
+sourceLineToLaTeX inline = mconcat . map (tokenToLaTeX inline)
 
-tokenToLaTeX :: Bool -> Token -> String
-tokenToLaTeX inline (NormalTok, txt) | all isSpace txt = escapeLaTeX inline txt
-tokenToLaTeX inline (toktype, txt)   = '\\':(show toktype ++ "{" ++ escapeLaTeX inline txt ++ "}")
+tokenToLaTeX :: Bool -> Token -> Text
+tokenToLaTeX inline (NormalTok, txt)
+  | Text.all isSpace txt = escapeLaTeX inline txt
+tokenToLaTeX inline (toktype, txt)   = Text.snoc
+  (Text.pack (show toktype) <> "{" <> escapeLaTeX inline txt <> "}") '\\'
 
-escapeLaTeX :: Bool -> String -> String
-escapeLaTeX inline = concatMap escapeLaTeXChar
+escapeLaTeX :: Bool -> Text -> Text
+escapeLaTeX inline = Text.concatMap escapeLaTeXChar
   where escapeLaTeXChar '\\' = "\\textbackslash{}"
         escapeLaTeXChar '{'  = "\\{"
         escapeLaTeXChar '}'  = "\\}"
         escapeLaTeXChar '|'  = if inline
                                   then "\\VerbBar{}" -- used in inline verbatim
                                   else "|"
-        escapeLaTeXChar x    = [x]
+        escapeLaTeXChar x    = Text.singleton x
 
 -- LaTeX
 
@@ -48,16 +55,17 @@ escapeLaTeX inline = concatMap escapeLaTeXChar
 -- (if the style's background color is default) or a @snugshade@
 -- environment from @framed@, providing a background color
 -- for the whole code block, even if it spans multiple pages.
-formatLaTeXBlock :: FormatOptions -> [SourceLine] -> String
-formatLaTeXBlock opts ls = unlines
+formatLaTeXBlock :: FormatOptions -> [SourceLine] -> Text
+formatLaTeXBlock opts ls = Text.unlines
   ["\\begin{Shaded}"
-  ,"\\begin{Highlighting}[" ++
+  ,"\\begin{Highlighting}[" <>
    (if numberLines opts
-       then "numbers=left," ++
+       then "numbers=left," <>
             (if startNumber opts == 1
                 then ""
-                else ",firstnumber=" ++ show (startNumber opts)) ++ ","
-       else "") ++ "]"
+                else ",firstnumber=" <>
+                     Text.pack (show (startNumber opts))) <> ","
+       else Text.empty) <> "]"
   ,formatLaTeX False ls
   ,"\\end{Highlighting}"
   ,"\\end{Shaded}"]
@@ -77,8 +85,8 @@ formatLaTeXBlock opts ls = unlines
 -- > \setsansfont{Latin Modern Sans}
 -- > \setmonofont[SmallCapsFont={Latin Modern Mono Caps}]{Latin Modern Mono Light}
 --
-styleToLaTeX :: Style -> String
-styleToLaTeX f = unlines $
+styleToLaTeX :: Style -> Text
+styleToLaTeX f = Text.unlines $
   [ "\\usepackage{color}"
   , "\\usepackage{fancyvrb}"
   , "\\newcommand{\\VerbBar}{|}"
@@ -89,32 +97,35 @@ styleToLaTeX f = unlines $
   (case backgroundColor f of
         Nothing          -> ["\\newenvironment{Shaded}{}{}"]
         Just (RGB r g b) -> ["\\usepackage{framed}"
-                            ,printf "\\definecolor{shadecolor}{RGB}{%d,%d,%d}" r g b
+                            ,Text.pack
+                              (printf "\\definecolor{shadecolor}{RGB}{%d,%d,%d}" r g b)
                             ,"\\newenvironment{Shaded}{\\begin{snugshade}}{\\end{snugshade}}"])
   ++ map (macrodef (defaultColor f) (tokenStyles f)) (enumFromTo KeywordTok NormalTok)
 
-macrodef :: Maybe Color -> [(TokenType, TokenStyle)] -> TokenType -> String
-macrodef defaultcol tokstyles tokt = "\\newcommand{\\" ++ show tokt ++
-                     "}[1]{" ++ (co . ul . bf . it . bg $ "{#1}") ++ "}"
+macrodef :: Maybe Color -> [(TokenType, TokenStyle)] -> TokenType -> Text
+macrodef defaultcol tokstyles tokt = "\\newcommand{\\" <> Text.pack (show tokt) <>
+                     "}[1]{" <> (co . ul . bf . it . bg $ "{#1}") <> "}"
   where tokf = case lookup tokt tokstyles of
                      Nothing -> defStyle
                      Just x  -> x
         ul x = if tokenUnderline tokf
-                  then "\\underline{" ++ x ++ "}"
+                  then "\\underline{" <> x <> "}"
                   else x
         it x = if tokenItalic tokf
-                  then "\\textit{" ++ x ++ "}"
+                  then "\\textit{" <> x <> "}"
                   else x
         bf x = if tokenBold tokf
-                  then "\\textbf{" ++ x ++ "}"
+                  then "\\textbf{" <> x <> "}"
                   else x
         bcol = fromColor `fmap` tokenBackground tokf :: Maybe (Double, Double, Double)
         bg x = case bcol of
                     Nothing          -> x
-                    Just (r, g, b) -> printf "\\colorbox[rgb]{%0.2f,%0.2f,%0.2f}{%s}" r g b x
+                    Just (r, g, b) -> Text.pack $
+                       printf "\\colorbox[rgb]{%0.2f,%0.2f,%0.2f}{%s}" r g b x
         col  = fromColor `fmap`
                  (tokenColor tokf `mplus` defaultcol) :: Maybe (Double, Double, Double)
         co x = case col of
                     Nothing        -> x
-                    Just (r, g, b) -> printf "\\textcolor[rgb]{%0.2f,%0.2f,%0.2f}{%s}" r g b x
+                    Just (r, g, b) -> Text.pack $
+                        printf "\\textcolor[rgb]{%0.2f,%0.2f,%0.2f}{%s}" r g b x
 

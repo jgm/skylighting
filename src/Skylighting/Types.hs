@@ -36,9 +36,10 @@ import Data.Data (Data)
 import Data.Typeable (Typeable)
 import Data.CaseInsensitive (CI, mk, FoldCase)
 import qualified Data.Text as Text
+import Data.Text (Text)
 import Safe (readMay)
 
-type ContextName = (String, String)
+type ContextName = (Text, Text)
 
 data KeywordAttr =
   KeywordAttr  { keywordCaseSensitive   :: Bool
@@ -68,10 +69,10 @@ data Matcher =
   | Detect2Chars Char Char
   | AnyChar [Char]
   | RangeDetect Char Char
-  | StringDetect String
-  | WordDetect String
+  | StringDetect Text
+  | WordDetect Text
   | RegExpr RE
-  | Keyword KeywordAttr (WordSet String)
+  | Keyword KeywordAttr (WordSet Text)
   | Int
   | Float
   | HlCOct
@@ -102,22 +103,22 @@ data Rule = Rule{
   } deriving (Show)
 
 data Syntax = Syntax{
-    sName     :: String
+    sName     :: Text
   , sFilename :: String
-  , sShortname :: String
-  , sContexts :: Map.Map String Context
-  , sAuthor   :: String
-  , sVersion  :: String
-  , sLicense  :: String
+  , sShortname :: Text
+  , sContexts :: Map.Map Text Context
+  , sAuthor   :: Text
+  , sVersion  :: Text
+  , sLicense  :: Text
   , sExtensions :: [String]
-  , sStartingContext :: String
+  , sStartingContext :: Text
   } deriving (Show)
 
-type SyntaxMap = Map.Map String Syntax
+type SyntaxMap = Map.Map Text Syntax
 
 data Context = Context{
-    cName  :: String
-  , cSyntax :: String
+    cName  :: Text
+  , cSyntax :: Text
   , cRules :: [Rule]
   , cAttribute :: TokenType
   , cLineEmptyContext :: [ContextSwitch]
@@ -129,7 +130,7 @@ data Context = Context{
 } deriving (Show)
 
 -- | A pair consisting of a list of attributes and some text.
-type Token = (TokenType, String)
+type Token = (TokenType, Text)
 
 data TokenType = KeywordTok
                | DataTypeTok
@@ -260,8 +261,8 @@ data Style = Style {
 
 instance FromJSON Style where
   parseJSON (Object v) = do
-    (tokstyles :: Map.Map String TokenStyle) <- v .: "text-styles"
-    (editorColors :: Map.Map String Color) <- v .: "editor-colors"
+    (tokstyles :: Map.Map Text TokenStyle) <- v .: "text-styles"
+    (editorColors :: Map.Map Text Color) <- v .: "editor-colors"
     return Style{ defaultColor = case Map.lookup "Normal" tokstyles of
                                       Nothing -> Nothing
                                       Just ts -> tokenColor ts
@@ -271,7 +272,7 @@ instance FromJSON Style where
                                                 editorColors
                 , tokenStyles = Map.toList $
                      Map.mapKeys (\s -> maybe OtherTok id $
-                                     readMay (s ++ "Tok")) tokstyles }
+                                     readMay (Text.unpack s ++ "Tok")) tokstyles }
   parseJSON _ = mempty
 
 -- | Options for formatting source code.
@@ -280,8 +281,8 @@ data FormatOptions = FormatOptions{
        , startNumber      :: Int      -- ^ Number of first line
        , lineAnchors      :: Bool     -- ^ Anchors on each line number
        , titleAttributes  :: Bool     -- ^ Html titles with token types
-       , codeClasses      :: [String] -- ^ Additional classes for Html code tag
-       , containerClasses :: [String] -- ^ Additional classes for Html container tag
+       , codeClasses      :: [Text]   -- ^ Additional classes for Html code tag
+       , containerClasses :: [Text]   -- ^ Additional classes for Html container tag
                                       --   (pre or table depending on numberLines)
        } deriving (Eq, Show, Read)
 

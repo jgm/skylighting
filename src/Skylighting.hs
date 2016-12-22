@@ -23,8 +23,9 @@ import Skylighting.Format.LaTeX
 import Control.Monad
 import qualified Data.Map as Map
 import Data.List (tails)
-import Data.Char (toLower)
 import Data.Maybe (listToMaybe)
+import qualified Data.Text as Text
+import Data.Text (Text)
 
 -- | Returns a list of languages appropriate for the given file extension.
 syntaxesByExtension :: SyntaxMap -> String -> [Syntax]
@@ -39,19 +40,21 @@ syntaxesByFilename syntaxmap fn = [s | s <- Map.elems syntaxmap
                                 , matchGlobs fn (sExtensions s)]
 
 -- | Lookup syntax by short name (case insensitive).
-syntaxesByShortName :: SyntaxMap -> String -> [Syntax]
+syntaxesByShortName :: SyntaxMap -> Text -> [Syntax]
 syntaxesByShortName syntaxmap name = [s | s <- Map.elems syntaxmap
-                                   , map toLower (sShortname s) ==
-                                     map toLower name ]
+                                   , Text.toLower (sShortname s) ==
+                                     Text.toLower name ]
 
 -- | Lookup syntax by (in order) full name (case insensitive),
 -- short name (case insensitive), extension.
-lookupSyntax :: String -> SyntaxMap -> Maybe Syntax
-lookupSyntax "csharp" syntaxmap = lookupSyntax "cs" syntaxmap -- special case
-lookupSyntax lang syntaxmap =
-  Map.lookup (map toLower lang) (Map.mapKeys (map toLower) syntaxmap) `mplus`
+lookupSyntax :: Text -> SyntaxMap -> Maybe Syntax
+lookupSyntax lang syntaxmap
+  -- special cases:
+  | lang == Text.pack "csharp" = lookupSyntax (Text.pack "cs") syntaxmap
+  | otherwise =
+  Map.lookup (Text.toLower lang) (Map.mapKeys Text.toLower syntaxmap) `mplus`
     listToMaybe (syntaxesByShortName syntaxmap lang ++
-                 syntaxesByExtension syntaxmap lang)
+                 syntaxesByExtension syntaxmap (Text.unpack lang))
 
 -- | Match filename against a list of globs contained in a semicolon-separated
 -- string.

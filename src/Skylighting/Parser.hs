@@ -15,11 +15,13 @@ import Skylighting.Types
 import Skylighting.Regex
 import qualified Data.Map as Map
 import Data.List (nub)
+import qualified Data.Text as Text
+import Data.Text (Text)
 
 addSyntaxDefinition :: Syntax -> SyntaxMap -> SyntaxMap
 addSyntaxDefinition s = Map.insert (sName s) s
 
-missingIncludes :: [Syntax] -> [(String, String)]
+missingIncludes :: [Syntax] -> [(Text, Text)]
 missingIncludes syns = nub
   [(sName s, lang)
      | s <- syns
@@ -80,17 +82,16 @@ extractSyntaxDefinition filename =
                              (c:_) -> returnA -< cName c
                              []    -> issueErr "No contexts" >>> none -< ()
      returnA -< Syntax{
-                  sName     = lang
+                  sName     = Text.pack lang
                 , sFilename = filename
-                , sShortname = pathToLangName filename
-                , sAuthor   = author
-                , sVersion  = version
-                , sLicense  = license
+                , sShortname = Text.pack $ pathToLangName filename
+                , sAuthor   = Text.pack $ author
+                , sVersion  = Text.pack $ version
+                , sLicense  = Text.pack $ license
                 , sExtensions = words $ map
                      (\c -> if c == ';'
                                then ' '
                                else c) extensions
-                -- TODO case sensitive
                 , sContexts = Map.fromList
                        [(cName c, c) | c <- contexts]
                 , sStartingContext = startingContext
@@ -185,8 +186,8 @@ getContexts (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
                                 (itemdatas, (lists, kwattr)))) $<
                             getAttrValue "attribute" -< x
        returnA -< Context {
-                     cName = name
-                   , cSyntax = syntaxname
+                     cName = Text.pack name
+                   , cSyntax = Text.pack syntaxname
                    , cRules = parsers
                    , cAttribute = fromMaybe NormalTok $
                            Map.lookup attribute itemdatas
@@ -257,12 +258,12 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
                          "Detect2Chars" -> Just $ Detect2Chars char0 char1
                          "AnyChar" -> Just $ AnyChar str
                          "RangeDetect" -> Just $ RangeDetect char0 char1
-                         "StringDetect" -> Just $ StringDetect str
-                         "WordDetect" -> Just $ WordDetect str
+                         "StringDetect" -> Just $ StringDetect $ Text.pack str
+                         "WordDetect" -> Just $ WordDetect $ Text.pack str
                          "RegExpr" -> Just $ re
                          "keyword" -> Just $ Keyword kwattr $
                             maybe (makeWordSet True [])
-                              (makeWordSet (keywordCaseSensitive kwattr))
+                              (makeWordSet (keywordCaseSensitive kwattr) . map Text.pack)
                               (lookup str lists)
                          "Int" -> Just $ Int
                          "Float" -> Just $ Float
@@ -272,7 +273,7 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
                          "HlCChar" -> Just $ HlCChar
                          "LineContinue" -> Just $ LineContinue
                          "IncludeRules" -> Just $
-                           IncludeRules (incsyntax, inccontext)
+                           IncludeRules (Text.pack incsyntax, Text.pack inccontext)
                          "DetectSpaces" -> Just $ DetectSpaces
                          "DetectIdentifier" -> Just $ DetectIdentifier
                          _ -> Nothing
@@ -306,8 +307,8 @@ parseContextSwitch _ [] = []
 parseContextSwitch _ "#stay" = []
 parseContextSwitch syntaxname ('#':'p':'o':'p':xs) =
   Pop : parseContextSwitch syntaxname xs
-parseContextSwitch syntaxname ('!':xs) = [Push (syntaxname,xs)]
-parseContextSwitch syntaxname xs = [Push (syntaxname,xs)]
+parseContextSwitch syntaxname ('!':xs) = [Push (Text.pack syntaxname, Text.pack xs)]
+parseContextSwitch syntaxname xs = [Push (Text.pack syntaxname, Text.pack xs)]
 
 getKeywordAttrs :: IOSArrow XmlTree [KeywordAttr]
 getKeywordAttrs =

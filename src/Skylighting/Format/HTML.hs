@@ -9,6 +9,7 @@ import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 import Data.List (intersperse)
+import qualified Data.Text as Text
 
 -- | Format tokens using HTML spans inside @code@ tags. For example,
 -- A @KeywordTok@ is rendered as a span with class @kw@.
@@ -29,8 +30,9 @@ import Data.List (intersperse)
 -- 'WarningTok' = @wa@.
 -- A 'NormalTok' is not marked up at all.
 formatHtmlInline :: FormatOptions -> [SourceLine] -> Html
-formatHtmlInline opts = (H.code ! A.class_ (toValue $ unwords
-                                                    $ "sourceCode" : codeClasses opts))
+formatHtmlInline opts = (H.code ! A.class_ (toValue $ Text.unwords
+                                                    $ Text.pack "sourceCode"
+                                                      : codeClasses opts))
                                 . mconcat . intersperse (toHtml "\n")
                                 . map (sourceLineToHtml opts)
 
@@ -87,14 +89,14 @@ formatHtmlBlockPre opts = H.pre . formatHtmlInline opts
 -- to aid styling (e.g. the overflow-x property).
 formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlock opts ls = H.div ! A.class_ sourceCode $
-                            container ! A.class_ (toValue $ unwords classes)
+                            container ! A.class_ (toValue $ Text.unwords classes)
   where  container = if numberLines opts
                         then H.table $ H.tr ! A.class_ sourceCode $
                                  nums >> source
                         else pre
          sourceCode = toValue "sourceCode"
-         classes = "sourceCode" :
-                   [x | x <- containerClasses opts, x /= "sourceCode"]
+         classes = Text.pack "sourceCode" :
+                   [x | x <- containerClasses opts, x /= Text.pack "sourceCode"]
          pre = formatHtmlBlockPre opts ls
          source = H.td ! A.class_ sourceCode $ pre
          startNum = startNumber opts

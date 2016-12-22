@@ -267,6 +267,7 @@ test-suite test-skylighting
                   tasty-golden,
                   tasty-hunit,
                   Diff,
+                  text,
                   pretty-show,
                   aeson,
                   bytestring,

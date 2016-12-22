@@ -3,6 +3,7 @@ module Main where
 import Skylighting
 import Text.Show.Pretty
 import Data.Char (toLower)
+import Data.Monoid hiding (First)
 import Control.Monad
 import System.Exit
 import System.Directory
@@ -20,6 +21,9 @@ import Test.Tasty.Golden.Advanced (goldenTest)
 import Test.Tasty.HUnit
 import Data.Aeson (decode)
 import qualified Data.ByteString.Lazy as BL
+import qualified Data.Text as Text
+import qualified Data.Text.IO as Text
+import Data.Text (Text)
 
 main :: IO ()
 main = do
@@ -46,24 +50,25 @@ main = do
        ]
     ]
 
-compareValues :: FilePath -> String -> String -> IO (Maybe String)
+compareValues :: FilePath -> Text -> Text -> IO (Maybe String)
 compareValues referenceFile expected actual =
    if expected == actual
       then return $ Nothing
       else return $ Just $ unlines $
            [ "--- " ++ referenceFile
            , "+++ actual" ] ++
-           map vividize (getDiff (lines expected) (lines actual))
+           map (Text.unpack . vividize)
+             (getDiff (Text.lines expected) (Text.lines actual))
 
 tokenizerTest :: Bool -> FilePath -> TestTree
 tokenizerTest regen inpFile = localOption (mkTimeout 2000000) $
   goldenTest testname getExpected getActual
       (compareValues referenceFile) updateGolden
   where testname = lang ++ " tokenizing of " ++ inpFile
-        getExpected = readFile referenceFile
+        getExpected = Text.readFile referenceFile
         getActual = do
-          code <- readFile (casesdir </> inpFile)
-          syntax <- case lookupSyntax lang defaultSyntaxMap of
+          code <- Text.readFile (casesdir </> inpFile)
+          syntax <- case lookupSyntax (Text.pack lang) defaultSyntaxMap of
                          Just s  -> return s
                          Nothing -> fail $
                             "Could not find syntax definition for " ++ lang
@@ -71,17 +76,17 @@ tokenizerTest regen inpFile = localOption (mkTimeout 2000000) $
                              traceOutput = False
                            , syntaxMap = defaultSyntaxMap } syntax $! code of
                  Left e -> fail e
-                 Right ls -> return $ ppShow ls ++ "\n"
+                 Right ls -> return $ Text.pack $ ppShow ls ++ "\n"
         opts = defaultFormatOpts{ titleAttributes = False }
         updateGolden = if regen
-                          then writeFile referenceFile
+                          then Text.writeFile referenceFile
                           else \_ -> return ()
         expecteddir = "test" </> "expected"
         casesdir = "test" </> "cases"
         referenceFile = expecteddir </> inpFile <.> "native"
         lang = drop 1 $ takeExtension inpFile
 
-vividize :: Diff String -> String
-vividize (Both s _) = "  " ++ s
-vividize (First s)  = "- " ++ s
-vividize (Second s) = "+ " ++ s
+vividize :: Diff Text -> Text
+vividize (Both s _) = "  " <> s
+vividize (First s)  = "- " <> s
+vividize (Second s) = "+ " <> s

@@ -16,6 +16,8 @@ import System.IO.Unsafe (unsafePerformIO)
 import Text.Regex.PCRE.ByteString
 import Data.ByteString.UTF8 (fromString, toString)
 import qualified Control.Exception as E
+import Data.Text (Text)
+import qualified Data.Text as Text
 
 newtype RegexException = RegexException String
       deriving (Show, Generic)

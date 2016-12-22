@@ -5,6 +5,7 @@ import qualified Data.ByteString.Lazy as BL
 import System.IO (hPutStrLn, stderr)
 import Text.Printf (printf)
 import Data.Char (toLower)
+import Data.Monoid
 import Control.Monad
 import Text.Show.Pretty (ppShow)
 import qualified Data.Map as Map
@@ -16,6 +17,8 @@ import System.Console.GetOpt
 import System.Exit
 import Data.Version (showVersion)
 import Paths_skylighting (version)
+import qualified Data.Text as Text
+import qualified Data.Text.IO as Text
 
 data Flag = Sty String
           | Theme String
@@ -92,7 +95,7 @@ syntaxOf smap fps [] = case concatMap (syntaxesByFilename smap) fps of
                              (s:_) -> return s
                              _     -> err "No syntax specified: use --syntax."
 syntaxOf smap _ (Syn lang : _) = do
-  case lookupSyntax lang smap of
+  case lookupSyntax (Text.pack lang) smap of
          Just s  -> return s
          Nothing -> err ("Could not find syntax definition for " ++ lang)
 syntaxOf smap fps (_:xs) = syntaxOf smap fps xs
@@ -123,12 +126,6 @@ formatOf (Format s : _) = case map toLower s of
                             _        -> err $ "Unknown format: " ++ s
 formatOf (_ : xs) = formatOf xs
 
-filterNewlines :: String -> String
-filterNewlines ('\r':'\n':xs) = '\n' : filterNewlines xs
-filterNewlines ('\r':xs) = '\n' : filterNewlines xs
-filterNewlines (x:xs) = x : filterNewlines xs
-filterNewlines [] = []
-
 extractDefinitions :: [Flag] -> IO [Syntax]
 extractDefinitions [] = return []
 extractDefinitions (Definition fp : xs) = do
@@ -136,7 +133,7 @@ extractDefinitions (Definition fp : xs) = do
   case res of
        Left e -> err e
        Right s -> do
-         putStrLn $ "Loaded syntax definition for " ++ sName s
+         putStrLn $ "Loaded syntax definition for " ++ Text.unpack (sName s)
          (s:) <$> extractDefinitions xs
 extractDefinitions (_:xs) = extractDefinitions xs
 
@@ -169,19 +166,19 @@ main = do
        [] -> return ()
        xs -> err $ "Missing syntax definitions:\n" ++
               unlines (map
-                  (\(syn,dep) -> (syn ++ " requires " ++
-                    dep ++ " through IncludeRules.")) xs)
+                  (\(syn,dep) -> (Text.unpack syn ++ " requires " ++
+                    Text.unpack dep ++ " through IncludeRules.")) xs)
 
   when (List `elem` opts) $ do
      let printSyntaxNames s = putStrLn (printf "%s (%s)"
-                                       (map toLower $ sShortname s)
-                                       (sName s))
+                                       (Text.unpack (Text.toLower (sShortname s)))
+                                       (Text.unpack (sName s)))
      mapM_ printSyntaxNames $ Map.elems syntaxMap'
      exitWith ExitSuccess
 
   code <- if null fnames
-             then getContents >>= return . filterNewlines
-             else mapM readFile fnames >>= return . filterNewlines . concat
+             then Text.getContents
+             else mconcat <$> mapM Text.readFile fnames
 
   let highlightOpts = defaultFormatOpts{ titleAttributes = TitleAttributes `elem` opts
                                        , numberLines = NumberLines `elem` opts
@@ -235,11 +232,12 @@ hlLaTeX :: Bool               -- ^ Fragment
         -> IO ()
 hlLaTeX frag fname opts sty sourceLines =
  if frag
-    then putStrLn fragment
-    else putStrLn $ "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n" ++
-                    macros ++ pageTitle ++
-                    "\n\\begin{document}\n\\maketitle\n" ++  fragment ++ "\n\\end{document}"
+    then Text.putStrLn fragment
+    else Text.putStrLn $
+            "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n" <>
+             macros <> pageTitle <>
+             "\n\\begin{document}\n\\maketitle\n" <> fragment <> "\n\\end{document}"
   where fragment = formatLaTeXBlock opts sourceLines
         macros = styleToLaTeX sty
-        pageTitle = "\\title{" ++ fname ++ "}\n"
+        pageTitle = "\\title{" <> Text.pack fname <> "}\n"
 

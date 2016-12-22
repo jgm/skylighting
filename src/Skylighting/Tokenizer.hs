@@ -1,4 +1,4 @@
-{-# LANGUAGE TupleSections #-}
+{-# LANGUAGE OverloadedStrings #-}
 module Skylighting.Tokenizer (
     tokenize
   , TokenizerConfig(..)
@@ -7,7 +7,7 @@ module Skylighting.Tokenizer (
 import qualified Data.Set as Set
 import Skylighting.Regex
 import Skylighting.Types
-import Data.List (findIndex)
+import Data.Monoid
 import Control.Monad.Except
 import Control.Monad.State
 import Control.Monad.Reader
@@ -17,6 +17,8 @@ import qualified Data.Map as Map
 import Debug.Trace
 import Data.CaseInsensitive (mk)
 import Data.Maybe (catMaybes)
+import Data.Text (Text)
+import qualified Data.Text as Text
 
 info :: String -> TokenizerM ()
 info s = do
@@ -34,10 +36,10 @@ newtype ContextStack = ContextStack{ unContextStack :: [Context] }
   deriving (Show)
 
 data TokenizerState = TokenizerState{
-    input        :: String
+    input        :: Text
   , prevChar     :: Char
   , contextStack :: ContextStack
-  , captures     :: [String]
+  , captures     :: [String]  -- TODO Text-ize
   , column       :: Int
   , lineContinuation :: Bool
   , firstNonspaceColumn :: Maybe Int
@@ -89,18 +91,18 @@ doContextSwitch (Push (syn,c) : xs) = do
          doContextSwitch xs
        Nothing  -> throwError $ "Unknown syntax or context: " ++ show (syn, c)
 
-lookupContext :: String -> Syntax -> Maybe Context
-lookupContext "" syntax =
-  case sStartingContext syntax of
-       "" -> Nothing
-       n  -> lookupContext n syntax
+lookupContext :: Text -> Syntax -> Maybe Context
+lookupContext name syntax | Text.null name =
+  if Text.null (sStartingContext syntax)
+     then Nothing
+     else lookupContext (sStartingContext syntax) syntax
 lookupContext name syntax = Map.lookup name $ sContexts syntax
 
-tokenize :: TokenizerConfig -> Syntax -> String -> Either String [SourceLine]
+tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]
 tokenize config syntax inp =
   evalState
     (runReaderT
-      (runExceptT (mapM tokenizeLine $ zip (lines inp) [1..])) config)
+      (runExceptT (mapM tokenizeLine $ zip (Text.lines inp) [1..])) config)
     startingState{ input = inp
                  , contextStack = case lookupContext
                                        (sStartingContext syntax) syntax of
@@ -109,7 +111,7 @@ tokenize config syntax inp =
 
 startingState :: TokenizerState
 startingState =
-  TokenizerState{ input = ""
+  TokenizerState{ input = Text.empty
                 , prevChar = '\n'
                 , contextStack = ContextStack []
                 , captures = []
@@ -118,7 +120,7 @@ startingState =
                 , firstNonspaceColumn = Nothing
                 }
 
-tokenizeLine :: (String, Int) -> TokenizerM [Token]
+tokenizeLine :: (Text, Int) -> TokenizerM [Token]
 tokenizeLine (ln, linenum) = do
   cur <- currentContext
   lineCont <- gets lineContinuation
@@ -127,9 +129,9 @@ tokenizeLine (ln, linenum) = do
      else do
        modify $ \st -> st{ column = 0
                          , firstNonspaceColumn =
-                              findIndex (not . isSpace) ln }
+                              Text.findIndex (not . isSpace) ln }
        doContextSwitch (cLineBeginContext cur)
-  if null ln
+  if Text.null ln
      then doContextSwitch (cLineEmptyContext cur)
      else doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
@@ -137,7 +139,7 @@ tokenizeLine (ln, linenum) = do
   currentContext >>= checkLineEnd
   -- fail if we haven't consumed whole line
   inp <- gets input
-  if not (null inp)
+  if not (Text.null inp)
      then do
        col <- gets column
        throwError $ "Could not match anything at line " ++
@@ -147,21 +149,23 @@ tokenizeLine (ln, linenum) = do
 getToken :: TokenizerM (Maybe Token)
 getToken = do
   inp <- gets input
-  guard $ not (null inp)
+  guard $ not (Text.null inp)
   context <- currentContext
   msum (map tryRule (cRules context)) <|>
      if cFallthrough context
         then doContextSwitch (cFallthroughContext context) >> getToken
         else (\x -> Just (cAttribute context, x)) <$> normalChunk
 
-takeChars :: String -> TokenizerM String
-takeChars [] = mzero
-takeChars xs = do
-  let numchars = length xs
-  modify $ \st -> st{ input = drop numchars (input st),
-                      prevChar = last xs,
+takeChars :: Int -> TokenizerM Text
+takeChars 0 = mzero
+takeChars numchars = do
+  inp <- gets input
+  let t = Text.take numchars inp
+  let rest = Text.drop numchars inp
+  modify $ \st -> st{ input = rest,
+                      prevChar = Text.last t,
                       column = column st + numchars }
-  return xs
+  return t
 
 tryRule :: Rule -> TokenizerM (Maybe Token)
 tryRule rule = do
@@ -219,13 +223,13 @@ tryRule rule = do
                    | otherwise -> do
                      case mbchildren of
                           Nothing -> return $ Just (tt, s)
-                          Just (_, cresult) -> return $ Just (tt, s ++ cresult)
+                          Just (_, cresult) -> return $ Just (tt, s <> cresult)
 
   info $ takeWhile (/=' ') (show (rMatcher rule)) ++ " MATCHED " ++ show mbtok'
   doContextSwitch (rContextSwitch rule)
   return mbtok'
 
-withAttr :: TokenType -> TokenizerM String -> TokenizerM (Maybe Token)
+withAttr :: TokenType -> TokenizerM Text -> TokenizerM (Maybe Token)
 withAttr tt p = do
   res <- p
   case res of
@@ -250,24 +254,27 @@ hlCCharRegex = RE{
   }
   where reStr = "'(?:" ++ reHlCStringChar ++ "|[^'\\\\])'"
 
-wordDetect :: Bool -> String -> TokenizerM String
+wordDetect :: Bool -> Text -> TokenizerM Text
 wordDetect caseSensitive s = do
   res <- stringDetect caseSensitive s
   -- now check for word boundary:  (TODO: check to make sure this is correct)
   inp <- gets input
-  case inp of
-       (c:_) | not (isAlphaNum c) -> return res
+  case Text.uncons inp of
+       Just (c, _) | not (isAlphaNum c) -> return res
        _ -> mzero
 
-stringDetect :: Bool -> String -> TokenizerM String
+stringDetect :: Bool -> Text -> TokenizerM Text
 stringDetect caseSensitive s = do
   inp <- gets input
-  let t = take (length s) inp
+  let len = Text.length s
+  let t = Text.take len inp
+  -- we assume here that the case fold will not change length,
+  -- which is safe for ASCII keywords and the like...
   let matches = if caseSensitive
                    then s == t
                    else mk s == mk t
   if matches
-     then takeChars s
+     then takeChars len
      else mzero
 
 -- This assumes that nothing significant will happen
@@ -275,14 +282,17 @@ stringDetect caseSensitive s = do
 -- of alphanumerics.  This seems true  for all normal
 -- programming languages, and the optimization speeds
 -- things up a lot, relative to just parsing one char.
-normalChunk :: TokenizerM String
+normalChunk :: TokenizerM Text
 normalChunk = do
   inp <- gets input
-  case inp of
-    [] -> mzero
-    (' ':xs) -> takeChars $ ' ' : takeWhile (== ' ') xs
-    (x:xs) | isAlphaNum x -> takeChars $ x : takeWhile isAlphaNum xs
-    (x:_) -> takeChars [x]
+  case Text.uncons inp of
+    Nothing -> mzero
+    Just (c, t)
+      | c == ' ' ->
+        takeChars $ 1 + maybe 0 id (Text.findIndex (/=' ') t)
+      | isAlphaNum c ->
+        takeChars $ 1 + maybe 0 id (Text.findIndex (not . isAlphaNum) t)
+      | otherwise -> takeChars 1
 
 includeRules :: Maybe TokenType -> ContextName -> TokenizerM (Maybe Token)
 includeRules mbattr (syn, con) = do
@@ -300,18 +310,18 @@ includeRules mbattr (syn, con) = do
 checkLineEnd :: Context -> TokenizerM ()
 checkLineEnd c = do
   inp <- gets input
-  when (null inp) $ do
+  when (Text.null inp) $ do
     lineCont' <- gets lineContinuation
     unless lineCont' $ doContextSwitch (cLineEndContext c)
 
-detectChar :: Bool -> Char -> TokenizerM String
+detectChar :: Bool -> Char -> TokenizerM Text
 detectChar dynamic c = do
   c' <- if dynamic && c >= '0' && c <= '9'
            then getDynamicChar c
            else return c
   inp <- gets input
-  case inp of
-    (x:_) | x == c' -> takeChars [x]
+  case Text.uncons inp of
+    Just (x,_) | x == c' -> takeChars 1
     _ -> mzero
 
 getDynamicChar :: Char -> TokenizerM Char
@@ -322,7 +332,7 @@ getDynamicChar c = do
        []    -> mzero
        (d:_) -> return d
 
-detect2Chars :: Bool -> Char -> Char -> TokenizerM String
+detect2Chars :: Bool -> Char -> Char -> TokenizerM Text
 detect2Chars dynamic c d = do
   c' <- if dynamic && c >= '0' && c <= '9'
            then getDynamicChar c
@@ -331,52 +341,55 @@ detect2Chars dynamic c d = do
            then getDynamicChar d
            else return d
   inp <- gets input
-  case inp of
-    (x:y:_) | x == c' && y == d' -> takeChars [x,y]
-    _ -> mzero
+  if (Text.pack [c',d']) `Text.isPrefixOf` inp
+     then takeChars 2
+     else mzero
 
-rangeDetect :: Char -> Char -> TokenizerM String
+rangeDetect :: Char -> Char -> TokenizerM Text
 rangeDetect c d = do
   inp <- gets input
-  case inp of
-    (x:rest) | x == c -> case span (/= d) rest of
-                              (xs, y:_) -> takeChars (x : xs ++ [y])
-                              (_, [])   -> mzero
+  case Text.uncons inp of
+    Just (x, rest)
+      | x == c -> case Text.span (/= d) rest of
+                       (in_t, out_t)
+                         | Text.null out_t -> mzero
+                         | otherwise -> takeChars (Text.length in_t + 2)
     _ -> mzero
 
-detectSpaces :: TokenizerM String
+detectSpaces :: TokenizerM Text
 detectSpaces = do
   inp <- gets input
-  case span isSpace inp of
-       ([], _) -> mzero
-       (xs, _) -> takeChars xs
+  case Text.span isSpace inp of
+       (t, _)
+         | Text.null t -> mzero
+         | otherwise   -> takeChars (Text.length t)
 
-detectIdentifier :: TokenizerM String
+detectIdentifier :: TokenizerM Text
 detectIdentifier = do
   inp <- gets input
-  case inp of
-    (c:cs) | isLetter c || c == '_' ->
-      takeChars $ c : takeWhile (\d -> isAlphaNum d || d == '_') cs
+  case Text.uncons inp of
+    Just (c, t) | isLetter c || c == '_' ->
+      takeChars $ 1 + maybe 0 id (Text.findIndex (\d ->
+                        not (isAlphaNum d || d == '_')) t)
     _ -> mzero
 
-lineContinue :: TokenizerM String
+lineContinue :: TokenizerM Text
 lineContinue = do
   inp <- gets input
-  case inp of
-     ['\\'] -> do
+  if inp == "\\"
+     then do
        modify $ \st -> st{ lineContinuation = True }
-       takeChars "\\"
-     _ -> mzero
+       takeChars 1
+     else mzero
 
---- TODO eventually make this a set of Char
-anyChar :: [Char] -> TokenizerM String
+anyChar :: [Char] -> TokenizerM Text
 anyChar cs = do
   inp <- gets input
-  case inp of
-     (x:_) | x `elem` cs -> takeChars [x]
+  case Text.uncons inp of
+     Just (x, _) | x `elem` cs -> takeChars 1
      _ -> mzero
 
-regExpr :: Bool -> RE -> TokenizerM String
+regExpr :: Bool -> RE -> TokenizerM Text
 regExpr dynamic re = do
   reStr <- if dynamic
               then subDynamic (reString re)
@@ -388,12 +401,12 @@ regExpr dynamic re = do
   prev <- gets prevChar
   -- we keep one preceding character, so initial \b can match:
   let target = if prev == '\n'
-                  then ' ':inp
-                  else prev:inp
+                  then ' ':(Text.unpack inp)  -- TODO Text-ize regex stuff
+                  else prev:(Text.unpack inp)
   case matchRegex regex target of
        Just ((_:match):capts) -> do
          modify $ \st -> st{ captures = capts }
-         takeChars match
+         takeChars (length match)
        _ -> mzero
 
 -- Substitute out %1, %2, etc. in regex string, escaping
@@ -401,8 +414,10 @@ regExpr dynamic re = do
 subDynamic :: String -> TokenizerM String
 subDynamic ('%':x:xs) | x >= '0' && x <= '9' = do
   let capNum = ord x - ord '0'
-  let escapeRegexChar c | c `elem` "^$\\[](){}*+.?" = ['\\',c]
-                        | otherwise = [c]
+  let escapeRegexChar c
+       | c `elem` ['^','$','\\','[',']','(',')','{','}','*','+','.','?']
+                   = ['\\',c]
+       | otherwise = [c]
   let escapeRegex = concatMap escapeRegexChar
   replacement <- getCapture capNum
   (escapeRegex replacement ++) <$> subDynamic xs
@@ -411,31 +426,33 @@ subDynamic xs = case break (=='%') xs of
                      (ys,(z:zs)) -> (ys ++) <$> subDynamic (z:zs)
                      (ys,[]) -> return ys
 
-getCapture :: Int -> TokenizerM String
+getCapture :: Int -> TokenizerM String -- TODO Text-ize
 getCapture capnum = do
   capts <- gets captures
   if length capts < capnum
      then mzero
      else return $ capts !! (capnum - 1)
 
-keyword :: KeywordAttr -> WordSet String -> TokenizerM String
+keyword :: KeywordAttr -> WordSet Text -> TokenizerM Text
 keyword kwattr kws = do
   prev <- gets prevChar
   guard $ prev `Set.member` (keywordDelims kwattr)
   inp <- gets input
-  let (w,_) = break (`Set.member` (keywordDelims kwattr)) inp
-  guard $ not (null w)
+  let (w,_) = Text.break (`Set.member` (keywordDelims kwattr)) inp
+  guard $ not (Text.null w)
+  let numchars = Text.length w
   case kws of
-       CaseSensitiveWords ws | w `Set.member` ws -> takeChars w
-       CaseInsensitiveWords ws | mk w `Set.member` ws -> takeChars w
+       CaseSensitiveWords ws | w `Set.member` ws -> takeChars numchars
+       CaseInsensitiveWords ws | mk w `Set.member` ws -> takeChars numchars
        _ -> mzero
 
 normalizeHighlighting :: [Token] -> [Token]
 normalizeHighlighting [] = []
-normalizeHighlighting ((_,""):xs) = normalizeHighlighting xs
-normalizeHighlighting ((t,x):xs) =
-  (t, concat (x : map snd matches)) : normalizeHighlighting rest
-  where (matches, rest) = span (\(z,_) -> z == t) xs
+normalizeHighlighting ((t,x):xs)
+  | Text.null x = normalizeHighlighting xs
+  | otherwise =
+    (t, Text.concat (x : map snd matches)) : normalizeHighlighting rest
+    where (matches, rest) = span (\(z,_) -> z == t) xs
 
 integerRegex :: RE
 integerRegex = RE{
