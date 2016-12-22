@@ -261,12 +261,14 @@ test-suite test-skylighting
   Main-Is:        test-skylighting.hs
   Hs-Source-Dirs: test
   build-depends:  base,
-                  hspec,
                   HUnit,
-                  tasty-golden,
                   tasty,
+                  tasty-golden,
+                  tasty-hunit,
                   Diff,
                   pretty-show,
+                  aeson,
+                  bytestring,
                   directory,
                   filepath,
                   QuickCheck,

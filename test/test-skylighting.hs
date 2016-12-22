@@ -17,6 +17,9 @@ import Control.Applicative
 import System.Environment (getArgs)
 import Test.Tasty
 import Test.Tasty.Golden.Advanced (goldenTest)
+import Test.Tasty.HUnit
+import Data.Aeson (decode)
+import Data.ByteString.Lazy ()
 
 main :: IO ()
 main = do
@@ -24,8 +27,14 @@ main = do
          <$> getDirectoryContents ("test" </> "cases")
   args <- getArgs
   let regen = "--regenerate" `elem` args
-  defaultMain $ testGroup "tokenizer tests" $
-                  map (tokenizerTest regen) inputs
+  defaultMain $ testGroup "skylighting tests" $
+    [ testGroup "tokenizer tests" $
+        map (tokenizerTest regen) inputs
+    , testGroup "FromJSON instance tests"
+       [ testCase "decode simple color" $
+            Just (RGB 0x15 0xff 0xa0) @=? decode "\"#15ffa0\""
+       ]
+    ]
 
 compareValues :: FilePath -> String -> String -> IO (Maybe String)
 compareValues referenceFile expected actual =
