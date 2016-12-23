@@ -232,6 +232,9 @@ library
                        blaze-html >= 0.5,
                        containers
   hs-source-dirs:      src
+  if impl(ghc < 7.10)
+     hs-source-dirs:   prelude
+     other-modules:    Prelude
   default-language:    Haskell2010
   ghc-options:         -Wall
   if flag(bootstrap)
@@ -256,6 +259,9 @@ executable skylighting-extract
                        containers,
                        directory
   hs-source-dirs:      bin, src
+  if impl(ghc < 7.10)
+     hs-source-dirs:   prelude
+     other-modules:    Prelude
   main-is:             extract.hs
   default-language:    Haskell2010
   other-extensions:    CPP
@@ -279,6 +285,9 @@ executable skylighting
                        blaze-html >= 0.5,
                        skylighting
   hs-source-dirs:      bin
+  if impl(ghc < 7.10)
+     hs-source-dirs:   prelude
+     other-modules:    Prelude
   main-is:             main.hs
   default-language:    Haskell2010
   other-extensions:    CPP
@@ -287,9 +296,12 @@ executable skylighting
     buildable:         False
 
 test-suite test-skylighting
-  Type:           exitcode-stdio-1.0
-  Main-Is:        test-skylighting.hs
-  Hs-Source-Dirs: test
+  type:           exitcode-stdio-1.0
+  main-is:        test-skylighting.hs
+  hs-source-dirs: test
+  if impl(ghc < 7.10)
+     hs-source-dirs:   prelude
+     other-modules:    Prelude
   build-depends:  base >= 4.7 && < 5.0,
                   HUnit,
                   tasty,
