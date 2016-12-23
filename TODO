@@ -1,4 +1,8 @@
+_ perl highlighting bug (https://github.com/jgm/highlighting-kate/issues/61)
+
 _ include a basic example of use in main module
+
+_ add ANSI renderer (see jgm/illuminate)
 
 _ README.md
   _ add fuller description of why changes to h-k, and what this
