@@ -1,6 +1,9 @@
 skylighting
 ===========
 
+[![license](https://img.shields.io/badge/license-GPLv2+-brightgreen.svg)](https://www.gnu.org/licenses/gpl.html)
+[![travis build status](https://img.shields.io/travis/jgm/skylighting.svg)](https://travis-ci.org/jgm/skylighting)
+
 A Haskell syntax highlighting library with tokenizers derived
 from KDE syntax highlighting descriptions.
 
