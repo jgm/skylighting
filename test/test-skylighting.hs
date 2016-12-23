@@ -41,10 +41,15 @@ main = do
        , testCase "decode KDE theme to Style" $
             Just kate @=? decode defaultTheme
        ]
-    , testGroup "Skylighting.Regex tests" $
+    , testGroup "Skylighting.Regex" $
       [ testCase "convertOctalEscapes" $
             "a\\700b\\700c\\x{800}" @=?
               convertOctalEscapes "a\\700b\\0700c\\o{4000}"
+      ]
+    , testGroup "Skylighting" $
+      [ testCase "syntaxesByFilename" $
+            ["Perl"] @=?
+              map sName (syntaxesByFilename defaultSyntaxMap "foo/bar.pl")
       ]
     ]
 
