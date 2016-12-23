@@ -24,7 +24,10 @@ syntax-highlighting:
 	git clone https://github.com/KDE/syntax-highlighting
 
 update-xml: syntax-highlighting
-	cp syntax-highlighting/data/syntax/*.xml xml/
+	cd syntax-highlighting; \
+	git pull; \
+	cd ../xml; \
+	for x in *.xml; do cp ../syntax-highlighting/data/syntax/$x ./; done
 
 clean:
 	stack clean
