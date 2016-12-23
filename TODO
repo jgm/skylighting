@@ -1,11 +1,5 @@
 _ include a basic example of use in main module
 
-_ add ANSI renderer (see jgm/illuminate)
-
-_ README.md
-  _ add fuller description of why changes to h-k, and what this
-    library does better. also about the license.
-
 _ proper tests
   _ test formatters
   _ hpc coverage stats?
