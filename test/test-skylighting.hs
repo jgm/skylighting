@@ -51,6 +51,32 @@ main = do
             ["Perl"] @=?
               map sName (syntaxesByFilename defaultSyntaxMap "foo/bar.pl")
       ]
+    , testGroup "Regression tests" $
+      [ testCase "perl quoting case" $ Right
+           [ [ ( KeywordTok , "my" )
+              , ( NormalTok , " " )
+              , ( DataTypeTok , "$foo" )
+              , ( NormalTok , " = " )
+              , ( KeywordTok , "q/" )
+              , ( StringTok , "bar" )
+              , ( KeywordTok , "/" )
+              , ( NormalTok , ";" )
+              ]
+            , [ ( KeywordTok , "my" )
+              , ( NormalTok , " " )
+              , ( DataTypeTok , "$baz" )
+              , ( NormalTok , " = " )
+              , ( KeywordTok , "'" )
+              , ( StringTok , "quux" )
+              , ( KeywordTok , "'" )
+              , ( NormalTok , ";" )
+              ]
+            ] @=? tokenize TokenizerConfig{ syntaxMap = defaultSyntaxMap
+                                          , traceOutput = False }
+                     (maybe (error "could not find Perl syntax") id
+                       (lookupSyntax "Perl" defaultSyntaxMap))
+                     "my $foo = q/bar/;\nmy $baz = 'quux';\n"
+      ]
     ]
 
 compareValues :: FilePath -> Text -> Text -> IO (Maybe String)
