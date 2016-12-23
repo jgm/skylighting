@@ -114,7 +114,7 @@ script:
   case "$BUILD" in
     stack)
       ulimit -n 4096
-      stack --no-terminal $ARGS build --flag 'aeson:fast' --flag 'skylighting:bootsrap' --haddock --no-haddock-deps --ghc-options="-O0 -Wall -fno-warn-unused-do-bind -Werror"
+      stack --no-terminal $ARGS build --flag 'aeson:fast' --flag 'skylighting:bootstrap' --haddock --no-haddock-deps --ghc-options="-O0 -Wall -fno-warn-unused-do-bind -Werror"
       stack exec skylighting-extract xml/*.xml
       stack --no-terminal $ARGS test --flag 'aeson:fast' --haddock --no-haddock-deps --ghc-options="-O0 -Wall -fno-warn-unused-do-bind -Werror"
       ;;
