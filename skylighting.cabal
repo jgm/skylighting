@@ -188,6 +188,7 @@ library
                        Skylighting.Syntax.Postscript
                        Skylighting.Syntax.Prolog
                        Skylighting.Syntax.Pure
+                       Skylighting.Syntax.Purebasic
                        Skylighting.Syntax.Python
                        Skylighting.Syntax.R
                        Skylighting.Syntax.Relaxng
