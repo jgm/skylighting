@@ -52,7 +52,8 @@ main = do
        ]
     , testGroup "Skylighting.Regex tests" $
       [ testCase "convertOctalEscapes" $
-            "a\\700b\\0700c\\o{4000}" @=? convertOctalEscapes "a\\700b\\700c\\x{800}"
+            "a\\700b\\700c\\x{800}" @=?
+              convertOctalEscapes "a\\700b\\0700c\\o{4000}"
       ]
     ]
 
