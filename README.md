@@ -19,8 +19,8 @@ architecture.
 In highlighting-kate, the XML syntax descriptions were converted
 into individual parsec parsers, which were then compiled.  This
 made it difficult to handle IncludeRules properly without
-circular imports.  There was also no way, in highlighting-kate,
-to load a syntax description dynamically.
+circular imports.  There was also no way to load a syntax
+description dynamically.
 
 Skylighting, by contrast, parses the XML syntax descriptions
 into Haskell data structures, which are then interpreted by
