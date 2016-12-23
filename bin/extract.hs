@@ -66,7 +66,7 @@ writeModuleFor syn = do
       isregex _           = False
   let iskeyword (Keyword{}) = True
       iskeyword _           = False
-  let matchers = map rMatcher $ concatMap cRules $ sContexts syn
+  let matchers = map rMatcher $ concatMap cRules $ Map.elems $ sContexts syn
   let usesRegex = any isregex matchers
   let usesSet = any iskeyword matchers
   writeFile fp $ unlines $
