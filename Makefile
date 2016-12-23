@@ -4,7 +4,7 @@ XMLS=abc.xml actionscript.xml ada.xml agda.xml alert.xml alert_indent.xml apache
 DEFS=$(patsubst %,xml/%,$(XMLS))
 
 quick:
-	stack install --test --fast
+	stack install --test --fast --flag "skylighting:executable"
 
 test:
 	stack test

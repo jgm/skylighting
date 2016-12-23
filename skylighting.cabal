@@ -245,6 +245,10 @@ Flag bootstrap
   Description:   Only build skylighting-extract
   Default:       False
 
+Flag executable
+  Description:   Build skylighting CLI tool
+  Default:       False
+
 executable skylighting-extract
   build-depends:       base >= 4.7 && < 5.0,
                        filepath,
@@ -294,6 +298,10 @@ executable skylighting
   other-extensions:    CPP
   ghc-options:         -Wall
   if flag(bootstrap)
+    buildable:         False
+  if flag(executable)
+    buildable:         True
+  else
     buildable:         False
 
 test-suite test-skylighting
