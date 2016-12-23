@@ -1,5 +1,6 @@
-# Revision history for highlighting-kate2
+# Revision history for skylighting
 
-## 0.1.0.0  -- YYYY-mm-dd
+## 0.1.0.0  -- 2016-12-23
 
+* Initial release
 
