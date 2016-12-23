@@ -1,10 +1,8 @@
-_ proper haddock documentation
-  _ haddock comments on every exported function and type
-  _ include a basic example of use in main module
+_ include a basic example of use in main module
 
 _ README.md
   _ add fuller description of why changes to h-k, and what this
-    library does better
+    library does better. also about the license.
 
 _ proper tests
   _ test formatters
