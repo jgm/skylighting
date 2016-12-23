@@ -104,6 +104,7 @@ install:
     cabal)
       cabal --version
       travis_retry cabal update
+      cabal install happy
       cabal install -j --only-dependencies -ffast --enable-tests --enable-benchmarks --force-reinstalls --ghc-options=-O0 --reorder-goals --max-backjumps=-1 $CABALARGS
       ;;
   esac
