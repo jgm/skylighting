@@ -101,7 +101,7 @@ syntaxOf smap _ (Syn lang : _) = do
 syntaxOf smap fps (_:xs) = syntaxOf smap fps xs
 
 styleOf :: [Flag] -> IO Style
-styleOf [] = return pygments
+styleOf [] = return kate
 styleOf (Theme fp : _) = do
   raw <- BL.readFile fp
   case parseTheme raw of
