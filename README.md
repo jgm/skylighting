@@ -5,30 +5,50 @@ skylighting
 [![travis build status](https://img.shields.io/travis/jgm/skylighting.svg)](https://travis-ci.org/jgm/skylighting)
 
 A Haskell syntax highlighting library with tokenizers derived
-from KDE syntax highlighting descriptions.
+from KDE XML syntax highlighting descriptions.
 
 A command-line highlighter, `skylighting`, is also provided.
 
-History
--------
+Motivation
+----------
 
-This is an experiment to rewrite
-[highlighting-kate](https://github.com/jgm/highlighting-kate)
-in a way that fixes many problems.  (TODO - elaborate)
+This library is the successor to [highlighting-kate], which had
+some problems that were difficult to resolve given its
+architecture.
+
+In highlighting-kate, the XML syntax descriptions were converted
+into individual parsec parsers, which were then compiled.  This
+made it difficult to handle IncludeRules properly without
+circular imports.  There was also no way, in highlighting-kate,
+to load a syntax description dynamically.
+
+Skylighting, by contrast, parses the XML syntax descriptions
+into Haskell data structures, which are then interpreted by
+a "tokenize" function.  IncludeRules can now be handled
+properly, and users can add new syntax descriptions
+dynamically.  It is also now possible to convert `.theme` files
+directly into styles.
 
 Installing
 ----------
 
-If you are installing from a release tarball from Hackage,
-then a simple `stack install` or `cabal install` will work.
-The release tarballs include generated files not present in
-this repository.
+To install the latest release from Hackage, do
 
-Building from this repository is currently a two-step process.
-In the first step we build a program, `skylighting-extract`,
-which reads XML syntax highlighting definitions from the `xml`
-directory and writes Haskell source files.  In the second we
-actually build the library.
+    stack install skylighting
+or
+
+    cabal install skylighting
+
+If you want the command-line tool, set the `executable` flag
+using `--flag "skylighting:executable"` in stack or
+`-fexecutable` in cabal.
+
+The release tarballs include generated files not present in this
+repository.  Building from this repository is a two-step
+process.  In the first step we build a program,
+`skylighting-extract`, which reads XML syntax highlighting
+definitions from the `xml` directory and writes Haskell source
+files.  In the second we actually build the library.
 
 Using stack:
 
@@ -40,6 +60,14 @@ Using cabal:
     cabal install -fbootstrap --disable-optimizations
     cabal run skylighting-extract -- xml/*.xml
     cabal install -f-bootstrap --disable-optimizations
+
+Command-line tool
+-----------------
+
+A command-line executable, `skylighting`, is installed if
+the `executable` cabal flag is set in building.
+
+For help, `skylighting --help`.
 
 License
 -------
@@ -56,4 +84,6 @@ Kate syntax highlighting documentation:
 
 Kate highlighting definitions:
 <https://github.com/KDE/syntax-highlighting/tree/master/data/syntax>
+
+[highlighting-kate]: https://github.com/jgm/highlighting-kate
 
