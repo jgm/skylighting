@@ -186,7 +186,7 @@ data TokenType = KeywordTok
                | NormalTok
                deriving (Read, Show, Eq, Ord, Enum, Data, Typeable)
 
--- | When reading from JSON, @"Keyword"@ corresponds to 'KeywordTok'.
+-- | JSON @"Keyword"@ corresponds to 'KeywordTok', and so on.
 instance FromJSON TokenType where
   parseJSON (String t) =
     case readMay (Text.unpack t ++ "Tok") of
@@ -206,7 +206,7 @@ data TokenStyle = TokenStyle {
   , tokenUnderline  :: Bool
   } deriving (Show, Read, Ord, Eq, Data, Typeable)
 
--- | When reading from JSON, the keywords used in KDE syntax
+-- | The keywords used in KDE syntax
 -- themes are used, e.g. @text-color@ for default token color.
 instance FromJSON TokenStyle where
   parseJSON (Object v) = do
@@ -262,8 +262,7 @@ instance ToColor (Double, Double, Double) where
           Just $ RGB (floor $ r * 255) (floor $ g * 255) (floor $ b * 255)
   toColor _ = Nothing
 
--- | When reading from JSON, @"#1aff2b" corresponds to the
--- color @RGB 0x1a 0xff 0x2b@.
+-- | JSON @"#1aff2b" corresponds to the color @RGB 0x1a 0xff 0x2b@.
 instance FromJSON Color where
   parseJSON (String t) = maybe mempty return $ toColor (Text.unpack t)
   parseJSON _          = mempty

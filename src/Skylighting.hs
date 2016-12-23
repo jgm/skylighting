@@ -40,12 +40,12 @@ syntaxesByFilename :: SyntaxMap -> String -> [Syntax]
 syntaxesByFilename syntaxmap fn = [s | s <- Map.elems syntaxmap
                                 , matchGlobs fn (sExtensions s)]
 
--- | Returns a list of syntaxes with a given full name (case insensitive).
+-- | Lookup a syntax by full name (case insensitive).
 syntaxByName :: SyntaxMap -> Text -> Maybe Syntax
 syntaxByName syntaxmap name =
   Map.lookup (Text.toLower name) (Map.mapKeys Text.toLower syntaxmap)
 
--- | Returns a list of syntaxes with a given short name (case insensitive).
+-- | Lookup a syntax by short name (case insensitive).
 syntaxByShortName :: SyntaxMap -> Text -> Maybe Syntax
 syntaxByShortName syntaxmap name = listToMaybe
   [s | s <- Map.elems syntaxmap
