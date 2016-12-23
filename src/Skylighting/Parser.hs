@@ -255,7 +255,7 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
        let compiledRe = if dynamic
                            then Nothing
                            else Just $ compileRegex True (fromString str)
-       let re = RegExpr RE{ reString = fromString $ convertOctal str
+       let re = RegExpr RE{ reString = fromString $ convertOctalEscapes str
                           , reCompiled = compiledRe
                           , reCaseSensitive = not insensitive }
        let (incsyntax, inccontext) =

@@ -8,7 +8,7 @@ module Skylighting.Regex (
               , RE(..)
               , compileRegex
               , matchRegex
-              , convertOctal
+              , convertOctalEscapes
               ) where
 
 import qualified Control.Exception as E
@@ -59,21 +59,22 @@ compileRegex caseSensitive regexpStr =
 -- | Convert octal escapes to the form pcre wants.  Note:
 -- need at least pcre 8.34 for the form \o{dddd}.
 -- So we prefer \ddd or \x{...}.
-convertOctal :: String -> String
-convertOctal [] = ""
-convertOctal ('\\':'0':x:y:z:rest)
-  | all isOctalDigit [x,y,z] = '\\':x:y:z: convertOctal rest
-convertOctal ('\\':x:y:z:rest)
-  | all isOctalDigit [x,y,z] ='\\':x:y:z: convertOctal rest
-convertOctal ('\\':'o':'{':zs) =
+convertOctalEscapes :: String -> String
+convertOctalEscapes [] = ""
+convertOctalEscapes ('\\':'0':x:y:z:rest)
+  | all isOctalDigit [x,y,z] = '\\':x:y:z: convertOctalEscapes rest
+convertOctalEscapes ('\\':x:y:z:rest)
+  | all isOctalDigit [x,y,z] ='\\':x:y:z: convertOctalEscapes rest
+convertOctalEscapes ('\\':'o':'{':zs) =
   case break (=='}') zs of
        (ds, '}':rest) | all isOctalDigit ds && not (null ds) ->
             case reads ('0':'o':ds) of
-                 ((n :: Int,[]):_) -> printf "\\x{%x}" n ++ convertOctal rest
+                 ((n :: Int,[]):_) ->
+                     printf "\\x{%x}" n ++ convertOctalEscapes rest
                  _          -> E.throw $ RegexException $
                                    "Unable to read octal number: " ++ ds
-       _  -> '\\':'o':'{': convertOctal zs
-convertOctal (x:xs) = x : convertOctal xs
+       _  -> '\\':'o':'{': convertOctalEscapes zs
+convertOctalEscapes (x:xs) = x : convertOctalEscapes xs
 
 isOctalDigit :: Char -> Bool
 isOctalDigit c = c >= '0' && c <= '7'
