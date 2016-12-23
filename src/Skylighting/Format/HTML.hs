@@ -14,20 +14,36 @@ import qualified Text.Blaze.Html5.Attributes as A
 -- | Format tokens using HTML spans inside @code@ tags. For example,
 -- A @KeywordTok@ is rendered as a span with class @kw@.
 -- Short class names correspond to 'TokenType's as follows:
--- 'KeywordTok' = @kw@, 'DataTypeTok' = @dt@,
--- 'DecValTok' = @dv@, 'BaseNTok' = @bn@, 'FloatTok' = @fl@,
--- 'CharTok' = @ch@, 'StringTok' = @st@, 'CommontTok' = @co@,
--- 'OtherTok' = @ot@, 'AlertTok' = @al@, 'FunctionTok' = @fu@,
--- 'RegionMarkerTok' = @re@, 'ErrorTok' = @er@,
--- 'ConstantTok' = @cn@, 'SpecialCharTok' = @sc@,
--- 'VerbatimStringTok' = @vs@, 'SpecialStringTok' = @ss@,
--- 'ImportTok' = @im@, 'DocumentationTok' = @do@,
--- 'AnnotationTok' = @an@, 'CommentVarTok' = @cv@,
--- 'VariableTok' = @va@, 'ControlFlowTok' = @cf@,
--- 'OperatorTok' = @op@, 'BuiltInTok' = @bu@,
--- 'ExtensionTok' = @ex@, 'PreprocessorTok' = @pp@,
--- 'AttributeTok' = @at@, 'InformationTok' = @in@,
--- 'WarningTok' = @wa@.
+-- 'KeywordTok'        = @kw@,
+-- 'DataTypeTok'       = @dt@,
+-- 'DecValTok'         = @dv@,
+-- 'BaseNTok'          = @bn@,
+-- 'FloatTok'          = @fl@,
+-- 'CharTok'           = @ch@,
+-- 'StringTok'         = @st@,
+-- 'CommentTok'        = @co@,
+-- 'OtherTok'          = @ot@,
+-- 'AlertTok'          = @al@,
+-- 'FunctionTok'       = @fu@,
+-- 'RegionMarkerTok'   = @re@,
+-- 'ErrorTok'          = @er@,
+-- 'ConstantTok'       = @cn@,
+-- 'SpecialCharTok'    = @sc@,
+-- 'VerbatimStringTok' = @vs@,
+-- 'SpecialStringTok'  = @ss@,
+-- 'ImportTok'         = @im@,
+-- 'DocumentationTok'  = @do@,
+-- 'AnnotationTok'     = @an@,
+-- 'CommentVarTok'     = @cv@,
+-- 'VariableTok'       = @va@,
+-- 'ControlFlowTok'    = @cf@,
+-- 'OperatorTok'       = @op@,
+-- 'BuiltInTok'        = @bu@,
+-- 'ExtensionTok'      = @ex@,
+-- 'PreprocessorTok'   = @pp@,
+-- 'AttributeTok'      = @at@,
+-- 'InformationTok'    = @in@,
+-- 'WarningTok'        = @wa@.
 -- A 'NormalTok' is not marked up at all.
 formatHtmlInline :: FormatOptions -> [SourceLine] -> Html
 formatHtmlInline opts = (H.code ! A.class_ (toValue $ Text.unwords
@@ -86,7 +102,9 @@ formatHtmlBlockPre opts = H.pre . formatHtmlInline opts
 -- | Format tokens as an HTML @pre@ block. If line numbering is
 -- selected, this is put into a table row with line numbers in the
 -- left cell.  The whole code block is wrapped in a @div@ element
--- to aid styling (e.g. the overflow-x property).
+-- to aid styling (e.g. the overflow-x property).  See the
+-- documentation for 'formatHtmlInline' for information about how
+-- tokens are encoded.
 formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlock opts ls = H.div ! A.class_ sourceCode $
                             container ! A.class_ (toValue $ Text.unwords classes)

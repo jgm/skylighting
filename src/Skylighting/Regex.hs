@@ -41,6 +41,10 @@ instance Show RE where
                                 ++ ")") ++
             ", reCaseSensitive = " ++ show (reCaseSensitive re) ++ "}"
 
+-- | Compile a PCRE regex.  If the first parameter is True, the regex is
+-- case-sensitive, otherwise caseless.  The regex is compiled from
+-- a bytestring interpreted as UTF-8.  If the regex cannot be compiled,
+-- a 'RegexException' is thrown.
 compileRegex :: Bool -> BS.ByteString -> Regex
 compileRegex caseSensitive regexpStr =
   let opts = compAnchored + compUTF8 +
@@ -52,7 +56,7 @@ compileRegex caseSensitive regexpStr =
                         "/ at offset " ++ show off ++ "\n" ++ msg
             Right r -> r
 
--- convert octal escapes to the form pcre wants.  Note:
+-- | Convert octal escapes to the form pcre wants.  Note:
 -- need at least pcre 8.34 for the form \o{dddd}.
 -- So we prefer \ddd or \x{...}.
 convertOctal :: String -> String
@@ -74,7 +78,12 @@ convertOctal (x:xs) = x : convertOctal xs
 isOctalDigit :: Char -> Bool
 isOctalDigit c = c >= '0' && c <= '7'
 
-matchRegex :: Regex -> BS.ByteString -> (Maybe [BS.ByteString])
+-- Match a 'Regex' against a bytestring.  Returns 'Nothing' if
+-- no match, otherwise 'Just' a nonempty list of bytestrings. The first
+-- bytestring in the list is the match, the others the captures, if any.
+-- If there are errors in executing the regex, a 'RegexException' is
+-- thrown.
+matchRegex :: Regex -> BS.ByteString -> Maybe [BS.ByteString]
 matchRegex r s = case unsafePerformIO (regexec r s) of
                       Right (Just (_, mat, _ , capts)) ->
                                        Just (mat : capts)
