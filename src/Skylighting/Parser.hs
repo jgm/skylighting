@@ -1,5 +1,4 @@
 {-# LANGUAGE Arrows #-}
-
 module Skylighting.Parser ( parseSyntaxDefinition
                           , addSyntaxDefinition
                           , missingIncludes
@@ -19,9 +18,18 @@ import Skylighting.Types
 import System.FilePath
 import Text.XML.HXT.Core
 
+-- | Adds a syntax definition to a syntax map,
+-- replacing any existing definition with the same name.
 addSyntaxDefinition :: Syntax -> SyntaxMap -> SyntaxMap
 addSyntaxDefinition s = Map.insert (sName s) s
 
+-- | Scan a list of 'Syntax's and make sure that
+-- `IncludeRules` never asks for a syntax not in this
+-- list.  Produces a list of pairs where the first
+-- element is the including syntax name and the second
+-- element is the (missing) included syntax name.
+-- This is intended for sanity checks to avoid run-time
+-- errors.
 missingIncludes :: [Syntax] -> [(Text, Text)]
 missingIncludes syns = nub
   [(sName s, lang)
