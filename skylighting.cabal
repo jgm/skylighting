@@ -317,6 +317,7 @@ test-suite test-skylighting
                   QuickCheck,
                   skylighting
   default-language: Haskell2010
+  ghc-options:    -Wall
   if flag(bootstrap)
     buildable:         False
 
