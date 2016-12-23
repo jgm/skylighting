@@ -1,4 +1,8 @@
 _ perl highlighting bug (https://github.com/jgm/highlighting-kate/issues/61)
+  minimal:
+
+  my $foo = qq/bar/;
+  my $baz = 'quux';
 
 _ include a basic example of use in main module
 
