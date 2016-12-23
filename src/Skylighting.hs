@@ -1,6 +1,7 @@
 module Skylighting (
     lookupSyntax
-  , syntaxesByShortName
+  , syntaxByName
+  , syntaxByShortName
   , syntaxesByExtension
   , syntaxesByFilename
   , module Skylighting.Types
@@ -27,23 +28,28 @@ import Skylighting.Syntax
 import Skylighting.Tokenizer
 import Skylighting.Types
 
--- | Returns a list of languages appropriate for the given file extension.
+-- | Returns a list of syntaxes appropriate for the given file extension.
 syntaxesByExtension :: SyntaxMap -> String -> [Syntax]
 syntaxesByExtension syntaxmap ('.':ext) =
   syntaxesByFilename syntaxmap ("*." ++ ext)
 syntaxesByExtension syntaxmap ext =
   syntaxesByFilename syntaxmap ("*." ++ ext)
 
--- | Returns a list of languages appropriate for the given filename.
+-- | Returns a list of syntaxes appropriate for the given filename.
 syntaxesByFilename :: SyntaxMap -> String -> [Syntax]
 syntaxesByFilename syntaxmap fn = [s | s <- Map.elems syntaxmap
                                 , matchGlobs fn (sExtensions s)]
 
--- | Lookup syntax by short name (case insensitive).
-syntaxesByShortName :: SyntaxMap -> Text -> [Syntax]
-syntaxesByShortName syntaxmap name = [s | s <- Map.elems syntaxmap
-                                   , Text.toLower (sShortname s) ==
-                                     Text.toLower name ]
+-- | Returns a list of syntaxes with a given full name (case insensitive).
+syntaxByName :: SyntaxMap -> Text -> Maybe Syntax
+syntaxByName syntaxmap name =
+  Map.lookup (Text.toLower name) (Map.mapKeys Text.toLower syntaxmap)
+
+-- | Returns a list of syntaxes with a given short name (case insensitive).
+syntaxByShortName :: SyntaxMap -> Text -> Maybe Syntax
+syntaxByShortName syntaxmap name = listToMaybe
+  [s | s <- Map.elems syntaxmap
+     , Text.toLower (sShortname s) == Text.toLower name ]
 
 -- | Lookup syntax by (in order) full name (case insensitive),
 -- short name (case insensitive), extension.
@@ -52,9 +58,9 @@ lookupSyntax lang syntaxmap
   -- special cases:
   | lang == Text.pack "csharp" = lookupSyntax (Text.pack "cs") syntaxmap
   | otherwise =
-  Map.lookup (Text.toLower lang) (Map.mapKeys Text.toLower syntaxmap) `mplus`
-    listToMaybe (syntaxesByShortName syntaxmap lang ++
-                 syntaxesByExtension syntaxmap (Text.unpack lang))
+    syntaxByName syntaxmap lang `mplus`
+    syntaxByShortName syntaxmap lang `mplus`
+    listToMaybe (syntaxesByExtension syntaxmap (Text.unpack lang))
 
 -- | Match filename against a list of globs contained in a semicolon-separated
 -- string.

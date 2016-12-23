@@ -5,6 +5,7 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 module Skylighting.Types (
+              -- * Syntax descriptions
                 ContextName
               , KeywordAttr(..)
               , WordSet(..)
@@ -15,15 +16,18 @@ module Skylighting.Types (
               , ContextSwitch(..)
               , Syntax(..)
               , SyntaxMap
+              -- * Tokens
               , Token
               , TokenType(..)
               , SourceLine
+              -- * Styles
               , TokenStyle(..)
               , defStyle
               , Color(..)
               , ToColor(..)
               , FromColor(..)
               , Style(..)
+              -- * Format options
               , FormatOptions(..)
               , defaultFormatOpts
               ) where
@@ -42,6 +46,8 @@ import Safe (readMay)
 import Skylighting.Regex
 import Text.Printf
 
+-- | Full name of a context: the first member of the pair is the full
+-- syntax name, the second the context name within that syntax.
 type ContextName = (Text, Text)
 
 data KeywordAttr =
@@ -49,6 +55,8 @@ data KeywordAttr =
                , keywordDelims        :: Set.Set Char
                }
 
+-- we have a custom show instance solely in order to get
+-- parentheses around the (Data.Set.fromList ...) part.
 instance Show KeywordAttr where
   show k = "KeywordAttr{ keywordCaseSensitive = " ++
             show (keywordCaseSensitive k) ++
@@ -57,6 +65,7 @@ instance Show KeywordAttr where
 data WordSet a = CaseSensitiveWords (Set.Set a)
                | CaseInsensitiveWords (Set.Set (CI a))
 
+-- | A set of words to match (either case-sensitive or case-insensitive).
 makeWordSet :: (FoldCase a, Ord a) => Bool -> [a] -> WordSet a
 makeWordSet True ws  = CaseSensitiveWords (Set.fromList ws)
 makeWordSet False ws = CaseInsensitiveWords (Set.map mk (Set.fromList ws))
@@ -92,6 +101,8 @@ data ContextSwitch =
   Pop | Push ContextName
   deriving Show
 
+-- | A rule corresponds to one of the elements of a Kate syntax
+-- highlighting "context."
 data Rule = Rule{
     rMatcher          :: Matcher
   , rAttribute        :: TokenType
@@ -105,6 +116,8 @@ data Rule = Rule{
   , rContextSwitch    :: [ContextSwitch]
   } deriving (Show)
 
+-- | A syntax corresponds to a complete Kate syntax description.
+-- The 'sShortname' field is derived from the filename.
 data Syntax = Syntax{
     sName            :: Text
   , sFilename        :: String
@@ -117,8 +130,11 @@ data Syntax = Syntax{
   , sStartingContext :: Text
   } deriving (Show)
 
+-- | A map of syntaxes, keyed by full name.
 type SyntaxMap = Map.Map Text Syntax
 
+-- | A Context corresponds to a context element in a Kate
+-- syntax description.
 data Context = Context{
     cName               :: Text
   , cSyntax             :: Text
@@ -135,6 +151,8 @@ data Context = Context{
 -- | A pair consisting of a list of attributes and some text.
 type Token = (TokenType, Text)
 
+-- | 'KeywordTok' corresponds to @dsKeyword@ in Kate syntax
+-- descriptions, and so on.
 data TokenType = KeywordTok
                | DataTypeTok
                | DecValTok
@@ -168,6 +186,7 @@ data TokenType = KeywordTok
                | NormalTok
                deriving (Read, Show, Eq, Ord, Enum, Data, Typeable)
 
+-- | When reading from JSON, @"Keyword"@ corresponds to 'KeywordTok'.
 instance FromJSON TokenType where
   parseJSON (String t) =
     case readMay (Text.unpack t ++ "Tok") of
@@ -175,9 +194,10 @@ instance FromJSON TokenType where
          Nothing -> fail "Not a token type"
   parseJSON _ = mempty
 
--- | A line of source, list of labeled source items.
+-- | A line of source: a list of labeled tokens.
 type SourceLine = [Token]
 
+-- | A 'TokenStyle' determines how a token is to be rendered.
 data TokenStyle = TokenStyle {
     tokenColor      :: Maybe Color
   , tokenBackground :: Maybe Color
@@ -186,6 +206,8 @@ data TokenStyle = TokenStyle {
   , tokenUnderline  :: Bool
   } deriving (Show, Read, Ord, Eq, Data, Typeable)
 
+-- | When reading from JSON, the keywords used in KDE syntax
+-- themes are used, e.g. @text-color@ for default token color.
 instance FromJSON TokenStyle where
   parseJSON (Object v) = do
     tcolor <- v .:? "text-color"
@@ -200,6 +222,7 @@ instance FromJSON TokenStyle where
              , tokenUnderline = tunderline }
   parseJSON _ = mempty
 
+-- | Default style.
 defStyle :: TokenStyle
 defStyle = TokenStyle {
     tokenColor      = Nothing
@@ -209,6 +232,7 @@ defStyle = TokenStyle {
   , tokenUnderline  = False
   }
 
+-- A color (red/green/blue).
 data Color = RGB Word8 Word8 Word8
   deriving (Show, Read, Ord, Eq, Data, Typeable)
 
@@ -238,6 +262,8 @@ instance ToColor (Double, Double, Double) where
           Just $ RGB (floor $ r * 255) (floor $ g * 255) (floor $ b * 255)
   toColor _ = Nothing
 
+-- | When reading from JSON, @"#1aff2b" corresponds to the
+-- color @RGB 0x1a 0xff 0x2b@.
 instance FromJSON Color where
   parseJSON (String t) = maybe mempty return $ toColor (Text.unpack t)
   parseJSON _          = mempty
@@ -254,6 +280,10 @@ instance FromColor (Double, Double, Double) where
 instance FromColor (Word8, Word8, Word8) where
   fromColor (RGB r g b) = (r, g, b)
 
+-- | A rendering style. This determines how each kind of token
+-- is to be rendered, and sets a default color and background
+-- color for normal tokens.  Line numbers can have a different
+-- color and background color.
 data Style = Style {
     tokenStyles               :: [(TokenType, TokenStyle)]
   , defaultColor              :: Maybe Color
@@ -262,6 +292,9 @@ data Style = Style {
   , lineNumberBackgroundColor :: Maybe Color
   } deriving (Read, Show, Eq, Ord, Data, Typeable)
 
+-- | The FromJSON instance for 'Style' is designed so that
+-- a KDE syntax theme (JSON) can be decoded directly as a
+-- 'Style'.
 instance FromJSON Style where
   parseJSON (Object v) = do
     (tokstyles :: Map.Map Text TokenStyle) <- v .: "text-styles"
