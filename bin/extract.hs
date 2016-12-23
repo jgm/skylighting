@@ -10,6 +10,7 @@ import System.Environment (getArgs)
 import System.Exit
 import System.IO (hPutStrLn, stderr)
 import Text.Show.Pretty (ppShow)
+import qualified Data.Map as Map
 
 main :: IO ()
 main = do
