@@ -46,7 +46,7 @@ matrix:
   # see below.
   - env: BUILD=cabal GHCVER=head  CABALVER=head
     compiler: ": #GHC HEAD"
-    addons: {apt: {packages: [cabal-install-head,ghc-head], sources: [hvr-ghc]}}
+    addons: {apt: {packages: [cabal-install-head,ghc-head,happy-head], sources: [hvr-ghc]}}
 
   # The Stack builds. We can pass in arbitrary Stack arguments via the ARGS
   # variable, such as using --stack-yaml to point to a different file.
