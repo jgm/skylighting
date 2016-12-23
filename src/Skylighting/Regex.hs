@@ -18,9 +18,10 @@ import GHC.Generics (Generic)
 import System.IO.Unsafe (unsafePerformIO)
 import Text.Printf
 import Text.Regex.PCRE.ByteString
+import Data.Typeable
 
 newtype RegexException = RegexException String
-      deriving (Show, Generic)
+      deriving (Show, Typeable, Generic)
 
 instance E.Exception RegexException
 
