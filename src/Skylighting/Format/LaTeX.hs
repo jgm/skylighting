@@ -8,7 +8,6 @@ module Skylighting.Format.LaTeX (
 
 import Control.Monad (mplus)
 import Data.Char (isSpace)
-import Data.List (intercalate)
 import Data.Monoid
 import Data.Text (Text)
 import qualified Data.Text as Text
