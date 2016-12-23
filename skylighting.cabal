@@ -18,7 +18,6 @@ category:            Text
 build-type:          Simple
 extra-source-files:  changelog.md
                      README.md
-                     test/expected/*.native
                      test/cases/abc.ada
                      test/cases/abc.agda
                      test/cases/abc.c
@@ -48,6 +47,35 @@ extra-source-files:  changelog.md
                      test/cases/archive.rhtml
                      test/cases/life.lua
                      test/cases/hk91.html
+                     test/expected/abc.ada.native
+                     test/expected/abc.agda.native
+                     test/expected/abc.c.native
+                     test/expected/abc.clojure.native
+                     test/expected/abc.cpp.native
+                     test/expected/abc.cs.native
+                     test/expected/abc.d.native
+                     test/expected/abc.fortran.native
+                     test/expected/abc.go.native
+                     test/expected/abc.haskell.native
+                     test/expected/abc.java.native
+                     test/expected/abc.javascript.native
+                     test/expected/abc.julia.native
+                     test/expected/abc.kotlin.native
+                     test/expected/abc.lisp.native
+                     test/expected/abc.matlab.native
+                     test/expected/abc.ocaml.native
+                     test/expected/abc.perl.native
+                     test/expected/abc.php.native
+                     test/expected/abc.prolog.native
+                     test/expected/abc.python.native
+                     test/expected/abc.r.native
+                     test/expected/abc.ruby.native
+                     test/expected/abc.scala.native
+                     test/expected/abc.scheme.native
+                     test/expected/abc.tcl.native
+                     test/expected/archive.rhtml.native
+                     test/expected/life.lua.native
+                     test/expected/hk91.html.native
 
 cabal-version:       >=1.10
 
@@ -189,7 +217,7 @@ library
                        Skylighting.Syntax.Yaml
                        Skylighting.Syntax.Zsh
   other-extensions:    CPP, Arrows
-  build-depends:       base,
+  build-depends:       base >= 4.7 && < 5.0,
                        mtl,
                        text,
                        bytestring,
@@ -214,7 +242,7 @@ Flag bootstrap
   Default:       False
 
 executable skylighting-extract
-  build-depends:       base,
+  build-depends:       base >= 4.7 && < 5.0,
                        filepath,
                        bytestring,
                        text,
@@ -241,7 +269,7 @@ executable skylighting-extract
     buildable:         False
 
 executable skylighting
-  build-depends:       base,
+  build-depends:       base >= 4.7 && < 5.0,
                        filepath,
                        text,
                        pretty-show,
@@ -262,7 +290,7 @@ test-suite test-skylighting
   Type:           exitcode-stdio-1.0
   Main-Is:        test-skylighting.hs
   Hs-Source-Dirs: test
-  build-depends:  base,
+  build-depends:  base >= 4.7 && < 5.0,
                   HUnit,
                   tasty,
                   tasty-golden,
