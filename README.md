@@ -69,6 +69,17 @@ the `executable` cabal flag is set in building.
 
 For help, `skylighting --help`.
 
+Adding new syntaxes
+-------------------
+
+To compile with additional syntaxes, simply add the syntax
+definition (XML) file to the `xml` directory and repeat the
+bootstrap build described above.
+
+Note that both the library and the executable can dynamically
+load syntax definitions, so you may not need to compile them
+in.
+
 License
 -------
 
