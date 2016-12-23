@@ -12,7 +12,7 @@ import qualified Data.ByteString.Char8 as BS
 import Data.CaseInsensitive (mk)
 import Data.Char (isAlphaNum, isLetter, isSpace, ord)
 import qualified Data.Map as Map
-import Data.Maybe (catMaybes)
+import Data.Maybe (catMaybes, fromMaybe)
 import Data.Monoid
 import qualified Data.Set as Set
 import Data.Text (Text)
@@ -399,8 +399,8 @@ regExpr dynamic re = do
               then subDynamic (reString re)
               else return (reString re)
   -- note, for dynamic regexes rCompiled == Nothing:
-  regex <- maybe (return $ compileRegex (reCaseSensitive re) reStr)
-                 return $ reCompiled re
+  let regex = fromMaybe (compileRegex (reCaseSensitive re) reStr)
+                 $ reCompiled re
   inp <- gets input
   prev <- gets prevChar
   -- we keep one preceding character, so initial \b can match:
