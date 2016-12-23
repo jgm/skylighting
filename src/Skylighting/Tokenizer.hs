@@ -47,9 +47,10 @@ data TokenizerState = TokenizerState{
   , firstNonspaceColumn :: Maybe Int
 } deriving (Show)
 
+-- | Configuration options for 'tokenize'.
 data TokenizerConfig = TokenizerConfig{
-    syntaxMap   :: SyntaxMap
-  , traceOutput :: Bool
+    syntaxMap   :: SyntaxMap  -- ^ Syntax map to use
+  , traceOutput :: Bool       -- ^ Generate trace output for debugging
 } deriving (Show)
 
 type TokenizerM =
@@ -100,6 +101,7 @@ lookupContext name syntax | Text.null name =
      else lookupContext (sStartingContext syntax) syntax
 lookupContext name syntax = Map.lookup name $ sContexts syntax
 
+-- | Tokenize some text using 'Syntax'.
 tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]
 tokenize config syntax inp =
   evalState
