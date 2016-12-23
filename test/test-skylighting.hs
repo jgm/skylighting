@@ -2,29 +2,20 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 module Main where
-import Control.Applicative
-import Control.Monad
 import Data.Aeson (decode)
+import Data.Monoid ((<>))
 import Data.Algorithm.Diff
 import qualified Data.ByteString.Lazy as BL
-import Data.Char (toLower)
-import Data.Maybe (fromMaybe)
-import Data.Monoid hiding (First)
-import Data.Monoid (mempty)
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 import Skylighting
 import System.Directory
 import System.Environment (getArgs)
-import System.Exit
 import System.FilePath
-import System.IO
 import Test.Tasty
 import Test.Tasty.Golden.Advanced (goldenTest)
 import Test.Tasty.HUnit
-import Text.Printf
-import Text.Printf
 import Text.Show.Pretty
 
 main :: IO ()
@@ -84,7 +75,6 @@ tokenizerTest regen inpFile = localOption (mkTimeout 1000000) $
                            , syntaxMap = defaultSyntaxMap } syntax $! code of
                  Left e   -> fail e
                  Right ls -> return $ Text.pack $ ppShow ls ++ "\n"
-        opts = defaultFormatOpts{ titleAttributes = False }
         updateGolden = if regen
                           then Text.writeFile referenceFile
                           else \_ -> return ()
