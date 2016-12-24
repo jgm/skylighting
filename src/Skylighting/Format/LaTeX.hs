@@ -31,8 +31,8 @@ sourceLineToLaTeX inline = mconcat . map (tokenToLaTeX inline)
 tokenToLaTeX :: Bool -> Token -> Text
 tokenToLaTeX inline (NormalTok, txt)
   | Text.all isSpace txt = escapeLaTeX inline txt
-tokenToLaTeX inline (toktype, txt)   = Text.snoc
-  (Text.pack (show toktype) <> "{" <> escapeLaTeX inline txt <> "}") '\\'
+tokenToLaTeX inline (toktype, txt)   = Text.cons '\\'
+  (Text.pack (show toktype) <> "{" <> escapeLaTeX inline txt <> "}")
 
 escapeLaTeX :: Bool -> Text -> Text
 escapeLaTeX inline = Text.concatMap escapeLaTeXChar
