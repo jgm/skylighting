@@ -114,6 +114,7 @@ styleOf (Sty s : _) = case map toLower s of
                             "tango"      -> return tango
                             "haddock"    -> return haddock
                             "monochrome" -> return monochrome
+                            "breeze-dark" -> return breezeDark
                             _            -> err $ "Unknown style: " ++ s
 styleOf (_ : xs) = styleOf xs
 
