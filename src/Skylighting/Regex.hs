@@ -50,8 +50,7 @@ compileRegex :: Bool -> BS.ByteString -> Regex
 compileRegex caseSensitive regexpStr =
   let opts = compAnchored + compUTF8 +
                if caseSensitive then 0 else compCaseless
-  in  case unsafePerformIO $ compile opts (execNotEmpty)
-             (BS.cons '.' regexpStr) of
+  in  case unsafePerformIO $ compile opts (execNotEmpty) regexpStr of
             Left (off,msg) -> E.throw $ RegexException $
                         "Error compiling regex /" ++ toString regexpStr ++
                         "/ at offset " ++ show off ++ "\n" ++ msg

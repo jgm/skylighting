@@ -39,7 +39,8 @@
   , ( NormalTok , ":i] " )
   , ( OperatorTok , "+" )
   , ( NormalTok , " b[i" )
-  , ( DecValTok , "+1" )
+  , ( OperatorTok , "+" )
+  , ( DecValTok , "1" )
   , ( NormalTok , ":])" )
   ]
 , [ ( NormalTok , "            " )

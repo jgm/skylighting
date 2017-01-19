@@ -403,14 +403,19 @@ regExpr dynamic re = do
                  $ reCompiled re
   inp <- gets input
   prev <- gets prevChar
-  -- we keep one preceding character, so initial \b can match:
-  let target = encodeUtf8 $
-               if prev == '\n'
-                  then Text.cons ' ' inp
-                  else Text.cons prev inp
+  -- If regex starts with \b, determine if we're at a word
+  -- boundary and mzero if not (TODO - is this the correct
+  -- definition of a word boundary?)
+  when (BS.take 2 reStr == "\\b") $
+       case Text.uncons inp of
+            Nothing -> return ()
+            Just (c, _)
+              | isAlphaNum prev -> guard (not (isAlphaNum c))
+              | otherwise ->       guard (isAlphaNum c)
+  let target = encodeUtf8 inp
   case matchRegex regex target of
        Just (match:capts) -> do
-         match' <- decodeBS $ BS.drop 1 match -- drop the prevchar
+         match' <- decodeBS match
          capts' <- mapM decodeBS capts
          modify $ \st -> st{ captures = capts' }
          takeChars (Text.length match')
