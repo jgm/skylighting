@@ -18,6 +18,7 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Text.Encoding (decodeUtf8', encodeUtf8)
+import qualified Data.ByteString.UTF8 as UTF8
 import Debug.Trace
 import Skylighting.Regex
 import Skylighting.Types
@@ -38,10 +39,10 @@ newtype ContextStack = ContextStack{ unContextStack :: [Context] }
   deriving (Show)
 
 data TokenizerState = TokenizerState{
-    input               :: Text
+    input               :: BS.ByteString
   , prevChar            :: Char
   , contextStack        :: ContextStack
-  , captures            :: [Text]
+  , captures            :: [BS.ByteString]
   , column              :: Int
   , lineContinuation    :: Bool
   , firstNonspaceColumn :: Maybe Int
@@ -106,8 +107,9 @@ tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]
 tokenize config syntax inp =
   evalState
     (runReaderT
-      (runExceptT (mapM tokenizeLine $ zip (Text.lines inp) [1..])) config)
-    startingState{ input = inp
+      (runExceptT (mapM tokenizeLine $
+        zip (BS.lines $ encodeUtf8 inp) [1..])) config)
+    startingState{ input = encodeUtf8 inp
                  , contextStack = case lookupContext
                                        (sStartingContext syntax) syntax of
                                        Just c  -> ContextStack [c]
@@ -115,7 +117,7 @@ tokenize config syntax inp =
 
 startingState :: TokenizerState
 startingState =
-  TokenizerState{ input = Text.empty
+  TokenizerState{ input = BS.empty
                 , prevChar = '\n'
                 , contextStack = ContextStack []
                 , captures = []
@@ -124,7 +126,7 @@ startingState =
                 , firstNonspaceColumn = Nothing
                 }
 
-tokenizeLine :: (Text, Int) -> TokenizerM [Token]
+tokenizeLine :: (BS.ByteString, Int) -> TokenizerM [Token]
 tokenizeLine (ln, linenum) = do
   cur <- currentContext
   lineCont <- gets lineContinuation
@@ -133,9 +135,9 @@ tokenizeLine (ln, linenum) = do
      else do
        modify $ \st -> st{ column = 0
                          , firstNonspaceColumn =
-                              Text.findIndex (not . isSpace) ln }
+                              BS.findIndex (not . isSpace) ln }
        doContextSwitch (cLineBeginContext cur)
-  if Text.null ln
+  if BS.null ln
      then doContextSwitch (cLineEmptyContext cur)
      else doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
@@ -143,7 +145,7 @@ tokenizeLine (ln, linenum) = do
   currentContext >>= checkLineEnd
   -- fail if we haven't consumed whole line
   inp <- gets input
-  if not (Text.null inp)
+  if not (BS.null inp)
      then do
        col <- gets column
        throwError $ "Could not match anything at line " ++
@@ -153,7 +155,7 @@ tokenizeLine (ln, linenum) = do
 getToken :: TokenizerM (Maybe Token)
 getToken = do
   inp <- gets input
-  guard $ not (Text.null inp)
+  guard $ not (BS.null inp)
   context <- currentContext
   msum (map tryRule (cRules context)) <|>
      if cFallthrough context
@@ -164,8 +166,9 @@ takeChars :: Int -> TokenizerM Text
 takeChars 0 = mzero
 takeChars numchars = do
   inp <- gets input
-  let t = Text.take numchars inp
-  let rest = Text.drop numchars inp
+  let (bs,rest) = UTF8.splitAt numchars inp
+  guard $ not (BS.null bs)
+  t <- decodeBS bs
   modify $ \st -> st{ input = rest,
                       prevChar = Text.last t,
                       column = column st + numchars }
@@ -263,22 +266,24 @@ wordDetect caseSensitive s = do
   res <- stringDetect caseSensitive s
   -- now check for word boundary:  (TODO: check to make sure this is correct)
   inp <- gets input
-  case Text.uncons inp of
+  case UTF8.uncons inp of
        Just (c, _) | not (isAlphaNum c) -> return res
-       _           -> mzero
+       _                                -> mzero
 
 stringDetect :: Bool -> Text -> TokenizerM Text
 stringDetect caseSensitive s = do
   inp <- gets input
-  let len = Text.length s
-  let t = Text.take len inp
+  let s' = encodeUtf8 s
+  let len = BS.length s'
+  let t' = BS.take len inp
+  t <- decodeBS t'
   -- we assume here that the case fold will not change length,
   -- which is safe for ASCII keywords and the like...
   let matches = if caseSensitive
                    then s == t
                    else mk s == mk t
   if matches
-     then takeChars len
+     then takeChars (Text.length s)
      else mzero
 
 -- This assumes that nothing significant will happen
@@ -289,13 +294,15 @@ stringDetect caseSensitive s = do
 normalChunk :: TokenizerM Text
 normalChunk = do
   inp <- gets input
-  case Text.uncons inp of
+  case BS.uncons inp of
     Nothing -> mzero
-    Just (c, t)
+    Just (c, _)
       | c == ' ' ->
-        takeChars $ 1 + maybe 0 id (Text.findIndex (/=' ') t)
+        let (bs,_) = BS.span (==' ') inp
+        in  takeChars (BS.length bs)
       | isAlphaNum c ->
-        takeChars $ 1 + maybe 0 id (Text.findIndex (not . isAlphaNum) t)
+        let (bs,_) = BS.span isAlphaNum inp
+        in  takeChars (BS.length bs)
       | otherwise -> takeChars 1
 
 includeRules :: Maybe TokenType -> ContextName -> TokenizerM (Maybe Token)
@@ -314,7 +321,7 @@ includeRules mbattr (syn, con) = do
 checkLineEnd :: Context -> TokenizerM ()
 checkLineEnd c = do
   inp <- gets input
-  when (Text.null inp) $ do
+  when (BS.null inp) $ do
     lineCont' <- gets lineContinuation
     unless lineCont' $ doContextSwitch (cLineEndContext c)
 
@@ -324,7 +331,7 @@ detectChar dynamic c = do
            then getDynamicChar c
            else return c
   inp <- gets input
-  case Text.uncons inp of
+  case UTF8.uncons inp of
     Just (x,_) | x == c' -> takeChars 1
     _          -> mzero
 
@@ -345,36 +352,43 @@ detect2Chars dynamic c d = do
            then getDynamicChar d
            else return d
   inp <- gets input
-  if (Text.pack [c',d']) `Text.isPrefixOf` inp
+  if (encodeUtf8 (Text.pack [c',d'])) `BS.isPrefixOf` inp
      then takeChars 2
      else mzero
 
+-- TODO: currently this will only work for ASCII open/close,
+-- we should put a check on this in the parser at least.
 rangeDetect :: Char -> Char -> TokenizerM Text
 rangeDetect c d = do
   inp <- gets input
-  case Text.uncons inp of
+  case BS.uncons inp of
     Just (x, rest)
-      | x == c -> case Text.span (/= d) rest of
+      | x == c -> case BS.span (/= d) rest of
                        (in_t, out_t)
-                         | Text.null out_t -> mzero
-                         | otherwise -> takeChars (Text.length in_t + 2)
+                         | BS.null out_t -> mzero
+                         | otherwise -> do
+                              t <- decodeBS in_t
+                              takeChars (Text.length t + 2)
     _ -> mzero
 
+-- TODO: currently limited to ASCII
 detectSpaces :: TokenizerM Text
 detectSpaces = do
   inp <- gets input
-  case Text.span isSpace inp of
+  case BS.span (\c -> isSpace c) inp of
        (t, _)
-         | Text.null t -> mzero
-         | otherwise   -> takeChars (Text.length t)
+         | BS.null t -> mzero
+         | otherwise -> takeChars (BS.length t)
 
+-- TODO: currently limited to ASCII, put a check on parser?
+-- or change this if it's too limiting
 detectIdentifier :: TokenizerM Text
 detectIdentifier = do
   inp <- gets input
-  case Text.uncons inp of
+  case BS.uncons inp of
     Just (c, t) | isLetter c || c == '_' ->
-      takeChars $ 1 + maybe 0 id (Text.findIndex (\d ->
-                        not (isAlphaNum d || d == '_')) t)
+      takeChars $ 1 + maybe 0 id (BS.findIndex
+                (\d -> not (isAlphaNum d || d == '_')) t)
     _ -> mzero
 
 lineContinue :: TokenizerM Text
@@ -389,7 +403,7 @@ lineContinue = do
 anyChar :: [Char] -> TokenizerM Text
 anyChar cs = do
   inp <- gets input
-  case Text.uncons inp of
+  case UTF8.uncons inp of
      Just (x, _) | x `elem` cs -> takeChars 1
      _           -> mzero
 
@@ -407,17 +421,15 @@ regExpr dynamic re = do
   -- boundary and mzero if not (TODO - is this the correct
   -- definition of a word boundary?)
   when (BS.take 2 reStr == "\\b") $
-       case Text.uncons inp of
+       case UTF8.uncons inp of
             Nothing -> return ()
             Just (c, _)
               | isAlphaNum prev -> guard (not (isAlphaNum c))
               | otherwise ->       guard (isAlphaNum c)
-  let target = encodeUtf8 inp
-  case matchRegex regex target of
+  case matchRegex regex inp of
        Just (match:capts) -> do
          match' <- decodeBS match
-         capts' <- mapM decodeBS capts
-         modify $ \st -> st{ captures = capts' }
+         modify $ \st -> st{ captures = capts }
          takeChars (Text.length match')
        _ -> mzero
 
@@ -454,19 +466,21 @@ getCapture capnum = do
   capts <- gets captures
   if length capts < capnum
      then mzero
-     else return $ capts !! (capnum - 1)
+     else decodeBS $ capts !! (capnum - 1)
 
+-- TODO this assumes that delims are ascii
 keyword :: KeywordAttr -> WordSet Text -> TokenizerM Text
 keyword kwattr kws = do
   prev <- gets prevChar
   guard $ prev `Set.member` (keywordDelims kwattr)
   inp <- gets input
-  let (w,_) = Text.break (`Set.member` (keywordDelims kwattr)) inp
-  guard $ not (Text.null w)
-  let numchars = Text.length w
+  let (w,_) = BS.break (`Set.member` (keywordDelims kwattr)) inp
+  guard $ not (BS.null w)
+  w' <- decodeBS w
+  let numchars = Text.length w'
   case kws of
-       CaseSensitiveWords ws   | w `Set.member` ws -> takeChars numchars
-       CaseInsensitiveWords ws | mk w `Set.member` ws -> takeChars numchars
+       CaseSensitiveWords ws   | w' `Set.member` ws -> takeChars numchars
+       CaseInsensitiveWords ws | mk w' `Set.member` ws -> takeChars numchars
        _                       -> mzero
 
 normalizeHighlighting :: [Token] -> [Token]
