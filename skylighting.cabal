@@ -1,5 +1,5 @@
 name:                skylighting
-version:             0.1.0.1
+version:             0.1.1
 synopsis:            syntax highlighting library
 description:         Skylighting is a syntax highlighting library with
                      support for over one hundred languages.  It derives
