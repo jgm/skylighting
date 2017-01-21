@@ -11,7 +11,7 @@ import Control.Monad.State.Strict
 import qualified Data.ByteString.Char8 as BS
 import Data.ByteString.Char8 (ByteString)
 import Data.CaseInsensitive (mk)
-import Data.Char (isAlphaNum, isLetter, isSpace, ord)
+import Data.Char (isAlphaNum, isAscii, isLetter, isSpace, ord)
 import qualified Data.Map as Map
 import Data.Maybe (catMaybes, fromMaybe)
 import Data.Monoid
@@ -143,21 +143,22 @@ tokenizeLine (ln, linenum) = do
      else doContextSwitch (cLineBeginContext cur)
   modify $ \st -> st{ input = ln, prevChar = '\n' }
   ts <- normalizeHighlighting . catMaybes <$> many getToken
-  currentContext >>= checkLineEnd
-  -- fail if we haven't consumed whole line
   inp <- gets input
-  if not (BS.null inp)
+  if BS.null inp
      then do
+       currentContext >>= checkLineEnd
+       return ts
+     else do  -- fail if we haven't consumed whole line
        col <- gets column
        throwError $ "Could not match anything at line " ++
          show linenum ++ " column " ++ show col
-     else return ts
 
 getToken :: TokenizerM (Maybe Token)
 getToken = do
-  gets input >>= guard . not . BS.null
+  inp <- gets input
+  guard $ not (BS.null inp)
   context <- currentContext
-  msum (map tryRule (cRules context)) <|>
+  msum (map (\r -> tryRule r inp) (cRules context)) <|>
      if cFallthrough context
         then doContextSwitch (cFallthroughContext context) >> getToken
         else (\x -> Just (cAttribute context, x)) <$> normalChunk
@@ -174,8 +175,9 @@ takeChars numchars = do
                       column = column st + numchars }
   return t
 
-tryRule :: Rule -> TokenizerM (Maybe Token)
-tryRule rule = do
+tryRule :: Rule -> ByteString -> TokenizerM (Maybe Token)
+tryRule _    ""  = mzero
+tryRule rule inp = do
   case rColumn rule of
        Nothing -> return ()
        Just n  -> gets column >>= guard . (== n)
@@ -190,7 +192,6 @@ tryRule rule = do
                  else return Nothing
 
   let attr = rAttribute rule
-  inp <- gets input
   mbtok <- case rMatcher rule of
                 DetectChar c -> withAttr attr $ detectChar (rDynamic rule) c inp
                 Detect2Chars c d -> withAttr attr $
@@ -216,9 +217,10 @@ tryRule rule = do
                 DetectIdentifier -> withAttr attr $ detectIdentifier inp
                 IncludeRules cname -> includeRules
                    (if rIncludeAttribute rule then Just attr else Nothing)
-                   cname
-  mbchildren <- msum (map tryRule (rChildren rule))
-                 <|> return Nothing
+                   cname inp
+  mbchildren <- do
+    inp' <- gets input
+    msum (map (\r -> tryRule r inp') (rChildren rule)) <|> return Nothing
 
   mbtok' <- case mbtok of
                  Nothing -> return Nothing
@@ -278,10 +280,7 @@ wordDetect caseSensitive s inp = do
 
 stringDetect :: Bool -> Text -> ByteString -> TokenizerM Text
 stringDetect caseSensitive s inp = do
-  let s' = encodeUtf8 s
-  let len = BS.length s'
-  let t' = BS.take len inp
-  t <- decodeBS t'
+  t <- decodeBS $ UTF8.take (Text.length s) inp
   -- we assume here that the case fold will not change length,
   -- which is safe for ASCII keywords and the like...
   let matches = if caseSensitive
@@ -305,18 +304,19 @@ normalChunk = do
       | c == ' ' ->
         let (bs,_) = BS.span (==' ') inp
         in  takeChars (BS.length bs)
-      | isAlphaNum c ->
-        let (bs,_) = UTF8.span isAlphaNum inp
+      | isAscii c && isAlphaNum c ->
+        let (bs,_) = BS.span isAlphaNum inp
         in  takeChars (BS.length bs)
       | otherwise -> takeChars 1
 
-includeRules :: Maybe TokenType -> ContextName -> TokenizerM (Maybe Token)
-includeRules mbattr (syn, con) = do
+includeRules :: Maybe TokenType -> ContextName -> ByteString
+             -> TokenizerM (Maybe Token)
+includeRules mbattr (syn, con) inp = do
   syntaxes <- asks syntaxMap
   case Map.lookup syn syntaxes >>= lookupContext con of
        Nothing  -> throwError $ "Context lookup failed " ++ show (syn, con)
        Just c   -> do
-         mbtok <- msum (map tryRule (cRules c))
+         mbtok <- msum (map (\r -> tryRule r inp) (cRules c))
          checkLineEnd c
          return $ case (mbtok, mbattr) of
                     (Just (NormalTok, xs), Just attr) ->
@@ -361,7 +361,7 @@ detect2Chars dynamic c d inp = do
 
 rangeDetect :: Char -> Char -> ByteString -> TokenizerM Text
 rangeDetect c d inp = do
-  case BS.uncons inp of
+  case UTF8.uncons inp of
     Just (x, rest)
       | x == c -> case UTF8.span (/= d) rest of
                        (in_t, out_t)
