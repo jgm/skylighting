@@ -7,7 +7,7 @@ module Skylighting.Tokenizer (
 import Control.Applicative
 import Control.Monad.Except
 import Control.Monad.Reader
-import Control.Monad.State
+import Control.Monad.State.Strict
 import qualified Data.ByteString.Char8 as BS
 import Data.CaseInsensitive (mk)
 import Data.Char (isAlphaNum, isLetter, isSpace, ord)
