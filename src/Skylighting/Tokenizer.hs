@@ -356,8 +356,7 @@ detect2Chars dynamic c d = do
      then takeChars 2
      else mzero
 
--- TODO: currently this will only work for ASCII open/close,
--- we should put a check on this in the parser at least.
+-- NOTE: currently this will only work for ASCII open/close.
 rangeDetect :: Char -> Char -> TokenizerM Text
 rangeDetect c d = do
   inp <- gets input
@@ -371,7 +370,7 @@ rangeDetect c d = do
                               takeChars (Text.length t + 2)
     _ -> mzero
 
--- TODO: currently limited to ASCII
+-- NOTE: currently limited to ASCII
 detectSpaces :: TokenizerM Text
 detectSpaces = do
   inp <- gets input
@@ -380,8 +379,7 @@ detectSpaces = do
          | BS.null t -> mzero
          | otherwise -> takeChars (BS.length t)
 
--- TODO: currently limited to ASCII, put a check on parser?
--- or change this if it's too limiting
+-- NOTE: limited to ASCII
 detectIdentifier :: TokenizerM Text
 detectIdentifier = do
   inp <- gets input
@@ -469,7 +467,7 @@ getCapture capnum = do
      then mzero
      else decodeBS $ capts !! (capnum - 1)
 
--- TODO this assumes that delims are ascii
+-- TODO this assumes that delims are ascii; check in the parser?
 keyword :: KeywordAttr -> WordSet Text -> TokenizerM Text
 keyword kwattr kws = do
   prev <- gets prevChar
