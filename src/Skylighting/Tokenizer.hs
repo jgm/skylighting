@@ -246,9 +246,9 @@ tryRule rule = do
 withAttr :: TokenType -> TokenizerM Text -> TokenizerM (Maybe Token)
 withAttr tt p = do
   res <- p
-  case res of
-       "" -> return Nothing
-       xs -> return $ Just (tt, xs)
+  if Text.null res
+     then return Nothing
+     else return $ Just (tt, res)
 
 hlCStringCharRegex :: RE
 hlCStringCharRegex = RE{
@@ -306,7 +306,7 @@ normalChunk = do
         let (bs,_) = BS.span (==' ') inp
         in  takeChars (BS.length bs)
       | isAlphaNum c ->
-        let (bs,_) = BS.span isAlphaNum inp
+        let (bs,_) = UTF8.span isAlphaNum inp
         in  takeChars (BS.length bs)
       | otherwise -> takeChars 1
 
@@ -359,12 +359,11 @@ detect2Chars dynamic c d inp = do
      then takeChars 2
      else mzero
 
--- NOTE: currently this will only work for ASCII open/close.
 rangeDetect :: Char -> Char -> ByteString -> TokenizerM Text
 rangeDetect c d inp = do
   case BS.uncons inp of
     Just (x, rest)
-      | x == c -> case BS.span (/= d) rest of
+      | x == c -> case UTF8.span (/= d) rest of
                        (in_t, out_t)
                          | BS.null out_t -> mzero
                          | otherwise -> do
@@ -380,7 +379,7 @@ detectSpaces inp = do
          | BS.null t -> mzero
          | otherwise -> takeChars (BS.length t)
 
--- NOTE: limited to ASCII
+-- NOTE: limited to ASCII as per kate documentation
 detectIdentifier :: ByteString -> TokenizerM Text
 detectIdentifier inp = do
   case BS.uncons inp of
@@ -464,12 +463,11 @@ getCapture capnum = do
      then mzero
      else decodeBS $ capts !! (capnum - 1)
 
--- TODO this assumes that delims are ascii; check in the parser?
 keyword :: KeywordAttr -> WordSet Text -> ByteString -> TokenizerM Text
 keyword kwattr kws inp = do
   prev <- gets prevChar
   guard $ prev `Set.member` (keywordDelims kwattr)
-  let (w,_) = BS.break (`Set.member` (keywordDelims kwattr)) inp
+  let (w,_) = UTF8.break (`Set.member` (keywordDelims kwattr)) inp
   guard $ not (BS.null w)
   w' <- decodeBS w
   let numchars = Text.length w'
