@@ -334,3 +334,19 @@ test-suite test-skylighting
   if flag(bootstrap)
     buildable:         False
 
+benchmark benchmark-skylighting
+  Type:            exitcode-stdio-1.0
+  Main-Is:         benchmark.hs
+  Hs-Source-Dirs:  benchmark
+  if impl(ghc < 7.10)
+     Hs-Source-Dirs: prelude
+     Other-Modules:  Prelude
+  Build-Depends:   skylighting,
+                   base >= 4.2 && < 5,
+                   filepath,
+                   text,
+                   directory,
+                   criterion >= 1.0 && < 1.2
+  Ghc-Options:   -rtsopts -Wall -fno-warn-unused-do-bind
+  Default-Language: Haskell2010
+
