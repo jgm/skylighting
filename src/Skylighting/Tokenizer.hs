@@ -187,7 +187,9 @@ tryRule rule = do
     col <- gets column
     guard (firstNonspace == Just col)
 
-  oldstate <- get -- needed for lookahead rules
+  oldstate <- if rLookahead rule
+                 then Just <$> get -- needed for lookahead rules
+                 else return Nothing
 
   let attr = rAttribute rule
   mbtok <- case rMatcher rule of
@@ -223,9 +225,15 @@ tryRule rule = do
                  Nothing -> return Nothing
                  Just (tt, s)
                    | rLookahead rule -> do
-                     modify $ \st -> st{ input = input oldstate
-                                       , prevChar = prevChar oldstate
-                                       , column = column oldstate }
+                     (oldinput, oldprevChar, oldColumn) <-
+                         case oldstate of
+                              Nothing -> throwError
+                                    "oldstate not saved with lookahead rule"
+                              Just st -> return
+                                    (input st, prevChar st, column st)
+                     modify $ \st -> st{ input = oldinput
+                                       , prevChar = oldprevChar
+                                       , column = oldColumn }
                      return Nothing
                    | otherwise -> do
                      case mbchildren of
