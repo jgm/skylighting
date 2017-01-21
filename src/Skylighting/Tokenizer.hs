@@ -416,16 +416,17 @@ regExpr dynamic re = do
   let regex = fromMaybe (compileRegex (reCaseSensitive re) reStr)
                  $ reCompiled re
   inp <- gets input
-  prev <- gets prevChar
   -- If regex starts with \b, determine if we're at a word
   -- boundary and mzero if not (TODO - is this the correct
   -- definition of a word boundary?)
   when (BS.take 2 reStr == "\\b") $
        case UTF8.uncons inp of
             Nothing -> return ()
-            Just (c, _)
-              | isAlphaNum prev -> guard (not (isAlphaNum c))
-              | otherwise ->       guard (isAlphaNum c)
+            Just (c, _) -> do
+              prev <- gets prevChar
+              if isAlphaNum prev
+                 then guard (not (isAlphaNum c))
+                 else guard (isAlphaNum c)
   case matchRegex regex inp of
        Just (match:capts) -> do
          match' <- decodeBS match
