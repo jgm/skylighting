@@ -9,6 +9,7 @@ import Control.Monad.Except
 import Control.Monad.Reader
 import Control.Monad.State.Strict
 import qualified Data.ByteString.Char8 as BS
+import Data.ByteString.Char8 (ByteString)
 import Data.CaseInsensitive (mk)
 import Data.Char (isAlphaNum, isLetter, isSpace, ord)
 import qualified Data.Map as Map
@@ -39,10 +40,10 @@ newtype ContextStack = ContextStack{ unContextStack :: [Context] }
   deriving (Show)
 
 data TokenizerState = TokenizerState{
-    input               :: BS.ByteString
+    input               :: ByteString
   , prevChar            :: Char
   , contextStack        :: ContextStack
-  , captures            :: [BS.ByteString]
+  , captures            :: [ByteString]
   , column              :: Int
   , lineContinuation    :: Bool
   , firstNonspaceColumn :: Maybe Int
@@ -126,7 +127,7 @@ startingState =
                 , firstNonspaceColumn = Nothing
                 }
 
-tokenizeLine :: (BS.ByteString, Int) -> TokenizerM [Token]
+tokenizeLine :: (ByteString, Int) -> TokenizerM [Token]
 tokenizeLine (ln, linenum) = do
   cur <- currentContext
   lineCont <- gets lineContinuation
@@ -154,8 +155,7 @@ tokenizeLine (ln, linenum) = do
 
 getToken :: TokenizerM (Maybe Token)
 getToken = do
-  inp <- gets input
-  guard $ not (BS.null inp)
+  gets input >>= guard . not . BS.null
   context <- currentContext
   msum (map tryRule (cRules context)) <|>
      if cFallthrough context
@@ -178,9 +178,7 @@ tryRule :: Rule -> TokenizerM (Maybe Token)
 tryRule rule = do
   case rColumn rule of
        Nothing -> return ()
-       Just n  -> do
-         col <- gets column
-         guard (col == n)
+       Just n  -> gets column >>= guard . (== n)
 
   when (rFirstNonspace rule) $ do
     firstNonspace <- gets firstNonspaceColumn
@@ -192,29 +190,30 @@ tryRule rule = do
                  else return Nothing
 
   let attr = rAttribute rule
+  inp <- gets input
   mbtok <- case rMatcher rule of
-                DetectChar c -> withAttr attr $ detectChar (rDynamic rule) c
+                DetectChar c -> withAttr attr $ detectChar (rDynamic rule) c inp
                 Detect2Chars c d -> withAttr attr $
-                                      detect2Chars (rDynamic rule) c d
-                AnyChar cs -> withAttr attr $ anyChar cs
-                RangeDetect c d -> withAttr attr $ rangeDetect c d
-                RegExpr re -> withAttr attr $ regExpr (rDynamic rule) re
-                Int -> withAttr attr $ regExpr False integerRegex
-                HlCOct -> withAttr attr $ regExpr False octRegex
-                HlCHex -> withAttr attr $ regExpr False hexRegex
+                                      detect2Chars (rDynamic rule) c d inp
+                AnyChar cs -> withAttr attr $ anyChar cs inp
+                RangeDetect c d -> withAttr attr $ rangeDetect c d inp
+                RegExpr re -> withAttr attr $ regExpr (rDynamic rule) re inp
+                Int -> withAttr attr $ regExpr False integerRegex inp
+                HlCOct -> withAttr attr $ regExpr False octRegex inp
+                HlCHex -> withAttr attr $ regExpr False hexRegex inp
                 HlCStringChar -> withAttr attr $
-                                     regExpr False hlCStringCharRegex
-                HlCChar -> withAttr attr $ regExpr False hlCCharRegex
-                Float -> withAttr attr $ regExpr False floatRegex
+                                     regExpr False hlCStringCharRegex inp
+                HlCChar -> withAttr attr $ regExpr False hlCCharRegex inp
+                Float -> withAttr attr $ regExpr False floatRegex inp
                 Keyword kwattr kws ->
-                  withAttr attr $ keyword kwattr kws
+                  withAttr attr $ keyword kwattr kws inp
                 StringDetect s -> withAttr attr $
-                                    stringDetect (rCaseSensitive rule) s
+                                    stringDetect (rCaseSensitive rule) s inp
                 WordDetect s -> withAttr attr $
-                                    wordDetect (rCaseSensitive rule) s
-                LineContinue -> withAttr attr $ lineContinue
-                DetectSpaces -> withAttr attr $ detectSpaces
-                DetectIdentifier -> withAttr attr $ detectIdentifier
+                                    wordDetect (rCaseSensitive rule) s inp
+                LineContinue -> withAttr attr $ lineContinue inp
+                DetectSpaces -> withAttr attr $ detectSpaces inp
+                DetectIdentifier -> withAttr attr $ detectIdentifier inp
                 IncludeRules cname -> includeRules
                    (if rIncludeAttribute rule then Just attr else Nothing)
                    cname
@@ -258,7 +257,7 @@ hlCStringCharRegex = RE{
   , reCaseSensitive = False
   }
 
-reHlCStringChar :: BS.ByteString
+reHlCStringChar :: ByteString
 reHlCStringChar = "\\\\(?:[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)"
 
 hlCCharRegex :: RE
@@ -269,18 +268,16 @@ hlCCharRegex = RE{
   }
   where reStr = "'(?:" <> reHlCStringChar <> "|[^'\\\\])'"
 
-wordDetect :: Bool -> Text -> TokenizerM Text
-wordDetect caseSensitive s = do
-  res <- stringDetect caseSensitive s
+wordDetect :: Bool -> Text -> ByteString -> TokenizerM Text
+wordDetect caseSensitive s inp = do
+  res <- stringDetect caseSensitive s inp
   -- now check for word boundary:  (TODO: check to make sure this is correct)
-  inp <- gets input
   case UTF8.uncons inp of
        Just (c, _) | not (isAlphaNum c) -> return res
        _                                -> mzero
 
-stringDetect :: Bool -> Text -> TokenizerM Text
-stringDetect caseSensitive s = do
-  inp <- gets input
+stringDetect :: Bool -> Text -> ByteString -> TokenizerM Text
+stringDetect caseSensitive s inp = do
   let s' = encodeUtf8 s
   let len = BS.length s'
   let t' = BS.take len inp
@@ -333,12 +330,11 @@ checkLineEnd c = do
     lineCont' <- gets lineContinuation
     unless lineCont' $ doContextSwitch (cLineEndContext c)
 
-detectChar :: Bool -> Char -> TokenizerM Text
-detectChar dynamic c = do
+detectChar :: Bool -> Char -> ByteString -> TokenizerM Text
+detectChar dynamic c inp = do
   c' <- if dynamic && c >= '0' && c <= '9'
            then getDynamicChar c
            else return c
-  inp <- gets input
   case UTF8.uncons inp of
     Just (x,_) | x == c' -> takeChars 1
     _          -> mzero
@@ -351,23 +347,21 @@ getDynamicChar c = do
        Nothing    -> mzero
        Just (d,_) -> return d
 
-detect2Chars :: Bool -> Char -> Char -> TokenizerM Text
-detect2Chars dynamic c d = do
+detect2Chars :: Bool -> Char -> Char -> ByteString -> TokenizerM Text
+detect2Chars dynamic c d inp = do
   c' <- if dynamic && c >= '0' && c <= '9'
            then getDynamicChar c
            else return c
   d' <- if dynamic && d >= '0' && d <= '9'
            then getDynamicChar d
            else return d
-  inp <- gets input
   if (encodeUtf8 (Text.pack [c',d'])) `BS.isPrefixOf` inp
      then takeChars 2
      else mzero
 
 -- NOTE: currently this will only work for ASCII open/close.
-rangeDetect :: Char -> Char -> TokenizerM Text
-rangeDetect c d = do
-  inp <- gets input
+rangeDetect :: Char -> Char -> ByteString -> TokenizerM Text
+rangeDetect c d inp = do
   case BS.uncons inp of
     Just (x, rest)
       | x == c -> case BS.span (/= d) rest of
@@ -379,49 +373,44 @@ rangeDetect c d = do
     _ -> mzero
 
 -- NOTE: currently limited to ASCII
-detectSpaces :: TokenizerM Text
-detectSpaces = do
-  inp <- gets input
+detectSpaces :: ByteString -> TokenizerM Text
+detectSpaces inp = do
   case BS.span (\c -> isSpace c) inp of
        (t, _)
          | BS.null t -> mzero
          | otherwise -> takeChars (BS.length t)
 
 -- NOTE: limited to ASCII
-detectIdentifier :: TokenizerM Text
-detectIdentifier = do
-  inp <- gets input
+detectIdentifier :: ByteString -> TokenizerM Text
+detectIdentifier inp = do
   case BS.uncons inp of
     Just (c, t) | isLetter c || c == '_' ->
       takeChars $ 1 + maybe 0 id (BS.findIndex
                 (\d -> not (isAlphaNum d || d == '_')) t)
     _ -> mzero
 
-lineContinue :: TokenizerM Text
-lineContinue = do
-  inp <- gets input
+lineContinue :: ByteString -> TokenizerM Text
+lineContinue inp = do
   if inp == "\\"
      then do
        modify $ \st -> st{ lineContinuation = True }
        takeChars 1
      else mzero
 
-anyChar :: [Char] -> TokenizerM Text
-anyChar cs = do
-  inp <- gets input
+anyChar :: [Char] -> ByteString -> TokenizerM Text
+anyChar cs inp = do
   case UTF8.uncons inp of
      Just (x, _) | x `elem` cs -> takeChars 1
      _           -> mzero
 
-regExpr :: Bool -> RE -> TokenizerM Text
-regExpr dynamic re = do
+regExpr :: Bool -> RE -> ByteString -> TokenizerM Text
+regExpr dynamic re inp = do
   reStr <- if dynamic
               then subDynamic (reString re)
               else return (reString re)
   -- note, for dynamic regexes rCompiled == Nothing:
   let regex = fromMaybe (compileRegex (reCaseSensitive re) reStr)
                  $ reCompiled re
-  inp <- gets input
   -- If regex starts with \b, determine if we're at a word
   -- boundary and mzero if not (TODO - is this the correct
   -- definition of a word boundary?)
@@ -440,7 +429,7 @@ regExpr dynamic re = do
          takeChars (Text.length match')
        _ -> mzero
 
-decodeBS :: BS.ByteString -> TokenizerM Text
+decodeBS :: ByteString -> TokenizerM Text
 decodeBS bs = case decodeUtf8' bs of
                     Left _ -> throwError ("ByteString " ++
                                 show bs ++ "is not UTF8")
@@ -448,7 +437,7 @@ decodeBS bs = case decodeUtf8' bs of
 
 -- Substitute out %1, %2, etc. in regex string, escaping
 -- appropriately..
-subDynamic :: BS.ByteString -> TokenizerM BS.ByteString
+subDynamic :: ByteString -> TokenizerM ByteString
 subDynamic bs
   | BS.null bs = return BS.empty
   | otherwise  =
@@ -476,11 +465,10 @@ getCapture capnum = do
      else decodeBS $ capts !! (capnum - 1)
 
 -- TODO this assumes that delims are ascii; check in the parser?
-keyword :: KeywordAttr -> WordSet Text -> TokenizerM Text
-keyword kwattr kws = do
+keyword :: KeywordAttr -> WordSet Text -> ByteString -> TokenizerM Text
+keyword kwattr kws inp = do
   prev <- gets prevChar
   guard $ prev `Set.member` (keywordDelims kwattr)
-  inp <- gets input
   let (w,_) = BS.break (`Set.member` (keywordDelims kwattr)) inp
   guard $ not (BS.null w)
   w' <- decodeBS w
