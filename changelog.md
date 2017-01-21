@@ -14,3 +14,9 @@
 * Fixed performance bug in regex application (#1).  This gives a
   significant speedup, especially for inputs with long lines.
 
+## 0.1.1.1  -- 2017-01-21
+
+* Optimized.  Speed is now comparable to highlighting-kate
+  and often better.
+* Added benchmarks.
+
