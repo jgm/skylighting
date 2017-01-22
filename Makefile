@@ -2,10 +2,13 @@
 XMLS=$(wildcard xml/*.xml)
 
 quick:
-	stack install --test --fast --flag "skylighting:executable"
+	stack install --test --flag "skylighting:executable"
 
 test:
 	stack test
+
+bench:
+	stack bench
 
 format:
 	stylish-haskell -i -c .stylish-haskell \
@@ -14,9 +17,9 @@ format:
 
 bootstrap: $(XMLS)
 	-rm -rf src/Skylighting/Syntax
-	stack install --fast --flag 'skylighting:bootstrap'
+	stack install --flag 'skylighting:bootstrap'
 	skylighting-extract $(XMLS)
-	stack install --test --fast
+	stack install --test
 
 syntax-highlighting:
 	git clone https://github.com/KDE/syntax-highlighting
