@@ -2,14 +2,11 @@ import Skylighting
 import Criterion.Main
 import Criterion.Types (Config(..))
 import System.FilePath
-import System.Directory
 import Data.Text (Text)
 import qualified Data.Text as Text
 
 main :: IO ()
 main = do
-  -- inputs <- filter (\fp -> take 1 fp /= ".")
-  --       <$> getDirectoryContents ("test" </> "cases")
   let inputs = ["abc.haskell", "abc.java", "abc.c", "archive.rhtml",
                 "life.lua", "abc.javascript"]
   let getCase fp = do
