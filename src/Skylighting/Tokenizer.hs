@@ -86,15 +86,12 @@ doContextSwitch :: [ContextSwitch] -> TokenizerM ()
 doContextSwitch [] = return ()
 doContextSwitch (Pop : xs) = do
   popContextStack
-  if null xs
-     then currentContext >>= checkLineEnd
-     else doContextSwitch xs
+  doContextSwitch xs
 doContextSwitch (Push (syn,c) : xs) = do
   syntaxes <- asks syntaxMap
   case Map.lookup syn syntaxes >>= lookupContext c of
        Just con -> do
          pushContextStack con
-         checkLineEnd con
          doContextSwitch xs
        Nothing  -> throwError $ "Unknown syntax or context: " ++ show (syn, c)
 
