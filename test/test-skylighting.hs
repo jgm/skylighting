@@ -17,11 +17,24 @@ import Test.Tasty
 import Test.Tasty.Golden.Advanced (goldenTest)
 import Test.Tasty.HUnit
 import Text.Show.Pretty
+import qualified Data.Map as Map
+
+syntaxes :: [Syntax]
+syntaxes = Map.elems defaultSyntaxMap
+
+defConfig :: TokenizerConfig
+defConfig = TokenizerConfig{ traceOutput = False
+                           , syntaxMap = defaultSyntaxMap }
+
+tokToText :: Token -> Text
+tokToText (_, s) = s
 
 main :: IO ()
 main = do
   inputs <- filter (\fp -> take 1 fp /= ".")
          <$> getDirectoryContents ("test" </> "cases")
+  allcases <- mconcat <$>
+               mapM (Text.readFile . (("test" </> "cases") </>)) inputs
   args <- getArgs
   let regen = "--regenerate" `elem` args
   defaultTheme <- BL.readFile ("test" </> "default.theme")
@@ -51,6 +64,8 @@ main = do
             ["Perl"] @=?
               map sName (syntaxesByFilename defaultSyntaxMap "foo/bar.pl")
       ]
+    , testGroup "Doesn't hang or drop text on a mixed syntax sample" $
+        map (noDropTest allcases) syntaxes
     , testGroup "Regression tests" $
       [ testCase "perl quoting case" $ Right
            [ [ ( KeywordTok , "my" )
@@ -88,6 +103,12 @@ compareValues referenceFile expected actual =
            , "+++ actual" ] ++
            map (Text.unpack . vividize)
              (getDiff (Text.lines expected) (Text.lines actual))
+
+noDropTest :: Text -> Syntax -> TestTree
+noDropTest inp syntax = localOption (mkTimeout 1000000) $
+  testCase (Text.unpack (sName syntax)) $
+      Right (Text.lines inp) @=?
+        map (mconcat . map tokToText) <$> (tokenize defConfig syntax inp)
 
 tokenizerTest :: Bool -> FilePath -> TestTree
 tokenizerTest regen inpFile = localOption (mkTimeout 1000000) $
