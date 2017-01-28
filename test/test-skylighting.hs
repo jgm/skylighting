@@ -118,8 +118,11 @@ noDropTest inp syntax = localOption (mkTimeout 1000000) $
                 where inplines = Text.lines inp
                       toklines = map (mconcat . map tokToText) ts
                       diffs = makeDiff "expected" inplines toklines
-           Left  e  -> assertBool "Error other than Empty context stack"
-                       $ e == "Empty context stack"
+           Left  e  -> assertBool ("Unexpected error: " ++ e)
+                       $ e == "Empty context stack" &&
+                        sName syntax `elem`
+                          ["Alerts", "Alerts_indent", "Hamlet",
+                           "YAML", "Yacc/Bison"]
 
 tokenizerTest :: Bool -> FilePath -> TestTree
 tokenizerTest regen inpFile = localOption (mkTimeout 1000000) $
