@@ -75,7 +75,9 @@ pushContextStack :: Context -> TokenizerM ()
 pushContextStack cont = do
   modify (\st -> st{ contextStack =
                       ContextStack (cont : unContextStack (contextStack st)) } )
-  checkLineEnd cont
+  -- not sure why we need this in pop but not here, but if we
+  -- put it here we can get loops...
+  -- checkLineEnd cont
   infoContextStack
 
 currentContext :: TokenizerM Context
@@ -341,18 +343,21 @@ includeRules mbattr (syn, con) inp = do
        Nothing  -> throwError $ "Context lookup failed " ++ show (syn, con)
        Just c   -> do
          mbtok <- msum (map (\r -> tryRule r inp) (cRules c))
-         -- checkLineEnd c
          return $ case (mbtok, mbattr) of
                     (Just (NormalTok, xs), Just attr) -> Just (attr, xs)
                     _ -> mbtok
 
 checkLineEnd :: Context -> TokenizerM ()
 checkLineEnd c = do
-  eol <- gets endline
-  when eol $ do
-    lineCont' <- gets lineContinuation
-    unless lineCont' $ do
-      doContextSwitches (cLineEndContext c)
+  if null (cLineEndContext c)
+     then return ()
+     else do
+       eol <- gets endline
+       info $ "checkLineEnd for " ++ show (cName c) ++ " eol = " ++ show eol ++ " cLineEndContext = " ++ show (cLineEndContext c)
+       when eol $ do
+         lineCont' <- gets lineContinuation
+         unless lineCont' $
+           doContextSwitches (cLineEndContext c)
 
 detectChar :: Bool -> Char -> ByteString -> TokenizerM Text
 detectChar dynamic c inp = do
