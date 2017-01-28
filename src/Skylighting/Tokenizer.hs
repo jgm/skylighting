@@ -270,27 +270,42 @@ hlCCharRegex = RE{
   }
   where reStr = "'(?:" <> reHlCStringChar <> "|[^'\\\\])'"
 
--- TODO why return the Text?
+{-
+-- Try a tokenizer and return to original state if it fails.
+-- This is used when one tokenizer calls another.
+try :: TokenizerM a -> TokenizerM a
+try tokenizer' = do
+  origstate <- get
+  tokenizer' <|> (put origstate >> mzero)
+-}
+
 wordDetect :: Bool -> Text -> ByteString -> TokenizerM Text
 wordDetect caseSensitive s inp = do
   wordBoundary inp
-  origstate <- get  -- so we can rewind
-  res <- stringDetect caseSensitive s inp
-  inp' <- gets input
-  (wordBoundary inp' >> return res) <|>
-    (put origstate >> return mempty)
+  t <- decodeBS $ UTF8.take (Text.length s) inp
+  -- we assume here that the case fold will not change length,
+  -- which is safe for ASCII keywords and the like...
+  guard $ if caseSensitive
+             then s == t
+             else mk s == mk t
+  guard $ not (Text.null t)
+  let c = Text.last t
+  let rest = UTF8.drop (Text.length s) inp
+  let d = case UTF8.uncons rest of
+               Nothing    -> '\n'
+               Just (x,_) -> x
+  guard $ isWordBoundary c d
+  takeChars (Text.length t)
 
 stringDetect :: Bool -> Text -> ByteString -> TokenizerM Text
 stringDetect caseSensitive s inp = do
   t <- decodeBS $ UTF8.take (Text.length s) inp
   -- we assume here that the case fold will not change length,
   -- which is safe for ASCII keywords and the like...
-  let matches = if caseSensitive
-                   then s == t
-                   else mk s == mk t
-  if matches
-     then takeChars (Text.length s)
-     else mzero
+  guard $ if caseSensitive
+             then s == t
+             else mk s == mk t
+  takeChars (Text.length s)
 
 -- This assumes that nothing significant will happen
 -- in the middle of a string of spaces or a string
@@ -420,15 +435,18 @@ regExpr dynamic re inp = do
          takeChars (Text.length match')
        _ -> mzero
 
--- TODO is this right?
 wordBoundary :: ByteString -> TokenizerM ()
 wordBoundary inp = do
   case UTF8.uncons inp of
        Nothing -> return ()
-       Just (c, _) -> do
-         d <- gets prevChar
-         guard $ (isAlphaNum c && not (isAlphaNum d)) ||
-                 (isAlphaNum d && not (isAlphaNum c))
+       Just (d, _) -> do
+         c <- gets prevChar
+         guard $ isWordBoundary c d
+
+-- TODO is this right?
+isWordBoundary :: Char -> Char -> Bool
+isWordBoundary c d =
+  (isAlphaNum c && not (isAlphaNum d)) || (isAlphaNum d && not (isAlphaNum c))
 
 decodeBS :: ByteString -> TokenizerM Text
 decodeBS bs = case decodeUtf8' bs of
