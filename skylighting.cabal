@@ -51,6 +51,7 @@ extra-source-files:  changelog.md
                      test/cases/archive.rhtml
                      test/cases/life.lua
                      test/cases/hk91.html
+                     test/cases/if.cmake
                      test/expected/abc.ada.native
                      test/expected/abc.agda.native
                      test/expected/abc.c.native
@@ -80,6 +81,7 @@ extra-source-files:  changelog.md
                      test/expected/archive.rhtml.native
                      test/expected/life.lua.native
                      test/expected/hk91.html.native
+                     test/expected/if.cmake.native
 
 cabal-version:       >=1.10
 

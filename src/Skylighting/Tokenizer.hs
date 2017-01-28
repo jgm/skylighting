@@ -270,13 +270,15 @@ hlCCharRegex = RE{
   }
   where reStr = "'(?:" <> reHlCStringChar <> "|[^'\\\\])'"
 
+-- TODO why return the Text?
 wordDetect :: Bool -> Text -> ByteString -> TokenizerM Text
 wordDetect caseSensitive s inp = do
+  wordBoundary inp
+  origstate <- get  -- so we can rewind
   res <- stringDetect caseSensitive s inp
-  -- now check for word boundary:  (TODO: check to make sure this is correct)
-  case UTF8.uncons inp of
-       Just (c, _) | not (isAlphaNum c) -> return res
-       _                                -> mzero
+  inp' <- gets input
+  (wordBoundary inp' >> return res) <|>
+    (put origstate >> return mempty)
 
 stringDetect :: Bool -> Text -> ByteString -> TokenizerM Text
 stringDetect caseSensitive s inp = do
@@ -410,23 +412,23 @@ regExpr dynamic re inp = do
   -- note, for dynamic regexes rCompiled == Nothing:
   let regex = fromMaybe (compileRegex (reCaseSensitive re) reStr)
                  $ reCompiled re
-  -- If regex starts with \b, determine if we're at a word
-  -- boundary and mzero if not (TODO - is this the correct
-  -- definition of a word boundary?)
-  when (BS.take 2 reStr == "\\b") $
-       case UTF8.uncons inp of
-            Nothing -> return ()
-            Just (c, _) -> do
-              prev <- gets prevChar
-              if isAlphaNum prev
-                 then guard (not (isAlphaNum c))
-                 else guard (isAlphaNum c)
+  when (BS.take 2 reStr == "\\b") $ wordBoundary inp
   case matchRegex regex inp of
        Just (match:capts) -> do
          match' <- decodeBS match
          modify $ \st -> st{ captures = capts }
          takeChars (Text.length match')
        _ -> mzero
+
+-- TODO is this right?
+wordBoundary :: ByteString -> TokenizerM ()
+wordBoundary inp = do
+  case UTF8.uncons inp of
+       Nothing -> return ()
+       Just (c, _) -> do
+         d <- gets prevChar
+         guard $ (isAlphaNum c && not (isAlphaNum d)) ||
+                 (isAlphaNum d && not (isAlphaNum c))
 
 decodeBS :: ByteString -> TokenizerM Text
 decodeBS bs = case decodeUtf8' bs of
