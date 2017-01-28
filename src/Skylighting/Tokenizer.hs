@@ -41,6 +41,7 @@ newtype ContextStack = ContextStack{ unContextStack :: [Context] }
 
 data TokenizerState = TokenizerState{
     input               :: ByteString
+  , endline             :: Bool
   , prevChar            :: Char
   , contextStack        :: ContextStack
   , captures            :: [ByteString]
@@ -67,12 +68,14 @@ popContextStack = do
        (_:[]) -> return ()
        (_:rest) -> do
          modify (\st -> st{ contextStack = ContextStack rest })
+         currentContext >>= checkLineEnd
          infoContextStack
 
 pushContextStack :: Context -> TokenizerM ()
 pushContextStack cont = do
   modify (\st -> st{ contextStack =
                       ContextStack (cont : unContextStack (contextStack st)) } )
+  checkLineEnd cont
   infoContextStack
 
 currentContext :: TokenizerM Context
@@ -82,18 +85,18 @@ currentContext = do
        []    -> throwError "Empty context stack" -- programming error
        (c:_) -> return c
 
-doContextSwitch :: [ContextSwitch] -> TokenizerM ()
-doContextSwitch [] = return ()
-doContextSwitch (Pop : xs) = do
-  popContextStack
-  doContextSwitch xs
-doContextSwitch (Push (syn,c) : xs) = do
+doContextSwitch :: ContextSwitch -> TokenizerM ()
+doContextSwitch Pop = popContextStack
+doContextSwitch (Push (syn,c)) = do
   syntaxes <- asks syntaxMap
   case Map.lookup syn syntaxes >>= lookupContext c of
-       Just con -> do
-         pushContextStack con
-         doContextSwitch xs
+       Just con -> pushContextStack con
        Nothing  -> throwError $ "Unknown syntax or context: " ++ show (syn, c)
+
+doContextSwitches :: [ContextSwitch] -> TokenizerM ()
+doContextSwitches [] = return ()
+doContextSwitches xs = do
+  mapM_ doContextSwitch xs
 
 lookupContext :: Text -> Syntax -> Maybe Context
 lookupContext name syntax | Text.null name =
@@ -110,6 +113,7 @@ tokenize config syntax inp =
       (runExceptT (mapM tokenizeLine $
         zip (BS.lines $ encodeUtf8 inp) [1..])) config)
     startingState{ input = encodeUtf8 inp
+                 , endline = Text.null inp
                  , contextStack = case lookupContext
                                        (sStartingContext syntax) syntax of
                                        Just c  -> ContextStack [c]
@@ -118,6 +122,7 @@ tokenize config syntax inp =
 startingState :: TokenizerState
 startingState =
   TokenizerState{ input = BS.empty
+                , endline = True
                 , prevChar = '\n'
                 , contextStack = ContextStack []
                 , captures = []
@@ -128,6 +133,7 @@ startingState =
 
 tokenizeLine :: (ByteString, Int) -> TokenizerM [Token]
 tokenizeLine (ln, linenum) = do
+  modify $ \st -> st{ input = ln, endline = BS.null ln, prevChar = '\n' }
   cur <- currentContext
   lineCont <- gets lineContinuation
   if lineCont
@@ -136,14 +142,13 @@ tokenizeLine (ln, linenum) = do
        modify $ \st -> st{ column = 0
                          , firstNonspaceColumn =
                               BS.findIndex (not . isSpace) ln }
-       doContextSwitch (cLineBeginContext cur)
+       doContextSwitches (cLineBeginContext cur)
   if BS.null ln
-     then doContextSwitch (cLineEmptyContext cur)
-     else doContextSwitch (cLineBeginContext cur)
-  modify $ \st -> st{ input = ln, prevChar = '\n' }
+     then doContextSwitches (cLineEmptyContext cur)
+     else doContextSwitches (cLineBeginContext cur)
   ts <- normalizeHighlighting . catMaybes <$> many getToken
-  inp <- gets input
-  if BS.null inp
+  eol <- gets endline
+  if eol
      then do
        currentContext >>= checkLineEnd
        return ts
@@ -155,11 +160,11 @@ tokenizeLine (ln, linenum) = do
 getToken :: TokenizerM (Maybe Token)
 getToken = do
   inp <- gets input
-  guard $ not (BS.null inp)
+  gets endline >>= guard . not
   context <- currentContext
   msum (map (\r -> tryRule r inp) (cRules context)) <|>
      if cFallthrough context
-        then doContextSwitch (cFallthroughContext context) >> getToken
+        then doContextSwitches (cFallthroughContext context) >> getToken
         else (\x -> Just (cAttribute context, x)) <$> normalChunk
 
 takeChars :: Int -> TokenizerM Text
@@ -170,6 +175,7 @@ takeChars numchars = do
   guard $ not (BS.null bs)
   t <- decodeBS bs
   modify $ \st -> st{ input = rest,
+                      endline = BS.null rest,
                       prevChar = Text.last t,
                       column = column st + numchars }
   return t
@@ -225,13 +231,15 @@ tryRule rule inp = do
                  Nothing -> return Nothing
                  Just (tt, s)
                    | rLookahead rule -> do
-                     (oldinput, oldprevChar, oldColumn) <-
+                     (oldinput, oldendline, oldprevChar, oldColumn) <-
                          case oldstate of
                               Nothing -> throwError
                                     "oldstate not saved with lookahead rule"
                               Just st -> return
-                                    (input st, prevChar st, column st)
+                                    (input st, endline st,
+                                     prevChar st, column st)
                      modify $ \st -> st{ input = oldinput
+                                       , endline = oldendline
                                        , prevChar = oldprevChar
                                        , column = oldColumn }
                      return Nothing
@@ -241,7 +249,7 @@ tryRule rule inp = do
                           Just (_, cresult) -> return $ Just (tt, s <> cresult)
 
   info $ takeWhile (/=' ') (show (rMatcher rule)) ++ " MATCHED " ++ show mbtok'
-  doContextSwitch (rContextSwitch rule)
+  doContextSwitches (rContextSwitch rule)
   return mbtok'
 
 withAttr :: TokenType -> TokenizerM Text -> TokenizerM (Maybe Token)
@@ -333,18 +341,18 @@ includeRules mbattr (syn, con) inp = do
        Nothing  -> throwError $ "Context lookup failed " ++ show (syn, con)
        Just c   -> do
          mbtok <- msum (map (\r -> tryRule r inp) (cRules c))
-         checkLineEnd c
+         -- checkLineEnd c
          return $ case (mbtok, mbattr) of
-                    (Just (NormalTok, xs), Just attr) ->
-                       Just (attr, xs)
+                    (Just (NormalTok, xs), Just attr) -> Just (attr, xs)
                     _ -> mbtok
 
 checkLineEnd :: Context -> TokenizerM ()
 checkLineEnd c = do
-  inp <- gets input
-  when (BS.null inp) $ do
+  eol <- gets endline
+  when eol $ do
     lineCont' <- gets lineContinuation
-    unless lineCont' $ doContextSwitch (cLineEndContext c)
+    unless lineCont' $ do
+      doContextSwitches (cLineEndContext c)
 
 detectChar :: Bool -> Char -> ByteString -> TokenizerM Text
 detectChar dynamic c inp = do
