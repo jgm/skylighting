@@ -63,7 +63,7 @@ popContextStack = do
   ContextStack cs <- gets contextStack
   case cs of
        []     -> throwError "Empty context stack" -- programming error
-       (_:[]) -> return ()  -- don't pop last context
+       (_:[]) -> throwError "Empty context stack"
        (_:rest) -> do
          modify (\st -> st{ contextStack = ContextStack rest })
          infoContextStack

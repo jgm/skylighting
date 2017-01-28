@@ -98,17 +98,28 @@ compareValues :: FilePath -> Text -> Text -> IO (Maybe String)
 compareValues referenceFile expected actual =
    if expected == actual
       then return $ Nothing
-      else return $ Just $ unlines $
-           [ "--- " ++ referenceFile
-           , "+++ actual" ] ++
-           map (Text.unpack . vividize)
-             (getDiff (Text.lines expected) (Text.lines actual))
+      else return $ Just $ makeDiff referenceFile
+                           (Text.lines expected) (Text.lines actual)
+
+makeDiff :: FilePath -> [Text] -> [Text] -> String
+makeDiff referenceFile expected actual = unlines $
+  [ "--- " ++ referenceFile
+  , "+++ actual" ] ++
+  map (Text.unpack . vividize) (filter notBoth (getDiff expected actual))
+    where notBoth (Both _ _ ) = False
+          notBoth _           = True
 
 noDropTest :: Text -> Syntax -> TestTree
 noDropTest inp syntax = localOption (mkTimeout 1000000) $
   testCase (Text.unpack (sName syntax)) $
-      Right (Text.lines inp) @=?
-        map (mconcat . map tokToText) <$> (tokenize defConfig syntax inp)
+      case tokenize defConfig syntax inp of
+           Right ts -> assertBool ("Text has been dropped:\n" ++ diffs)
+                        (inplines == toklines)
+                where inplines = Text.lines inp
+                      toklines = map (mconcat . map tokToText) ts
+                      diffs = makeDiff "expected" inplines toklines
+           Left  e  -> assertBool "Error other than Empty context stack"
+                       $ e == "Empty context stack"
 
 tokenizerTest :: Bool -> FilePath -> TestTree
 tokenizerTest regen inpFile = localOption (mkTimeout 1000000) $
