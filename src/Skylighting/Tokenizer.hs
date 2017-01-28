@@ -166,7 +166,12 @@ getToken = do
   context <- currentContext
   msum (map (\r -> tryRule r inp) (cRules context)) <|>
      if cFallthrough context
-        then doContextSwitches (cFallthroughContext context) >> getToken
+        then do
+          let fallthroughContext = case cFallthroughContext context of
+                                        [] -> [Pop]
+                                        cs -> cs
+          doContextSwitches fallthroughContext
+          getToken
         else (\x -> Just (cAttribute context, x)) <$> normalChunk
 
 takeChars :: Int -> TokenizerM Text
