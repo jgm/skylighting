@@ -85,8 +85,9 @@ doContextSwitch :: [ContextSwitch] -> TokenizerM ()
 doContextSwitch [] = return ()
 doContextSwitch (Pop : xs) = do
   popContextStack
-  currentContext >>= checkLineEnd
-  doContextSwitch xs
+  if null xs
+     then currentContext >>= checkLineEnd
+     else doContextSwitch xs
 doContextSwitch (Push (syn,c) : xs) = do
   syntaxes <- asks syntaxMap
   case Map.lookup syn syntaxes >>= lookupContext c of
