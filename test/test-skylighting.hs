@@ -18,6 +18,7 @@ import Test.Tasty.Golden.Advanced (goldenTest)
 import Test.Tasty.HUnit
 import Text.Show.Pretty
 import qualified Data.Map as Map
+import System.Random
 
 syntaxes :: [Syntax]
 syntaxes = Map.elems defaultSyntaxMap
@@ -31,6 +32,9 @@ tokToText (_, s) = s
 
 main :: IO ()
 main = do
+  stdgen <- newStdGen
+  let randomText = Text.unlines $ Text.chunksOf 31
+                     $ Text.pack $ take 5000 $ randomRs ('\0','\127') stdgen
   inputs <- filter (\fp -> take 1 fp /= ".")
          <$> getDirectoryContents ("test" </> "cases")
   allcases <- mconcat <$>
@@ -66,6 +70,8 @@ main = do
       ]
     , testGroup "Doesn't hang or drop text on a mixed syntax sample" $
         map (noDropTest allcases) syntaxes
+    , testGroup "Doesn't hang or drop text on fuzz" $
+        map (noDropTest randomText) syntaxes
     , testGroup "Regression tests" $
       [ testCase "perl quoting case" $ Right
            [ [ ( KeywordTok , "my" )
@@ -118,11 +124,7 @@ noDropTest inp syntax = localOption (mkTimeout 1000000) $
                 where inplines = Text.lines inp
                       toklines = map (mconcat . map tokToText) ts
                       diffs = makeDiff "expected" inplines toklines
-           Left  e  -> assertBool ("Unexpected error: " ++ e)
-                       $ e == "Empty context stack" &&
-                        sName syntax `elem`
-                          ["Alerts", "Alerts_indent", "Hamlet",
-                           "YAML", "Yacc/Bison", "Modelines"]
+           Left  e  -> assert ("Unexpected error: " ++ e)
 
 tokenizerTest :: Bool -> FilePath -> TestTree
 tokenizerTest regen inpFile = localOption (mkTimeout 1000000) $

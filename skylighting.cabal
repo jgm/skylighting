@@ -323,6 +323,7 @@ test-suite test-skylighting
                   tasty-golden,
                   tasty-hunit,
                   containers,
+                  random,
                   Diff,
                   text,
                   pretty-show,
