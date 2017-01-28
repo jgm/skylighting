@@ -29,6 +29,9 @@ properly, and users can add new syntax descriptions
 dynamically.  It is also now possible to convert `.theme` files
 directly into styles.
 
+Skylighting is also faster than highlighting-kate, by a
+factor of 3 in some cases.
+
 Installing
 ----------
 
