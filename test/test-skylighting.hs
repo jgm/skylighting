@@ -116,7 +116,7 @@ makeDiff referenceFile expected actual = unlines $
           notBoth _           = True
 
 noDropTest :: Text -> Syntax -> TestTree
-noDropTest inp syntax = localOption (mkTimeout 1000000) $
+noDropTest inp syntax = localOption (mkTimeout 2000000) $
   testCase (Text.unpack (sName syntax)) $
       case tokenize defConfig syntax inp of
            Right ts -> assertBool ("Text has been dropped:\n" ++ diffs)
@@ -127,7 +127,7 @@ noDropTest inp syntax = localOption (mkTimeout 1000000) $
            Left  e  -> assert ("Unexpected error: " ++ e)
 
 tokenizerTest :: Bool -> FilePath -> TestTree
-tokenizerTest regen inpFile = localOption (mkTimeout 1000000) $
+tokenizerTest regen inpFile = localOption (mkTimeout 2000000) $
   goldenTest testname getExpected getActual
       (compareValues referenceFile) updateGolden
   where testname = lang ++ " tokenizing of " ++ inpFile
