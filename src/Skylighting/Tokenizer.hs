@@ -62,8 +62,9 @@ popContextStack :: TokenizerM ()
 popContextStack = do
   ContextStack cs <- gets contextStack
   case cs of
-       []     -> throwError "Empty context stack" -- programming error
-       (_:[]) -> throwError "Empty context stack"
+       []     -> throwError "Empty context stack (the impossible happened)"
+       -- programming error
+       (_:[]) -> return ()
        (_:rest) -> do
          modify (\st -> st{ contextStack = ContextStack rest })
          infoContextStack
@@ -320,10 +321,10 @@ normalChunk = do
     Nothing -> mzero
     Just (c, _)
       | c == ' ' ->
-        let (bs,_) = BS.span (==' ') inp
+        let bs = BS.takeWhile (==' ') inp
         in  takeChars (BS.length bs)
       | isAscii c && isAlphaNum c ->
-        let (bs,_) = BS.span isAlphaNum inp
+        let bs = BS.takeWhile isAlphaNum inp
         in  takeChars (BS.length bs)
       | otherwise -> takeChars 1
 
