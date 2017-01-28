@@ -20,3 +20,12 @@
   and often better.
 * Added benchmarks.
 
+## 0.1.1.2  -- 2017-01-28
+
+* Added much more extensive testing to ensure that tokenizers
+  don't hang or drop input.
+* Fixed some issues with line-end and fallthrough context
+  handling.
+* Fixed a bug in WordDetect handling which caused it to drop
+  input (#2).
+
