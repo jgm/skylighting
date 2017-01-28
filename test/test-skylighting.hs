@@ -122,7 +122,7 @@ noDropTest inp syntax = localOption (mkTimeout 1000000) $
                        $ e == "Empty context stack" &&
                         sName syntax `elem`
                           ["Alerts", "Alerts_indent", "Hamlet",
-                           "YAML", "Yacc/Bison"]
+                           "YAML", "Yacc/Bison", "Modelines"]
 
 tokenizerTest :: Bool -> FilePath -> TestTree
 tokenizerTest regen inpFile = localOption (mkTimeout 1000000) $
