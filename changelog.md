@@ -29,3 +29,9 @@
 * Fixed a bug in WordDetect handling which caused it to drop
   input (#2).
 
+## 0.1.1.3  -- 2017-01-29
+
+* Increase test timeout to 6s.
+* Avoid double {{}} in latex macros.
+* Fixed problem compiling Format.LaTeX on older ghc versions (7.8.3)
+  that can't take a Text as PrintfArg.
