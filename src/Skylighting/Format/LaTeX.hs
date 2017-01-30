@@ -104,7 +104,7 @@ styleToLaTeX f = Text.unlines $
 
 macrodef :: Maybe Color -> [(TokenType, TokenStyle)] -> TokenType -> Text
 macrodef defaultcol tokstyles tokt = "\\newcommand{\\" <> Text.pack (show tokt) <>
-                     "}[1]{" <> (co . ul . bf . it . bg $ "{#1}") <> "}"
+                     "}[1]{" <> (co . ul . bf . it . bg $ "#1") <> "}"
   where tokf = case lookup tokt tokstyles of
                      Nothing -> defStyle
                      Just x  -> x
