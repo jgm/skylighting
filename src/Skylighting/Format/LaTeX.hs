@@ -118,9 +118,10 @@ macrodef defaultcol tokstyles tokt = "\\newcommand{\\" <> Text.pack (show tokt) 
                   then "\\textbf{" <> x <> "}"
                   else x
         bcol = fromColor `fmap` tokenBackground tokf :: Maybe (Double, Double, Double)
-        bg x = case bcol of
-                    Nothing          -> x
-                    Just (r, g, b) -> Text.pack $
+        bg x = Text.pack $
+               case bcol of
+                    Nothing        -> x
+                    Just (r, g, b) ->
                        printf "\\colorbox[rgb]{%0.2f,%0.2f,%0.2f}{%s}" r g b x
         col  = fromColor `fmap`
                  (tokenColor tokf `mplus` defaultcol) :: Maybe (Double, Double, Double)
