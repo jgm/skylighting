@@ -1,37 +1,47 @@
 # Revision history for skylighting
 
-## 0.1.0.0  -- 2016-12-23
+## 0.1.1.4  -- 2017-01-31
 
-* Initial release
+  * Properly escape characters in subDynamic.
+    This fixes a problem that caused failures with
 
-## 0.1.0.1  -- 2016-12-23
+        echo -e "s\0b\0c" | skylighting -s perl
 
-* Fixed bug in LaTeX renderer (backslash in wrong position).
-
-## 0.1.1    -- 2017-01-19
-
-* Added breezeDark style, from breeze-dark.theme.
-* Fixed performance bug in regex application (#1).  This gives a
-  significant speedup, especially for inputs with long lines.
-
-## 0.1.1.1  -- 2017-01-21
-
-* Optimized.  Speed is now comparable to highlighting-kate
-  and often better.
-* Added benchmarks.
-
-## 0.1.1.2  -- 2017-01-28
-
-* Added much more extensive testing to ensure that tokenizers
-  don't hang or drop input.
-* Fixed some issues with line-end and fallthrough context
-  handling.
-* Fixed a bug in WordDetect handling which caused it to drop
-  input (#2).
+  * More efficient rewrite of char escaping for regexes.
 
 ## 0.1.1.3  -- 2017-01-29
 
-* Increase test timeout to 6s.
-* Avoid double {{}} in latex macros.
-* Fixed problem compiling Format.LaTeX on older ghc versions (7.8.3)
-  that can't take a Text as PrintfArg.
+  * Increase test timeout to 6s.
+  * Avoid double {{}} in latex macros.
+  * Fixed problem compiling Format.LaTeX on older ghc versions (7.8.3)
+    that can't take a Text as PrintfArg.
+
+## 0.1.1.2  -- 2017-01-28
+
+  * Added much more extensive testing to ensure that tokenizers
+    don't hang or drop input.
+  * Fixed some issues with line-end and fallthrough context
+    handling.
+  * Fixed a bug in WordDetect handling which caused it to drop
+    input (#2).
+
+## 0.1.1.1  -- 2017-01-21
+
+  * Optimized.  Speed is now comparable to highlighting-kate
+    and often better.
+  * Added benchmarks.
+
+## 0.1.1    -- 2017-01-19
+
+  * Added breezeDark style, from breeze-dark.theme.
+  * Fixed performance bug in regex application (#1).  This gives a
+    significant speedup, especially for inputs with long lines.
+
+## 0.1.0.1  -- 2016-12-23
+
+  * Fixed bug in LaTeX renderer (backslash in wrong position).
+
+## 0.1.0.0  -- 2016-12-23
+
+  * Initial release
+
