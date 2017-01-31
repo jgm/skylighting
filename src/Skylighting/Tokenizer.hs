@@ -11,7 +11,7 @@ import Control.Monad.State.Strict
 import qualified Data.ByteString.Char8 as BS
 import Data.ByteString.Char8 (ByteString)
 import Data.CaseInsensitive (mk)
-import Data.Char (isAlphaNum, isAscii, isLetter, isSpace, ord)
+import Data.Char (isAlphaNum, isAscii, isLetter, isSpace, ord, isPrint)
 import qualified Data.Map as Map
 import Data.Maybe (catMaybes, fromMaybe)
 import Data.Monoid
@@ -23,6 +23,7 @@ import qualified Data.ByteString.UTF8 as UTF8
 import Debug.Trace
 import Skylighting.Regex
 import Skylighting.Types
+import Text.Printf (printf)
 
 info :: String -> TokenizerM ()
 info s = do
@@ -494,7 +495,9 @@ subDynamic bs
                escapeRegexChar '+' = "\\+"
                escapeRegexChar '.' = "\\."
                escapeRegexChar '?' = "\\?"
-               escapeRegexChar c   = BS.singleton c
+               escapeRegexChar c
+                 | isAscii c && isPrint c = BS.singleton c
+                 | otherwise              = BS.pack $ printf "\\x{%x}" (ord c)
            let escapeRegex = BS.concatMap escapeRegexChar
            replacement <- getCapture capNum
            (escapeRegex (encodeUtf8 replacement) <>) <$>
