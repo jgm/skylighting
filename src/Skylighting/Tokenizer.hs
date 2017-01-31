@@ -480,13 +480,25 @@ subDynamic bs
     case BS.unpack (BS.take 2 bs) of
         ['%',x] | x >= '0' && x <= '9' -> do
            let capNum = ord x - ord '0'
-           let escapeRegexChar c
-                | c `elem` ['^','$','\\','[',']','(',')','{','}','*','+','.','?']
-                            = BS.pack ['\\',c]
-                | otherwise = BS.singleton c
+           let escapeRegexChar :: Char -> BS.ByteString
+               escapeRegexChar '^' = "\\^"
+               escapeRegexChar '$' = "\\$"
+               escapeRegexChar '\\' = "\\\\"
+               escapeRegexChar '[' = "\\["
+               escapeRegexChar ']' = "\\]"
+               escapeRegexChar '(' = "\\("
+               escapeRegexChar ')' = "\\)"
+               escapeRegexChar '{' = "\\{"
+               escapeRegexChar '}' = "\\}"
+               escapeRegexChar '*' = "\\*"
+               escapeRegexChar '+' = "\\+"
+               escapeRegexChar '.' = "\\."
+               escapeRegexChar '?' = "\\?"
+               escapeRegexChar c   = BS.singleton c
            let escapeRegex = BS.concatMap escapeRegexChar
            replacement <- getCapture capNum
-           (escapeRegex (encodeUtf8 replacement) <>) <$> subDynamic (BS.drop 2 bs)
+           (escapeRegex (encodeUtf8 replacement) <>) <$>
+               subDynamic (BS.drop 2 bs)
         _ -> case BS.break (=='%') bs of
                   (y,z)
                     | BS.null y -> BS.cons '%' <$> subDynamic z
