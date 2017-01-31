@@ -73,7 +73,16 @@ main = do
     , testGroup "Doesn't hang or drop text on fuzz" $
         map (noDropTest randomText) syntaxes
     , testGroup "Regression tests" $
-      [ testCase "perl quoting case" $ Right
+      let perl = maybe (error "could not find Perl syntax") id
+                             (lookupSyntax "Perl" defaultSyntaxMap) in
+      [ testCase "perl NUL case" $ Right
+             [[(KeywordTok,"s\NUL")
+              ,(OtherTok,"b")
+              ,(KeywordTok,"\NUL")
+              ,(StringTok,"c")
+              ,(KeywordTok,"\NUL")]]
+             @=? tokenize defConfig perl "s\0b\0c\0"
+      , testCase "perl quoting case" $ Right
            [ [ ( KeywordTok , "my" )
               , ( NormalTok , " " )
               , ( DataTypeTok , "$foo" )
@@ -92,10 +101,7 @@ main = do
               , ( KeywordTok , "'" )
               , ( NormalTok , ";" )
               ]
-            ] @=? tokenize TokenizerConfig{ syntaxMap = defaultSyntaxMap
-                                          , traceOutput = False }
-                     (maybe (error "could not find Perl syntax") id
-                       (lookupSyntax "Perl" defaultSyntaxMap))
+            ] @=? tokenize defConfig perl
                      "my $foo = q/bar/;\nmy $baz = 'quux';\n"
       ]
     ]
@@ -138,9 +144,7 @@ tokenizerTest regen inpFile = localOption (mkTimeout 6000000) $
                          Just s  -> return s
                          Nothing -> fail $
                             "Could not find syntax definition for " ++ lang
-          case tokenize TokenizerConfig{
-                             traceOutput = False
-                           , syntaxMap = defaultSyntaxMap } syntax $! code of
+          case tokenize defConfig syntax $! code of
                  Left e   -> fail e
                  Right ls -> return $ Text.pack $ ppShow ls ++ "\n"
         updateGolden = if regen
