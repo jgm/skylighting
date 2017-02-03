@@ -1,5 +1,11 @@
 # Revision history for skylighting
 
+## 0.1.1.5  -- 2017-02-03
+
+  * Avoid depending on a PrintfArg instance for Text (#5).
+    This isn't provided in some older versions of the text library.
+    This change should allow the package to build on older platforms.
+
 ## 0.1.1.4  -- 2017-01-31
 
   * Properly escape characters in subDynamic.
