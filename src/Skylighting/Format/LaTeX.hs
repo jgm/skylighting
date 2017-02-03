@@ -103,8 +103,11 @@ styleToLaTeX f = Text.unlines $
   ++ map (macrodef (defaultColor f) (tokenStyles f)) (enumFromTo KeywordTok NormalTok)
 
 macrodef :: Maybe Color -> [(TokenType, TokenStyle)] -> TokenType -> Text
-macrodef defaultcol tokstyles tokt = "\\newcommand{\\" <> Text.pack (show tokt) <>
-                     "}[1]{" <> (co . ul . bf . it . bg $ "#1") <> "}"
+macrodef defaultcol tokstyles tokt = "\\newcommand{\\"
+  <> Text.pack (show tokt)
+  <> "}[1]{"
+  <> Text.pack (co . ul . bf . it . bg $ "#1")
+  <> "}"
   where tokf = case lookup tokt tokstyles of
                      Nothing -> defStyle
                      Just x  -> x
@@ -117,16 +120,16 @@ macrodef defaultcol tokstyles tokt = "\\newcommand{\\" <> Text.pack (show tokt) 
         bf x = if tokenBold tokf
                   then "\\textbf{" <> x <> "}"
                   else x
-        bcol = fromColor `fmap` tokenBackground tokf :: Maybe (Double, Double, Double)
-        bg x = Text.pack $
-               case bcol of
+        bcol = fromColor `fmap` tokenBackground tokf
+                  :: Maybe (Double, Double, Double)
+        bg x = case bcol of
                     Nothing        -> x
                     Just (r, g, b) ->
                        printf "\\colorbox[rgb]{%0.2f,%0.2f,%0.2f}{%s}" r g b x
-        col  = fromColor `fmap`
-                 (tokenColor tokf `mplus` defaultcol) :: Maybe (Double, Double, Double)
+        col  = fromColor `fmap` (tokenColor tokf `mplus` defaultcol)
+                  :: Maybe (Double, Double, Double)
         co x = case col of
                     Nothing        -> x
-                    Just (r, g, b) -> Text.pack $
+                    Just (r, g, b) ->
                         printf "\\textcolor[rgb]{%0.2f,%0.2f,%0.2f}{%s}" r g b x
 
