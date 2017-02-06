@@ -228,7 +228,6 @@ library
                        mtl,
                        text,
                        bytestring,
-                       regex-pcre-builtin,
                        directory,
                        filepath,
                        aeson,
@@ -238,6 +237,10 @@ library
                        safe,
                        blaze-html >= 0.5,
                        containers
+  if flag(system-pcre)
+    build-depends:     regex-pcre
+  else
+    build-depends:     regex-pcre-builtin
   hs-source-dirs:      src
   if impl(ghc < 7.10)
      hs-source-dirs:   prelude
@@ -255,12 +258,15 @@ Flag executable
   Description:   Build skylighting CLI tool
   Default:       False
 
+Flag system-pcre
+  Description:   Use regex-pcre instead of regex-pcre-builtin
+  Default:       False
+
 executable skylighting-extract
   build-depends:       base >= 4.7 && < 5.0,
                        filepath,
                        bytestring,
                        text,
-                       regex-pcre-builtin,
                        safe,
                        hxt,
                        utf8-string,
@@ -269,6 +275,10 @@ executable skylighting-extract
                        pretty-show,
                        containers,
                        directory
+  if flag(system-pcre)
+    build-depends:     regex-pcre
+  else
+    build-depends:     regex-pcre-builtin
   hs-source-dirs:      bin, src
   if impl(ghc < 7.10)
      hs-source-dirs:   prelude
