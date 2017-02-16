@@ -2,10 +2,10 @@
 XMLS=$(wildcard xml/*.xml)
 
 quick:
-	stack install --test --flag "skylighting:executable"
+	stack install --test --flag "skylighting:executable" --test-arguments '--hide-successes'
 
 test:
-	stack test
+	stack test --test-arguments '--hide-successes'
 
 bench:
 	stack bench
