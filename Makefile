@@ -8,7 +8,7 @@ test:
 	stack test --test-arguments '--hide-successes'
 
 bench:
-	stack bench
+	stack bench --flag 'skylighting:executable'
 
 format:
 	stylish-haskell -i -c .stylish-haskell \
@@ -19,7 +19,7 @@ bootstrap: $(XMLS)
 	-rm -rf src/Skylighting/Syntax
 	stack install --flag 'skylighting:bootstrap'
 	skylighting-extract $(XMLS)
-	stack install --test
+	stack install --test --flag 'skylighting:executable'
 
 syntax-highlighting:
 	git clone https://github.com/KDE/syntax-highlighting
