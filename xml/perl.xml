@@ -600,7 +600,7 @@
         <RegExpr attribute="Pattern Internal Operator" context="#stay" String="\$(?=%1)" dynamic="true" />
         <RegExpr attribute="Operator" context="#pop#pop" String="%1[cgimosx]*" dynamic="true" endRegion="Pattern" />
         <IncludeRules context="regex_pattern_internal_ip" />
-        <RegExpr attribute="Pattern Internal Operator" context="#stay" String="\$(?=\%1)" dynamic="true" />
+        <RegExpr attribute="Pattern Internal Operator" context="#stay" String="\$(?=\\%1)" dynamic="true" />
       </context>
       <context name="pattern_brace" attribute="Pattern" lineEndContext="#stay">
         <RegExpr attribute="Operator" context="#pop#pop" String="\}[cgimosx]*" endRegion="Pattern" />

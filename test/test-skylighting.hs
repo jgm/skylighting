@@ -83,6 +83,17 @@ main = do
               ,(StringTok,"c")
               ,(KeywordTok,"\NUL")]]
              @=? tokenize defConfig perl "s\0b\0c\0"
+      , testCase "perl backslash case 1" $ Right
+          [ [ ( KeywordTok , "m\\" )
+            , ( OtherTok , "'" ) ]
+          ] @=? tokenize defConfig perl
+                     "m\\'"
+      , testCase "perl backslash case 2" $ Right
+          [ [ ( KeywordTok , "m\\" )
+            , ( OtherTok , "a" )
+            , ( KeywordTok , "\\" ) ]
+          ] @=? tokenize defConfig perl
+                     "m\\a\\"
       , testCase "perl quoting case" $ Right
            [ [ ( KeywordTok , "my" )
               , ( NormalTok , " " )

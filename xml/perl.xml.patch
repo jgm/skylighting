@@ -1,7 +1,5 @@
-diff --git a/xml/perl.xml b/xml/perl.xml
-index e9fb42f..55a61fa 100644
---- a/xml/perl.xml
-+++ b/xml/perl.xml
+--- ../syntax-highlighting/data/syntax/perl.xml	2016-12-14 12:44:11.000000000 +0100
++++ perl.xml	2017-02-16 16:14:04.000000000 +0100
 @@ -452,7 +452,7 @@
          <IncludeRules context="ipstring_internal" />
        </context>
@@ -20,3 +18,12 @@ index e9fb42f..55a61fa 100644
          <DetectChar attribute="Operator" context="#pop#pop" char="1" dynamic="true" endRegion="String" />
        </context>
  
+@@ -600,7 +600,7 @@
+         <RegExpr attribute="Pattern Internal Operator" context="#stay" String="\$(?=%1)" dynamic="true" />
+         <RegExpr attribute="Operator" context="#pop#pop" String="%1[cgimosx]*" dynamic="true" endRegion="Pattern" />
+         <IncludeRules context="regex_pattern_internal_ip" />
+-        <RegExpr attribute="Pattern Internal Operator" context="#stay" String="\$(?=\%1)" dynamic="true" />
++        <RegExpr attribute="Pattern Internal Operator" context="#stay" String="\$(?=\\%1)" dynamic="true" />
+       </context>
+       <context name="pattern_brace" attribute="Pattern" lineEndContext="#stay">
+         <RegExpr attribute="Operator" context="#pop#pop" String="\}[cgimosx]*" endRegion="Pattern" />
