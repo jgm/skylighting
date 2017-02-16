@@ -42,6 +42,7 @@ main = do
   args <- getArgs
   let regen = "--regenerate" `elem` args
   defaultTheme <- BL.readFile ("test" </> "default.theme")
+  putStrLn $ "randomText = " ++ show randomText
   defaultMain $ testGroup "skylighting tests" $
     [ testGroup "tokenizer tests" $
         map (tokenizerTest regen) inputs
