@@ -113,23 +113,23 @@ script:
   case "$BUILD" in
     stack)
       ulimit -n 4096
-      stack --no-terminal $ARGS install --flag 'aeson:fast' --flag 'skylighting:bootstrap' --ghc-options="-Wall -fno-warn-unused-do-bind -Werror"
-      stack exec skylighting-extract -- xml/*.xml
-      stack sdist
-      stack clean
+      stack --no-terminal $ARGS install --flag 'aeson:fast' --flag 'skylighting:bootstrap' --ghc-options="-Wall -fno-warn-unused-do-bind -Werror" && \
+      stack exec skylighting-extract -- xml/*.xml && \
+      stack sdist && \
+      stack clean && \
       stack --no-terminal $ARGS test --test-arguments '--hide-successes' --flag 'aeson:fast' --flag 'skylighting:executable' --haddock --no-haddock-deps --ghc-options="-Wall -fno-warn-unused-do-bind -Werror"
       ;;
     cabal)
-      cabal configure -v2 -ffast -fbootstrap --ghc-options="-Wall -fno-warn-unused-do-bind -Werror"
-      cabal build -j
-      cabal run skylighting-extract -- xml/*.xml
-      cabal clean
-      cabal configure --enable-tests --enable-benchmarks -v2 -ffast -f-bootstrap -fexecutable --ghc-options="-Wall -fno-warn-unused-do-bind -Werror"
-      cabal build -j
-      cabal check
-      cabal test -j --test-options='--hide-successes'
-      cabal copy
-      cabal sdist
+      cabal configure -v2 -ffast -fbootstrap --ghc-options="-Wall -fno-warn-unused-do-bind -Werror" && \
+      cabal build -j && \
+      cabal run skylighting-extract -- xml/*.xml && \
+      cabal clean && \
+      cabal configure --enable-tests --enable-benchmarks -v2 -ffast -f-bootstrap -fexecutable --ghc-options="-Wall -fno-warn-unused-do-bind -Werror" && \
+      cabal build -j && \
+      cabal check && \
+      cabal test -j --test-options='--hide-successes' && \
+      cabal copy && \
+      cabal sdist && \
       SRC_TGZ=$(cabal info . | awk '{print $2;exit}').tar.gz && \
         (cd dist && cabal install -j --enable-tests --force-reinstalls "$SRC_TGZ")
       ;;
