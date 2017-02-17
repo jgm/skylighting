@@ -1,4 +1,5 @@
 import Skylighting
+import qualified Data.Map as Map
 import Criterion.Main
 import Criterion.Types (Config(..))
 import System.FilePath
@@ -24,7 +25,7 @@ main = do
 parseBench :: [String] -> Benchmark
 parseBench xmls =
   bench "parse syntax definitions" $
-    nfIO ((show . foldr addSyntaxDefinition mempty) <$> mapM addFile xmls)
+    nfIO ((Map.size . foldr addSyntaxDefinition mempty) <$> mapM addFile xmls)
    where addFile f = do
            result <- parseSyntaxDefinition ("xml" </> f)
            case result of

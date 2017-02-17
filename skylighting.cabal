@@ -358,6 +358,7 @@ benchmark benchmark-skylighting
                    base >= 4.2 && < 5,
                    filepath,
                    text,
+                   containers,
                    directory,
                    criterion >= 1.0 && < 1.2
   Ghc-Options:   -rtsopts -Wall -fno-warn-unused-do-bind
