@@ -4,6 +4,7 @@ import Criterion.Types (Config(..))
 import System.FilePath
 import Data.Text (Text)
 import qualified Data.Text as Text
+import System.Directory
 
 main :: IO ()
 main = do
@@ -15,8 +16,20 @@ main = do
         let format = drop 1 $ takeExtension fp
         return (Text.pack format, Text.pack contents)
   cases <- mapM getCase inputs
+  xmlfiles <- filter (\x -> takeExtension x == ".xml") <$>
+                  getDirectoryContents "xml"
   defaultMainWith defaultConfig{ timeLimit = 10.0 }
-    $ map testBench cases
+    $ parseBench xmlfiles : map testBench cases
+
+parseBench :: [String] -> Benchmark
+parseBench xmls =
+  bench "parse syntax definitions" $
+    nfIO ((show . foldr addSyntaxDefinition mempty) <$> mapM addFile xmls)
+   where addFile f = do
+           result <- parseSyntaxDefinition ("xml" </> f)
+           case result of
+                Left e -> error e
+                Right r -> return r
 
 testBench :: (Text, Text) -> Benchmark
 testBench (format, contents) =
