@@ -273,7 +273,6 @@ executable skylighting-extract
                        utf8-string,
                        case-insensitive,
                        aeson,
-                       pretty-show,
                        containers,
                        directory
   if flag(system-pcre)

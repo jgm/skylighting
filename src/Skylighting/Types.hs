@@ -56,29 +56,16 @@ data KeywordAttr =
   KeywordAttr  { keywordCaseSensitive :: Bool
                , keywordDelims        :: Set.Set Char
                }
-  deriving (Read, Eq, Ord, Data, Typeable, Generic)
-
--- we have a custom show instance solely in order to get
--- parentheses around the (Data.Set.fromList ...) part.
-instance Show KeywordAttr where
-  show k = "KeywordAttr{ keywordCaseSensitive = " ++
-            show (keywordCaseSensitive k) ++
-           ", keywordDelims = (Data.Set." ++ show (keywordDelims k) ++ ")}"
+  deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 data WordSet a = CaseSensitiveWords (Set.Set a)
                | CaseInsensitiveWords (Set.Set (CI a))
-     deriving (Read, Eq, Ord, Data, Typeable, Generic)
+     deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 -- | A set of words to match (either case-sensitive or case-insensitive).
 makeWordSet :: (FoldCase a, Ord a) => Bool -> [a] -> WordSet a
 makeWordSet True ws  = CaseSensitiveWords (Set.fromList ws)
 makeWordSet False ws = CaseInsensitiveWords (Set.map mk (Set.fromList ws))
-
-instance Show a => Show (WordSet a) where
-  show (CaseSensitiveWords s) =
-    "(makeWordSet True " ++ show (Set.toList s) ++ ")"
-  show (CaseInsensitiveWords s) =
-    "(makeWordSet False " ++ show (Set.toList s) ++ ")"
 
 data Matcher =
     DetectChar Char

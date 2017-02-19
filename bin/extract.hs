@@ -9,8 +9,6 @@ import System.Directory
 import System.Environment (getArgs)
 import System.Exit
 import System.IO (hPutStrLn, stderr)
-import Text.Show.Pretty (ppShow)
-import qualified Data.Map as Map
 
 main :: IO ()
 main = do
@@ -63,25 +61,21 @@ writeModuleFor :: Syntax -> IO ()
 writeModuleFor syn = do
   let fp = toPathName syn
   putStrLn $ "Writing " ++ fp
-  let isregex (RegExpr{}) = True
-      isregex _           = False
-  let iskeyword (Keyword{}) = True
-      iskeyword _           = False
-  let matchers = map rMatcher $ concatMap cRules $ Map.elems $ sContexts syn
-  let usesRegex = any isregex matchers
-  let usesSet = any iskeyword matchers
   writeFile fp $ unlines $
     [ "{-# LANGUAGE OverloadedStrings #-}"
     , "module Skylighting.Syntax." ++ Text.unpack (sShortname syn) ++
         " (syntax) where"
     , ""
     , "import Skylighting.Types"
-    , "import Data.Map" ] ++
-    [ "import Skylighting.Regex" | usesRegex ] ++
-    [ "import qualified Data.Set" | usesSet ] ++
-    [ ""
+    , ""
     , "syntax :: Syntax"
-    , "syntax = " ++ ppShow syn ]
+    , "syntax = read " ++ show (show syn) ]
+
+-- NOTE:  we include string representation of the Syntax,
+-- which we then 'read', rather than the code for the Syntax,
+-- because ghc doesn't deal well with large data structure
+-- literals.  For background see jgm/skylighting#7 and
+--  http://stackoverflow.com/questions/16348340/compiling-very-large-constants-with-ghc
 
 toPathName :: Syntax -> String
 toPathName s =
