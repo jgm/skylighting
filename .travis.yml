@@ -58,6 +58,10 @@ matrix:
     compiler: ": #stack 8.0.2"
     addons: {apt: {packages: [ghc-8.0.2], sources: [hvr-ghc]}}
 
+  - env: BUILD=stack ARGS="--resolver lts-8 --library-profiling --executable-profiling"
+    compiler: ": #stack 8.0.2"
+    addons: {apt: {packages: [ghc-8.0.2], sources: [hvr-ghc]}}
+
   # Nightly builds are allowed to fail
   - env: BUILD=stack ARGS="--resolver nightly"
     compiler: ": #stack nightly"
