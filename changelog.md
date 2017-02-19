@@ -1,5 +1,18 @@
 # Revision history for skylighting
 
+## 0.2 -- 2017-02-19
+
+  * Restore Data, Typeable, Generic instances for basic types.
+    To do this, we remove reCompiled field from RE (API change).  Instead, we
+    have the tokenizer compile regexes the first time it encounters them,
+    memoizing the results.  Performance is not significantly worse.
+  * Use -fprof-auto-exported for profiling builds.
+  * Added benchmark for xml syntax definition parsing.
+  * Patched perl.xml (improperly escaped regex) (#8).
+    This fixes a perl regex compilation error for regex patterns
+    with backslash as delimiter, e.g. m\a\.
+  * Add a flag to build with system pcre (Felix Yan).
+
 ## 0.1.1.5  -- 2017-02-03
 
   * Avoid depending on a PrintfArg instance for Text (#5).
