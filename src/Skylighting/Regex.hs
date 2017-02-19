@@ -19,6 +19,7 @@ import System.IO.Unsafe (unsafePerformIO)
 import Text.Printf
 import Text.Regex.PCRE.ByteString
 import Data.Data
+import Data.Binary (Binary)
 
 newtype RegexException = RegexException String
       deriving (Show, Typeable, Generic)
@@ -29,6 +30,8 @@ data RE = RE{
     reString        :: BS.ByteString
   , reCaseSensitive :: Bool
 } deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
+
+instance Binary RE
 
 -- | Compile a PCRE regex.  If the first parameter is True, the regex is
 -- case-sensitive, otherwise caseless.  The regex is compiled from

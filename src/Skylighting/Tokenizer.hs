@@ -531,10 +531,9 @@ keyword kwattr kws inp = do
   guard $ not (BS.null w)
   w' <- decodeBS w
   let numchars = Text.length w'
-  case kws of
-       CaseSensitiveWords ws   | w' `Set.member` ws -> takeChars numchars
-       CaseInsensitiveWords ws | mk w' `Set.member` ws -> takeChars numchars
-       _                       -> mzero
+  if w' `inWordSet` kws
+     then takeChars numchars
+     else mzero
 
 normalizeHighlighting :: [Token] -> [Token]
 normalizeHighlighting [] = []

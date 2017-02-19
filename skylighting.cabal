@@ -227,9 +227,11 @@ library
   build-depends:       base >= 4.7 && < 5.0,
                        mtl,
                        text,
+                       binary,
                        bytestring,
                        directory,
                        filepath,
+                       binary,
                        aeson,
                        case-insensitive,
                        utf8-string,
@@ -273,6 +275,7 @@ executable skylighting-extract
                        utf8-string,
                        case-insensitive,
                        aeson,
+                       binary,
                        containers,
                        directory
   if flag(system-pcre)

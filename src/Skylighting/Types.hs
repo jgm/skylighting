@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable   #-}
-{-# LANGUAGE DeriveGeneric       #-}
+{-# LANGUAGE DeriveGeneric        #-}
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE OverloadedStrings    #-}
 {-# LANGUAGE ScopedTypeVariables  #-}
@@ -11,6 +11,7 @@ module Skylighting.Types (
               , KeywordAttr(..)
               , WordSet(..)
               , makeWordSet
+              , inWordSet
               , Matcher(..)
               , Rule(..)
               , Context(..)
@@ -35,7 +36,8 @@ module Skylighting.Types (
 
 import Data.Aeson
 import Data.Bits
-import Data.CaseInsensitive (CI, FoldCase, mk)
+import Data.CaseInsensitive (FoldCase(..))
+import Data.Binary (Binary)
 import Data.Data (Data)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
@@ -58,14 +60,22 @@ data KeywordAttr =
                }
   deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
+instance Binary KeywordAttr
+
 data WordSet a = CaseSensitiveWords (Set.Set a)
-               | CaseInsensitiveWords (Set.Set (CI a))
+               | CaseInsensitiveWords (Set.Set a)
      deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+
+instance Binary a => Binary (WordSet a)
 
 -- | A set of words to match (either case-sensitive or case-insensitive).
 makeWordSet :: (FoldCase a, Ord a) => Bool -> [a] -> WordSet a
 makeWordSet True ws  = CaseSensitiveWords (Set.fromList ws)
-makeWordSet False ws = CaseInsensitiveWords (Set.map mk (Set.fromList ws))
+makeWordSet False ws = CaseInsensitiveWords (Set.fromList $ map foldCase ws)
+
+inWordSet :: (FoldCase a, Ord a) => a -> WordSet a -> Bool
+inWordSet w (CaseInsensitiveWords ws) = foldCase w `Set.member` ws
+inWordSet w (CaseSensitiveWords ws) = w `Set.member` ws
 
 data Matcher =
     DetectChar Char
@@ -88,9 +98,13 @@ data Matcher =
   | DetectIdentifier
   deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
+instance Binary Matcher
+
 data ContextSwitch =
   Pop | Push ContextName
   deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+
+instance Binary ContextSwitch
 
 -- | A rule corresponds to one of the elements of a Kate syntax
 -- highlighting "context."
@@ -107,6 +121,8 @@ data Rule = Rule{
   , rContextSwitch    :: [ContextSwitch]
   } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
+instance Binary Rule
+
 -- | A syntax corresponds to a complete Kate syntax description.
 -- The 'sShortname' field is derived from the filename.
 data Syntax = Syntax{
@@ -120,6 +136,8 @@ data Syntax = Syntax{
   , sExtensions      :: [String]
   , sStartingContext :: Text
   } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+
+instance Binary Syntax
 
 -- | A map of syntaxes, keyed by full name.
 type SyntaxMap = Map.Map Text Syntax
@@ -138,6 +156,8 @@ data Context = Context{
   , cFallthroughContext :: [ContextSwitch]
   , cDynamic            :: Bool
 } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+
+instance Binary Context
 
 -- | A pair consisting of a list of attributes and some text.
 type Token = (TokenType, Text)
@@ -177,6 +197,8 @@ data TokenType = KeywordTok
                | NormalTok
                deriving (Read, Show, Eq, Ord, Enum, Data, Typeable, Generic)
 
+instance Binary TokenType
+
 -- | JSON @"Keyword"@ corresponds to 'KeywordTok', and so on.
 instance FromJSON TokenType where
   parseJSON (String t) =
@@ -196,6 +218,8 @@ data TokenStyle = TokenStyle {
   , tokenItalic     :: Bool
   , tokenUnderline  :: Bool
   } deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
+
+instance Binary TokenStyle
 
 -- | The keywords used in KDE syntax
 -- themes are used, e.g. @text-color@ for default token color.
@@ -226,6 +250,8 @@ defStyle = TokenStyle {
 -- A color (red/green/blue).
 data Color = RGB Word8 Word8 Word8
   deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
+
+instance Binary Color
 
 class ToColor a where
   toColor :: a -> Maybe Color
@@ -282,6 +308,8 @@ data Style = Style {
   , lineNumberBackgroundColor :: Maybe Color
   } deriving (Read, Show, Eq, Ord, Data, Typeable, Generic)
 
+instance Binary Style
+
 -- | The FromJSON instance for 'Style' is designed so that
 -- a KDE syntax theme (JSON) can be decoded directly as a
 -- 'Style'.
@@ -311,6 +339,8 @@ data FormatOptions = FormatOptions{
        , containerClasses :: [Text]   -- ^ Additional classes for Html container tag
                                       --   (pre or table depending on numberLines)
        } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+
+instance Binary FormatOptions
 
 defaultFormatOpts :: FormatOptions
 defaultFormatOpts = FormatOptions{

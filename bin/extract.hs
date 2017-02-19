@@ -9,6 +9,7 @@ import System.Directory
 import System.Environment (getArgs)
 import System.Exit
 import System.IO (hPutStrLn, stderr)
+import Data.Binary (encode)
 
 main :: IO ()
 main = do
@@ -67,12 +68,13 @@ writeModuleFor syn = do
         " (syntax) where"
     , ""
     , "import Skylighting.Types"
+    , "import Data.Binary"
     , ""
     , "syntax :: Syntax"
-    , "syntax = read " ++ show (show syn) ]
+    , "syntax = decode " ++ show (encode syn) ]
 
 -- NOTE:  we include string representation of the Syntax,
--- which we then 'read', rather than the code for the Syntax,
+-- which we then 'decode', rather than the code for the Syntax,
 -- because ghc doesn't deal well with large data structure
 -- literals.  For background see jgm/skylighting#7 and
 --  http://stackoverflow.com/questions/16348340/compiling-very-large-constants-with-ghc
