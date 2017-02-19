@@ -6,6 +6,12 @@
     To do this, we remove reCompiled field from RE (API change).  Instead, we
     have the tokenizer compile regexes the first time it encounters them,
     memoizing the results.  Performance is not significantly worse.
+  * Skylighting.Syntax.*:  use string representation of the Syntax,
+    which is then 'read', rather than including the code for the data
+    structure directly (#7).  This indirect method produces faster compile
+    times and avoids massive memory usage by ghc (especially in profiling
+    builds).  For background see
+    http://stackoverflow.com/questions/16348340/compiling-very-large-constants-with-ghc
   * Use -fprof-auto-exported for profiling builds.
   * Added benchmark for xml syntax definition parsing.
   * Patched perl.xml (improperly escaped regex) (#8).
