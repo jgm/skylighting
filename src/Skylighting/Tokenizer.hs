@@ -9,11 +9,11 @@ import Control.Monad.Except
 import Control.Monad.Reader
 import Control.Monad.State.Strict
 import qualified Data.ByteString.Char8 as BS
+import qualified Data.Map as Map
 import Data.ByteString.Char8 (ByteString)
 import Data.CaseInsensitive (mk)
 import Data.Char (isAlphaNum, isAscii, isLetter, isSpace, ord, isPrint)
-import qualified Data.Map as Map
-import Data.Maybe (catMaybes, fromMaybe)
+import Data.Maybe (catMaybes)
 import Data.Monoid
 import qualified Data.Set as Set
 import Data.Text (Text)
@@ -49,7 +49,8 @@ data TokenizerState = TokenizerState{
   , column              :: Int
   , lineContinuation    :: Bool
   , firstNonspaceColumn :: Maybe Int
-} deriving (Show)
+  , compiledRegexes     :: Map.Map RE Regex
+}
 
 -- | Configuration options for 'tokenize'.
 data TokenizerConfig = TokenizerConfig{
@@ -132,6 +133,7 @@ startingState =
                 , column = 0
                 , lineContinuation = False
                 , firstNonspaceColumn = Nothing
+                , compiledRegexes = Map.empty
                 }
 
 tokenizeLine :: (ByteString, Int) -> TokenizerM [Token]
@@ -270,7 +272,6 @@ withAttr tt p = do
 hlCStringCharRegex :: RE
 hlCStringCharRegex = RE{
     reString = reHlCStringChar
-  , reCompiled = Just $ compileRegex False reHlCStringChar
   , reCaseSensitive = False
   }
 
@@ -280,7 +281,6 @@ reHlCStringChar = "\\\\(?:[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)"
 hlCCharRegex :: RE
 hlCCharRegex = RE{
     reString = reStr
-  , reCompiled = Just $ compileRegex False reStr
   , reCaseSensitive = False
   }
   where reStr = "'(?:" <> reHlCStringChar <> "|[^'\\\\])'"
@@ -442,9 +442,17 @@ regExpr dynamic re inp = do
   reStr <- if dynamic
               then subDynamic (reString re)
               else return (reString re)
-  -- note, for dynamic regexes rCompiled == Nothing:
-  let regex = fromMaybe (compileRegex (reCaseSensitive re) reStr)
-                 $ reCompiled re
+  regex <- if dynamic
+              then return $ compileRegex (reCaseSensitive re) reStr
+              else do
+                compiledREs <- gets compiledRegexes
+                case Map.lookup re compiledREs of
+                     Nothing -> do
+                       let cre = compileRegex (reCaseSensitive re) reStr
+                       modify $ \st -> st{ compiledRegexes =
+                             Map.insert re cre (compiledRegexes st) }
+                       return cre
+                     Just cre -> return cre
   when (BS.take 2 reStr == "\\b") $ wordBoundary inp
   case matchRegex regex inp of
        Just (match:capts) -> do
@@ -539,7 +547,6 @@ normalizeHighlighting ((t,x):xs)
 integerRegex :: RE
 integerRegex = RE{
     reString = intReStr
-  , reCompiled = Just $ compileRegex False intReStr
   , reCaseSensitive = False
   }
   where intReStr = "\\b[-+]?(0[Xx][0-9A-Fa-f]+|0[Oo][0-7]+|[0-9]+)\\b"
@@ -547,7 +554,6 @@ integerRegex = RE{
 floatRegex :: RE
 floatRegex = RE{
     reString = floatReStr
-  , reCompiled = Just $ compileRegex False floatReStr
   , reCaseSensitive = False
   }
   where floatReStr = "\\b[-+]?(([0-9]+\\.[0-9]*|[0-9]*\\.[0-9]+)([Ee][-+]?[0-9]+)?|[0-9]+[Ee][-+]?[0-9]+)\\b"
@@ -555,7 +561,6 @@ floatRegex = RE{
 octRegex :: RE
 octRegex = RE{
     reString = octRegexStr
-  , reCompiled = Just $ compileRegex False octRegexStr
   , reCaseSensitive = False
   }
   where octRegexStr = "\\b[-+]?0[Oo][0-7]+\\b"
@@ -563,7 +568,6 @@ octRegex = RE{
 hexRegex :: RE
 hexRegex = RE{
     reString = hexRegexStr
-  , reCompiled = Just $ compileRegex False hexRegexStr
   , reCaseSensitive = False
   }
   where hexRegexStr = "\\b[-+]?0[Xx][0-9A-Fa-f]+\\b"

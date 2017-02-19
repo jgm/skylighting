@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable   #-}
+{-# LANGUAGE DeriveGeneric       #-}
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE OverloadedStrings    #-}
 {-# LANGUAGE ScopedTypeVariables  #-}
@@ -41,6 +42,7 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Typeable (Typeable)
+import GHC.Generics (Generic)
 import Data.Word
 import Safe (readMay)
 import Skylighting.Regex
@@ -54,6 +56,7 @@ data KeywordAttr =
   KeywordAttr  { keywordCaseSensitive :: Bool
                , keywordDelims        :: Set.Set Char
                }
+  deriving (Read, Eq, Ord, Data, Typeable, Generic)
 
 -- we have a custom show instance solely in order to get
 -- parentheses around the (Data.Set.fromList ...) part.
@@ -64,6 +67,7 @@ instance Show KeywordAttr where
 
 data WordSet a = CaseSensitiveWords (Set.Set a)
                | CaseInsensitiveWords (Set.Set (CI a))
+     deriving (Read, Eq, Ord, Data, Typeable, Generic)
 
 -- | A set of words to match (either case-sensitive or case-insensitive).
 makeWordSet :: (FoldCase a, Ord a) => Bool -> [a] -> WordSet a
@@ -95,11 +99,11 @@ data Matcher =
   | IncludeRules ContextName
   | DetectSpaces
   | DetectIdentifier
-  deriving (Show)
+  deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 data ContextSwitch =
   Pop | Push ContextName
-  deriving Show
+  deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 -- | A rule corresponds to one of the elements of a Kate syntax
 -- highlighting "context."
@@ -114,7 +118,7 @@ data Rule = Rule{
   , rFirstNonspace    :: Bool
   , rColumn           :: Maybe Int
   , rContextSwitch    :: [ContextSwitch]
-  } deriving (Show)
+  } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 -- | A syntax corresponds to a complete Kate syntax description.
 -- The 'sShortname' field is derived from the filename.
@@ -128,7 +132,7 @@ data Syntax = Syntax{
   , sLicense         :: Text
   , sExtensions      :: [String]
   , sStartingContext :: Text
-  } deriving (Show)
+  } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 -- | A map of syntaxes, keyed by full name.
 type SyntaxMap = Map.Map Text Syntax
@@ -146,7 +150,7 @@ data Context = Context{
   , cFallthrough        :: Bool
   , cFallthroughContext :: [ContextSwitch]
   , cDynamic            :: Bool
-} deriving (Show)
+} deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 -- | A pair consisting of a list of attributes and some text.
 type Token = (TokenType, Text)
@@ -184,7 +188,7 @@ data TokenType = KeywordTok
                | AlertTok
                | ErrorTok
                | NormalTok
-               deriving (Read, Show, Eq, Ord, Enum, Data, Typeable)
+               deriving (Read, Show, Eq, Ord, Enum, Data, Typeable, Generic)
 
 -- | JSON @"Keyword"@ corresponds to 'KeywordTok', and so on.
 instance FromJSON TokenType where
@@ -204,7 +208,7 @@ data TokenStyle = TokenStyle {
   , tokenBold       :: Bool
   , tokenItalic     :: Bool
   , tokenUnderline  :: Bool
-  } deriving (Show, Read, Ord, Eq, Data, Typeable)
+  } deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
 
 -- | The keywords used in KDE syntax
 -- themes are used, e.g. @text-color@ for default token color.
@@ -234,7 +238,7 @@ defStyle = TokenStyle {
 
 -- A color (red/green/blue).
 data Color = RGB Word8 Word8 Word8
-  deriving (Show, Read, Ord, Eq, Data, Typeable)
+  deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
 
 class ToColor a where
   toColor :: a -> Maybe Color
@@ -289,7 +293,7 @@ data Style = Style {
   , backgroundColor           :: Maybe Color
   , lineNumberColor           :: Maybe Color
   , lineNumberBackgroundColor :: Maybe Color
-  } deriving (Read, Show, Eq, Ord, Data, Typeable)
+  } deriving (Read, Show, Eq, Ord, Data, Typeable, Generic)
 
 -- | The FromJSON instance for 'Style' is designed so that
 -- a KDE syntax theme (JSON) can be decoded directly as a
@@ -319,7 +323,7 @@ data FormatOptions = FormatOptions{
        , codeClasses      :: [Text]   -- ^ Additional classes for Html code tag
        , containerClasses :: [Text]   -- ^ Additional classes for Html container tag
                                       --   (pre or table depending on numberLines)
-       } deriving (Eq, Show, Read)
+       } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 defaultFormatOpts :: FormatOptions
 defaultFormatOpts = FormatOptions{

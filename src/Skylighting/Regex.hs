@@ -18,7 +18,7 @@ import GHC.Generics (Generic)
 import System.IO.Unsafe (unsafePerformIO)
 import Text.Printf
 import Text.Regex.PCRE.ByteString
-import Data.Typeable
+import Data.Data
 
 newtype RegexException = RegexException String
       deriving (Show, Typeable, Generic)
@@ -27,20 +27,8 @@ instance E.Exception RegexException
 
 data RE = RE{
     reString        :: BS.ByteString
-  , reCompiled      :: Maybe Regex
   , reCaseSensitive :: Bool
-}
-
-instance Show RE where
-  show re = "RE{ reString = " ++ show (reString re) ++
-            ", reCompiled = " ++
-            (case reCompiled re of
-                  Nothing  -> "Nothing"
-                  Just _   -> "Just (compileRegex " ++
-                                show (reCaseSensitive re) ++
-                                " " ++ show (reString re)
-                                ++ ")") ++
-            ", reCaseSensitive = " ++ show (reCaseSensitive re) ++ "}"
+} deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
 
 -- | Compile a PCRE regex.  If the first parameter is True, the regex is
 -- case-sensitive, otherwise caseless.  The regex is compiled from
