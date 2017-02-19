@@ -245,6 +245,7 @@ library
   if impl(ghc < 7.10)
      hs-source-dirs:   prelude
      other-modules:    Prelude
+  ghc-prof-options:    -fprof-auto-exported
   default-language:    Haskell2010
   ghc-options:         -Wall
   if flag(bootstrap)
