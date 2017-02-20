@@ -1,5 +1,15 @@
 # Revision history for skylighting
 
+## 0.3 -- 2017-02-19
+
+  * Store literal binary-encoded representations of the Syntax
+    structure in Skylighting.Syntax.*.hs, instead of the
+    structure itself.  This works around a problem ghc has
+    compiling modules with large structures.  This indirect method
+    produces faster compile times and avoids massive memory usage by
+    ghc (especially in profiling builds).  For background see
+    http://stackoverflow.com/questions/16348340/.  Closes #7.
+
 ## 0.2 -- 2017-02-19
 
   * Restore Data, Typeable, Generic instances for basic types.
