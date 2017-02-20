@@ -9,6 +9,7 @@
     produces faster compile times and avoids massive memory usage by
     ghc (especially in profiling builds).  For background see
     http://stackoverflow.com/questions/16348340/.  Closes #7.
+  * Types: Internals of 'WordSet' are no longer exposed.
 
 ## 0.2 -- 2017-02-19
 

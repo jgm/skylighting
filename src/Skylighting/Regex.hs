@@ -21,11 +21,13 @@ import Text.Regex.PCRE.ByteString
 import Data.Data
 import Data.Binary (Binary)
 
+-- | An exception in compiling or executing a regex.
 newtype RegexException = RegexException String
       deriving (Show, Typeable, Generic)
 
 instance E.Exception RegexException
 
+-- | A representation of a regular expression.
 data RE = RE{
     reString        :: BS.ByteString
   , reCaseSensitive :: Bool
@@ -70,7 +72,7 @@ convertOctalEscapes (x:xs) = x : convertOctalEscapes xs
 isOctalDigit :: Char -> Bool
 isOctalDigit c = c >= '0' && c <= '7'
 
--- Match a 'Regex' against a bytestring.  Returns 'Nothing' if
+-- | Match a 'Regex' against a bytestring.  Returns 'Nothing' if
 -- no match, otherwise 'Just' a nonempty list of bytestrings. The first
 -- bytestring in the list is the match, the others the captures, if any.
 -- If there are errors in executing the regex, a 'RegexException' is

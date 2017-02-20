@@ -5,11 +5,12 @@
 {-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
+-- | Basic types for Skylighting.
 module Skylighting.Types (
               -- * Syntax descriptions
                 ContextName
               , KeywordAttr(..)
-              , WordSet(..)
+              , WordSet
               , makeWordSet
               , inWordSet
               , Matcher(..)
@@ -54,6 +55,7 @@ import Text.Printf
 -- syntax name, the second the context name within that syntax.
 type ContextName = (Text, Text)
 
+-- | Attributes controlling how keywords are interpreted.
 data KeywordAttr =
   KeywordAttr  { keywordCaseSensitive :: Bool
                , keywordDelims        :: Set.Set Char
@@ -62,6 +64,7 @@ data KeywordAttr =
 
 instance Binary KeywordAttr
 
+-- | A set of "words," possibly case insensitive.
 data WordSet a = CaseSensitiveWords (Set.Set a)
                | CaseInsensitiveWords (Set.Set a)
      deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
@@ -73,10 +76,12 @@ makeWordSet :: (FoldCase a, Ord a) => Bool -> [a] -> WordSet a
 makeWordSet True ws  = CaseSensitiveWords (Set.fromList ws)
 makeWordSet False ws = CaseInsensitiveWords (Set.fromList $ map foldCase ws)
 
+-- | Test for membership in a 'WordSet'.
 inWordSet :: (FoldCase a, Ord a) => a -> WordSet a -> Bool
 inWordSet w (CaseInsensitiveWords ws) = foldCase w `Set.member` ws
 inWordSet w (CaseSensitiveWords ws) = w `Set.member` ws
 
+-- | Matchers correspond to the element types in a context.
 data Matcher =
     DetectChar Char
   | Detect2Chars Char Char
@@ -100,6 +105,7 @@ data Matcher =
 
 instance Binary Matcher
 
+-- | A context switch, either pops or pushes a context.
 data ContextSwitch =
   Pop | Push ContextName
   deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
@@ -247,12 +253,13 @@ defStyle = TokenStyle {
   , tokenUnderline  = False
   }
 
--- A color (red/green/blue).
+-- | A color (red/green/blue).
 data Color = RGB Word8 Word8 Word8
   deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
 
 instance Binary Color
 
+-- | Things that can be converted to a color.
 class ToColor a where
   toColor :: a -> Maybe Color
 
@@ -284,6 +291,7 @@ instance FromJSON Color where
   parseJSON (String t) = maybe mempty return $ toColor (Text.unpack t)
   parseJSON _          = mempty
 
+-- | Different representations of a 'Color'.
 class FromColor a where
   fromColor :: Color -> a
 
@@ -342,6 +350,7 @@ data FormatOptions = FormatOptions{
 
 instance Binary FormatOptions
 
+-- | Default formatting options.
 defaultFormatOpts :: FormatOptions
 defaultFormatOpts = FormatOptions{
                       numberLines = False
