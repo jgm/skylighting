@@ -124,10 +124,15 @@ main = do
            , [ ( FloatTok , "-1.0F" ) ]
            , [ ( FloatTok , "-1.0L" ) ]
            , [ ( FloatTok , "1e3" ) ]
+           , [ ( FloatTok , "-15e+3" ) ]
            , [ ( FloatTok , "0.f" ) ]
            , [ ( FloatTok , "1.F" ) ]
+           , [ ( DecValTok , "1" )
+             , ( NormalTok ,".E" )
+             , ( DecValTok , "3" )
+             ]
            ] @=? tokenize defConfig cpp
-                     "0.1f\n1.0f\n-0.1f\n-1.0F\n-1.0L\n1e3\n0.f\n1.F\n"
+                     "0.1f\n1.0f\n-0.1f\n-1.0F\n-1.0L\n1e3\n-15e+3\n0.f\n1.F\n1.E3"
       ]
     ]
 
