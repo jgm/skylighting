@@ -218,9 +218,8 @@ tryRule rule inp = do
                 Int -> withAttr attr $ parseInt inp
                 HlCOct -> withAttr attr $ parseOct inp
                 HlCHex -> withAttr attr $ parseHex inp
-                HlCStringChar -> withAttr attr $
-                                     regExpr False hlCStringCharRegex inp
-                HlCChar -> withAttr attr $ regExpr False hlCCharRegex inp
+                HlCStringChar -> withAttr attr $ parseCStringChar inp
+                HlCChar -> withAttr attr $ parseCChar inp
                 Float -> withAttr attr $ parseFloat inp
                 Keyword kwattr kws ->
                   withAttr attr $ keyword kwattr kws inp
@@ -269,22 +268,6 @@ withAttr tt p = do
   if Text.null res
      then return Nothing
      else return $ Just (tt, res)
-
-hlCStringCharRegex :: RE
-hlCStringCharRegex = RE{
-    reString = reHlCStringChar
-  , reCaseSensitive = False
-  }
-
-reHlCStringChar :: ByteString
-reHlCStringChar = "\\\\(?:[abefnrtv\"'?\\\\]|[xX][a-fA-F0-9]+|0[0-7]+)"
-
-hlCCharRegex :: RE
-hlCCharRegex = RE{
-    reString = reStr
-  , reCaseSensitive = False
-  }
-  where reStr = "'(?:" <> reHlCStringChar <> "|[^'\\\\])'"
 
 {-
 -- Try a tokenizer and return to original state if it fails.
@@ -547,6 +530,34 @@ normalizeHighlighting ((t,x):xs)
   | otherwise =
     (t, Text.concat (x : map snd matches)) : normalizeHighlighting rest
     where (matches, rest) = span (\(z,_) -> z == t) xs
+
+parseCStringChar :: ByteString -> TokenizerM Text
+parseCStringChar inp = do
+  case A.parseOnly (A.match pCStringChar) inp of
+       Left _ -> mzero
+       Right (r,_) -> takeChars (BS.length r) -- assumes ascii
+
+pCStringChar :: A.Parser ()
+pCStringChar = do
+  _ <- A.char '\\'
+  next <- A.anyChar
+  case next of
+       c | c == 'x' || c == 'X' -> () <$ A.takeWhile1 (A.inClass "0-9a-fA-F")
+         | c == '0' -> () <$ A.takeWhile1 (A.inClass "0-7")
+         | A.inClass "abefnrtv\"'?\\" c -> return ()
+         | otherwise -> mzero
+
+parseCChar :: ByteString -> TokenizerM Text
+parseCChar inp = do
+  case A.parseOnly (A.match pCChar) inp of
+       Left _ -> mzero
+       Right (r,_) -> takeChars (BS.length r) -- assumes ascii
+
+pCChar :: A.Parser ()
+pCChar = do
+  () <$ A.char '\''
+  pCStringChar <|> () <$ A.satisfy (\c -> c /= '\'' && c /= '\\')
+  () <$ A.char '\''
 
 parseInt :: ByteString -> TokenizerM Text
 parseInt inp = do
