@@ -615,17 +615,6 @@ mbMinus = (() <$ A.char '-') <|> return ()
 mbPlusMinus :: A.Parser ()
 mbPlusMinus = () <$ A.satisfy (A.inClass "+-") <|> return ()
 
-{-
-
-data FloatState = Start | PlusMinus | BeforeDigits | Dot |
-                  AfterDigits | Exp   | ExpPlusMinus | ExpDigits
-
-floatScanner :: FloatState -> Char -> Maybe FloatState
-floatScanner = do
-  undefined
-
--}
-
 parseFloat :: ByteString -> TokenizerM Text
 parseFloat inp = do
   wordBoundary inp
