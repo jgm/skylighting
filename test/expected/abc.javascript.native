@@ -100,8 +100,7 @@
   , ( NormalTok , " (index " )
   , ( OperatorTok , "!==" )
   , ( NormalTok , " " )
-  , ( OperatorTok , "-" )
-  , ( DecValTok , "1" )
+  , ( DecValTok , "-1" )
   , ( NormalTok , ") " )
   , ( OperatorTok , "{" )
   ]

@@ -12,7 +12,7 @@ import qualified Data.ByteString.Char8 as BS
 import qualified Data.Map as Map
 import Data.ByteString.Char8 (ByteString)
 import Data.CaseInsensitive (mk)
-import Data.Char (isAlphaNum, isAscii, isLetter, isSpace, ord, isPrint)
+import Data.Char (isAlphaNum, isAscii, isLetter, isSpace, ord, isPrint, chr)
 import Data.Maybe (catMaybes)
 import Data.Monoid
 import qualified Data.Set as Set
@@ -215,9 +215,9 @@ tryRule rule inp = do
                 AnyChar cs -> withAttr attr $ anyChar cs inp
                 RangeDetect c d -> withAttr attr $ rangeDetect c d inp
                 RegExpr re -> withAttr attr $ regExpr (rDynamic rule) re inp
-                Int -> withAttr attr $ regExpr False integerRegex inp
-                HlCOct -> withAttr attr $ regExpr False octRegex inp
-                HlCHex -> withAttr attr $ regExpr False hexRegex inp
+                Int -> withAttr attr $ parseInt inp
+                HlCOct -> withAttr attr $ parseOct inp
+                HlCHex -> withAttr attr $ parseHex inp
                 HlCStringChar -> withAttr attr $
                                      regExpr False hlCStringCharRegex inp
                 HlCChar -> withAttr attr $ regExpr False hlCCharRegex inp
@@ -548,26 +548,61 @@ normalizeHighlighting ((t,x):xs)
     (t, Text.concat (x : map snd matches)) : normalizeHighlighting rest
     where (matches, rest) = span (\(z,_) -> z == t) xs
 
-integerRegex :: RE
-integerRegex = RE{
-    reString = intReStr
-  , reCaseSensitive = False
-  }
-  where intReStr = "\\b[-+]?(?:0[Xx][0-9A-Fa-f]+|0[Oo][0-7]+|[0-9]+)\\b"
+parseInt :: ByteString -> TokenizerM Text
+parseInt inp = do
+  wordBoundary inp
+  case A.parseOnly (A.match (pHex <|> pOct <|> pDec)) inp of
+       Left _ -> mzero
+       Right (r,_) -> takeChars (BS.length r) -- assumes ascii
 
-octRegex :: RE
-octRegex = RE{
-    reString = octRegexStr
-  , reCaseSensitive = False
-  }
-  where octRegexStr = "\\b[-+]?0[Oo][0-7]+\\b"
+pDec :: A.Parser ()
+pDec = do
+  mbMinus
+  _ <- A.takeWhile1 (A.inClass "0-9")
+  guardWordBoundary
 
-hexRegex :: RE
-hexRegex = RE{
-    reString = hexRegexStr
-  , reCaseSensitive = False
-  }
-  where hexRegexStr = "\\b[-+]?0[Xx][0-9A-Fa-f]+\\b"
+parseOct :: ByteString -> TokenizerM Text
+parseOct inp = do
+  wordBoundary inp
+  case A.parseOnly (A.match pHex) inp of
+       Left _ -> mzero
+       Right (r,_) -> takeChars (BS.length r) -- assumes ascii
+
+pOct :: A.Parser ()
+pOct = do
+  mbMinus
+  A.skip (A.inClass "0")
+  A.skip (A.inClass "Oo")
+  _ <- A.takeWhile1 (A.inClass "0-7")
+  guardWordBoundary
+
+parseHex :: ByteString -> TokenizerM Text
+parseHex inp = do
+  wordBoundary inp
+  case A.parseOnly (A.match pHex) inp of
+       Left _ -> mzero
+       Right (r,_) -> takeChars (BS.length r) -- assumes ascii
+
+pHex :: A.Parser ()
+pHex = do
+  mbMinus
+  A.skip (A.inClass "0")
+  A.skip (A.inClass "Xx")
+  _ <- A.takeWhile1 (A.inClass "0-9a-fA-F")
+  guardWordBoundary
+
+guardWordBoundary :: A.Parser ()
+guardWordBoundary = do
+  mbw <- A.peekWord8
+  case mbw of
+       Just w ->  guard $ isWordBoundary '0' (chr $ fromIntegral w)
+       Nothing -> return ()
+
+mbMinus :: A.Parser ()
+mbMinus = A.skip (A.inClass "-") <|> return ()
+
+mbPlusMinus :: A.Parser ()
+mbPlusMinus = A.skip (A.inClass "+-") <|> return ()
 
 parseFloat :: ByteString -> TokenizerM Text
 parseFloat inp = do
@@ -577,9 +612,8 @@ parseFloat inp = do
        Right (r,_) -> takeChars (BS.length r)  -- assumes all ascii
   where pFloat :: A.Parser ()
         pFloat = do
-          let digits = A.takeWhile1 (A.inClass "0123456789")
-          let mbPlusMinus = (() <$ A.satisfy (A.inClass "+-")) <|> return ()
-          void mbPlusMinus
+          let digits = A.takeWhile1 (A.inClass "0-9")
+          mbPlusMinus
           before <- A.option False $ True <$ digits
           dot <- A.option False $ True <$ A.satisfy (A.inClass ".")
           after <- A.option False $ True <$ digits
