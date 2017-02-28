@@ -12,7 +12,7 @@ import qualified Data.ByteString.Char8 as BS
 import qualified Data.Map as Map
 import Data.ByteString.Char8 (ByteString)
 import Data.CaseInsensitive (mk)
-import Data.Char (isAlphaNum, isAscii, isLetter, isSpace, ord, isPrint, chr)
+import Data.Char (isAlphaNum, isAscii, isLetter, isSpace, ord, isPrint)
 import Data.Maybe (catMaybes)
 import Data.Monoid
 import qualified Data.Set as Set
@@ -20,7 +20,7 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Text.Encoding (decodeUtf8', encodeUtf8)
 import qualified Data.ByteString.UTF8 as UTF8
-import qualified Data.Attoparsec.ByteString as A
+import qualified Data.Attoparsec.ByteString.Char8 as A
 import Debug.Trace
 import Skylighting.Regex
 import Skylighting.Types
@@ -571,8 +571,8 @@ parseOct inp = do
 pOct :: A.Parser ()
 pOct = do
   mbMinus
-  A.skip (A.inClass "0")
-  A.skip (A.inClass "Oo")
+  _ <- A.char '0'
+  _ <- A.satisfy (A.inClass "Oo")
   _ <- A.takeWhile1 (A.inClass "0-7")
   guardWordBoundary
 
@@ -586,23 +586,34 @@ parseHex inp = do
 pHex :: A.Parser ()
 pHex = do
   mbMinus
-  A.skip (A.inClass "0")
-  A.skip (A.inClass "Xx")
+  _ <- A.char '0'
+  _ <- A.satisfy (A.inClass "Xx")
   _ <- A.takeWhile1 (A.inClass "0-9a-fA-F")
   guardWordBoundary
 
 guardWordBoundary :: A.Parser ()
 guardWordBoundary = do
-  mbw <- A.peekWord8
+  mbw <- A.peekChar
   case mbw of
-       Just w ->  guard $ isWordBoundary '0' (chr $ fromIntegral w)
+       Just c ->  guard $ isWordBoundary '0' c
        Nothing -> return ()
 
 mbMinus :: A.Parser ()
-mbMinus = A.skip (A.inClass "-") <|> return ()
+mbMinus = (() <$ A.char '-') <|> return ()
 
 mbPlusMinus :: A.Parser ()
-mbPlusMinus = A.skip (A.inClass "+-") <|> return ()
+mbPlusMinus = () <$ A.satisfy (A.inClass "+-") <|> return ()
+
+{-
+
+data FloatState = Start | PlusMinus | BeforeDigits | Dot |
+                  AfterDigits | Exp   | ExpPlusMinus | ExpDigits
+
+floatScanner :: FloatState -> Char -> Maybe FloatState
+floatScanner = do
+  undefined
+
+-}
 
 parseFloat :: ByteString -> TokenizerM Text
 parseFloat inp = do
@@ -619,10 +630,10 @@ parseFloat inp = do
           after <- A.option False $ True <$ digits
           e <- A.option False $ True <$ (A.satisfy (A.inClass "Ee") >>
                                          mbPlusMinus >> digits)
-          mbnext <- A.peekWord8
+          mbnext <- A.peekChar
           case mbnext of
                Nothing   -> return ()
-               Just w    -> guard (not $ A.inClass "." w)
+               Just c    -> guard (not $ A.inClass "." c)
           guard $ (before && not dot && e)     -- 5e2
                || (before && dot && (after || not e)) -- 5.2e2 or 5.2 or 5.
                || (not before && dot && after) -- .23 or .23e2
