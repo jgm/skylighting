@@ -1,5 +1,16 @@
 # Revision history for skylighting
 
+## 0.3.1 -- 2017-02-28
+
+  * Use handwritten parser for Float instead of regex.  Fixes
+    jgm/highlighting-kate#57 (again).
+  * Added float parsing tests.
+  * Use parsec parsers, not regex, for CStringChar and CChar.
+  * Rewrote Int, Hex, Oct, CStringChar, CCHar parsers with parsec
+    instead of regex.  This speeds things up.
+  * Don't include leading + in Int, Hex, Oct parsers.  That gives
+    bad results for things like `i+1`.
+
 ## 0.3 -- 2017-02-19
 
   * Store literal binary-encoded representations of the Syntax
