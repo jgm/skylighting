@@ -5,7 +5,7 @@ import Criterion.Types (Config(..))
 import System.FilePath
 import Data.Text (Text)
 import qualified Data.Text as Text
-import System.Directory
+-- import System.Directory
 
 main :: IO ()
 main = do
@@ -17,8 +17,9 @@ main = do
         let format = drop 1 $ takeExtension fp
         return (Text.pack format, Text.pack contents)
   cases <- mapM getCase inputs
-  xmlfiles <- filter (\x -> takeExtension x == ".xml") <$>
-                  getDirectoryContents "xml"
+  -- xmlfiles <- filter (\x -> takeExtension x == ".xml") <$>
+  --                getDirectoryContents "xml"
+  let xmlfiles = ["haskell.xml"]
   defaultMainWith defaultConfig{ timeLimit = 10.0 }
     $ parseBench xmlfiles : map testBench cases
 
