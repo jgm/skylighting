@@ -20,6 +20,7 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Text.Encoding (decodeUtf8', encodeUtf8)
 import qualified Data.ByteString.UTF8 as UTF8
+import qualified Data.Attoparsec.ByteString as A
 import Debug.Trace
 import Skylighting.Regex
 import Skylighting.Types
@@ -220,7 +221,7 @@ tryRule rule inp = do
                 HlCStringChar -> withAttr attr $
                                      regExpr False hlCStringCharRegex inp
                 HlCChar -> withAttr attr $ regExpr False hlCCharRegex inp
-                Float -> withAttr attr $ regExpr False floatRegex inp
+                Float -> withAttr attr $ parseFloat inp
                 Keyword kwattr kws ->
                   withAttr attr $ keyword kwattr kws inp
                 StringDetect s -> withAttr attr $
@@ -472,7 +473,11 @@ wordBoundary inp = do
 -- TODO is this right?
 isWordBoundary :: Char -> Char -> Bool
 isWordBoundary c d =
-  (isAlphaNum c && not (isAlphaNum d)) || (isAlphaNum d && not (isAlphaNum c))
+  (isAlphaNum c && not (isAlphaNum d))
+  || (isAlphaNum d && not (isAlphaNum c))
+  || (isSpace d && not (isSpace c))
+  || (isSpace c && not (isSpace d))
+
 
 decodeBS :: ByteString -> TokenizerM Text
 decodeBS bs = case decodeUtf8' bs of
@@ -548,14 +553,7 @@ integerRegex = RE{
     reString = intReStr
   , reCaseSensitive = False
   }
-  where intReStr = "\\b[-+]?(0[Xx][0-9A-Fa-f]+|0[Oo][0-7]+|[0-9]+)\\b"
-
-floatRegex :: RE
-floatRegex = RE{
-    reString = floatReStr
-  , reCaseSensitive = False
-  }
-  where floatReStr = "\\b[-+]?(([0-9]+\\.[0-9]*|[0-9]*\\.[0-9]+)([Ee][-+]?[0-9]+)?|[0-9]+[Ee][-+]?[0-9]+)\\b"
+  where intReStr = "\\b[-+]?(?:0[Xx][0-9A-Fa-f]+|0[Oo][0-7]+|[0-9]+)\\b"
 
 octRegex :: RE
 octRegex = RE{
@@ -570,4 +568,28 @@ hexRegex = RE{
   , reCaseSensitive = False
   }
   where hexRegexStr = "\\b[-+]?0[Xx][0-9A-Fa-f]+\\b"
+
+parseFloat :: ByteString -> TokenizerM Text
+parseFloat inp = do
+  wordBoundary inp
+  case A.parseOnly (A.match pFloat) inp of
+       Left _ -> mzero
+       Right (r,_) -> takeChars (BS.length r)  -- assumes all ascii
+  where pFloat :: A.Parser ()
+        pFloat = do
+          let digits = A.takeWhile1 (A.inClass "0123456789")
+          let mbPlusMinus = (() <$ A.satisfy (A.inClass "+-")) <|> return ()
+          void mbPlusMinus
+          before <- A.option False $ True <$ digits
+          dot <- A.option False $ True <$ A.satisfy (A.inClass ".")
+          after <- A.option False $ True <$ digits
+          e <- A.option False $ True <$ (A.satisfy (A.inClass "Ee") >>
+                                         mbPlusMinus >> digits)
+          mbnext <- A.peekWord8
+          case mbnext of
+               Nothing   -> return ()
+               Just w    -> guard (not $ A.inClass "." w)
+          guard $ (before && not dot && e)     -- 5e2
+               || (before && dot && (after || not e)) -- 5.2e2 or 5.2 or 5.
+               || (not before && dot && after) -- .23 or .23e2
 

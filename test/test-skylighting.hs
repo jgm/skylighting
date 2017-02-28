@@ -75,7 +75,9 @@ main = do
         map (noDropTest randomText) syntaxes
     , testGroup "Regression tests" $
       let perl = maybe (error "could not find Perl syntax") id
-                             (lookupSyntax "Perl" defaultSyntaxMap) in
+                             (lookupSyntax "Perl" defaultSyntaxMap)
+          cpp  = maybe (error "could not find CPP syntax") id
+                             (lookupSyntax "cpp" defaultSyntaxMap) in
       [ testCase "perl NUL case" $ Right
              [[(KeywordTok,"s\NUL")
               ,(OtherTok,"b")
@@ -115,6 +117,17 @@ main = do
               ]
             ] @=? tokenize defConfig perl
                      "my $foo = q/bar/;\nmy $baz = 'quux';\n"
+      , testCase "cpp floats" $ Right
+           [ [ ( FloatTok , "0.1f" ) ]
+           , [ ( FloatTok , "1.0f" ) ]
+           , [ ( FloatTok , "-0.1f" ) ]
+           , [ ( FloatTok , "-1.0F" ) ]
+           , [ ( FloatTok , "-1.0L" ) ]
+           , [ ( FloatTok , "1e3" ) ]
+           , [ ( FloatTok , "0.f" ) ]
+           , [ ( FloatTok , "1.F" ) ]
+           ] @=? tokenize defConfig cpp
+                     "0.1f\n1.0f\n-0.1f\n-1.0F\n-1.0L\n1e3\n0.f\n1.F\n"
       ]
     ]
 

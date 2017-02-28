@@ -233,6 +233,7 @@ library
                        filepath,
                        aeson,
                        case-insensitive,
+                       attoparsec,
                        utf8-string,
                        hxt,
                        safe,
