@@ -221,8 +221,7 @@ tryRule rule inp = do
                 HlCStringChar -> withAttr attr $ parseCStringChar inp
                 HlCChar -> withAttr attr $ parseCChar inp
                 Float -> withAttr attr $ parseFloat inp
-                Keyword kwattr kws ->
-                  withAttr attr $ keyword kwattr kws inp
+                Keyword kwattr kws -> withAttr attr $ keyword kwattr kws inp
                 StringDetect s -> withAttr attr $
                                     stringDetect (rCaseSensitive rule) s inp
                 WordDetect s -> withAttr attr $
@@ -268,15 +267,6 @@ withAttr tt p = do
   if Text.null res
      then return Nothing
      else return $ Just (tt, res)
-
-{-
--- Try a tokenizer and return to original state if it fails.
--- This is used when one tokenizer calls another.
-try :: TokenizerM a -> TokenizerM a
-try tokenizer' = do
-  origstate <- get
-  tokenizer' <|> (put origstate >> mzero)
--}
 
 wordDetect :: Bool -> Text -> ByteString -> TokenizerM Text
 wordDetect caseSensitive s inp = do
@@ -426,6 +416,7 @@ regExpr dynamic re inp = do
   reStr <- if dynamic
               then subDynamic (reString re)
               else return (reString re)
+  when (BS.take 2 reStr == "\\b") $ wordBoundary inp
   regex <- if dynamic
               then return $ compileRegex (reCaseSensitive re) reStr
               else do
@@ -437,12 +428,10 @@ regExpr dynamic re inp = do
                              Map.insert re cre (compiledRegexes st) }
                        return cre
                      Just cre -> return cre
-  when (BS.take 2 reStr == "\\b") $ wordBoundary inp
   case matchRegex regex inp of
        Just (match:capts) -> do
-         match' <- decodeBS match
          modify $ \st -> st{ captures = capts }
-         takeChars (Text.length match')
+         takeChars (UTF8.length match)
        _ -> mzero
 
 wordBoundary :: ByteString -> TokenizerM ()
