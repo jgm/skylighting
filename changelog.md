@@ -1,5 +1,14 @@
 # Revision history for skylighting
 
+## 0.3.2 -- 2017-04-01
+
+  * Parse xml definitions without resolving entities from
+    language.dtd.  This allows xml definitions to be used even
+    when language.dtd isn't available.  Existing definitions
+    don't rely on the two or three entities definied in
+    language.dtd, so this is harmless.
+  * Small optimizations.
+
 ## 0.3.1 -- 2017-02-28
 
   * Use handwritten parser for Float instead of regex.  Fixes
