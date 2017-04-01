@@ -67,7 +67,8 @@ parseSyntaxDefinition xml = do
 
 application :: String -> IOSArrow b Syntax
 application fp
-    = readDocument [withValidate no, withInputEncoding utf8] fp
+    = readDocument [withValidate no, withSubstDTDEntities no,
+                    withInputEncoding utf8] fp
       >>>
       multi (hasName "language")
       >>>
