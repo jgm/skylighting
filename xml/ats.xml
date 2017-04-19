@@ -23,6 +23,7 @@
       <item> assume </item>
       <item> begin </item>
       <item> break </item>
+      <item> case </item>
       <item> continue </item>
       <item> classdec </item>
       <item> datasort </item>
