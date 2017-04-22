@@ -1,5 +1,14 @@
 # Revision history for skylighting
 
+## 0.3.3 -- 2017-04-22
+
+  * Revert change from 0.3.2; now entities from a DTD are
+    resolved if the DTD element is included.  This is needed
+    for agda.xml and some others.  If you want to use a custom
+    xml definition without needing language.dtd, just remove
+    the reference to language.dtd in your xml file.
+  * Added `case` keyword for ats (Hanwen (Steinway) Wu).
+
 ## 0.3.2 -- 2017-04-01
 
   * Parse xml definitions without resolving entities from
