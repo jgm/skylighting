@@ -21,6 +21,8 @@ category:            Text
 build-type:          Simple
 extra-source-files:  changelog.md
                      README.md
+                     xml/*.xml
+                     xml/language.dtd
                      test/default.theme
                      test/cases/abc.ada
                      test/cases/abc.agda
