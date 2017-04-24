@@ -3,9 +3,10 @@
 <!-- Author: Anders Lund <anders@alweb.dk> //-->
 <!-- Minor changes: Joseph Wenninger <jowenn@kde.org> //-->
 <!-- Full JavaScript 1.0 support by Whitehawk Stormchaser //-->
+<!-- ES6 support: Jan van Brügge <supermanitu@gmail.com> //-->
 <language name="JavaScript" version="2" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript"
           mimetype="text/x-javascript;application/x-javascript" indenter="cstyle"
-          author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
+          author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net), Jan van Brügge (supermanitu@gmail.com)" license="">
   <highlighting>
     <list name="controlflow">
       <item> break </item>
@@ -24,29 +25,34 @@
       <item> try </item>
       <item> while </item>
       <item> with </item>
+      <item> yield </item>
     </list>
     <list name="keywords">
+      <item> class </item>
       <item> const </item>
       <item> delete </item>
+      <item> extends </item>
       <item> function </item>
+      <item> function* </item>
+      <item> get </item>
       <item> in </item>
       <item> instanceof </item>
+      <item> let </item>
       <item> new </item>
+      <item> of </item>
+      <item> set </item>
+      <item> super </item>
       <item> this </item>
       <item> typeof </item>
       <item> var </item>
       <item> void </item>
     </list>
     <list name="reserved">
-      <item> class </item>
       <item> enum </item>
-      <item> extends </item>
-      <item> super </item>
 
       <!-- The following keywords are reserved only in strict-mode -->
       <item> implements </item>
       <item> interface </item>
-      <item> let </item>
       <item> private </item>
       <item> protected </item>
       <item> public </item>
