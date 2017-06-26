@@ -1,6 +1,6 @@
 # Revision history for skylighting
 
-## 0.3.3 -- 2017-06-26
+## 0.3.3.1 -- 2017-06-26
 
   * Updated xml syntax definitions and clojure test.
   * Improved 'make update-xml' target.
