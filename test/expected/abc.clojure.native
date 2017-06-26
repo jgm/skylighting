@@ -21,7 +21,9 @@
   , ( FunctionTok , " omit " )
   ]
 , [ ( NormalTok , "  " )
-  , ( StringTok , "\"return bs with (one instance of) b omitted\"" )
+  , ( DocumentationTok
+    , "\"return bs with (one instance of) b omitted\""
+    )
   ]
 , [ ( NormalTok , "  [bs b] " ) ]
 , [ ( NormalTok , "  (" )
@@ -30,7 +32,9 @@
   , ( KeywordTok , "split-with" )
   , ( NormalTok , " #(" )
   , ( KeywordTok , "not=" )
-  , ( NormalTok , " b %) bs)]" )
+  , ( NormalTok , " b " )
+  , ( VariableTok , "%" )
+  , ( NormalTok , ") bs)]" )
   ]
 , [ ( NormalTok , "    (" )
   , ( KeywordTok , "concat" )
@@ -44,7 +48,7 @@
   , ( FunctionTok , " abc " )
   ]
 , [ ( NormalTok , "  " )
-  , ( StringTok
+  , ( DocumentationTok
     , "\"return lazy sequence of solutions (i.e. block lists)\""
     )
   ]
@@ -58,7 +62,9 @@
   , ( KeywordTok , "some" )
   , ( NormalTok , " #(" )
   , ( KeywordTok , "=" )
-  , ( NormalTok , " c %) b)" )
+  , ( NormalTok , " c " )
+  , ( VariableTok , "%" )
+  , ( NormalTok , ") b)" )
   ]
 , [ ( NormalTok , "          bs (abc (omit blocks b) cs)]" ) ]
 , [ ( NormalTok , "      (" )
