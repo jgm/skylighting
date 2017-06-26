@@ -1,5 +1,11 @@
 # Revision history for skylighting
 
+## 0.3.3 -- 2017-06-26
+
+  * Updated xml syntax definitions and clojure test.
+  * Improved 'make update-xml' target.
+  * Updated version bound for criterion.
+
 ## 0.3.3 -- 2017-04-22
 
   * Revert change from 0.3.2; now entities from a DTD are
