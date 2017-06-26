@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Kate syntax highlighting for Objective Caml version 3.08 in the standard and revised syntaxes, with Ocamldoc comments. -->
+<!-- Kate syntax highlighting for Objective Caml version 4.02 in the standard and revised syntaxes, with Ocamldoc comments. -->
 
 <!DOCTYPE language SYSTEM "language.dtd"
 [
@@ -15,9 +15,9 @@
 ]>
 <language name="Objective Caml"
           extensions="*.ml;*.mli"
-          mimetype=""
+          mimetype="text/x-ocaml"
           section="Sources"
-          version="3"
+          version="4"
           priority="10"
           kateversion="2.4"
           author="Glyn Webster (glynwebster@orcon.net.nz) and Vincent Hugot (vincent.hugot@gmail.com)"
@@ -67,6 +67,7 @@
       <item> module </item>
       <item> mutable </item>
       <item> new </item>
+      <item> nonrec </item>
       <item> object </item>
       <item> of </item>
       <item> open </item>
@@ -114,12 +115,14 @@
       <item> close_out </item>
       <item> close_out_noerr </item>
       <item> compare </item>
+      <item> copysign </item>
       <item> cos </item>
       <item> cosh </item>
       <item> decr </item>
       <item> do_at_exit </item>
       <item> epsilon_float </item>
       <item> exp </item>
+      <item> expm1 </item>
       <item> float </item>
       <item> float_of_int </item>
       <item> float_of_string </item>
@@ -129,6 +132,7 @@
       <item> format_of_string </item>
       <item> frexp </item>
       <item> fst </item>
+      <item> hypot </item>
       <item> ignore </item>
       <item> in_channel_length </item>
       <item> incr </item>
@@ -146,6 +150,7 @@
       <item> lnot </item>
       <item> log </item>
       <item> log10 </item>
+      <item> log1p </item>
       <item> max </item>
       <item> max_float </item>
       <item> max_int </item>
@@ -167,18 +172,22 @@
       <item> output </item>
       <item> output_binary_int </item>
       <item> output_byte </item>
+      <item> output_bytes </item>
       <item> output_char </item>
       <item> output_string </item>
+      <item> output_substring </item>
       <item> output_value </item>
       <item> pos_in </item>
       <item> pos_out </item>
       <item> pred </item>
+      <item> prerr_bytes </item>
       <item> prerr_char </item>
       <item> prerr_endline </item>
       <item> prerr_float </item>
       <item> prerr_int </item>
       <item> prerr_newline </item>
       <item> prerr_string </item>
+      <item> print_bytes </item>
       <item> print_char </item>
       <item> print_endline </item>
       <item> print_float </item>
@@ -189,6 +198,7 @@
       <item> read_int </item>
       <item> read_line </item>
       <item> really_input </item>
+      <item> really_input_string </item>
       <item> ref </item>
       <item> seek_in </item>
       <item> seek_out </item>
@@ -220,14 +230,18 @@
       <item> failwith </item>
       <item> invalid_arg </item>
       <item> raise </item>
+      <item> raise_notrace </item>
     </list>
 
     <list name="Pervasive Types">
       <item> array </item>
       <item> bool </item>
+      <item> bytes </item>
       <item> char </item>
       <item> exn </item>
+      <item> float </item>
       <item> format4 </item>
+      <item> format6 </item>
       <item> fpclass </item>
       <item> in_channel </item>
       <item> int </item>
@@ -253,22 +267,13 @@
       <item> FP_zero </item>
       <item> None </item>
       <item> Open_append </item>
-      <item> Open_append </item>
-      <item> Open_binary </item>
       <item> Open_binary </item>
       <item> Open_creat </item>
-      <item> Open_creat </item>
-      <item> Open_excl </item>
       <item> Open_excl </item>
       <item> Open_nonblock </item>
-      <item> Open_nonblock </item>
-      <item> Open_rdonly </item>
       <item> Open_rdonly </item>
       <item> Open_text </item>
-      <item> Open_text </item>
       <item> Open_trunc </item>
-      <item> Open_trunc </item>
-      <item> Open_wronly </item>
       <item> Open_wronly </item>
       <item> Some </item>
     </list>
@@ -294,10 +299,12 @@
       <item> Array </item>
       <item> ArrayLabels </item>
       <item> Buffer </item>
+      <item> Bytes </item>
       <item> Callback </item>
       <item> Char </item>
       <item> Complex </item>
       <item> Digest </item>
+      <item> Ephemeron </item>
       <item> Filename </item>
       <item> Format </item>
       <item> Gc </item>
@@ -322,12 +329,14 @@
       <item> Scanf </item>
       <item> Set </item>
       <item> Sort </item>
+      <item> Spacetime </item>
       <item> Stack </item>
       <item> StdLabels </item>
       <item> Stream </item>
       <item> String </item>
       <item> StringLabels </item>
       <item> Sys </item>
+      <item> Uchar </item>
       <item> Weak </item>
     </list>
 
@@ -471,7 +480,7 @@
 
         <RegExpr String="@see\s*(&lt;[^&gt;]*&gt;|&quot;[^&quot;]*&quot;|'[^']*')" context="#stay" attribute="Ocamldoc Markup" />
         <RegExpr String="@(param|raise)\s*" context="Ocamldoc Identifier" attribute="Ocamldoc Markup" />
-        <RegExpr String="@(author|deprecated|return|since|version)" context="#stay" attribute="Ocamldoc Markup" />
+        <RegExpr String="@(author|before|deprecated|return|since|version)" context="#stay" attribute="Ocamldoc Markup" />
         <RegExpr String="@&IDENT;" context="#stay" attribute="Ocamldoc Custom Tag" />
 
 

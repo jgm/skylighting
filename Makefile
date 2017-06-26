@@ -28,7 +28,8 @@ update-xml: syntax-highlighting
 	cd syntax-highlighting; \
 	git pull; \
 	cd ../xml; \
-	for x in *.xml; do cp ../syntax-highlighting/data/syntax/$x ./; done
+	for x in *.xml; do cp ../syntax-highlighting/data/syntax/$$x ./; done
+	for x in *.xml.patch; do patch < $$x; done
 
 clean:
 	stack clean

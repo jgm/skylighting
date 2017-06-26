@@ -10,9 +10,9 @@
 <!-- v4 by Alex Richardson <arichardson.kde@gmail.com>
      added bmake support -->
 <language name="Makefile" section="Other"
-          version="4" kateversion="3.4"
+          version="5" kateversion="3.4"
           extensions="GNUmakefile;Makefile;makefile;GNUmakefile.*;Makefile.*;makefile.*;*.mk"
-          mimetype="text/x-makefile"
+          mimetype="text/x-makefile" priority="11"
           author="Per Wigren (wigren@home.se)" license="">
   <highlighting>
     <list name = "keywords" >
@@ -350,10 +350,6 @@
         <DetectSpaces attribute="Error" context="#stay"/>
         <!-- Handle bmake Variable modifiers: ${variable[:modifier[:...]]} -->
         <Detect2Chars context="#stay" char="\" char1=":"/>
-        <!-- modifiers without arguments-->
-        <keyword attribute="Keyword"  context="#pop!expect}" String="bmake_var_modifiers_noarg"/>
-        <!-- with arguments -->
-        <keyword attribute="Keyword"  context="#pop!bmake_var_modifier_arg" String="bmake_var_modifiers_with_arg"/>
         <!-- other modifiers -->
         <DetectChar attribute="RealOperator" context="bmake_var_modifier" char=":"/>
         <AnyChar attribute="Error" context="#stay" String="=#"/>

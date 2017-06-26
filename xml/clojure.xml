@@ -22,7 +22,7 @@
  * Boston, MA  02110-1301, USA.                                       *
  **********************************************************************
  -->
-<language version="5" kateversion="5.0" name="Clojure" section="Sources" extensions="*.clj;*.cljs" mimetype="" author="Dominik Haumann [lisp] modified for clojure by Caspar Hasenclever" license="LGPLv2+">
+<language version="6" kateversion="5.0" name="Clojure" section="Sources" extensions="*.clj;*.cljs;*.cljc" mimetype="" author="Dominik Haumann [lisp] modified for clojure by Caspar Hasenclever" license="LGPLv2+">
   <highlighting>
     <list name="definitions">
       <item> def </item>
@@ -30,12 +30,8 @@
       <item> defalias </item>
       <item> defhinted </item>
       <item> definline </item>
-      <item> defmacro </item>
-      <item> defmacro- </item>
       <item> defmethod </item>
       <item> defmulti </item>
-      <item> defn </item>
-      <item> defn- </item>
       <item> defnk </item>
       <item> defn-memo </item>
       <item> defonce </item>
@@ -52,6 +48,12 @@
       <item> defvar </item>
       <item> defvar- </item>
     </list>
+    <list name="documentable_definitions">
+      <item> defn </item>
+      <item> defn- </item>
+      <item> defmacro </item>
+      <item> defmacro- </item>
+    </list>
     <list name="keywords">
       <item> &lt; </item>
       <item> &lt;= </item>
@@ -60,17 +62,20 @@
       <item> &gt; </item>
       <item> &gt;= </item>
       <item> - </item>
+      <item> -' </item>
       <item> -&gt; </item>
       <item> -&gt;&gt; </item>
       <item> / </item>
       <item> . </item>
       <item> .. </item>
       <item> * </item>
+      <item> *' </item>
       <item> + </item>
+      <item> +' </item>
       <item> accessor </item>
       <item> aclone </item>
       <item> add-classpath </item>
-      <item> add-watcher </item>
+      <item> add-watch </item>
       <item> agent </item>
       <item> agent-errors </item>
       <item> aget </item>
@@ -89,6 +94,7 @@
       <item> are </item>
       <item> areduce </item>
       <item> array-map </item>
+      <item> as-&gt; </item>
       <item> aset </item>
       <item> aset-boolean </item>
       <item> aset-byte </item>
@@ -188,6 +194,7 @@
       <item> create-struct </item>
       <item> cycle </item>
       <item> dec </item>
+      <item> dec' </item>
       <item> decimal? </item>
       <item> declare </item>
       <item> delay </item>
@@ -243,6 +250,7 @@
       <item> file-position </item>
       <item> file-seq </item>
       <item> filter </item>
+      <item> filterv </item>
       <item> finally </item>
       <item> find </item>
       <item> find-doc </item>
@@ -257,9 +265,11 @@
       <item> fn </item>
       <item> fn? </item>
       <item> fnext </item>
+      <item> fnil </item>
       <item> for </item>
       <item> force </item>
       <item> format </item>
+      <item> frequencies </item>
       <item> function? </item>
       <item> future </item>
       <item> future? </item>
@@ -281,6 +291,7 @@
       <item> get-proxy-class </item>
       <item> get-thread-bindings </item>
       <item> get-validator </item>
+      <item> group-by </item>
       <item> handle </item>
       <item> handler-case </item>
       <item> hash </item>
@@ -294,6 +305,7 @@
       <item> if-not </item>
       <item> import </item>
       <item> inc </item>
+      <item> inc' </item>
       <item> inc-report-counter </item>
       <item> index </item>
       <item> init-proxy </item>
@@ -364,6 +376,7 @@
       <item> map </item>
       <item> map? </item>
       <item> mapcat </item>
+      <item> mapv </item>
       <item> map-invert </item>
       <item> max </item>
       <item> max-key </item>
@@ -462,6 +475,7 @@
       <item> quot </item>
       <item> rand </item>
       <item> rand-int </item>
+      <item> rand-nth </item>
       <item> range </item>
       <item> ratio? </item>
       <item> rational? </item>
@@ -488,7 +502,7 @@
       <item> remove </item>
       <item> remove-method </item>
       <item> remove-ns </item>
-      <item> remove-watcher </item>
+      <item> remove-watch </item>
       <item> rename </item>
       <item> rename-keys </item>
       <item> re-pattern </item>
@@ -607,6 +621,7 @@
       <item> unquote </item>
       <item> unquote-splicing </item>
       <item> up </item>
+      <item> update </item>
       <item> update-in </item>
       <item> update-proxy </item>
       <item> use </item>
@@ -620,6 +635,7 @@
       <item> vec </item>
       <item> vector </item>
       <item> vector? </item>
+      <item> vector-of </item>
       <item> walk </item>
       <item> when </item>
       <item> when-first </item>
@@ -639,6 +655,7 @@
       <item> with-test-out </item>
       <item> xml-seq </item>
       <item> zero? </item>
+      <item> zipmap </item>
     </list>
     <list name="variables">
       <item> *1 </item>
@@ -680,112 +697,174 @@
       <item> *test-out* </item>
       <item> *use-context-classloader* </item>
       <item> *warn-on-reflection* </item>
+      <item> *warn-on-reflection* </item>
+      <item> false </item>
+      <item> nil </item>
+      <item> true </item>
     </list>
     <contexts>
       <context name="Level0" attribute="Normal" lineEndContext="#stay">
         <DetectChar attribute="Brackets1" context="Level1" char="("/>
+        <Detect2Chars attribute="Brackets1" context="Level1" char="'" char1="("/>
+        <Detect2Chars attribute="Brackets1" context="Level1" char="`" char1="("/>
         <Detect2Chars attribute="Brackets1" context="Level1" char="#" char1="("/>
         <IncludeRules context="Default" />
       </context>
       <context name="Default" attribute="Normal" lineEndContext="#stay">
-        <RegExpr attribute="Comment" context="#stay" String=";.*$"/>
+        <DetectChar attribute="Comment" context="Comment" char=";"/>
         <Detect2Chars attribute="Comment" context="#stay" char="#" char1="_"/>
-        <RegExpr attribute="Modifier" context="#stay" String="[@~]\S+"/>
-        <RegExpr attribute="Modifier2" context="#stay" String="::?[a-zA-Z0-9\-]+"/>
-        <Detect2Chars attribute="Brackets" context="#stay" char="#" char1="{"/>
-        <Detect2Chars attribute="Brackets" context="#stay" char="^" char1="{"/>
-        <DetectChar attribute="BracketsCurly" context="#stay" char="{"/>
-        <DetectChar attribute="BracketsCurly" context="#stay" char="}"/>
+        <RegExpr attribute="Readermacro" context="#stay" String="#\?@?"/>
+        <RegExpr attribute="Modifier" context="#stay" String="[@~'`][^\s\(\)\{\}\[\]]+"/>
+        <RegExpr attribute="Modifier" context="#stay" String="[^\s&quot;\(\)\{\}\[\]]+#"/>
+        <RegExpr attribute="Modifier2" context="#stay" String="::?[a-zA-Z0-9\-\./]+"/>
+        <Detect2Chars attribute="BracketsSet" context="BracketsSet" char="#" char1="{"/>
+        <Detect2Chars attribute="BracketsMeta" context="BracketsMeta" char="^" char1="{"/>
+        <DetectChar attribute="BracketsMap" context="BracketsMap" char="{"/>
         <DetectChar attribute="BracketsSquare" context="#stay" char="["/>
         <DetectChar attribute="BracketsSquare" context="#stay" char="]"/>
-        <Detect2Chars attribute="Variable" context="#stay" char="#" char1="'"/>
+        <RegExpr attribute="Variable" context="#stay" String="#'[^\s\(\)\{\}\[\]]+"/>
         <keyword attribute="Keyword" context="#stay" String="keywords"/>
+        <RegExpr attribute="Variable" context="#stay" String="%[0-9]*"/>
         <keyword attribute="Variable" context="#stay" String="variables"/>
+        <keyword attribute="Definition" context="function_decl_documentable" String="documentable_definitions"/>
         <keyword attribute="Definition" context="function_decl" String="definitions"/>
-        <RegExpr attribute="Char" context="#stay" String="\\."/>
-        <Detect2Chars attribute="String" context="String" char="#" char1="&quot;"/>
+        <RegExpr attribute="Char" context="#stay" String="\\u[0-9A-Fa-f]+|\\o[0-7]+|\\backspace|\\formfeed|\\newline|\\space|\\tab|\\[^\s\(\)\{\}\[\]]"/>
+        <Detect2Chars attribute="Regexpr" context="Regexpr" char="#" char1="&quot;"/>
         <DetectChar attribute="String" context="String" char="&quot;"/>
-        <Float attribute="Float" context="#stay"/>
-        <Int attribute="Decimal" context="#stay"/>
+        <RegExpr attribute="Float" context="#stay" String="[0-9]+/[0-9]+"/>
+        <RegExpr attribute="BaseN" context="#stay" String="0[xX][0-9A-Fa-f]+"/>
+        <RegExpr attribute="BaseN" context="#stay" String="([12]?[0-9]|3[0-6])[rR][0-9a-zA-Z]+"/>
+        <RegExpr attribute="Error" context="#stay" String="(3[7-9]|[0-9]*[4-9][0-9]+)[rR][0-9a-zA-Z]+"/>
+        <Float attribute="Float" context="#stay">
+            <StringDetect attribute="Decimal" context="#stay" String="M" insensitive="false"/>
+        </Float>
+        <Int attribute="Decimal" context="#stay">
+            <StringDetect attribute="Decimal" context="#stay" String="N" insensitive="false"/>
+        </Int>
         <DetectChar attribute="Brackets1" context="Level1" char="("/>
       </context>
-      <context name="function_decl" attribute="Function" lineEndContext="#stay">
-        <RegExpr attribute="Function" context="#pop" String="\s*[A-Za-z0-9-+\&lt;\&gt;//\*]*\s*"/>
+      <context name="Comment" attribute="Comment" lineEndContext="#pop">
+        <RegExpr String="(FIXME|TODO):?" attribute="Alert" context="#stay"/>
       </context>
-      <context name="SpecialNumber" attribute="Normal" lineEndContext="#pop">
-        <Float attribute="Float" context="#pop"/>
-        <Int attribute="Decimal" context="#pop"/>
-        <HlCOct attribute="BaseN" context="#pop"/>
-        <HlCHex attribute="Float" context="#pop"/>
+      <context name="function_decl_documentable" attribute="Function" lineEndContext="#stay">
+        <RegExpr attribute="Function" context="#pop!DocumentationPossible" String="\s*[A-Za-z0-9-+\&lt;\&gt;//\*!\?']*\s*"/>
+      </context>
+      <context name="function_decl" attribute="Function" lineEndContext="#stay">
+        <RegExpr attribute="Function" context="#pop" String="\s*[A-Za-z0-9-+\&lt;\&gt;//\*!\?']*\s*"/>
       </context>
       <context name="String" attribute="String" lineEndContext="#stay">
         <RegExpr attribute="Char" context="#stay" String="#\\."/>
         <HlCStringChar attribute="String Char" context="#stay"/>
         <DetectChar attribute="String" context="#pop" char="&quot;"/>
       </context>
+      <context name="Regexpr" attribute="Regexpr" lineEndContext="#stay">
+        <RegExpr attribute="Char" context="#stay" String="#\\."/>
+        <HlCStringChar attribute="Regexpr Char" context="#stay"/>
+        <DetectChar attribute="Regexpr" context="#pop" char="&quot;"/>
+      </context>
+      <context name="DocumentationPossible" attribute="DocumentationPossible" lineEndContext="#stay">
+        <DetectChar attribute="Comment" context="Comment" char=";"/>
+        <DetectChar attribute="Documentation" context="#pop!Documentation" char="&quot;"/>
+        <RegExpr attribute="Documentation" context="#pop" String="\S" lookAhead="true"/>
+      </context>
+      <context name="Documentation" attribute="Documentation" lineEndContext="#stay">
+        <RegExpr attribute="Char" context="#stay" String="#\\."/>
+        <HlCStringChar attribute="Documentation Char" context="#stay"/>
+        <DetectChar attribute="Documentation" context="#pop" char="&quot;"/>
+      </context>
+      <context name="BracketsSet" attribute="Normal" lineEndContext="#stay">
+        <DetectChar attribute="BracketsSet" context="#pop" char="}" />
+        <IncludeRules context="Default" />
+      </context>
+      <context name="BracketsMeta" attribute="Normal" lineEndContext="#stay">
+        <DetectChar attribute="BracketsMeta" context="#pop" char="}" />
+        <DetectChar attribute="Documentation" context="Documentation" char="&quot;"/>
+        <IncludeRules context="Default" />
+      </context>
+      <context name="BracketsMap" attribute="Normal" lineEndContext="#stay">
+        <DetectChar attribute="BracketsMap" context="#pop" char="}" />
+        <IncludeRules context="Default" />
+      </context>
       <context name="Level1" attribute="Normal" lineEndContext="#stay">
         <DetectChar attribute="Brackets2" context="Level2" char="("/>
+        <Detect2Chars attribute="Brackets2" context="Level2" char="'" char1="("/>
+        <Detect2Chars attribute="Brackets2" context="Level2" char="`" char1="("/>
         <Detect2Chars attribute="Brackets2" context="Level2" char="#" char1="("/>
         <DetectChar attribute="Brackets1" context="#pop" char=")" />
         <IncludeRules context="Default" />
       </context>
       <context name="Level2" attribute="Normal" lineEndContext="#stay">
         <DetectChar attribute="Brackets3" context="Level3" char="("/>
+        <Detect2Chars attribute="Brackets3" context="Level3" char="'" char1="("/>
+        <Detect2Chars attribute="Brackets3" context="Level3" char="`" char1="("/>
         <Detect2Chars attribute="Brackets3" context="Level3" char="#" char1="("/>
         <DetectChar attribute="Brackets2" context="#pop" char=")" />
         <IncludeRules context="Default" />
       </context>
       <context name="Level3" attribute="Normal" lineEndContext="#stay">
         <DetectChar attribute="Brackets4" context="Level4" char="("/>
+        <Detect2Chars attribute="Brackets4" context="Level4" char="'" char1="("/>
+        <Detect2Chars attribute="Brackets4" context="Level4" char="`" char1="("/>
         <Detect2Chars attribute="Brackets4" context="Level4" char="#" char1="("/>
         <DetectChar attribute="Brackets3" context="#pop" char=")" />
         <IncludeRules context="Default" />
       </context>
       <context name="Level4" attribute="Normal" lineEndContext="#stay">
         <DetectChar attribute="Brackets5" context="Level5" char="("/>
+        <Detect2Chars attribute="Brackets5" context="Level5" char="'" char1="("/>
+        <Detect2Chars attribute="Brackets5" context="Level5" char="`" char1="("/>
         <Detect2Chars attribute="Brackets5" context="Level5" char="#" char1="("/>
         <DetectChar attribute="Brackets4" context="#pop" char=")" />
         <IncludeRules context="Default" />
       </context>
       <context name="Level5" attribute="Normal" lineEndContext="#stay">
         <DetectChar attribute="Brackets6" context="Level6" char="("/>
+        <Detect2Chars attribute="Brackets6" context="Level6" char="'" char1="("/>
+        <Detect2Chars attribute="Brackets6" context="Level6" char="`" char1="("/>
         <Detect2Chars attribute="Brackets6" context="Level6" char="#" char1="("/>
         <DetectChar attribute="Brackets5" context="#pop" char=")" />
         <IncludeRules context="Default" />
       </context>
       <context name="Level6" attribute="Normal" lineEndContext="#stay">
         <DetectChar attribute="Brackets1" context="Level1" char="("/>
+        <Detect2Chars attribute="Brackets1" context="Level1" char="'" char1="("/>
+        <Detect2Chars attribute="Brackets1" context="Level1" char="`" char1="("/>
         <Detect2Chars attribute="Brackets1" context="Level1" char="#" char1="("/>
         <DetectChar attribute="Brackets6" context="#pop" char=")" />
         <IncludeRules context="Default" />
       </context>
     </contexts>
     <itemDatas>
-      <itemData name="Normal" defStyleNum="dsNormal"/>
-      <itemData name="Keyword" defStyleNum="dsKeyword"/>
-      <itemData name="Operator" defStyleNum="dsOperator"/>
-      <itemData name="Modifier" defStyleNum="dsAttribute"/>
-      <itemData name="Modifier2" defStyleNum="dsAttribute"/>
-      <itemData name="Variable" defStyleNum="dsVariable" />
-      <itemData name="Definition" defStyleNum="dsBuiltIn"/>
-      <itemData name="Data" defStyleNum="dsDataType"/>
-      <itemData name="Decimal" defStyleNum="dsDecVal"/>
-      <itemData name="BaseN" defStyleNum="dsBaseN"/>
-      <itemData name="Float" defStyleNum="dsFloat"/>
-      <itemData name="Function" defStyleNum="dsFunction"/>
-      <itemData name="Char" defStyleNum="dsChar"/>
+      <itemData name="Normal" defStyleNum="dsNormal" spellChecking="false"/>
+      <itemData name="Keyword" defStyleNum="dsKeyword" spellChecking="false"/>
+      <itemData name="Operator" defStyleNum="dsOperator" spellChecking="false"/>
+      <itemData name="Modifier" defStyleNum="dsAttribute" spellChecking="false"/>
+      <itemData name="Modifier2" defStyleNum="dsAttribute" spellChecking="false"/>
+      <itemData name="Variable" defStyleNum="dsVariable" spellChecking="false"/>
+      <itemData name="Definition" defStyleNum="dsBuiltIn" spellChecking="false"/>
+      <itemData name="Data" defStyleNum="dsDataType" spellChecking="false"/>
+      <itemData name="Decimal" defStyleNum="dsDecVal" spellChecking="false"/>
+      <itemData name="BaseN" defStyleNum="dsBaseN" spellChecking="false"/>
+      <itemData name="Float" defStyleNum="dsFloat" spellChecking="false"/>
+      <itemData name="Function" defStyleNum="dsFunction" spellChecking="false"/>
+      <itemData name="Char" defStyleNum="dsChar" spellChecking="false"/>
       <itemData name="String" defStyleNum="dsString"/>
+      <itemData name="Regexpr" defStyleNum="dsSpecialString"/>
       <itemData name="Comment" defStyleNum="dsComment"/>
-      <itemData name="Region Marker" defStyleNum="dsRegionMarker"/>
-      <itemData name="Brackets" defStyleNum="dsNormal" color="#0000ff" selColor="#00ff00" bold="1" italic="0"/>
+      <itemData name="Documentation" defStyleNum="dsDocumentation"/>
+      <itemData name="Alert" defStyleNum="dsAlert" spellChecking="false"/>
+      <itemData name="Error" defStyleNum="dsError" spellChecking="false"/>
+      <itemData name="Readermacro" defStyleNum="dsPreprocessor"/>
+      <itemData name="BracketsSet" defStyleNum="dsNormal" color="#0000ff" selColor="#00ff00"/>
+      <itemData name="BracketsMeta" defStyleNum="dsNormal" color="#0000ff" selColor="#00ff00" bold="1" italic="0"/>
+      <itemData name="BracketsMap" defStyleNum="dsNormal" color="#206620" selColor="#219921"/>
       <itemData name="BracketsSquare" defStyleNum="dsNormal" color="#3333ff" selColor="#3333aa"/>
-      <itemData name="BracketsCurly" defStyleNum="dsNormal" color="#206620" selColor="#219921"/>
-      <itemData name="Brackets1"    defStyleNum="dsNormal" color="#ff0000" selColor="#ffaa00" bold="0" italic="0"/>
-      <itemData name="Brackets2"    defStyleNum="dsNormal" color="#ff8800" selColor="#ffff00" bold="0" italic="0"/>
-      <itemData name="Brackets3"    defStyleNum="dsNormal" color="#888800" selColor="#888888" bold="0" italic="0"/>
-      <itemData name="Brackets4"    defStyleNum="dsNormal" color="#008800" selColor="#000000" bold="0" italic="0"/>
-      <itemData name="Brackets5"    defStyleNum="dsNormal" color="#000088" selColor="#000000" bold="0" italic="0"/>
-      <itemData name="Brackets6"    defStyleNum="dsNormal" color="#880088" selColor="#000000" bold="0" italic="0"/>
+      <itemData name="Brackets1" defStyleNum="dsNormal" color="#ff0000" selColor="#ffaa00" bold="0" italic="0"/>
+      <itemData name="Brackets2" defStyleNum="dsNormal" color="#ff8800" selColor="#ffff00" bold="0" italic="0"/>
+      <itemData name="Brackets3" defStyleNum="dsNormal" color="#888800" selColor="#888888" bold="0" italic="0"/>
+      <itemData name="Brackets4" defStyleNum="dsNormal" color="#008800" selColor="#000000" bold="0" italic="0"/>
+      <itemData name="Brackets5" defStyleNum="dsNormal" color="#000088" selColor="#000000" bold="0" italic="0"/>
+      <itemData name="Brackets6" defStyleNum="dsNormal" color="#880088" selColor="#000000" bold="0" italic="0"/>
     </itemDatas>
   </highlighting>
   <general>

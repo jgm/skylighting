@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Haskell" version="4" kateversion="3.4" section="Sources" extensions="*.hs;*.chs" mimetype="text/x-haskell" author="Nicolas Wu (zenzike@gmail.com)" license="LGPL" indenter="haskell" style="haskell">
+<language name="Haskell" version="5" kateversion="3.4" section="Sources" extensions="*.hs;*.chs" mimetype="text/x-haskell" author="Nicolas Wu (zenzike@gmail.com)" license="LGPL" indenter="haskell" style="haskell">
   <highlighting>
   <list name="keywords">
     <item> case </item>
@@ -369,11 +369,16 @@
       <Detect2Chars attribute="EnumFromTo" context="#stay" char ="." char1="." />
       <AnyChar      attribute="EnumFromTo" context="#stay" String="‥" />
 
-      <RegExpr attribute="Normal" context="Hamlet" String="\[[wx]?hamlet\|" />
+      <RegExpr attribute="Normal" context="Hamlet" String="\[[wxs]?hamlet\|" />
+      <RegExpr attribute="Normal" context="Julius" String="\[julius\|" />
       <RegExpr attribute="Normal" context="QuasiQuote" String="\[[a-zA-Z_'](\w|[_'])*\|" />
     </context>
     <context attribute="Normal" lineEndContext="#stay" name="QuasiQuote">
       <Detect2Chars attribute="Normal" context="#pop" char="|" char1="]"/>
+    </context>
+    <context attribute="Normal" lineEndContext="#stay" name="Julius">
+      <IncludeRules context="QuasiQuote"/>
+      <IncludeRules context="Normal##JavaScript" />
     </context>
     <context attribute="Normal" lineEndContext="#stay" name="Hamlet">
       <IncludeRules context="QuasiQuote"/>

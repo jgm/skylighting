@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="LaTeX" version="2" section="Markup" kateversion="5.0" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
+<language name="LaTeX" version="4" section="Markup" kateversion="5.0" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
   <highlighting>
     <contexts>
       <!-- Normal text -->
@@ -20,7 +20,7 @@
         <RegExpr String="&lt;&lt;.*&gt;&gt;=" attribute="Normal Text" context="NoWeb" />
         <StringDetect String="\(" attribute="Math" context="MathMode" />
         <StringDetect String="\[" attribute="Math" context="MathModeEquation" beginRegion="mathMode" />
-        <StringDetect String="\iffalse" attribute="Comment" context="Multiline Comment"/>
+        <WordDetect String="\iffalse" attribute="Comment" context="Multiline Comment"/>
         <StringDetect String="\ensuremath{" attribute="Math" context="MathModeEnsure"/>
         <DetectChar char="\" attribute="Macro" context="ContrSeq"/>
         <StringDetect String="$$" attribute="Math" context="MathModeDisplay" beginRegion="mathMode" />
@@ -264,8 +264,8 @@
 
       <!-- filter the environment name and check the type -->
       <context name="BeginEnvironment" attribute="Environment" lineEndContext="#stay">
-        <StringDetect String="lstlisting" attribute="Environment" context="ListingsEnvParam"/>
-        <StringDetect String="minted" attribute="Environment" context="MintedEnvParam"/>
+        <WordDetect String="lstlisting" attribute="Environment" context="ListingsEnvParam"/>
+        <WordDetect String="minted" attribute="Environment" context="MintedEnvParam"/>
         <RegExpr String="((B|L)?Verbatim)" attribute="Environment" context="VerbatimEnvParam"/>
         <RegExpr String="(verbatim|boxedverbatim)" attribute="Environment" context="VerbatimEnv"/>
         <RegExpr String="comment" attribute="Environment" context="CommentEnv"/>
@@ -318,8 +318,8 @@
 
       <!-- Selector for different highlightning schemes, in case the language is not implemented we pop and thus fallback to verbatim -->
       <context name="HighlightningSelector" attribute="Normal Text" lineEndContext="#stay">
-        <StringDetect String="C++" insensitive="true" context="HighlightningBeginC++"/>
-        <StringDetect String="Python" insensitive="true" context="HighlightningBeginPython"/>
+        <WordDetect String="C++" insensitive="true" context="HighlightningBeginC++"/>
+        <WordDetect String="Python" insensitive="true" context="HighlightningBeginPython"/>
         <RegExpr String=".*(?=\}|\])" context="#pop"/>
       </context>
 
@@ -423,7 +423,7 @@
       <!-- end of math environment -->
       <context name="MathFindEnd" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
         <RegExpr String="\s*\{" attribute="Normal Text" context="#stay"/>
-        <RegExpr String="(equation|displaymath|eqnarray|subeqnarray|math|multline|gather|align|flalign|alignat|xalignat|xxalignat|IEEEeqnarray|IEEEeqnarraybox|smallmatrix|pmatrix|bmatrix|Bmatrix|vmatrix|Vmatrix|cases)\*?" attribute="Environment" context="#stay"/>
+        <RegExpr String="(equation|displaymath|eqnarray|subeqnarray|math|multline|gather|align(at)?|flalign|xalignat|xxalignat|IEEEeqnarray|IEEEeqnarraybox|smallmatrix|pmatrix|bmatrix|Bmatrix|vmatrix|Vmatrix|cases)\*?" attribute="Environment" context="#stay"/>
         <DetectChar char="}" attribute="Normal Text" context="#pop#pop#pop#pop#pop"  endRegion="block"/>
       </context>
 
@@ -534,8 +534,8 @@
 
      <!--    iffalse aka multiline comment    -->
         <context name="Multiline Comment" attribute="Comment" lineEndContext="#stay">
-                <StringDetect String="\fi" attribute="Comment" context="#pop"/>
-                <StringDetect String="\else" attribute="Comment" context="#pop"/>
+          <WordDetect String="\fi" attribute="Comment" context="#pop"/>
+          <WordDetect String="\else" attribute="Comment" context="#pop"/>
         </context>
 
      <!-- comment -->

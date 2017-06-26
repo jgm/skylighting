@@ -13,7 +13,7 @@ v1.0:
 -->
 
 <language name="Apache Configuration" section="Configuration"
-          version="2" kateversion="5.0"
+          version="3" kateversion="5.0"
           extensions="httpd.conf;httpd2.conf;apache.conf;apache2.conf;.htaccess*;.htpasswd*"
           mimetype=""
           author="Jan Janssen (medhefgo@googlemail.com)" license="LGPL">
@@ -401,6 +401,7 @@ v1.0:
 <item>ServerSignature</item>
 <item>ServerTokens</item>
 <item>SSLEngine</item>
+<item>SSLHonorCipherOrder</item>
 <item>SSLMutex</item>
 <item>SSLOptions</item>
 <item>SSLProtocol</item>
@@ -609,14 +610,14 @@ v1.0:
 <itemDatas>
  <itemData name="Normal Text" defStyleNum="dsNormal" />
  <itemData name="Comment" defStyleNum="dsComment" />
- <itemData name="Directives" defStyleNum="dsExtension" bold="true" />
+ <itemData name="Directives" defStyleNum="dsExtension" bold="true" spellChecking="false"/>
  <itemData name="String" defStyleNum="dsString" />
  <itemData name="Float" defStyleNum="dsFloat" />
  <itemData name="Int" defStyleNum="dsFloat" />
- <itemData name="Alternates" defStyleNum="dsKeyword" />
+ <itemData name="Alternates" defStyleNum="dsKeyword" spellChecking="false"/>
  <itemData name="Alert" defStyleNum="dsError" />
- <itemData name="Container" defStyleNum="dsFunction" />
- <itemData name="Attribute" defStyleNum="dsAttribute" />
+ <itemData name="Container" defStyleNum="dsFunction" spellChecking="false"/>
+ <itemData name="Attribute" defStyleNum="dsAttribute" spellChecking="false"/>
  <itemData name="Other" defStyleNum="dsChar" />
 </itemDatas>
 </highlighting>
@@ -630,5 +631,3 @@ v1.0:
 </general>
 
 </language>
-
-
