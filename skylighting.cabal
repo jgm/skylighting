@@ -365,7 +365,7 @@ benchmark benchmark-skylighting
                    text,
                    containers,
                    directory,
-                   criterion >= 1.0 && < 1.2
+                   criterion >= 1.0 && < 1.3
   Ghc-Options:   -rtsopts -Wall -fno-warn-unused-do-bind
   Default-Language: Haskell2010
 
