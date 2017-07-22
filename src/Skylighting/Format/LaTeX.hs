@@ -111,13 +111,13 @@ macrodef defaultcol tokstyles tokt = "\\newcommand{\\"
   where tokf = case lookup tokt tokstyles of
                      Nothing -> defStyle
                      Just x  -> x
-        ul x = if tokenUnderline tokf
+        ul x = if tokenUnderline tokf == Just True
                   then "\\underline{" <> x <> "}"
                   else x
-        it x = if tokenItalic tokf
+        it x = if tokenItalic tokf == Just True
                   then "\\textit{" <> x <> "}"
                   else x
-        bf x = if tokenBold tokf
+        bf x = if tokenBold tokf == Just True
                   then "\\textbf{" <> x <> "}"
                   else x
         bcol = fromColor `fmap` tokenBackground tokf

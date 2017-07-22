@@ -158,9 +158,15 @@ toCss (t,tf) = "code > span." ++ short t ++ " { "
                 ++ decorationspec ++ "} /* " ++ showTokenType t ++ " */"
   where colorspec = maybe "" (\col -> "color: " ++ fromColor col ++ "; ") $ tokenColor tf
         backgroundspec = maybe "" (\col -> "background-color: " ++ fromColor col ++ "; ") $ tokenBackground tf
-        weightspec = if tokenBold tf then "font-weight: bold; " else ""
-        stylespec  = if tokenItalic tf then "font-style: italic; " else ""
-        decorationspec = if tokenUnderline tf then "text-decoration: underline; " else ""
+        weightspec = if tokenBold tf == Just True
+                        then "font-weight: bold; "
+                        else ""
+        stylespec  = if tokenItalic tf == Just True
+                        then "font-style: italic; "
+                        else ""
+        decorationspec = if tokenUnderline tf == Just True
+                            then "text-decoration: underline; "
+                            else ""
         showTokenType t' = case reverse (show t') of
                              'k':'o':'T':xs -> reverse xs
                              _              -> ""

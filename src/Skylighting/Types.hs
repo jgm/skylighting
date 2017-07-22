@@ -220,9 +220,9 @@ type SourceLine = [Token]
 data TokenStyle = TokenStyle {
     tokenColor      :: Maybe Color
   , tokenBackground :: Maybe Color
-  , tokenBold       :: Bool
-  , tokenItalic     :: Bool
-  , tokenUnderline  :: Bool
+  , tokenBold       :: Maybe Bool
+  , tokenItalic     :: Maybe Bool
+  , tokenUnderline  :: Maybe Bool
   } deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
 
 instance Binary TokenStyle
@@ -232,9 +232,9 @@ instance Binary TokenStyle
 instance FromJSON TokenStyle where
   parseJSON (Object v) = do
     tcolor <- v .:? "text-color"
-    tbold <- v .:? "bold" .!= False
-    titalic <- v .:? "italic" .!= False
-    tunderline <- v .:? "underline" .!= False
+    tbold <- v .:? "bold"
+    titalic <- v .:? "italic"
+    tunderline <- v .:? "underline"
     return TokenStyle{
                tokenColor = tcolor
              , tokenBackground = Nothing
@@ -248,9 +248,9 @@ defStyle :: TokenStyle
 defStyle = TokenStyle {
     tokenColor      = Nothing
   , tokenBackground = Nothing
-  , tokenBold       = False
-  , tokenItalic     = False
-  , tokenUnderline  = False
+  , tokenBold       = Nothing
+  , tokenItalic     = Nothing
+  , tokenUnderline  = Nothing
   }
 
 -- | A color (red/green/blue).
