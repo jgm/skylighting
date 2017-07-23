@@ -52,9 +52,9 @@ main = do
        , testCase "decode TokenStyle" $
             Just (TokenStyle{tokenColor = Just (RGB 0x1f 0x1c 0x1b),
                              tokenBackground = Nothing,
-                             tokenBold = Just True,
-                             tokenItalic = Nothing,
-                             tokenUnderline = Nothing }) @=?
+                             tokenBold = True,
+                             tokenItalic = False,
+                             tokenUnderline = False }) @=?
             decode "{ \"text-color\": \"#1f1c1b\", \"bold\": true }"
        , testCase "decode KDE theme to Style" $
             Just kate @=? decode defaultTheme

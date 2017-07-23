@@ -9,7 +9,11 @@
     "text-styles": {
         "Normal" : {
             "text-color" : "#1f1c1b",
-            "selected-text-color" : "#ffffff"
+            "selected-text-color" : "#ffffff",
+            "bold" : false,
+            "italic" : false,
+            "underline" : false,
+            "strike-through" : false
         },
         "Keyword" : {
             "text-color" : "#1f1c1b",
