@@ -31,6 +31,12 @@ sourceLineToLaTeX inline = mconcat . map (tokenToLaTeX inline)
 tokenToLaTeX :: Bool -> Token -> Text
 tokenToLaTeX inline (NormalTok, txt)
   | Text.all isSpace txt = escapeLaTeX inline txt
+tokenToLaTeX inline (Italicized toktype, txt)   =
+  "\\textit{" <> tokenToLaTeX inline (toktype, txt) <> "}"
+tokenToLaTeX inline (Boldfaced toktype, txt)   =
+  "\\textbf{" <> tokenToLaTeX inline (toktype, txt) <> "}"
+tokenToLaTeX inline (Underlined toktype, txt)   =
+  "\\underline{" <> tokenToLaTeX inline (toktype, txt) <> "}"
 tokenToLaTeX inline (toktype, txt)   = Text.cons '\\'
   (Text.pack (show toktype) <> "{" <> escapeLaTeX inline txt <> "}")
 
@@ -100,7 +106,39 @@ styleToLaTeX f = Text.unlines $
                             ,Text.pack
                               (printf "\\definecolor{shadecolor}{RGB}{%d,%d,%d}" r g b)
                             ,"\\newenvironment{Shaded}{\\begin{snugshade}}{\\end{snugshade}}"])
-  ++ map (macrodef (defaultColor f) (tokenStyles f)) (enumFromTo KeywordTok NormalTok)
+  ++ map (macrodef (defaultColor f) (tokenStyles f))
+     [ KeywordTok
+     , DataTypeTok
+     , DecValTok
+     , BaseNTok
+     , FloatTok
+     , ConstantTok
+     , CharTok
+     , SpecialCharTok
+     , StringTok
+     , VerbatimStringTok
+     , SpecialStringTok
+     , ImportTok
+     , CommentTok
+     , DocumentationTok
+     , AnnotationTok
+     , CommentVarTok
+     , OtherTok
+     , FunctionTok
+     , VariableTok
+     , ControlFlowTok
+     , OperatorTok
+     , BuiltInTok
+     , ExtensionTok
+     , PreprocessorTok
+     , AttributeTok
+     , RegionMarkerTok
+     , InformationTok
+     , WarningTok
+     , AlertTok
+     , ErrorTok
+     , NormalTok
+     ]
 
 macrodef :: Maybe Color -> [(TokenType, TokenStyle)] -> TokenType -> Text
 macrodef defaultcol tokstyles tokt = "\\newcommand{\\"

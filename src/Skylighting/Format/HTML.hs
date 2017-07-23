@@ -53,6 +53,12 @@ formatHtmlInline opts = (H.code ! A.class_ (toValue $ Text.unwords
                                 . map (sourceLineToHtml opts)
 
 tokenToHtml :: FormatOptions -> Token -> Html
+tokenToHtml opts (Italicized toktype, txt) =
+  H.i $ tokenToHtml opts (toktype, txt)
+tokenToHtml opts (Boldfaced toktype, txt) =
+  H.b $ tokenToHtml opts (toktype, txt)
+tokenToHtml opts (Underlined toktype, txt) =
+  H.em ! A.class_ (toValue "underlined") $ tokenToHtml opts (toktype, txt)
 tokenToHtml _ (NormalTok, txt)  = toHtml txt
 tokenToHtml opts (toktype, txt) =
   if titleAttributes opts
@@ -92,6 +98,7 @@ short AttributeTok      = "at"
 short InformationTok    = "in"
 short WarningTok        = "wa"
 short NormalTok         = ""
+short _                 = ""
 
 sourceLineToHtml :: FormatOptions -> SourceLine -> Html
 sourceLineToHtml opts cont = mapM_ (tokenToHtml opts) cont

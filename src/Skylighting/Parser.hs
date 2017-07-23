@@ -84,7 +84,7 @@ extractSyntaxDefinition filename =
      contexts <- getContexts $<
                     (arr (vBool True) <<< getAttrValue "casesensitive") &&&
                     (getAttrValue "name") &&&
-                    (arr toItemDataTable <<< getItemDatas) &&&
+                    (arr Map.fromList <<< getItemDatas) &&&
                     getLists &&&
                     (arr (headDef defaultKeywordAttr) <<< getKeywordAttrs) -< x
      startingContext <- case contexts of
@@ -106,10 +106,21 @@ extractSyntaxDefinition filename =
                 , sStartingContext = startingContext
                 }
 
-toItemDataTable :: [(String,String)] -> Map.Map String TokenType
-toItemDataTable = Map.fromList . map (\(s,t) -> (s, toTokenType t))
+getItemData :: IOSArrow XmlTree (String, TokenType)
+getItemData =
+  proc x -> do
+     name <- getAttrValue "name" -< x
+     t <- getAttrValue "defStyleNum" -< x
+     b <- getAttrValue "bold" -< x
+     i <- getAttrValue "italic" -< x
+     u <- getAttrValue "underline" -< x
+     returnA -< (name,
+       (if vBool False b then Boldfaced else id) .
+       (if vBool False i then Italicized else id) .
+       (if vBool False u then Underlined else id) $
+       toTokenType t)
 
-getItemDatas :: IOSArrow XmlTree [(String,String)]
+getItemDatas :: IOSArrow XmlTree [(String,TokenType)]
 getItemDatas =
   multi (hasName "itemDatas")
      >>>
@@ -117,7 +128,7 @@ getItemDatas =
              >>>
              hasName "itemData"
              >>>
-             getAttrValue "name" &&& getAttrValue "defStyleNum")
+             getItemData)
 
 toTokenType :: String -> TokenType
 toTokenType s =

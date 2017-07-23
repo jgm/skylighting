@@ -201,7 +201,10 @@ data TokenType = KeywordTok
                | AlertTok
                | ErrorTok
                | NormalTok
-               deriving (Read, Show, Eq, Ord, Enum, Data, Typeable, Generic)
+               | Italicized TokenType
+               | Boldfaced TokenType
+               | Underlined TokenType
+               deriving (Read, Show, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary TokenType
 
