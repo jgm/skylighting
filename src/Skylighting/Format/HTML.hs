@@ -94,7 +94,9 @@ short WarningTok        = "wa"
 short NormalTok         = ""
 
 sourceLineToHtml :: FormatOptions -> SourceLine -> Html
-sourceLineToHtml opts cont = mapM_ (tokenToHtml opts) cont
+sourceLineToHtml opts cont = H.div ! A.class_ sourceLine $
+                                mapM_ (tokenToHtml opts) cont
+  where  sourceLine = toValue "sourceLine"
 
 formatHtmlBlockPre :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlockPre opts = H.pre . formatHtmlInline opts
