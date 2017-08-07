@@ -131,28 +131,36 @@ formatHtmlBlock opts ls = H.div ! A.class_ sourceCode $
 
 -- | Returns CSS for styling highlighted code according to the given style.
 styleToCss :: Style -> String
-styleToCss f = unlines $ divspec ++ tablespec ++ colorspec ++ map toCss (tokenStyles f)
+styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ map toCss (tokenStyles f)
    where colorspec = case (defaultColor f, backgroundColor f) of
                           (Nothing, Nothing) -> []
                           (Just c, Nothing)  -> ["pre, code { color: " ++ fromColor c ++ "; }"]
                           (Nothing, Just c)  -> ["pre, code { background-color: " ++ fromColor c ++ "; }"]
                           (Just c1, Just c2) -> ["pre, code { color: " ++ fromColor c1 ++ "; background-color: " ++
                                                   fromColor c2 ++ "; }"]
-         tablespec = [
-           "table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {"
-          ,"  margin: 0; padding: 0; vertical-align: baseline; border: none; }"
-          ,"table.sourceCode { width: 100%; line-height: 100%; " ++
-             maybe "" (\c -> "background-color: " ++ fromColor c ++ "; ") (backgroundColor f) ++
-             maybe "" (\c -> "color: " ++ fromColor c ++ "; ") (defaultColor f) ++
-             "}"
-          ,"td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; " ++
-             maybe "" (\c -> "background-color: " ++ fromColor c ++ "; ") (lineNumberBackgroundColor f) ++
-             maybe "" (\c -> "color: " ++ fromColor c ++ "; ") (lineNumberColor f) ++
-             maybe "" (\c -> "border-right: 1px solid " ++ fromColor c ++ "; ") (lineNumberColor f) ++
-             "}"
-          ,"td.sourceCode { padding-left: 5px; }"
+         numberspec = [
+            ".numberSource div.sourceLine { position: relative; min-height: 2em; }"
+          , ".numberSource div.sourceLine::before { content: counter(line); counter-increment: line;"
+          , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
+          , "    border: none;"
+          , "    -webkit-touch-callout: none; -webkit-user-select: none;"
+          , "    -khtml-user-select: none; -moz-user-select: none;"
+          , "    -ms-user-select: none; user-select: none;"
+          , "    padding: 0 4px; width: 4em; }"
+          , ".numberSource pre.sourceCode { margin-left: 3em;" ++
+              maybe "" (\c -> "border-left: 1px solid " ++ fromColor c ++ "; ") (lineNumberColor f) ++
+              maybe "" (\c -> "background-color: " ++ fromColor c ++ "; ") (lineNumberBackgroundColor f) ++
+              maybe "" (\c -> "color: " ++ fromColor c ++ "; ") (lineNumberColor f) ++
+              " padding-left: 4px; }"
+          , "code.sourceCode { counter-reset: line 0; }"
           ]
-         divspec = [ "div.sourceCode { overflow-x: auto; }" ]
+         divspec = [ "div.sourceCode { overflow-x: auto; }"
+          , ".sourceCode { overflow: visible; }"
+          , "@media print {"
+          , "code.sourceCode { white-space: pre-wrap; }"
+          , "div.sourceLine { text-indent: -1em; padding-left: 1em; }"
+          , "}"
+          ]
 
 toCss :: (TokenType, TokenStyle) -> String
 toCss (t,tf) = "code > div > span." ++ short t ++ " { "
