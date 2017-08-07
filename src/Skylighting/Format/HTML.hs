@@ -155,7 +155,7 @@ styleToCss f = unlines $ divspec ++ tablespec ++ colorspec ++ map toCss (tokenSt
          divspec = [ "div.sourceCode { overflow-x: auto; }" ]
 
 toCss :: (TokenType, TokenStyle) -> String
-toCss (t,tf) = "code > span." ++ short t ++ " { "
+toCss (t,tf) = "code > div > span." ++ short t ++ " { "
                 ++ colorspec ++ backgroundspec ++ weightspec ++ stylespec
                 ++ decorationspec ++ "} /* " ++ showTokenType t ++ " */"
   where colorspec = maybe "" (\col -> "color: " ++ fromColor col ++ "; ") $ tokenColor tf
