@@ -5,6 +5,7 @@ module Skylighting.Format.HTML (
     ) where
 
 import Data.List (intersperse)
+import Data.String (fromString)
 import qualified Data.Text as Text
 import Skylighting.Types
 import Text.Blaze.Html
@@ -50,7 +51,8 @@ formatHtmlInline opts = (H.code ! A.class_ (toValue $ Text.unwords
                                                     $ Text.pack "sourceCode"
                                                       : codeClasses opts))
                                 . mconcat . intersperse (toHtml "\n")
-                                . map (sourceLineToHtml opts)
+                                . zipWith (sourceLineToHtml opts) [startNum..]
+   where startNum = LineNo $ startNumber opts
 
 tokenToHtml :: FormatOptions -> Token -> Html
 tokenToHtml _ (NormalTok, txt)  = toHtml txt
@@ -93,8 +95,9 @@ short InformationTok    = "in"
 short WarningTok        = "wa"
 short NormalTok         = ""
 
-sourceLineToHtml :: FormatOptions -> SourceLine -> Html
-sourceLineToHtml opts cont = H.div ! A.class_ sourceLine $
+sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
+sourceLineToHtml opts lno cont = H.div ! A.class_ sourceLine
+                                       ! H.dataAttribute (fromString "line-number") (toValue . show . lineNo $ lno) $
                                 mapM_ (tokenToHtml opts) cont
   where  sourceLine = toValue "sourceLine"
 
@@ -129,7 +132,7 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ map toCss (tokenS
                                                   fromColor c2 ++ "; }"]
          numberspec = [
             ".numberSource div.sourceLine { position: relative; min-height: 2em; }"
-          , ".numberSource div.sourceLine::before { content: counter(line); counter-increment: line;"
+          , ".numberSource div.sourceLine::before { content: attr(data-line-number);"
           , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
           , "    border: none;"
           , "    -webkit-touch-callout: none; -webkit-user-select: none;"
@@ -141,7 +144,6 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ map toCss (tokenS
               maybe "" (\c -> "background-color: " ++ fromColor c ++ "; ") (lineNumberBackgroundColor f) ++
               maybe "" (\c -> "color: " ++ fromColor c ++ "; ") (lineNumberColor f) ++
               " padding-left: 4px; }"
-          , "code.sourceCode { counter-reset: line 0; }"
           ]
          divspec = [ "div.sourceCode { overflow-x: auto; }"
           , ".sourceCode { overflow: visible; }"
