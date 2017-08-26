@@ -101,33 +101,22 @@ sourceLineToHtml opts cont = H.div ! A.class_ sourceLine $
 formatHtmlBlockPre :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlockPre opts = H.pre . formatHtmlInline opts
 
--- | Format tokens as an HTML @pre@ block. If line numbering is
--- selected, this is put into a table row with line numbers in the
--- left cell.  The whole code block is wrapped in a @div@ element
--- to aid styling (e.g. the overflow-x property).  See the
--- documentation for 'formatHtmlInline' for information about how
+-- | Format tokens as an HTML @pre@ block. Each line is wrapped in a div
+-- with the class ‘source-line’. The whole code block is wrapped in a @div@
+-- element to aid styling (e.g. the overflow-x property). If line numbering
+-- is selected, this surrounding div is given the class ‘number-source’.
+-- See the documentation for 'formatHtmlInline' for information about how
 -- tokens are encoded.
 formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlock opts ls = H.div ! A.class_ sourceCode $
-                            container ! A.class_ (toValue $ Text.unwords classes)
-  where  container = if numberLines opts
-                        then H.table $ H.tr ! A.class_ sourceCode $
-                                 nums >> source
-                        else pre
-         sourceCode = toValue "sourceCode"
+                            pre ! A.class_ (toValue $ Text.unwords classes)
+  where  sourceCode = toValue . Text.unwords $ Text.pack "sourceCode" :
+                      if numberLines opts
+                        then [Text.pack "numberSource"]
+                        else []
          classes = Text.pack "sourceCode" :
                    [x | x <- containerClasses opts, x /= Text.pack "sourceCode"]
          pre = formatHtmlBlockPre opts ls
-         source = H.td ! A.class_ sourceCode $ pre
-         startNum = startNumber opts
-         nums = H.td ! A.class_ (toValue "lineNumbers")
-                     $ H.pre
-                     $ mapM_ lineNum [startNum..(startNum + length ls - 1)]
-         lineNum n = if lineAnchors opts
-                        then (H.a ! A.id (toValue nStr) ! A.href (toValue $ "#" ++ nStr) $ toHtml $ show n)
-                              >> toHtml "\n"
-                        else toHtml $ show n ++ "\n"
-           where nStr = show n
 
 -- | Returns CSS for styling highlighted code according to the given style.
 styleToCss :: Style -> String
