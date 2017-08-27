@@ -96,10 +96,17 @@ short WarningTok        = "wa"
 short NormalTok         = ""
 
 sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
-sourceLineToHtml opts lno cont = H.div ! A.class_ sourceLine
-                                       ! H.dataAttribute (fromString "line-number") (toValue . show . lineNo $ lno) $
+sourceLineToHtml opts lno cont = wrapElement ! A.class_ sourceLine
+                                       ! A.id lineNum
+                                       ! A.href lineRef
+                                       ! H.dataAttribute (fromString "line-number") lineNum $
                                 mapM_ (tokenToHtml opts) cont
   where  sourceLine = toValue "sourceLine"
+         lineNum = toValue . show . lineNo $ lno
+         lineRef = toValue . ('#':) . show . lineNo $ lno
+         wrapElement = if lineAnchors opts
+                then H.a
+                else H.div
 
 formatHtmlBlockPre :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlockPre opts = H.pre . formatHtmlInline opts
@@ -123,7 +130,7 @@ formatHtmlBlock opts ls = H.div ! A.class_ sourceCode $
 
 -- | Returns CSS for styling highlighted code according to the given style.
 styleToCss :: Style -> String
-styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ map toCss (tokenStyles f)
+styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map toCss (tokenStyles f)
    where colorspec = case (defaultColor f, backgroundColor f) of
                           (Nothing, Nothing) -> []
                           (Just c, Nothing)  -> ["pre, code { color: " ++ fromColor c ++ "; }"]
@@ -131,10 +138,12 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ map toCss (tokenS
                           (Just c1, Just c2) -> ["pre, code { color: " ++ fromColor c1 ++ "; background-color: " ++
                                                   fromColor c2 ++ "; }"]
          numberspec = [
-            ".numberSource div.sourceLine { position: relative; min-height: 2em; }"
-          , ".numberSource div.sourceLine::before { content: attr(data-line-number);"
+            ".numberSource div.sourceLine, .numberSource a.sourceLine"
+          , "  { position: relative; min-height: 2em; }"
+          , ".numberSource div.sourceLine::before, .numberSource a.sourceLine::before"
+          , "  { content: attr(data-line-number);"
           , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
-          , "    border: none;"
+          , "    border: none; pointer-events: all; "
           , "    -webkit-touch-callout: none; -webkit-user-select: none;"
           , "    -khtml-user-select: none; -moz-user-select: none;"
           , "    -ms-user-select: none; user-select: none;"
@@ -146,16 +155,22 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ map toCss (tokenS
               " padding-left: 4px; }"
           ]
          divspec = [ "div.sourceCode { overflow-x: auto; }"
-          , "div.sourceLine { display: inline-block; }"
+          , "div.sourceLine, a.sourceLine { display: inline-block; }"
+          , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
           , ".sourceCode { overflow: visible; }"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
-          , "div.sourceLine { text-indent: -1em; padding-left: 1em; }"
+          , "div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }"
+          , "}"
+          ]
+         linkspec = [ "@media screen {"
+          , "a.sourceLine::before { text-decoration: underline; color = initial; }"
           , "}"
           ]
 
 toCss :: (TokenType, TokenStyle) -> String
-toCss (t,tf) = "code > div > span." ++ short t ++ " { "
+toCss (t,tf) = "code > div > span." ++ short t ++ ", "
+                ++ "code > a > span." ++ short t ++ " { "
                 ++ colorspec ++ backgroundspec ++ weightspec ++ stylespec
                 ++ decorationspec ++ "} /* " ++ showTokenType t ++ " */"
   where colorspec = maybe "" (\col -> "color: " ++ fromColor col ++ "; ") $ tokenColor tf
