@@ -146,6 +146,7 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ map toCss (tokenS
               " padding-left: 4px; }"
           ]
          divspec = [ "div.sourceCode { overflow-x: auto; }"
+          , "div.sourceLine { display: inline-block; }"
           , ".sourceCode { overflow: visible; }"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
