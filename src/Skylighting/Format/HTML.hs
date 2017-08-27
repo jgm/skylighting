@@ -95,6 +95,8 @@ short InformationTok    = "in"
 short WarningTok        = "wa"
 short NormalTok         = ""
 
+-- | Each line of source is wrapped in an (inline-block) div that makes
+-- subsequent per-line processing (e.g. adding line numnbers) possible.
 sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
 sourceLineToHtml opts lno cont = wrapElement ! A.class_ sourceLine
                                        ! A.id lineNum
@@ -114,7 +116,10 @@ formatHtmlBlockPre opts = H.pre . formatHtmlInline opts
 -- | Format tokens as an HTML @pre@ block. Each line is wrapped in a div
 -- with the class ‘source-line’. The whole code block is wrapped in a @div@
 -- element to aid styling (e.g. the overflow-x property). If line numbering
--- is selected, this surrounding div is given the class ‘number-source’.
+-- is selected, this surrounding div is given the class ‘number-source’,
+-- and the resulting html will display line numbers thanks to the included
+-- css. Note that the html produced will always include the line numbers as
+-- the 'data-line-number' attribute.
 -- See the documentation for 'formatHtmlInline' for information about how
 -- tokens are encoded.
 formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
