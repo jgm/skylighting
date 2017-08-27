@@ -139,7 +139,7 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
                                                   fromColor c2 ++ "; }"]
          numberspec = [
             ".numberSource div.sourceLine, .numberSource a.sourceLine"
-          , "  { position: relative; min-height: 2em; }"
+          , "  { position: relative; }"
           , ".numberSource div.sourceLine::before, .numberSource a.sourceLine::before"
           , "  { content: attr(data-line-number);"
           , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
@@ -155,7 +155,7 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
               " padding-left: 4px; }"
           ]
          divspec = [ "div.sourceCode { overflow-x: auto; }"
-          , "div.sourceLine, a.sourceLine { display: inline-block; }"
+          , "div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }"
           , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
           , ".sourceCode { overflow: visible; }"
           , "@media print {"
