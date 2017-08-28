@@ -144,7 +144,7 @@ short NormalTok         = ""
 
 -- | Returns CSS for styling highlighted code according to the given style.
 styleToCss :: Style -> String
-styleToCss = TL.unpack . C.render . styleToCss'
+styleToCss = TL.unpack . C.renderWith C.compact [] . styleToCss'
 
 styleToCss' :: Style -> Css
 styleToCss' f = do
