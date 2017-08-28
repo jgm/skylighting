@@ -170,6 +170,7 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
 
 toCss :: (TokenType, TokenStyle) -> String
 toCss (t,tf) = "code > div > span." ++ short t ++ ", "
+                ++ "code > span." ++ short t ++ ", "
                 ++ "code > a > span." ++ short t ++ " { "
                 ++ colorspec ++ backgroundspec ++ weightspec ++ stylespec
                 ++ decorationspec ++ "} /* " ++ showTokenType t ++ " */"
