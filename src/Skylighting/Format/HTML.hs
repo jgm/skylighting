@@ -9,10 +9,15 @@ import qualified Data.Map as Map
 import Data.Monoid ((<>))
 import Data.String (fromString)
 import qualified Data.Text as Text
+import qualified Data.Text.Lazy as TL
 import Skylighting.Types
 import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
+import Clay (Css)
+import qualified Clay as C
+import qualified Clay.Media as CM
+import qualified Clay.Text as CT
 
 -- | Format tokens using HTML spans inside @code@ tags. For example,
 -- A @KeywordTok@ is rendered as a span with class @kw@.
@@ -139,71 +144,119 @@ short NormalTok         = ""
 
 -- | Returns CSS for styling highlighted code according to the given style.
 styleToCss :: Style -> String
-styleToCss f = unlines $
-  divspec ++ numberspec ++ colorspec ++ linkspec ++
-    sort (map toCss (Map.toList (tokenStyles f)))
-   where colorspec = [
-           "div.sourceCode\n  { "
-           ++ case (defaultColor f, backgroundColor f) of
-                (Nothing, Nothing) -> ""
-                (Just c, Nothing)  -> "color: " ++ fromColor c ++ ";"
-                (Nothing, Just c)  -> "background-color: " ++ fromColor c ++ ";"
-                (Just c1, Just c2) -> "color: " ++ fromColor c1
-                     ++ "; background-color: " ++ fromColor c2 ++ ";"
-           ++ " }"]
-         numberspec = [
-            "pre.numberSource a.sourceLine"
-          , "  { position: relative; }"
-          , "pre.numberSource a.sourceLine:empty"
-          , "  { position: absolute; }"
-          , "pre.numberSource a.sourceLine::before"
-          , "  { content: attr(data-line-number);"
-          , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
-          , "    border: none; pointer-events: all;"
-          , "    -webkit-touch-callout: none; -webkit-user-select: none;"
-          , "    -khtml-user-select: none; -moz-user-select: none;"
-          , "    -ms-user-select: none; user-select: none;"
-          , "    padding: 0 4px; width: 4em;"
-          , maybe "" (\c -> "    background-color: " ++ fromColor c ++ ";\n")
-              (lineNumberBackgroundColor f) ++
-            maybe "" (\c -> "    color: " ++ fromColor c ++ ";\n")
-              (lineNumberColor f) ++
-            "  }"
-          , "pre.numberSource { margin-left: 3em; " ++
-              maybe "" (\c -> "border-left: 1px solid " ++ fromColor c ++ "; ") (lineNumberColor f) ++
-              " padding-left: 4px; }"
-          ]
-         divspec = [
-            "a.sourceLine { display: inline-block; line-height: 1.25; }"
-          , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
-          , "a.sourceLine:empty { height: 1.2em; position: absolute; }" -- correct empty line height
-          , ".sourceCode { overflow: visible; }" -- needed for line numbers
-          , "code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for absolute contents
-          , "div.sourceCode { margin: 1em 0; }" -- Collapse neighbours correctly
-          , "pre.sourceCode { margin: 0; }" -- Collapse neighbours correctly
-          , "@media screen {"
-          , "div.sourceCode { overflow: auto; }" -- do not overflow on screen
-          , "}"
-          , "@media print {"
-          , "code.sourceCode { white-space: pre-wrap; }"
-          , "a.sourceLine { text-indent: -1em; padding-left: 1em; }"
-          , "}"
-          ]
-         linkspec = [ "@media screen {"
-          , "a.sourceLine::before { text-decoration: underline; }"
-          , "}"
-          ]
+styleToCss = TL.unpack . C.render . styleToCss'
 
-toCss :: (TokenType, TokenStyle) -> String
-toCss (t,tf) = "code span." ++ short t ++ " { "
-                ++ colorspec ++ backgroundspec ++ weightspec ++ stylespec
-                ++ decorationspec ++ "} /* " ++ showTokenType t ++ " */"
-  where colorspec = maybe "" (\col -> "color: " ++ fromColor col ++ "; ") $ tokenColor tf
-        backgroundspec = maybe "" (\col -> "background-color: " ++ fromColor col ++ "; ") $ tokenBackground tf
-        weightspec = if tokenBold tf then "font-weight: bold; " else ""
-        stylespec  = if tokenItalic tf then "font-style: italic; " else ""
-        decorationspec = if tokenUnderline tf then "text-decoration: underline; " else ""
-        showTokenType t' = case reverse (show t') of
-                             'k':'o':'T':xs -> reverse xs
-                             _              -> ""
+styleToCss' :: Style -> Css
+styleToCss' f = do
+    divspec
+    numberspec
+    colorspec
+    linkspec
+    mapM_ toCss (sort (Map.toList (tokenStyles f)))
+
+   where colorspec = C.div C.# sourceCode C.?
+           case (defaultColor f, backgroundColor f) of
+             (Nothing, Nothing) -> pure ()
+             (Just c, Nothing)  -> do
+               C.color $ fromColor c
+             (Nothing, Just c)  -> do
+               C.backgroundColor $ fromColor c
+             (Just c1, Just c2) -> do
+               C.color $ fromColor c1
+               C.backgroundColor $ fromColor c2
+
+         numberspec = do
+          C.pre C.# numberSource C.? do
+            C.marginLeft . C.em $ 3
+            pure () `maybe` (\c -> C.borderLeft C.solid (C.px 1) $ fromColor c) $ lineNumberColor f
+
+            C.paddingLeft . C.px $ 4
+
+            C.a C.# sourceLine C.? do
+              C.position C.relative
+              C.empty C.& do
+                C.position C.absolute
+
+              C.before C.& do
+                C.content . C.attrContent . Text.pack $ "data-line-number"
+                C.position C.absolute
+                C.left . C.em $ (-5)
+                C.textAlign . C.alignSide $ C.sideRight
+                C.verticalAlign C.vAlignBaseline
+                C.border C.none C.nil C.none
+                C.pointerEvents C.allEvents
+                C.userSelect C.none
+                C.sym2 C.padding C.nil (C.px 4)
+                C.width . C.em $ 4
+                pure () `maybe` (\c -> C.backgroundColor $ fromColor c) $ lineNumberBackgroundColor f
+                pure () `maybe` (\c -> C.color $ fromColor c) $ lineNumberColor f
+
+         divspec = do
+          C.a C.# sourceLine C.? do
+            C.display C.inlineBlock
+            C.lineHeight . C.unitless $ 1.25
+            C.pointerEvents C.none
+            C.color C.inherit
+            C.textDecoration C.inherit
+
+            C.empty C.& do
+              -- Correct empty line height
+              C.height . C.em $ 1.2
+              C.position C.absolute
+
+          C.star C.# sourceCode C.? do
+            -- Needed for line numbers to be displayed
+            C.overflow C.visible
+
+          -- Collapse neighbours correctly
+          C.div C.# sourceCode C.? do
+            C.sym2 C.margin (C.em 1) C.nil
+          C.pre C.# sourceCode C.? do
+            C.sym C.margin C.nil
+
+          C.code C.# sourceCode C.? do
+            C.whiteSpace CT.pre
+            -- Needed for contents to be position: absolute
+            C.position C.relative
+
+          C.query CM.screen [] $ do
+            C.div C.# sourceCode C.? do
+              C.overflowX C.auto
+
+          C.query CM.print [] $ do
+            C.code C.# sourceCode C.? do
+              C.whiteSpace C.preWrap
+            C.a C.# sourceLine C.? do
+              C.textIndent . C.indent . C.em $ (-1)
+              C.paddingLeft . C.em $ 1
+
+         linkspec = C.query CM.screen [] $ do
+          C.a C.# sourceLine C.# C.before C.? do
+            C.textDecoration C.underline
+
+         numberSource :: C.Refinement
+         numberSource = fromString ".numberSource"
+         sourceCode :: C.Refinement
+         sourceCode = fromString ".sourceCode"
+         sourceLine :: C.Refinement
+         sourceLine = fromString ".sourceLine"
+
+toCss :: (TokenType, TokenStyle) -> Css
+toCss (t,tf) = do
+        C.code C.** C.span C.# shortR t C.? do
+            colorspec
+            backgroundspec
+            weightspec
+            stylespec
+            decorationspec
+            -- C.comment $ showTokenType t
+  where colorspec = pure () `maybe` (\col -> C.color $ fromColor col) $ tokenColor tf
+        backgroundspec = pure () `maybe` (\col -> C.backgroundColor $ fromColor col) $ tokenBackground tf
+        weightspec = if tokenBold tf then C.fontWeight C.bold else pure ()
+        stylespec  = if tokenItalic tf then C.fontStyle C.italic else pure ()
+        decorationspec = if tokenUnderline tf then C.textDecoration C.underline else pure ()
+        shortR = C.byClass . Text.pack . short
+        -- showTokenType t' = case reverse (show t') of
+        --                      'k':'o':'T':xs -> reverse xs
+        --                      _              -> ""
 

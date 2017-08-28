@@ -232,6 +232,7 @@ library
                        text,
                        binary,
                        bytestring,
+                       clay >= 0.12.2,
                        directory,
                        filepath,
                        aeson,
