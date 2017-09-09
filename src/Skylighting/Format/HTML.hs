@@ -163,6 +163,7 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
           , "div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }"
           , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
           , ".sourceCode { overflow: visible; }"
+          , "code.sourceCode { white-space: pre; }"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
           , "div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }"
