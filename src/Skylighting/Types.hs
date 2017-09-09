@@ -4,6 +4,7 @@
 {-# LANGUAGE OverloadedStrings    #-}
 {-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 -- | Basic types for Skylighting.
 module Skylighting.Types (
@@ -23,6 +24,7 @@ module Skylighting.Types (
               , Token
               , TokenType(..)
               , SourceLine
+              , LineNo(..)
               -- * Styles
               , TokenStyle(..)
               , defStyle
@@ -216,6 +218,9 @@ instance FromJSON TokenType where
 -- | A line of source: a list of labeled tokens.
 type SourceLine = [Token]
 
+-- | Line numbers
+newtype LineNo = LineNo { lineNo :: Int } deriving (Show, Enum)
+
 -- | A 'TokenStyle' determines how a token is to be rendered.
 data TokenStyle = TokenStyle {
     tokenColor      :: Maybe Color
@@ -345,7 +350,6 @@ data FormatOptions = FormatOptions{
        , titleAttributes  :: Bool     -- ^ Html titles with token types
        , codeClasses      :: [Text]   -- ^ Additional classes for Html code tag
        , containerClasses :: [Text]   -- ^ Additional classes for Html container tag
-                                      --   (pre or table depending on numberLines)
        } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary FormatOptions

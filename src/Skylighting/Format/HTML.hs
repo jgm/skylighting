@@ -5,6 +5,7 @@ module Skylighting.Format.HTML (
     ) where
 
 import Data.List (intersperse)
+import Data.String (fromString)
 import qualified Data.Text as Text
 import Skylighting.Types
 import Text.Blaze.Html
@@ -50,7 +51,8 @@ formatHtmlInline opts = (H.code ! A.class_ (toValue $ Text.unwords
                                                     $ Text.pack "sourceCode"
                                                       : codeClasses opts))
                                 . mconcat . intersperse (toHtml "\n")
-                                . map (sourceLineToHtml opts)
+                                . zipWith (sourceLineToHtml opts) [startNum..]
+   where startNum = LineNo $ startNumber opts
 
 tokenToHtml :: FormatOptions -> Token -> Html
 tokenToHtml _ (NormalTok, txt)  = toHtml txt
@@ -93,67 +95,87 @@ short InformationTok    = "in"
 short WarningTok        = "wa"
 short NormalTok         = ""
 
-sourceLineToHtml :: FormatOptions -> SourceLine -> Html
-sourceLineToHtml opts cont = mapM_ (tokenToHtml opts) cont
+-- | Each line of source is wrapped in an (inline-block) div that makes
+-- subsequent per-line processing (e.g. adding line numnbers) possible.
+sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
+sourceLineToHtml opts lno cont = wrapElement ! A.class_ sourceLine
+                                       ! A.id lineNum
+                                       ! A.href lineRef
+                                       ! H.dataAttribute (fromString "line-number") lineNum $
+                                mapM_ (tokenToHtml opts) cont
+  where  sourceLine = toValue "sourceLine"
+         lineNum = toValue . show . lineNo $ lno
+         lineRef = toValue . ('#':) . show . lineNo $ lno
+         wrapElement = if lineAnchors opts
+                then H.a
+                else H.div
 
 formatHtmlBlockPre :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlockPre opts = H.pre . formatHtmlInline opts
 
--- | Format tokens as an HTML @pre@ block. If line numbering is
--- selected, this is put into a table row with line numbers in the
--- left cell.  The whole code block is wrapped in a @div@ element
--- to aid styling (e.g. the overflow-x property).  See the
--- documentation for 'formatHtmlInline' for information about how
+-- | Format tokens as an HTML @pre@ block. Each line is wrapped in a div
+-- with the class ‘source-line’. The whole code block is wrapped in a @div@
+-- element to aid styling (e.g. the overflow-x property). If line numbering
+-- is selected, this surrounding div is given the class ‘number-source’,
+-- and the resulting html will display line numbers thanks to the included
+-- css. Note that the html produced will always include the line numbers as
+-- the 'data-line-number' attribute.
+-- See the documentation for 'formatHtmlInline' for information about how
 -- tokens are encoded.
 formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlock opts ls = H.div ! A.class_ sourceCode $
-                            container ! A.class_ (toValue $ Text.unwords classes)
-  where  container = if numberLines opts
-                        then H.table $ H.tr ! A.class_ sourceCode $
-                                 nums >> source
-                        else pre
-         sourceCode = toValue "sourceCode"
+                            pre ! A.class_ (toValue $ Text.unwords classes)
+  where  sourceCode = toValue . Text.unwords $ Text.pack "sourceCode" :
+                      if numberLines opts
+                        then [Text.pack "numberSource"]
+                        else []
          classes = Text.pack "sourceCode" :
                    [x | x <- containerClasses opts, x /= Text.pack "sourceCode"]
          pre = formatHtmlBlockPre opts ls
-         source = H.td ! A.class_ sourceCode $ pre
-         startNum = startNumber opts
-         nums = H.td ! A.class_ (toValue "lineNumbers")
-                     $ H.pre
-                     $ mapM_ lineNum [startNum..(startNum + length ls - 1)]
-         lineNum n = if lineAnchors opts
-                        then (H.a ! A.id (toValue nStr) ! A.href (toValue $ "#" ++ nStr) $ toHtml $ show n)
-                              >> toHtml "\n"
-                        else toHtml $ show n ++ "\n"
-           where nStr = show n
 
 -- | Returns CSS for styling highlighted code according to the given style.
 styleToCss :: Style -> String
-styleToCss f = unlines $ divspec ++ tablespec ++ colorspec ++ map toCss (tokenStyles f)
+styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map toCss (tokenStyles f)
    where colorspec = case (defaultColor f, backgroundColor f) of
                           (Nothing, Nothing) -> []
                           (Just c, Nothing)  -> ["pre, code { color: " ++ fromColor c ++ "; }"]
                           (Nothing, Just c)  -> ["pre, code { background-color: " ++ fromColor c ++ "; }"]
                           (Just c1, Just c2) -> ["pre, code { color: " ++ fromColor c1 ++ "; background-color: " ++
                                                   fromColor c2 ++ "; }"]
-         tablespec = [
-           "table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {"
-          ,"  margin: 0; padding: 0; vertical-align: baseline; border: none; }"
-          ,"table.sourceCode { width: 100%; line-height: 100%; " ++
-             maybe "" (\c -> "background-color: " ++ fromColor c ++ "; ") (backgroundColor f) ++
-             maybe "" (\c -> "color: " ++ fromColor c ++ "; ") (defaultColor f) ++
-             "}"
-          ,"td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; " ++
-             maybe "" (\c -> "background-color: " ++ fromColor c ++ "; ") (lineNumberBackgroundColor f) ++
-             maybe "" (\c -> "color: " ++ fromColor c ++ "; ") (lineNumberColor f) ++
-             maybe "" (\c -> "border-right: 1px solid " ++ fromColor c ++ "; ") (lineNumberColor f) ++
-             "}"
-          ,"td.sourceCode { padding-left: 5px; }"
+         numberspec = [
+            ".numberSource div.sourceLine, .numberSource a.sourceLine"
+          , "  { position: relative; }"
+          , ".numberSource div.sourceLine::before, .numberSource a.sourceLine::before"
+          , "  { content: attr(data-line-number);"
+          , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
+          , "    border: none; pointer-events: all; "
+          , "    -webkit-touch-callout: none; -webkit-user-select: none;"
+          , "    -khtml-user-select: none; -moz-user-select: none;"
+          , "    -ms-user-select: none; user-select: none;"
+          , "    padding: 0 4px; width: 4em; }"
+          , ".numberSource pre.sourceCode { margin-left: 3em;" ++
+              maybe "" (\c -> "border-left: 1px solid " ++ fromColor c ++ "; ") (lineNumberColor f) ++
+              maybe "" (\c -> "background-color: " ++ fromColor c ++ "; ") (lineNumberBackgroundColor f) ++
+              maybe "" (\c -> "color: " ++ fromColor c ++ "; ") (lineNumberColor f) ++
+              " padding-left: 4px; }"
           ]
-         divspec = [ "div.sourceCode { overflow-x: auto; }" ]
+         divspec = [ "div.sourceCode { overflow-x: auto; }"
+          , "div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }"
+          , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
+          , ".sourceCode { overflow: visible; }"
+          , "code.sourceCode { white-space: pre; }"
+          , "@media print {"
+          , "code.sourceCode { white-space: pre-wrap; }"
+          , "div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }"
+          , "}"
+          ]
+         linkspec = [ "@media screen {"
+          , "a.sourceLine::before { text-decoration: underline; color = initial; }"
+          , "}"
+          ]
 
 toCss :: (TokenType, TokenStyle) -> String
-toCss (t,tf) = "code > span." ++ short t ++ " { "
+toCss (t,tf) = "code span." ++ short t ++ " { "
                 ++ colorspec ++ backgroundspec ++ weightspec ++ stylespec
                 ++ decorationspec ++ "} /* " ++ showTokenType t ++ " */"
   where colorspec = maybe "" (\col -> "color: " ++ fromColor col ++ "; ") $ tokenColor tf
