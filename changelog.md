@@ -1,19 +1,24 @@
 # Revision history for skylighting
 
-## Next version
+## 0.3.4 -- 2017-09-09
 
-  * Wrap lines of source code in a `div` with `display` set to `inline-block`.
-    The `div`s make per-line processing easier. They cannot be set as
-    `display: block` as that introduces extra new lines when copying and pasting.
-  * Render line numbers in html using css pseudo elements rather than a table.
-    The line numbers are always produced, as `data-line-number` attributes, and
-    css to display them as `::before` elements are always produced. The option to
-    switch on line numbering only toggles a class; this means it is possible to toggle
-    line numbering without re-running skylighting.
-  * If the `linkAnchors` option is set, wrap with an `a` element rather than a `div`,
-    set so that clicking the line number (and only the line number) will jump to that
-    line.
-  * Code wraps by default when html is printed, with wrapped lines indented.
+  * HTML formatting changes (David Baynard):
+
+    + Wrap lines of source code in a `div` with `display` set to
+      `inline-block`.  The `div`s make per-line processing easier.
+      They cannot be set as `display: block` as that introduces extra
+      new lines when copying and pasting.
+    + Render line numbers in html using CSS pseudo elements rather than
+      a table.  The line numbers are always produced, as `data-line-number`
+      attributes, and css to display them as `::before` elements are
+      always produced. The option to switch on line numbering only
+      toggles a class; this means it is possible to toggle line numbering
+      without re-running skylighting.
+    + If the `linkAnchors` option is set, wrap with an `a` element rather
+      than a `div`, set so that clicking the line number (and only the
+      line number) will jump to that line.
+    + Code wraps by default when html is printed, with wrapped lines
+      indented.
 
 ## 0.3.3.1 -- 2017-06-26
 
