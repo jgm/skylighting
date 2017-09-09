@@ -148,12 +148,12 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
           , ".numberSource div.sourceLine::before, .numberSource a.sourceLine::before"
           , "  { content: attr(data-line-number);"
           , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
-          , "    border: none; pointer-events: all; "
+          , "    border: none; pointer-events: all;"
           , "    -webkit-touch-callout: none; -webkit-user-select: none;"
           , "    -khtml-user-select: none; -moz-user-select: none;"
           , "    -ms-user-select: none; user-select: none;"
           , "    padding: 0 4px; width: 4em; }"
-          , ".numberSource pre.sourceCode { margin-left: 3em;" ++
+          , ".numberSource pre.sourceCode { margin-left: 3em; " ++
               maybe "" (\c -> "border-left: 1px solid " ++ fromColor c ++ "; ") (lineNumberColor f) ++
               maybe "" (\c -> "background-color: " ++ fromColor c ++ "; ") (lineNumberBackgroundColor f) ++
               maybe "" (\c -> "color: " ++ fromColor c ++ "; ") (lineNumberColor f) ++
