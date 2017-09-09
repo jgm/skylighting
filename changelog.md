@@ -2,7 +2,9 @@
 
 ## 0.3.4 -- 2017-09-09
 
-  * HTML formatting changes (David Baynard):
+  * HTML formatting changes (David Baynard).  Note that these
+    changes may require changes in hard-coded CSS that is
+    used with skylighting's HTML output.
 
     + Wrap lines of source code in a `div` with `display` set to
       `inline-block`.  The `div`s make per-line processing easier.
