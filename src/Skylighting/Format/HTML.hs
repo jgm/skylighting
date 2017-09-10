@@ -47,12 +47,51 @@ import qualified Text.Blaze.Html5.Attributes as A
 -- 'WarningTok'        = @wa@.
 -- A 'NormalTok' is not marked up at all.
 formatHtmlInline :: FormatOptions -> [SourceLine] -> Html
-formatHtmlInline opts = (H.code ! A.class_ (toValue $ Text.unwords
-                                                    $ Text.pack "sourceCode"
-                                                      : codeClasses opts))
-                                . mconcat . intersperse (toHtml "\n")
-                                . zipWith (sourceLineToHtml opts) [startNum..]
-   where startNum = LineNo $ startNumber opts
+formatHtmlInline opts = wrapCode opts
+                      . mconcat . intersperse (toHtml "\n")
+                      . map (mapM_ (tokenToHtml opts))
+
+-- | Format tokens as an HTML @pre@ block. Each line is wrapped in a div
+-- with the class ‘source-line’. The whole code block is wrapped in a @div@
+-- element to aid styling (e.g. the overflow-x property). If line numbering
+-- is selected, this surrounding div is given the class ‘number-source’,
+-- and the resulting html will display line numbers thanks to the included
+-- css. Note that the html produced will always include the line numbers as
+-- the 'data-line-number' attribute.
+-- See the documentation for 'formatHtmlInline' for information about how
+-- tokens are encoded.
+formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
+formatHtmlBlock opts ls = H.div ! A.class_ sourceCode $
+                            pre ! A.class_ (toValue $ Text.unwords classes)
+  where  sourceCode = toValue . Text.unwords $ Text.pack "sourceCode" :
+                      if numberLines opts
+                        then [Text.pack "numberSource"]
+                        else []
+         classes = Text.pack "sourceCode" :
+                   [x | x <- containerClasses opts, x /= Text.pack "sourceCode"]
+         startNum = LineNo $ startNumber opts
+         pre = H.pre $ mconcat . intersperse (toHtml "\n")
+                     $ zipWith (sourceLineToHtml opts) [startNum..] ls
+
+wrapCode :: FormatOptions -> Html -> Html
+wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
+                                             $ Text.pack "sourceCode"
+                                               : codeClasses opts) $ h
+
+-- | Each line of source is wrapped in an (inline-block) div that makes
+-- subsequent per-line processing (e.g. adding line numnbers) possible.
+sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
+sourceLineToHtml opts lno cont = wrapElement ! A.class_ sourceLine
+                                       ! A.id lineNum
+                                       ! A.href lineRef
+                                       ! H.dataAttribute (fromString "line-number") lineNum $
+                                mapM_ (tokenToHtml opts) cont
+  where  sourceLine = toValue "sourceLine"
+         lineNum = toValue . show . lineNo $ lno
+         lineRef = toValue . ('#':) . show . lineNo $ lno
+         wrapElement = if lineAnchors opts
+                then H.a
+                else H.div
 
 tokenToHtml :: FormatOptions -> Token -> Html
 tokenToHtml _ (NormalTok, txt)  = toHtml txt
@@ -94,44 +133,6 @@ short AttributeTok      = "at"
 short InformationTok    = "in"
 short WarningTok        = "wa"
 short NormalTok         = ""
-
--- | Each line of source is wrapped in an (inline-block) div that makes
--- subsequent per-line processing (e.g. adding line numnbers) possible.
-sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
-sourceLineToHtml opts lno cont = wrapElement ! A.class_ sourceLine
-                                       ! A.id lineNum
-                                       ! A.href lineRef
-                                       ! H.dataAttribute (fromString "line-number") lineNum $
-                                mapM_ (tokenToHtml opts) cont
-  where  sourceLine = toValue "sourceLine"
-         lineNum = toValue . show . lineNo $ lno
-         lineRef = toValue . ('#':) . show . lineNo $ lno
-         wrapElement = if lineAnchors opts
-                then H.a
-                else H.div
-
-formatHtmlBlockPre :: FormatOptions -> [SourceLine] -> Html
-formatHtmlBlockPre opts = H.pre . formatHtmlInline opts
-
--- | Format tokens as an HTML @pre@ block. Each line is wrapped in a div
--- with the class ‘source-line’. The whole code block is wrapped in a @div@
--- element to aid styling (e.g. the overflow-x property). If line numbering
--- is selected, this surrounding div is given the class ‘number-source’,
--- and the resulting html will display line numbers thanks to the included
--- css. Note that the html produced will always include the line numbers as
--- the 'data-line-number' attribute.
--- See the documentation for 'formatHtmlInline' for information about how
--- tokens are encoded.
-formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
-formatHtmlBlock opts ls = H.div ! A.class_ sourceCode $
-                            pre ! A.class_ (toValue $ Text.unwords classes)
-  where  sourceCode = toValue . Text.unwords $ Text.pack "sourceCode" :
-                      if numberLines opts
-                        then [Text.pack "numberSource"]
-                        else []
-         classes = Text.pack "sourceCode" :
-                   [x | x <- containerClasses opts, x /= Text.pack "sourceCode"]
-         pre = formatHtmlBlockPre opts ls
 
 -- | Returns CSS for styling highlighted code according to the given style.
 styleToCss :: Style -> String
