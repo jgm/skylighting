@@ -1,5 +1,10 @@
 # Revision history for skylighting
 
+## 0.3.4.1 -- 2017-09-09
+
+  * HTML formatting: do not use `div` elements for source
+    lines in inline output.
+
 ## 0.3.4 -- 2017-09-09
 
   * HTML formatting changes (David Baynard).  Note that these
