@@ -70,7 +70,8 @@ formatHtmlBlock opts ls = H.div ! A.class_ sourceCode $
          classes = Text.pack "sourceCode" :
                    [x | x <- containerClasses opts, x /= Text.pack "sourceCode"]
          startNum = LineNo $ startNumber opts
-         pre = H.pre $ mconcat . intersperse (toHtml "\n")
+         pre = H.pre $ wrapCode opts
+                     $ mconcat . intersperse (toHtml "\n")
                      $ zipWith (sourceLineToHtml opts) [startNum..] ls
 
 wrapCode :: FormatOptions -> Html -> Html
