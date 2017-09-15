@@ -1,5 +1,11 @@
 # Revision history for skylighting
 
+## 0.3.5 --- 2017-09-14
+
+  * Added ToJSON/FromJSON instances for all basic types.
+  * Added some background colors to 'kate' style, matching default.theme,
+    and made FromJSON for Style sensitive to background-color.
+
 ## 0.3.4.1 -- 2017-09-09
 
   * HTML formatting: do not use `div` elements for source
