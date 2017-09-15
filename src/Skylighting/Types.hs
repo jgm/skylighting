@@ -66,20 +66,12 @@ data KeywordAttr =
 
 instance Binary KeywordAttr
 
-instance ToJSON KeywordAttr where
-  toEncoding = genericToEncoding defaultOptions
-instance FromJSON KeywordAttr
-
 -- | A set of "words," possibly case insensitive.
 data WordSet a = CaseSensitiveWords (Set.Set a)
                | CaseInsensitiveWords (Set.Set a)
      deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary a => Binary (WordSet a)
-
-instance ToJSON a => ToJSON (WordSet a) where
-  toEncoding = genericToEncoding defaultOptions
-instance (FromJSON a, Ord a) => FromJSON (WordSet a)
 
 -- | A set of words to match (either case-sensitive or case-insensitive).
 makeWordSet :: (FoldCase a, Ord a) => Bool -> [a] -> WordSet a
@@ -113,10 +105,6 @@ data Matcher =
   | DetectIdentifier
   deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
-instance ToJSON Matcher where
-  toEncoding = genericToEncoding defaultOptions
-instance FromJSON Matcher
-
 instance Binary Matcher
 
 -- | A context switch, either pops or pushes a context.
@@ -125,10 +113,6 @@ data ContextSwitch =
   deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary ContextSwitch
-
-instance ToJSON ContextSwitch where
-  toEncoding = genericToEncoding defaultOptions
-instance FromJSON ContextSwitch
 
 -- | A rule corresponds to one of the elements of a Kate syntax
 -- highlighting "context."
@@ -147,10 +131,6 @@ data Rule = Rule{
 
 instance Binary Rule
 
-instance ToJSON Rule where
-  toEncoding = genericToEncoding defaultOptions
-instance FromJSON Rule
-
 -- | A syntax corresponds to a complete Kate syntax description.
 -- The 'sShortname' field is derived from the filename.
 data Syntax = Syntax{
@@ -166,10 +146,6 @@ data Syntax = Syntax{
   } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary Syntax
-
-instance ToJSON Syntax where
-  toEncoding = genericToEncoding defaultOptions
-instance FromJSON Syntax
 
 -- | A map of syntaxes, keyed by full name.
 type SyntaxMap = Map.Map Text Syntax
@@ -190,10 +166,6 @@ data Context = Context{
 } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary Context
-
-instance ToJSON Context where
-  toEncoding = genericToEncoding defaultOptions
-instance FromJSON Context
 
 -- | A pair consisting of a list of attributes and some text.
 type Token = (TokenType, Text)

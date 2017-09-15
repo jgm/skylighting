@@ -1,5 +1,13 @@
 # Revision history for skylighting
 
+## 0.4 --- 2017-09-15
+
+  * Removed ToJSON/FromJSON instances for KeywordAttr,
+    WordSet, Matcher, Context, ContextSwitch, Rule, Syntax
+    (added in 0.3.5).  Creating these increased the memory
+    requirements for compiling skylighting to a degree not
+    justified by the usefulness of these instances.
+
 ## 0.3.5 --- 2017-09-14
 
   * Added ToJSON/FromJSON instances for all basic types.
