@@ -1,6 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable  #-}
 {-# LANGUAGE DeriveGeneric       #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedStrings  #-}
 
 module Skylighting.Regex (
                 Regex
@@ -20,6 +21,10 @@ import Text.Printf
 import Text.Regex.PCRE.ByteString
 import Data.Data
 import Data.Binary (Binary)
+import Data.Aeson
+import qualified Data.Text as Text
+import qualified Data.Text.Encoding as TE
+import qualified Data.ByteString.Base64 as Base64
 
 -- | An exception in compiling or executing a regex.
 newtype RegexException = RegexException String
@@ -34,6 +39,14 @@ data RE = RE{
 } deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
 
 instance Binary RE
+
+instance ToJSON RE where
+  toJSON re = object [ "reString"        .= encodeToText (reString re)
+                     , "reCaseSensitive" .= reCaseSensitive re ]
+instance FromJSON RE where
+  parseJSON = withObject "RE" $ \v ->
+    RE <$> ((v .: "reString") >>= decodeFromText)
+       <*> v .: "reCaseSensitive"
 
 -- | Compile a PCRE regex.  If the first parameter is True, the regex is
 -- case-sensitive, otherwise caseless.  The regex is compiled from
@@ -83,3 +96,11 @@ matchRegex r s = case unsafePerformIO (regexec r s) of
                                        Just (mat : capts)
                       Right Nothing -> Nothing
                       Left (_rc, msg) -> E.throw $ RegexException msg
+
+-- functions to marshall bytestrings to text
+
+encodeToText :: BS.ByteString -> Text.Text
+encodeToText = TE.decodeUtf8 . Base64.encode
+
+decodeFromText :: (Monad m) => Text.Text -> m BS.ByteString
+decodeFromText = either fail return . Base64.decode . TE.encodeUtf8

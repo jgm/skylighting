@@ -239,6 +239,7 @@ library
                        utf8-string,
                        hxt,
                        safe,
+                       base64-bytestring,
                        blaze-html >= 0.5,
                        containers
   if flag(system-pcre)
@@ -271,6 +272,7 @@ executable skylighting-extract
   build-depends:       base >= 4.7 && < 5.0,
                        filepath,
                        bytestring,
+                       base64-bytestring,
                        text,
                        safe,
                        hxt,

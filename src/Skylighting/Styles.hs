@@ -49,10 +49,10 @@ kate = Style{
         , ( ExtensionTok, defStyle { tokenColor = Just (RGB 0 149 255), tokenBold = True })
         , ( PreprocessorTok, defStyle { tokenColor = Just (RGB 0 110 40) })
         , ( AttributeTok, defStyle { tokenColor = Just (RGB 0 87 174) })
-        , ( RegionMarkerTok, defStyle { tokenColor = Just (RGB 0 87 174) })
+        , ( RegionMarkerTok, defStyle { tokenColor = Just (RGB 0 87 174), tokenBackground = Just (RGB 224 233 248)} )
         , ( InformationTok, defStyle { tokenColor = Just (RGB 176 128 0) })
         , ( WarningTok, defStyle { tokenColor = Just (RGB 191 3 3) })
-        , ( AlertTok, defStyle { tokenColor = Just (RGB 191 3 3), tokenBold = True })
+        , ( AlertTok, defStyle { tokenColor = Just (RGB 191 3 3), tokenBackground = Just (RGB 247 230 230), tokenBold = True })
         , ( ErrorTok, defStyle { tokenColor = Just (RGB 191 3 3), tokenUnderline = True })
         , ( NormalTok, defStyle { tokenColor = Just (RGB 31 28 27) })
         ]

@@ -66,12 +66,20 @@ data KeywordAttr =
 
 instance Binary KeywordAttr
 
+instance ToJSON KeywordAttr where
+  toEncoding = genericToEncoding defaultOptions
+instance FromJSON KeywordAttr
+
 -- | A set of "words," possibly case insensitive.
 data WordSet a = CaseSensitiveWords (Set.Set a)
                | CaseInsensitiveWords (Set.Set a)
      deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary a => Binary (WordSet a)
+
+instance ToJSON a => ToJSON (WordSet a) where
+  toEncoding = genericToEncoding defaultOptions
+instance (FromJSON a, Ord a) => FromJSON (WordSet a)
 
 -- | A set of words to match (either case-sensitive or case-insensitive).
 makeWordSet :: (FoldCase a, Ord a) => Bool -> [a] -> WordSet a
@@ -105,6 +113,10 @@ data Matcher =
   | DetectIdentifier
   deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
+instance ToJSON Matcher where
+  toEncoding = genericToEncoding defaultOptions
+instance FromJSON Matcher
+
 instance Binary Matcher
 
 -- | A context switch, either pops or pushes a context.
@@ -113,6 +125,10 @@ data ContextSwitch =
   deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary ContextSwitch
+
+instance ToJSON ContextSwitch where
+  toEncoding = genericToEncoding defaultOptions
+instance FromJSON ContextSwitch
 
 -- | A rule corresponds to one of the elements of a Kate syntax
 -- highlighting "context."
@@ -131,6 +147,10 @@ data Rule = Rule{
 
 instance Binary Rule
 
+instance ToJSON Rule where
+  toEncoding = genericToEncoding defaultOptions
+instance FromJSON Rule
+
 -- | A syntax corresponds to a complete Kate syntax description.
 -- The 'sShortname' field is derived from the filename.
 data Syntax = Syntax{
@@ -146,6 +166,10 @@ data Syntax = Syntax{
   } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary Syntax
+
+instance ToJSON Syntax where
+  toEncoding = genericToEncoding defaultOptions
+instance FromJSON Syntax
 
 -- | A map of syntaxes, keyed by full name.
 type SyntaxMap = Map.Map Text Syntax
@@ -166,6 +190,10 @@ data Context = Context{
 } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary Context
+
+instance ToJSON Context where
+  toEncoding = genericToEncoding defaultOptions
+instance FromJSON Context
 
 -- | A pair consisting of a list of attributes and some text.
 type Token = (TokenType, Text)
@@ -207,6 +235,9 @@ data TokenType = KeywordTok
 
 instance Binary TokenType
 
+instance ToJSON TokenType where
+  toEncoding t = toEncoding (Text.stripSuffix "Tok" $ Text.pack $ show t)
+
 -- | JSON @"Keyword"@ corresponds to 'KeywordTok', and so on.
 instance FromJSON TokenType where
   parseJSON (String t) =
@@ -237,16 +268,23 @@ instance Binary TokenStyle
 instance FromJSON TokenStyle where
   parseJSON (Object v) = do
     tcolor <- v .:? "text-color"
+    bg <- v .:? "background-color"
     tbold <- v .:? "bold" .!= False
     titalic <- v .:? "italic" .!= False
     tunderline <- v .:? "underline" .!= False
     return TokenStyle{
                tokenColor = tcolor
-             , tokenBackground = Nothing
+             , tokenBackground = bg
              , tokenBold = tbold
              , tokenItalic = titalic
              , tokenUnderline = tunderline }
   parseJSON _ = mempty
+instance ToJSON TokenStyle where
+  toJSON ts = object [ "text-color" .= tokenColor ts
+                     , "background-color" .= tokenBackground ts
+                     , "bold" .= tokenBold ts
+                     , "italic" .= tokenItalic ts
+                     , "underline" .= tokenUnderline ts ]
 
 -- | Default style.
 defStyle :: TokenStyle
@@ -295,6 +333,9 @@ instance ToColor (Double, Double, Double) where
 instance FromJSON Color where
   parseJSON (String t) = maybe mempty return $ toColor (Text.unpack t)
   parseJSON _          = mempty
+
+instance ToJSON Color where
+  toJSON color = String (Text.pack (fromColor color :: String))
 
 -- | Different representations of a 'Color'.
 class FromColor a where
