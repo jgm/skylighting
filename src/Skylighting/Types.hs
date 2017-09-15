@@ -383,6 +383,13 @@ instance FromJSON Style where
                                      readMay (Text.unpack s ++ "Tok")) tokstyles }
   parseJSON _ = mempty
 
+instance ToJSON Style where
+  toJSON s = object [ "text-styles" .= toJSON (tokenStyles s)
+                    , "background-color" .= toJSON (backgroundColor s)
+                    , "text-color" .= toJSON (defaultColor s)
+                    , "line-numbers" .= toJSON (lineNumberColor s)
+                    ]
+
 -- | Options for formatting source code.
 data FormatOptions = FormatOptions{
          numberLines      :: Bool     -- ^ Number lines
