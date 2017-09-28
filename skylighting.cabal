@@ -193,6 +193,7 @@ library
                        Skylighting.Syntax.Php
                        Skylighting.Syntax.Pike
                        Skylighting.Syntax.Postscript
+                       Skylighting.Syntax.Powershell
                        Skylighting.Syntax.Prolog
                        Skylighting.Syntax.Pure
                        Skylighting.Syntax.Purebasic
