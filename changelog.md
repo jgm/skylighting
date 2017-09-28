@@ -1,5 +1,20 @@
 # Revision history for skylighting
 
+## 0.4.1 --- 2017-09-28
+
+  * Updated XML definitions from KDE repository.
+    Changed: actionscript, ada, agda, alert, alert_indent, asn1, awk, bash,
+    boo, c, changelog, clojure, cmake, coldfusion, commonlisp, cpp, cs, css,
+    curry, d, dockerfile, dot, doxygen, doxygenlua, eiffel, email, erlang,
+    fortran, fsharp, gcc, haskell, haxe, isocpp, java, javascript, jsp, julia,
+    lilypond, lua, m4, makefile, matlab, maxima, mips, modelines, modula-2,
+    monobasic, objectivec, objectivecpp, ocaml, octave, opencl, pascal, perl,
+    php, pike, postscript, prolog, purebasic, python, r, relaxng,
+    relaxngcompact, rest, rhtml, ruby, rust, scala, scheme, sci, sql-mysql,
+    sql-postgresql, sql, tcl, tcsh, verilog, vhdl, xml, xslt, xul, zsh.
+  * Added support for powershell, using definition from KDE repository.
+  * Stop terminating long builds on TravisCI (Kyle Ondy).
+
 ## 0.4 --- 2017-09-15
 
   * Removed ToJSON/FromJSON instances for KeywordAttr,
