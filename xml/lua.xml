@@ -38,178 +38,178 @@
 <language name="Lua" version="2" indenter="lua" kateversion="3.4" section="Scripts" extensions="*.lua" mimetype="text/x-lua">
   <highlighting>
     <list name="keywords">
-      <item> and </item>
-      <item> function </item>
-      <item> in </item>
-      <item> local </item>
-      <item> not </item>
-      <item> or </item>
+      <item>and</item>
+      <item>function</item>
+      <item>in</item>
+      <item>local</item>
+      <item>not</item>
+      <item>or</item>
     </list>
     <list name="control">
-      <item> break </item>
-      <item> do </item>
-      <item> else </item>
-      <item> elseif </item>
-      <item> end </item>
-      <item> for </item>
-      <item> if </item>
-      <item> repeat </item>
-      <item> return </item>
-      <item> then </item>
-      <item> until </item>
-      <item> while </item>
+      <item>break</item>
+      <item>do</item>
+      <item>else</item>
+      <item>elseif</item>
+      <item>end</item>
+      <item>for</item>
+      <item>if</item>
+      <item>repeat</item>
+      <item>return</item>
+      <item>then</item>
+      <item>until</item>
+      <item>while</item>
     </list>
     <list name="pseudo-variables">
-      <item> nil </item>
-      <item> false </item>
-      <item> true </item>
+      <item>nil</item>
+      <item>false</item>
+      <item>true</item>
     </list>
     <list name="basefunc">
-      <item> string.byte </item>  <item> string.char </item>
-      <item> string.find </item>  <item> string.len </item>
-      <item> string.lower </item> <item> string.rep </item>
-      <item> string.sub </item>   <item> string.upper </item>
-      <item> string.format </item><item> string.gfind </item>
-      <item> string.gsub </item>  <item> table.concat </item>
-      <item> table.getn </item>   <item> table.sort </item>
-      <item> table.insert </item> <item> table.remove </item>
-      <item> table.setn </item>   <item> math.abs </item>
-      <item> math.sin </item>     <item> math.cos </item>
-      <item> math.tan </item>     <item> math.asin </item>
-      <item> math.acos </item>    <item> math.atan </item>
-      <item> math.atan2 </item>   <item> math.ceil </item>
-      <item> math.floor </item>   <item> math.mod </item>
-      <item> math.frexp </item>   <item> math.ldexp </item>
-      <item> math.squrt </item>   <item> math.min </item>
-      <item> math.max </item>     <item> math.log </item>
-      <item> math.log10 </item>   <item> math.exp </item>
-      <item> math.deg </item>     <item> math.rad </item>
-      <item> math.random </item>  <item> math.randomseed </item>
-      <item> io.close </item>     <item> io.flush </item>
-      <item> io.input </item>     <item> io.lines </item>
-      <item> io.open </item>      <item> io.output </item>
-      <item> io.read </item>      <item> io.stderr </item>
-      <item> io.stdin </item>     <item> io.stdout </item>
-      <item> io.tmpfile </item>   <item> io.write </item>
-      <item> os.clock </item>     <item> os.date </item>
-      <item> os.difftime </item>  <item> os.execute </item>
-      <item> os.exit </item>      <item> os.getenv </item>
-      <item> os.remove </item>    <item> os.rename </item>
-      <item> os.setlocale </item> <item> os.time </item>
-      <item> os.tmpname </item>   <item> debug.getinfo </item>
-      <item> debug.getlocal </item><item> debug.setlocal </item>
-      <item> debug.sethook </item><item> debug.gethook </item>
-      <item> assert </item>      <item> collectgarbage </item>
-      <item> dofile </item>      <item> error </item>
-      <item> next </item>        <item> print </item>
-      <item> rawget </item>      <item> rawset </item>
-      <item> tonumber </item>    <item> tostring </item>
-      <item> type </item>        <item> _ALERT </item>
-      <item> _ERRORMESSAGE </item><item> call </item>
-      <item> getmetatable </item><item> gcinfo </item>
-      <item> ipairs </item>      <item> loadfile </item>
-      <item> loadstring </item>  <item> pairs </item>
-      <item> pcall </item>       <item> require </item>
-      <item> LUA_PATH </item>    <item> setmetatable </item>
-      <item> _LOADED </item>     <item> _VERSION </item>
-      <item> gettagmethod </item><item> globals </item>
-      <item> newtag </item>      <item> setglobal </item>
-      <item> settag </item>      <item> settagmethod </item>
-      <item> setlinehook </item> <item> getglobals </item>
-      <item> copytagmethods </item><item> dostring </item>
-      <item> getglobal </item>   <item> tag </item>
-      <item> setglobals </item>  <item> unpack </item>
-      <item> exit </item>        <item> readfrom </item>
-      <item> writeto </item>     <item> appendto </item>
-      <item> read </item>        <item> write </item>
-      <item> getinfo </item>     <item> getlocal </item>
-      <item> setlocal </item>    <item> setcallhook </item>
-      <item> tinsert </item>     <item> tremove </item>
-      <item> flush </item>       <item> seek </item>
-      <item> setlocale </item>   <item> execute </item>
-      <item> remove </item>      <item> rename </item>
-      <item> tmpname </item>     <item> getenv </item>
-      <item> getn </item>        <item> sort </item>
-      <item> table.foreach </item> <item> table.foreachi </item>
-      <item> foreach </item>     <item> foreachi </item>
-      <item> abs </item>         <item> sin </item>
-      <item> cos </item>         <item> tan </item>
-      <item> asin </item>        <item> acos </item>
-      <item> atan </item>        <item> atan2 </item>
-      <item> ceil </item>        <item> floor </item>
-      <item> mod </item>         <item> frexp </item>
-      <item> ldexp </item>       <item> squrt </item>
-      <item> min </item>         <item> max </item>
-      <item> log </item>         <item> log10 </item>
-      <item> exp </item>         <item> deg </item>
-      <item> rad </item>         <item> random </item>
-      <item> randomseed </item>  <item> strlen </item>
-      <item> strsub </item>      <item> strlower </item>
-      <item> strupper </item>    <item> strchar </item>
-      <item> strrep </item>      <item> ascii </item>
-      <item> strbyte </item>     <item> format </item>
-      <item> strfind </item>     <item> gsub </item>
-      <item> openfile </item>    <item> closefile </item>
-      <item> date </item>        <item> clock </item>
+      <item>string.byte</item>  <item>string.char</item>
+      <item>string.find</item>  <item>string.len</item>
+      <item>string.lower</item> <item>string.rep</item>
+      <item>string.sub</item>   <item>string.upper</item>
+      <item>string.format</item><item>string.gfind</item>
+      <item>string.gsub</item>  <item>table.concat</item>
+      <item>table.getn</item>   <item>table.sort</item>
+      <item>table.insert</item> <item>table.remove</item>
+      <item>table.setn</item>   <item>math.abs</item>
+      <item>math.sin</item>     <item>math.cos</item>
+      <item>math.tan</item>     <item>math.asin</item>
+      <item>math.acos</item>    <item>math.atan</item>
+      <item>math.atan2</item>   <item>math.ceil</item>
+      <item>math.floor</item>   <item>math.mod</item>
+      <item>math.frexp</item>   <item>math.ldexp</item>
+      <item>math.squrt</item>   <item>math.min</item>
+      <item>math.max</item>     <item>math.log</item>
+      <item>math.log10</item>   <item>math.exp</item>
+      <item>math.deg</item>     <item>math.rad</item>
+      <item>math.random</item>  <item>math.randomseed</item>
+      <item>io.close</item>     <item>io.flush</item>
+      <item>io.input</item>     <item>io.lines</item>
+      <item>io.open</item>      <item>io.output</item>
+      <item>io.read</item>      <item>io.stderr</item>
+      <item>io.stdin</item>     <item>io.stdout</item>
+      <item>io.tmpfile</item>   <item>io.write</item>
+      <item>os.clock</item>     <item>os.date</item>
+      <item>os.difftime</item>  <item>os.execute</item>
+      <item>os.exit</item>      <item>os.getenv</item>
+      <item>os.remove</item>    <item>os.rename</item>
+      <item>os.setlocale</item> <item>os.time</item>
+      <item>os.tmpname</item>   <item>debug.getinfo</item>
+      <item>debug.getlocal</item><item>debug.setlocal</item>
+      <item>debug.sethook</item><item>debug.gethook</item>
+      <item>assert</item>      <item>collectgarbage</item>
+      <item>dofile</item>      <item>error</item>
+      <item>next</item>        <item>print</item>
+      <item>rawget</item>      <item>rawset</item>
+      <item>tonumber</item>    <item>tostring</item>
+      <item>type</item>        <item>_ALERT</item>
+      <item>_ERRORMESSAGE</item><item>call</item>
+      <item>getmetatable</item><item>gcinfo</item>
+      <item>ipairs</item>      <item>loadfile</item>
+      <item>loadstring</item>  <item>pairs</item>
+      <item>pcall</item>       <item>require</item>
+      <item>LUA_PATH</item>    <item>setmetatable</item>
+      <item>_LOADED</item>     <item>_VERSION</item>
+      <item>gettagmethod</item><item>globals</item>
+      <item>newtag</item>      <item>setglobal</item>
+      <item>settag</item>      <item>settagmethod</item>
+      <item>setlinehook</item> <item>getglobals</item>
+      <item>copytagmethods</item><item>dostring</item>
+      <item>getglobal</item>   <item>tag</item>
+      <item>setglobals</item>  <item>unpack</item>
+      <item>exit</item>        <item>readfrom</item>
+      <item>writeto</item>     <item>appendto</item>
+      <item>read</item>        <item>write</item>
+      <item>getinfo</item>     <item>getlocal</item>
+      <item>setlocal</item>    <item>setcallhook</item>
+      <item>tinsert</item>     <item>tremove</item>
+      <item>flush</item>       <item>seek</item>
+      <item>setlocale</item>   <item>execute</item>
+      <item>remove</item>      <item>rename</item>
+      <item>tmpname</item>     <item>getenv</item>
+      <item>getn</item>        <item>sort</item>
+      <item>table.foreach</item> <item>table.foreachi</item>
+      <item>foreach</item>     <item>foreachi</item>
+      <item>abs</item>         <item>sin</item>
+      <item>cos</item>         <item>tan</item>
+      <item>asin</item>        <item>acos</item>
+      <item>atan</item>        <item>atan2</item>
+      <item>ceil</item>        <item>floor</item>
+      <item>mod</item>         <item>frexp</item>
+      <item>ldexp</item>       <item>squrt</item>
+      <item>min</item>         <item>max</item>
+      <item>log</item>         <item>log10</item>
+      <item>exp</item>         <item>deg</item>
+      <item>rad</item>         <item>random</item>
+      <item>randomseed</item>  <item>strlen</item>
+      <item>strsub</item>      <item>strlower</item>
+      <item>strupper</item>    <item>strchar</item>
+      <item>strrep</item>      <item>ascii</item>
+      <item>strbyte</item>     <item>format</item>
+      <item>strfind</item>     <item>gsub</item>
+      <item>openfile</item>    <item>closefile</item>
+      <item>date</item>        <item>clock</item>
 
 
-      <item> cgilua </item>                     <item> cgilua.lp.translate </item>
-      <item> cgilua.contentheader </item>       <item> cgilua.script_file </item>
-      <item> cgilua.header </item>              <item> cgilua.script_path </item>
-      <item> cgilua.htmlheader </item>          <item> cgilua.script_pdir </item>
-      <item> cgilua.redirect </item>            <item> cgilua.script_vdir </item>
-      <item> cgilua.mkabsoluteurl </item>       <item> cgilua.script_vpath </item>
-      <item> cgilua.mkurlpath </item>           <item> cgilua.servervariable </item>
-      <item> cgilua.put </item>                 <item> cgilua.urlpath </item>
-      <item> cgilua.handlelp </item>            <item> cgilua.errorlog </item>
-      <item> cgilua.lp.compile </item>          <item> cgilua.seterrorhandler </item>
-      <item> cgilua.lp.include </item>          <item> cgilua.seterroroutput </item>
-      <item> cgilua.lp.setcompatmode </item>    <item> cgilua.addclosefunction </item>
-      <item> cgilua.lp.setoutfunc </item>       <item> cgilua.addopenfunction </item>
-      <item> cgilua.addscripthandler </item>    <item> cgilua.addscripthandler </item>
-      <item> cgilua.buildprocesshandler </item> <item> cgilua.setmaxfilesize </item>
-      <item> cgilua.setmaxinput </item>         <item> cgilua.urlcode.encodetable </item>
-      <item> cgilua.urlcode.escape </item>      <item> cgilua.urlcode.parsequery </item>
-      <item> cgilua.urlcode.unescape </item>    <item> cgilua.urlcode.insertfield </item>
-      <item> cgilua.setoutfunc </item>          <item> cgilua.addopenfunction </item>
-      <item> cgilua.doif </item>                <item> cgilua.doscript </item>
-      <item> cgilua.pack </item>                <item> cgilua.splitpath </item>
-      <item> cgilua.cookies.get </item>         <item> cgilua.cookies.set </item>
-      <item> cgilua.cookies.sethtml </item>     <item> cgilua.cookies.delete </item>
-      <item> cgilua.serialize </item>           <item> cgilua.session.close </item>
-      <item> cgilua.session.data </item>        <item> cgilua.session.load </item>
-      <item> cgilua.session.new </item>         <item> cgilua.session.open </item>
-      <item> cgilua.session.save </item>        <item> cgilua.session.setsessiondir </item>
-      <item> cgilua.session.delete </item>      <item> cgilua.session </item>
-      <item> cgilua.cookies </item>
+      <item>cgilua</item>                     <item>cgilua.lp.translate</item>
+      <item>cgilua.contentheader</item>       <item>cgilua.script_file</item>
+      <item>cgilua.header</item>              <item>cgilua.script_path</item>
+      <item>cgilua.htmlheader</item>          <item>cgilua.script_pdir</item>
+      <item>cgilua.redirect</item>            <item>cgilua.script_vdir</item>
+      <item>cgilua.mkabsoluteurl</item>       <item>cgilua.script_vpath</item>
+      <item>cgilua.mkurlpath</item>           <item>cgilua.servervariable</item>
+      <item>cgilua.put</item>                 <item>cgilua.urlpath</item>
+      <item>cgilua.handlelp</item>            <item>cgilua.errorlog</item>
+      <item>cgilua.lp.compile</item>          <item>cgilua.seterrorhandler</item>
+      <item>cgilua.lp.include</item>          <item>cgilua.seterroroutput</item>
+      <item>cgilua.lp.setcompatmode</item>    <item>cgilua.addclosefunction</item>
+      <item>cgilua.lp.setoutfunc</item>       <item>cgilua.addopenfunction</item>
+      <item>cgilua.addscripthandler</item>    <item>cgilua.addscripthandler</item>
+      <item>cgilua.buildprocesshandler</item> <item>cgilua.setmaxfilesize</item>
+      <item>cgilua.setmaxinput</item>         <item>cgilua.urlcode.encodetable</item>
+      <item>cgilua.urlcode.escape</item>      <item>cgilua.urlcode.parsequery</item>
+      <item>cgilua.urlcode.unescape</item>    <item>cgilua.urlcode.insertfield</item>
+      <item>cgilua.setoutfunc</item>          <item>cgilua.addopenfunction</item>
+      <item>cgilua.doif</item>                <item>cgilua.doscript</item>
+      <item>cgilua.pack</item>                <item>cgilua.splitpath</item>
+      <item>cgilua.cookies.get</item>         <item>cgilua.cookies.set</item>
+      <item>cgilua.cookies.sethtml</item>     <item>cgilua.cookies.delete</item>
+      <item>cgilua.serialize</item>           <item>cgilua.session.close</item>
+      <item>cgilua.session.data</item>        <item>cgilua.session.load</item>
+      <item>cgilua.session.new</item>         <item>cgilua.session.open</item>
+      <item>cgilua.session.save</item>        <item>cgilua.session.setsessiondir</item>
+      <item>cgilua.session.delete</item>      <item>cgilua.session</item>
+      <item>cgilua.cookies</item>
 
-      <item> numrows </item>                    <item> connect </item>
-      <item> close </item>                      <item> fetch </item>
-      <item> getcolnames </item>                <item> getcoltypes </item>
-      <item> commit </item>                     <item> rollback </item>
-      <item> setautocommit </item>
+      <item>numrows</item>                    <item>connect</item>
+      <item>close</item>                      <item>fetch</item>
+      <item>getcolnames</item>                <item>getcoltypes</item>
+      <item>commit</item>                     <item>rollback</item>
+      <item>setautocommit</item>
 
-      <item> lfs </item>                        <item> lfs.attributes </item>
-      <item> lfs.chdir </item>                  <item> lfs.currentdir </item>
-      <item> lfs.dir </item>                    <item> lfs.lock </item>
-      <item> lfs.mkdir </item>                  <item> lfs.rmdir </item>
-      <item> lfs.touch </item>                  <item> lfs.unlock </item>
+      <item>lfs</item>                        <item>lfs.attributes</item>
+      <item>lfs.chdir</item>                  <item>lfs.currentdir</item>
+      <item>lfs.dir</item>                    <item>lfs.lock</item>
+      <item>lfs.mkdir</item>                  <item>lfs.rmdir</item>
+      <item>lfs.touch</item>                  <item>lfs.unlock</item>
 
-      <item> zip </item>                        <item> zip.open </item>
-      <item> zip.openfile </item>               <item> files </item>
-      <item> seek </item>                       <item> close </item>
-      <item> lines </item>
+      <item>zip</item>                        <item>zip.open</item>
+      <item>zip.openfile</item>               <item>files</item>
+      <item>seek</item>                       <item>close</item>
+      <item>lines</item>
 
 
     </list>
     <list name="attention">
-      <item> TODO </item>
-      <item> FIXME </item>
-      <item> NOTE </item>
+      <item>TODO</item>
+      <item>FIXME</item>
+      <item>NOTE</item>
     </list>
     <list name="deprecated">
-      <item> table.foreach </item> <item> table.foreachi </item>
-      <item> foreach </item>       <item> foreachi </item>
+      <item>table.foreach</item> <item>table.foreachi</item>
+      <item>foreach</item>       <item>foreachi</item>
     </list>
 
     <contexts>

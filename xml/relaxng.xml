@@ -25,34 +25,34 @@
           author="Thomas Schraitle (tom_schr AT web DOT de)">
   <highlighting>
     <list name="relaxngnames">
-      <item> anyName </item>
-      <item> attribute </item>
-      <item> choice </item>
-      <item> data </item>
-      <item> define </item>
-      <item> div </item>
-      <item> element </item>
-      <item> empty </item>
-      <item> except </item>
-      <item> externalRef </item>
-      <item> grammar </item>
-      <item> group </item>
-      <item> include </item>
-      <item> interleave </item>
-      <item> list </item>
-      <item> mixed </item>
-      <item> name </item>
-      <item> notAllowed </item>
-      <item> nsName </item>
-      <item> oneOrMore </item>
-      <item> optional </item>
-      <item> param </item>
-      <item> parentRef </item>
-      <item> ref </item>
-      <item> start </item>
-      <item> text </item>
-      <item> value </item>
-      <item> zeroOrMore </item>
+      <item>anyName</item>
+      <item>attribute</item>
+      <item>choice</item>
+      <item>data</item>
+      <item>define</item>
+      <item>div</item>
+      <item>element</item>
+      <item>empty</item>
+      <item>except</item>
+      <item>externalRef</item>
+      <item>grammar</item>
+      <item>group</item>
+      <item>include</item>
+      <item>interleave</item>
+      <item>list</item>
+      <item>mixed</item>
+      <item>name</item>
+      <item>notAllowed</item>
+      <item>nsName</item>
+      <item>oneOrMore</item>
+      <item>optional</item>
+      <item>param</item>
+      <item>parentRef</item>
+      <item>ref</item>
+      <item>start</item>
+      <item>text</item>
+      <item>value</item>
+      <item>zeroOrMore</item>
     </list>
 
     <contexts>

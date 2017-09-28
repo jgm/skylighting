@@ -66,8 +66,8 @@
       <item>system</item>
     </list>
     <list name="special">
-      <item> BEGIN </item>
-      <item> END </item>
+      <item>BEGIN</item>
+      <item>END</item>
     </list>
 
 <contexts>

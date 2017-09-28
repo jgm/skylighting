@@ -13,125 +13,125 @@
 
   <highlighting>
     <list name="keywords">
-      <item> abstract </item>
-      <item> and </item>
-      <item> as </item>
-      <item> assert </item>
-      <item> base </item>
-<!--       <item> begin </item> -->
-      <item> class </item>
-      <item> delegate </item>
-<!--       <item> do </item> -->
-<!--       <item> done </item> -->
-      <item> dowcast </item>
-      <item> downto </item>
-      <item> elif </item>
-      <item> else </item>
-<!--       <item> end </item> -->
-      <item> exception </item>
-      <item> extern </item>
-      <item> false </item>
-      <item> for </item>
-      <item> fun </item>
-      <item> function </item>
-      <item> functor </item>
-      <item> global </item>
-      <item> if </item>
-      <item> in </item>
-<!--       <item> include </item> -->
-      <item> inherit </item>
-      <item> inline </item>
-      <item> interfaece </item>
-      <item> internal </item>
-      <item> lazy </item>
-      <item> let </item>
-      <item> match </item>
-      <item> member </item>
-<!--       <item> module </item> -->
-      <item> mutable </item>
-      <item> namespace </item>
-      <item> new </item>
-      <item> not </item>
-      <item> null </item>
-<!--       <item> object </item> -->
-      <item> of </item>
-<!--       <item> open </item> -->
-      <item> or </item>
-      <item> override </item>
-      <item> private </item>
-      <item> public </item>
-      <item> rec </item>
-      <item> ref </item>
-      <item> return </item>
-<!--       <item> sig </item> -->
-      <item> static </item>
-<!--       <item> struct </item> -->
-      <item> then </item>
-      <item> to </item>
-      <item> true </item>
-      <item> try </item>
-      <item> type </item>
-      <item> upcast </item>
-      <item> use </item>
-      <item> val </item>
-      <item> void </item>
-      <item> when </item>
-      <item> while </item>
-      <item> with </item>
-      <item> yield </item>
+      <item>abstract</item>
+      <item>and</item>
+      <item>as</item>
+      <item>assert</item>
+      <item>base</item>
+<!--       <item>begin</item> -->
+      <item>class</item>
+      <item>delegate</item>
+<!--       <item>do</item> -->
+<!--       <item>done</item> -->
+      <item>dowcast</item>
+      <item>downto</item>
+      <item>elif</item>
+      <item>else</item>
+<!--       <item>end</item> -->
+      <item>exception</item>
+      <item>extern</item>
+      <item>false</item>
+      <item>for</item>
+      <item>fun</item>
+      <item>function</item>
+      <item>functor</item>
+      <item>global</item>
+      <item>if</item>
+      <item>in</item>
+<!--       <item>include</item> -->
+      <item>inherit</item>
+      <item>inline</item>
+      <item>interfaece</item>
+      <item>internal</item>
+      <item>lazy</item>
+      <item>let</item>
+      <item>match</item>
+      <item>member</item>
+<!--       <item>module</item> -->
+      <item>mutable</item>
+      <item>namespace</item>
+      <item>new</item>
+      <item>not</item>
+      <item>null</item>
+<!--       <item>object</item> -->
+      <item>of</item>
+<!--       <item>open</item> -->
+      <item>or</item>
+      <item>override</item>
+      <item>private</item>
+      <item>public</item>
+      <item>rec</item>
+      <item>ref</item>
+      <item>return</item>
+<!--       <item>sig</item> -->
+      <item>static</item>
+<!--       <item>struct</item> -->
+      <item>then</item>
+      <item>to</item>
+      <item>true</item>
+      <item>try</item>
+      <item>type</item>
+      <item>upcast</item>
+      <item>use</item>
+      <item>val</item>
+      <item>void</item>
+      <item>when</item>
+      <item>while</item>
+      <item>with</item>
+      <item>yield</item>
     </list>
     <list name="core types">
-      <item> bool </item>
-      <item> byte </item>
-      <item> sbyte </item>
-      <item> int16 </item>
-      <item> uint16 </item>
-      <item> int </item>
-      <item> uint32 </item>
-      <item> int64 </item>
-      <item> uint64 </item>
-      <item> nativeint </item>
-      <item> unativeint </item>
-      <item> char </item>
-      <item> string </item>
-      <item> decimal </item>
-      <item> unit </item>
-      <item> void </item>
-      <item> float32 </item>
-      <item> single </item>
-      <item> float </item>
-      <item> double </item>
-      <item> bigint </item>
-      <item> option </item>
-      <item> seq </item>
+      <item>bool</item>
+      <item>byte</item>
+      <item>sbyte</item>
+      <item>int16</item>
+      <item>uint16</item>
+      <item>int</item>
+      <item>uint32</item>
+      <item>int64</item>
+      <item>uint64</item>
+      <item>nativeint</item>
+      <item>unativeint</item>
+      <item>char</item>
+      <item>string</item>
+      <item>decimal</item>
+      <item>unit</item>
+      <item>void</item>
+      <item>float32</item>
+      <item>single</item>
+      <item>float</item>
+      <item>double</item>
+      <item>bigint</item>
+      <item>option</item>
+      <item>seq</item>
     </list>
     <list name="symbols">
-      <item> ? </item>
+      <item>?</item>
     </list>
     <list name="end">
-      <item> end </item>
+      <item>end</item>
     </list>
     <list name="sig">
-      <item> sig </item>
+      <item>sig</item>
     </list>
     <list name="struct">
-      <item> struct </item>
+      <item>struct</item>
     </list>
     <list name="object">
-      <item> object </item>
+      <item>object</item>
     </list>
     <list name="begin">
-      <item> begin </item>
+      <item>begin</item>
     </list>
     <list name="do">
-      <item> do </item>
+      <item>do</item>
     </list>
     <list name="done">
-      <item> done </item>
+      <item>done</item>
     </list>
     <list name="module_environment">
-      <item> module </item>
-      <item> open </item>
+      <item>module</item>
+      <item>open</item>
     </list>
     <contexts>
 

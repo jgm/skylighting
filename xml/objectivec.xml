@@ -3,53 +3,53 @@
 <language name="Objective-C" version="2" kateversion="5.0" section="Sources" extensions="*.m;*.h" mimetype="text/x-objc-src;text/x-c-hdr">
   <highlighting>
     <list name="keywords">
-      <item> break </item>
-      <item> case </item>
-      <item> continue </item>
-      <item> default </item>
-      <item> do </item>
-      <item> else </item>
-      <item> enum </item>
-      <item> extern </item>
-      <item> for </item>
-      <item> goto </item>
-      <item> if </item>
-      <item> return </item>
-      <item> sizeof </item>
-      <item> struct </item>
-      <item> switch </item>
-      <item> typedef </item>
-      <item> union </item>
-      <item> while </item>
-      <item> @class </item>
-      <item> @defs </item>
-      <item> @encode </item>
-      <item> @end </item>
-      <item> @implementation </item>
-      <item> @interface </item>
-      <item> @private </item>
-      <item> @protected </item>
-      <item> @protocol </item>
-      <item> @public </item>
-      <item> @selector </item>
-      <item> self </item>
-      <item> super </item>
+      <item>break</item>
+      <item>case</item>
+      <item>continue</item>
+      <item>default</item>
+      <item>do</item>
+      <item>else</item>
+      <item>enum</item>
+      <item>extern</item>
+      <item>for</item>
+      <item>goto</item>
+      <item>if</item>
+      <item>return</item>
+      <item>sizeof</item>
+      <item>struct</item>
+      <item>switch</item>
+      <item>typedef</item>
+      <item>union</item>
+      <item>while</item>
+      <item>@class</item>
+      <item>@defs</item>
+      <item>@encode</item>
+      <item>@end</item>
+      <item>@implementation</item>
+      <item>@interface</item>
+      <item>@private</item>
+      <item>@protected</item>
+      <item>@protocol</item>
+      <item>@public</item>
+      <item>@selector</item>
+      <item>self</item>
+      <item>super</item>
     </list>
     <list name="types">
-      <item> auto </item>
-      <item> char </item>
-      <item> const </item>
-      <item> double </item>
-      <item> float </item>
-      <item> int </item>
-      <item> long </item>
-      <item> register </item>
-      <item> short </item>
-      <item> signed </item>
-      <item> static </item>
-      <item> unsigned </item>
-      <item> void </item>
-      <item> volatile </item>
+      <item>auto</item>
+      <item>char</item>
+      <item>const</item>
+      <item>double</item>
+      <item>float</item>
+      <item>int</item>
+      <item>long</item>
+      <item>register</item>
+      <item>short</item>
+      <item>signed</item>
+      <item>static</item>
+      <item>unsigned</item>
+      <item>void</item>
+      <item>volatile</item>
     </list>
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Default">

@@ -12,138 +12,138 @@
           >
   <highlighting>
     <list name="keywords">
-      <item> and </item>
-      <item> array </item>
-      <item> asm </item>
-      <item> case </item>
-      <item> const </item>
-      <item> div </item>
-      <item> do </item>
-      <item> downto </item>
-      <item> else </item>
-      <item> file </item>
-      <item> for </item>
-      <item> function </item>
-      <item> goto </item>
-      <item> if </item>
-      <item> in </item>
-      <item> label </item>
-      <item> mod </item>
-      <item> nil </item>
-      <item> not </item>
-      <item> of </item>
-      <item> operator </item>
-      <item> or </item>
-      <item> packed </item>
-      <item> procedure </item>
-      <item> program </item>
-      <item> record </item>
-      <item> repeat </item>
-      <item> set </item>
-      <item> then </item>
-      <item> to </item>
-      <item> type </item>
-      <item> unit </item>
-      <item> until </item>
-      <item> uses </item>
-      <item> var </item>
-      <item> while </item>
-      <item> with </item>
-      <item> xor </item>
+      <item>and</item>
+      <item>array</item>
+      <item>asm</item>
+      <item>case</item>
+      <item>const</item>
+      <item>div</item>
+      <item>do</item>
+      <item>downto</item>
+      <item>else</item>
+      <item>file</item>
+      <item>for</item>
+      <item>function</item>
+      <item>goto</item>
+      <item>if</item>
+      <item>in</item>
+      <item>label</item>
+      <item>mod</item>
+      <item>nil</item>
+      <item>not</item>
+      <item>of</item>
+      <item>operator</item>
+      <item>or</item>
+      <item>packed</item>
+      <item>procedure</item>
+      <item>program</item>
+      <item>record</item>
+      <item>repeat</item>
+      <item>set</item>
+      <item>then</item>
+      <item>to</item>
+      <item>type</item>
+      <item>unit</item>
+      <item>until</item>
+      <item>uses</item>
+      <item>var</item>
+      <item>while</item>
+      <item>with</item>
+      <item>xor</item>
 
 
-      <item> at </item>
-      <item> automated </item>
-      <item> break </item>
-      <item> continue </item>
-      <item> dispinterface </item>
-      <item> dispose </item>
-      <item> exit </item>
-      <item> false </item>
-      <item> finalization </item>
-      <item> initialization </item>
-      <item> library </item>
-      <item> new </item>
-      <item> published </item>
-      <item> resourcestring </item>
-      <item> self </item>
-      <item> true </item>
+      <item>at</item>
+      <item>automated</item>
+      <item>break</item>
+      <item>continue</item>
+      <item>dispinterface</item>
+      <item>dispose</item>
+      <item>exit</item>
+      <item>false</item>
+      <item>finalization</item>
+      <item>initialization</item>
+      <item>library</item>
+      <item>new</item>
+      <item>published</item>
+      <item>resourcestring</item>
+      <item>self</item>
+      <item>true</item>
     </list>
     <list name="ISO/Delphi Extended">
-      <item> abstract </item>
-      <item> as </item>
-      <item> bindable </item>
-      <item> constructor </item>
-      <item> destructor </item>
-      <item> except </item>
-      <item> export </item>
-      <item> finally </item>
-      <item> import </item>
-      <item> implementation </item>
-      <item> inherited </item>
-      <item> inline </item>
-      <item> interface </item>
-      <item> is </item>
-      <item> module </item>
-      <item> on </item>
-      <item> only </item>
-      <item> otherwise </item>
-      <item> override </item>
-      <item> private </item>
-      <item> property </item>
-      <item> protected </item>
-      <item> public </item>
-      <item> read </item>
-      <item> qualified </item>
-      <item> raise </item>
-      <item> restricted </item>
-      <item> shl </item>
-      <item> shr </item>
-      <item> threadvar </item>
-      <item> try </item>
-      <item> virtual </item>
-      <item> write </item>
+      <item>abstract</item>
+      <item>as</item>
+      <item>bindable</item>
+      <item>constructor</item>
+      <item>destructor</item>
+      <item>except</item>
+      <item>export</item>
+      <item>finally</item>
+      <item>import</item>
+      <item>implementation</item>
+      <item>inherited</item>
+      <item>inline</item>
+      <item>interface</item>
+      <item>is</item>
+      <item>module</item>
+      <item>on</item>
+      <item>only</item>
+      <item>otherwise</item>
+      <item>override</item>
+      <item>private</item>
+      <item>property</item>
+      <item>protected</item>
+      <item>public</item>
+      <item>read</item>
+      <item>qualified</item>
+      <item>raise</item>
+      <item>restricted</item>
+      <item>shl</item>
+      <item>shr</item>
+      <item>threadvar</item>
+      <item>try</item>
+      <item>virtual</item>
+      <item>write</item>
     </list>
     <list name="types">
-      <item> Integer </item>
-      <item> Cardinal </item>
-      <item> ShortInt </item>
-      <item> SmallInt  </item>
-      <item> LongInt </item>
-      <item> Int64 </item>
-      <item> Byte </item>
-      <item> Word </item>
-      <item> LongWord </item>
-      <item> DWord </item>
-      <item> QWord </item>
-      <item> Char </item>
-      <item> AnsiChar </item>
-      <item> WideChar </item>
-      <item> Boolean </item>
-      <item> ByteBool </item>
-      <item> WordBool </item>
-      <item> LongBool </item>
-      <item> Single </item>
-      <item> Double </item>
-      <item> Extended </item>
-      <item> Comp </item>
-      <item> Currency </item>
-      <item> Real </item>
-      <item> Real48 </item>
-      <item> String </item>
-      <item> ShortString </item>
-      <item> AnsiString </item>
-      <item> WideString </item>
-      <item> Pointer </item>
-      <item> Variant</item>
-      <item> File </item>
-      <item> Text </item>
+      <item>Integer</item>
+      <item>Cardinal</item>
+      <item>ShortInt</item>
+      <item>SmallInt</item>
+      <item>LongInt</item>
+      <item>Int64</item>
+      <item>Byte</item>
+      <item>Word</item>
+      <item>LongWord</item>
+      <item>DWord</item>
+      <item>QWord</item>
+      <item>Char</item>
+      <item>AnsiChar</item>
+      <item>WideChar</item>
+      <item>Boolean</item>
+      <item>ByteBool</item>
+      <item>WordBool</item>
+      <item>LongBool</item>
+      <item>Single</item>
+      <item>Double</item>
+      <item>Extended</item>
+      <item>Comp</item>
+      <item>Currency</item>
+      <item>Real</item>
+      <item>Real48</item>
+      <item>String</item>
+      <item>ShortString</item>
+      <item>AnsiString</item>
+      <item>WideString</item>
+      <item>Pointer</item>
+      <item>Variant</item>
+      <item>File</item>
+      <item>Text</item>
     </list>
     <list name="attention">
-      <item> FIXME </item>
-      <item> TODO </item>
-      <item> NOTE </item>
-      <item> ### </item>
+      <item>FIXME</item>
+      <item>TODO</item>
+      <item>NOTE</item>
+      <item>###</item>
     </list>
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">

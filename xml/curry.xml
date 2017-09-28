@@ -36,150 +36,150 @@
           indenter="haskell">
   <highlighting>
   <list name="keywords">
-    <item> case </item>
-    <item> data </item>
-    <item> do </item>
-    <item> else </item>
-    <item> external </item>
-    <item> fcase </item>
-    <item> free </item>
-    <item> if </item>
+    <item>case</item>
+    <item>data</item>
+    <item>do</item>
+    <item>else</item>
+    <item>external</item>
+    <item>fcase</item>
+    <item>free</item>
+    <item>if</item>
 <!-- Although import is a keyword, it is handled in a special context
      to highlight "qualified", "as" and "hiding" in keyword style,
      albeit these lexemes are no keywords.
-    <item> import </item>
+    <item>import</item>
   -->
-    <item> in </item>
-    <item> infix </item>
-    <item> infixl </item>
-    <item> infixr </item>
-    <item> let </item>
-    <item> module </item>
-    <item> of </item>
-    <item> then </item>
-    <item> type </item>
-    <item> where </item>
+    <item>in</item>
+    <item>infix</item>
+    <item>infixl</item>
+    <item>infixr</item>
+    <item>let</item>
+    <item>module</item>
+    <item>of</item>
+    <item>then</item>
+    <item>type</item>
+    <item>where</item>
   </list>
   <list name="Prelude Func">
-    <item> and </item>
-    <item> all </item>
-    <item> any </item>
-    <item> appendFile </item>
-    <item> best </item>
-    <item> break </item>
-    <item> browse </item>
-    <item> browseList </item>
-    <item> chr </item>
-    <item> concat </item>
-    <item> concatMap </item>
-    <item> const </item>
-    <item> curry </item>
-    <item> div </item>
-    <item> done </item>
-    <item> doSolve </item>
-    <item> drop </item>
-    <item> dropWhile </item>
-    <item> either </item>
-    <item> elem </item>
-    <item> ensureNotFree </item>
-    <item> ensureSpine </item>
-    <item> enumFrom </item>
-    <item> enumFromThen </item>
-    <item> enumFromTo </item>
-    <item> enumFromThenTo </item>
-    <item> error </item>
-    <item> failed </item>
-    <item> filter </item>
-    <item> findall </item>
-    <item> flip </item>
-    <item> foldl </item>
-    <item> foldl1 </item>
-    <item> foldr </item>
-    <item> foldr1 </item>
-    <item> fst </item>
-    <item> getChar </item>
-    <item> getLine </item>
-    <item> id </item>
-    <item> if_then_else </item>
-    <item> iterate </item>
-    <item> head </item>
-    <item> length </item>
-    <item> lines </item>
-    <item> lookup </item>
-    <item> map </item>
-    <item> mapIO </item>
-    <item> mapIO_ </item>
-    <item> max </item>
-    <item> maybe </item>
-    <item> min </item>
-    <item> mod </item>
-    <item> negate </item>
-    <item> not </item>
-    <item> notElem </item>
-    <item> null </item>
-    <item> once </item>
-    <item> or </item>
-    <item> ord </item>
-    <item> otherwise </item>
-    <item> print </item>
-    <item> putChar </item>
-    <item> putStr </item>
-    <item> putStrLn </item>
-    <item> readFile </item>
-    <item> repeat </item>
-    <item> replicate </item>
-    <item> return </item>
-    <item> reverse </item>
-    <item> seq </item>
-    <item> sequenceIO </item>
-    <item> sequenceIO_ </item>
-    <item> show </item>
-    <item> snd </item>
-    <item> solveAll </item>
-    <item> span </item>
-    <item> splitAt </item>
-    <item> success </item>
-    <item> tail </item>
-    <item> take </item>
-    <item> takeWhile </item>
-    <item> try </item>
-    <item> uncurry </item>
-    <item> unknown </item>
-    <item> unlines </item>
-    <item> unpack </item>
-    <item> until </item>
-    <item> unwords </item>
-    <item> unzip </item>
-    <item> unzip3 </item>
-    <item> writeFile </item>
-    <item> words </item>
-    <item> zip </item>
-    <item> zip3 </item>
-    <item> zipWith </item>
-    <item> zipWith3 </item>
+    <item>and</item>
+    <item>all</item>
+    <item>any</item>
+    <item>appendFile</item>
+    <item>best</item>
+    <item>break</item>
+    <item>browse</item>
+    <item>browseList</item>
+    <item>chr</item>
+    <item>concat</item>
+    <item>concatMap</item>
+    <item>const</item>
+    <item>curry</item>
+    <item>div</item>
+    <item>done</item>
+    <item>doSolve</item>
+    <item>drop</item>
+    <item>dropWhile</item>
+    <item>either</item>
+    <item>elem</item>
+    <item>ensureNotFree</item>
+    <item>ensureSpine</item>
+    <item>enumFrom</item>
+    <item>enumFromThen</item>
+    <item>enumFromTo</item>
+    <item>enumFromThenTo</item>
+    <item>error</item>
+    <item>failed</item>
+    <item>filter</item>
+    <item>findall</item>
+    <item>flip</item>
+    <item>foldl</item>
+    <item>foldl1</item>
+    <item>foldr</item>
+    <item>foldr1</item>
+    <item>fst</item>
+    <item>getChar</item>
+    <item>getLine</item>
+    <item>id</item>
+    <item>if_then_else</item>
+    <item>iterate</item>
+    <item>head</item>
+    <item>length</item>
+    <item>lines</item>
+    <item>lookup</item>
+    <item>map</item>
+    <item>mapIO</item>
+    <item>mapIO_</item>
+    <item>max</item>
+    <item>maybe</item>
+    <item>min</item>
+    <item>mod</item>
+    <item>negate</item>
+    <item>not</item>
+    <item>notElem</item>
+    <item>null</item>
+    <item>once</item>
+    <item>or</item>
+    <item>ord</item>
+    <item>otherwise</item>
+    <item>print</item>
+    <item>putChar</item>
+    <item>putStr</item>
+    <item>putStrLn</item>
+    <item>readFile</item>
+    <item>repeat</item>
+    <item>replicate</item>
+    <item>return</item>
+    <item>reverse</item>
+    <item>seq</item>
+    <item>sequenceIO</item>
+    <item>sequenceIO_</item>
+    <item>show</item>
+    <item>snd</item>
+    <item>solveAll</item>
+    <item>span</item>
+    <item>splitAt</item>
+    <item>success</item>
+    <item>tail</item>
+    <item>take</item>
+    <item>takeWhile</item>
+    <item>try</item>
+    <item>uncurry</item>
+    <item>unknown</item>
+    <item>unlines</item>
+    <item>unpack</item>
+    <item>until</item>
+    <item>unwords</item>
+    <item>unzip</item>
+    <item>unzip3</item>
+    <item>writeFile</item>
+    <item>words</item>
+    <item>zip</item>
+    <item>zip3</item>
+    <item>zipWith</item>
+    <item>zipWith3</item>
   </list>
   <list name="Prelude Type">
-    <item> Bool </item>
-    <item> Char </item>
-    <item> Either </item>
-    <item> Float </item>
-    <item> Int </item>
-    <item> IO </item>
-    <item> Maybe </item>
-    <item> Ordering </item>
-    <item> String </item>
-    <item> Success </item>
+    <item>Bool</item>
+    <item>Char</item>
+    <item>Either</item>
+    <item>Float</item>
+    <item>Int</item>
+    <item>IO</item>
+    <item>Maybe</item>
+    <item>Ordering</item>
+    <item>String</item>
+    <item>Success</item>
   </list>
   <list name="Prelude Cons">
-    <item> False </item>
-    <item> True </item>
-    <item> Left </item>
-    <item> Right </item>
-    <item> Just </item>
-    <item> Nothing </item>
-    <item> EQ </item>
-    <item> LT </item>
-    <item> GT </item>
+    <item>False</item>
+    <item>True</item>
+    <item>Left</item>
+    <item>Right</item>
+    <item>Just</item>
+    <item>Nothing</item>
+    <item>EQ</item>
+    <item>LT</item>
+    <item>GT</item>
   </list>
   <contexts>
     <context name="Normal" attribute="Normal" lineEndContext="#stay">

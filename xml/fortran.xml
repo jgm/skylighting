@@ -8,137 +8,137 @@
 <!-- *                              L I S T S                            *  -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
     <list name="keywords">
-      <item> allocate </item>
-      <item> break </item>
-      <item> call </item>
-      <item> case </item>
-      <item> common </item>
+      <item>allocate</item>
+      <item>break</item>
+      <item>call</item>
+      <item>case</item>
+      <item>common</item>
       <!--item> contains </item-->
-      <item> continue </item>
-      <item> cycle </item>
-      <item> deallocate </item>
-      <item> default </item>
+      <item>continue</item>
+      <item>cycle</item>
+      <item>deallocate</item>
+      <item>default</item>
       <!--item> do </item-->
-      <item> forall </item>
-      <item> where </item>
-      <item> elsewhere </item>
+      <item>forall</item>
+      <item>where</item>
+      <item>elsewhere</item>
       <!--item> elseif </item-->
       <!--item> else </item-->
-      <item> equivalence </item>
-      <item> exit </item>
-      <item> external </item>
-      <item> for </item>
-      <item> go </item>
-      <item> goto </item>
-      <item> if </item>
-      <item> implicit </item>
-      <item> include </item>
-      <item> interface </item>
-      <item> intrinsic </item>
-      <item> namelist </item>
-      <item> none </item>
-      <item> nullify </item>
-      <item> operator </item>
-      <item> assignment </item>
-      <item> pause </item>
-      <item> procedure </item>
-      <item> pure </item>
-      <item> elemental </item>
-      <item> record </item>
-      <item> recursive </item>
-      <item> result </item>
-      <item> return </item>
-      <item> select </item>
-      <item> selectcase </item>
-      <item> stop </item>
+      <item>equivalence</item>
+      <item>exit</item>
+      <item>external</item>
+      <item>for</item>
+      <item>go</item>
+      <item>goto</item>
+      <item>if</item>
+      <item>implicit</item>
+      <item>include</item>
+      <item>interface</item>
+      <item>intrinsic</item>
+      <item>namelist</item>
+      <item>none</item>
+      <item>nullify</item>
+      <item>operator</item>
+      <item>assignment</item>
+      <item>pause</item>
+      <item>procedure</item>
+      <item>pure</item>
+      <item>elemental</item>
+      <item>record</item>
+      <item>recursive</item>
+      <item>result</item>
+      <item>return</item>
+      <item>select</item>
+      <item>selectcase</item>
+      <item>stop</item>
       <!--item> then </item-->
-      <item> to </item>
-      <item> use </item>
-      <item> only </item>
-      <item> entry </item>
-      <item> while </item>
+      <item>to</item>
+      <item>use</item>
+      <item>only</item>
+      <item>entry</item>
+      <item>while</item>
     </list>
     <list name="io_functions">
-      <item> access </item>
-      <item> backspace </item>
-      <item> close </item>
-      <item> inquire </item>
-      <item> open </item>
-      <item> print </item>
-      <item> read </item>
-      <item> rewind </item>
-      <item> write </item>
-      <item> format </item>
+      <item>access</item>
+      <item>backspace</item>
+      <item>close</item>
+      <item>inquire</item>
+      <item>open</item>
+      <item>print</item>
+      <item>read</item>
+      <item>rewind</item>
+      <item>write</item>
+      <item>format</item>
     </list>
     <!-- Keywords inside read(...), write(...), backspace(...),
           rewind(...), endfile(...), close(...) -->
     <list name="io_keywords">
-      <item> unit </item>
-      <item> end </item>
-      <item> err </item>
-      <item> fmt </item>
-      <item> iostat </item>
-      <item> status </item>
-      <item> advance </item>
-      <item> size </item>
-      <item> eor </item>
+      <item>unit</item>
+      <item>end</item>
+      <item>err</item>
+      <item>fmt</item>
+      <item>iostat</item>
+      <item>status</item>
+      <item>advance</item>
+      <item>size</item>
+      <item>eor</item>
     </list>
     <!-- Keywords inside open(...) -->
     <list name="open_keywords">
-      <item> unit </item>
-      <item> iostat </item>
-      <item> err </item>
-      <item> file </item>
-      <item> status </item>
-      <item> access </item>
-      <item> form </item>
-      <item> recl </item>
-      <item> blank </item>
-      <item> position </item>
-      <item> action </item>
-      <item> delim </item>
-      <item> pad </item>
+      <item>unit</item>
+      <item>iostat</item>
+      <item>err</item>
+      <item>file</item>
+      <item>status</item>
+      <item>access</item>
+      <item>form</item>
+      <item>recl</item>
+      <item>blank</item>
+      <item>position</item>
+      <item>action</item>
+      <item>delim</item>
+      <item>pad</item>
     </list>
     <!-- Keywords inside inquire(...) -->
     <list name="inquire_keywords">
-      <item> unit </item>
-      <item> iostat </item>
-      <item> err </item>
-      <item> file </item>
-      <item> exist </item>
-      <item> opened </item>
-      <item> number </item>
-      <item> named </item>
-      <item> name </item>
-      <item> access </item>
-      <item> sequential </item>
-      <item> direct </item>
-      <item> form </item>
-      <item> formatted </item>
-      <item> unformatted </item>
-      <item> recl </item>
-      <item> nextrec </item>
-      <item> blank </item>
-      <item> position </item>
-      <item> action </item>
-      <item> read </item>
-      <item> write </item>
-      <item> readwrite </item>
-      <item> delim </item>
-      <item> pad </item>
+      <item>unit</item>
+      <item>iostat</item>
+      <item>err</item>
+      <item>file</item>
+      <item>exist</item>
+      <item>opened</item>
+      <item>number</item>
+      <item>named</item>
+      <item>name</item>
+      <item>access</item>
+      <item>sequential</item>
+      <item>direct</item>
+      <item>form</item>
+      <item>formatted</item>
+      <item>unformatted</item>
+      <item>recl</item>
+      <item>nextrec</item>
+      <item>blank</item>
+      <item>position</item>
+      <item>action</item>
+      <item>read</item>
+      <item>write</item>
+      <item>readwrite</item>
+      <item>delim</item>
+      <item>pad</item>
     </list>
     <list name="types">
-      <item> double </item>
-      <item> precision </item>
-      <item> parameter </item>
-      <item> save </item>
-      <item> pointer </item>
-      <item> public </item>
-      <item> private </item>
-      <item> target </item>
-      <item> allocatable </item>
-      <item> optional </item>
-      <item> sequence </item>
+      <item>double</item>
+      <item>precision</item>
+      <item>parameter</item>
+      <item>save</item>
+      <item>pointer</item>
+      <item>public</item>
+      <item>private</item>
+      <item>target</item>
+      <item>allocatable</item>
+      <item>optional</item>
+      <item>sequence</item>
     </list>
 
 <!-- There are 4 types of intrinsic procedures in Fortran 90:
@@ -155,215 +155,215 @@
 <!-- E L E M E N T A L    P R O C E D U R E S -->
     <list name="elemental_procs">
     <!-- Elemental functions that may convert -->
-      <item> abs </item>   <!-- Generic form: abs -->
-      <item> cabs </item>  <!-- Specific names for abs -->
-      <item> dabs </item>
-      <item> iabs </item>
-      <item> aimag </item>
-      <item> aint </item>  <!-- Generic form: aint -->
-      <item> dint </item>  <!-- Specific name for aint -->
-      <item> anint </item> <!-- Generic form: anint -->
-      <item> dnint </item> <!-- Specific name for anint -->
-      <item> ceiling </item>
-      <item> cmplx </item>
-      <item> dcmplx </item> <!-- (non standard) -->
-      <item> dimag </item>  <!-- (non standard) -->
-      <item> floor </item>
-      <item> nint </item>  <!-- Generic form: nint -->
-      <item> idnint </item><!-- Specific name for nint -->
-      <item> int </item>   <!-- Generic form: int -->
-      <item> idint </item> <!-- Specific names for int -->
-      <item> ifix </item>
-      <item> real </item>  <!-- Generic form: real -->
-      <item> float </item> <!-- Specific names for real -->
-      <item> sngl </item>
-      <item> dble </item>
-      <item> dreal </item> <!-- (non standard) -->
-      <item> aprime </item> <!-- 5 functions from fortran.xml -->
-      <item> dconjg </item> <!-- I don't know if they really belong to -->
-      <item> dfloat </item> <!-- the fortran 90/95 standard! -->
-      <item> ddmim </item>
-      <item> rand </item>
+      <item>abs</item>   <!-- Generic form: abs -->
+      <item>cabs</item>  <!-- Specific names for abs -->
+      <item>dabs</item>
+      <item>iabs</item>
+      <item>aimag</item>
+      <item>aint</item>  <!-- Generic form: aint -->
+      <item>dint</item>  <!-- Specific name for aint -->
+      <item>anint</item> <!-- Generic form: anint -->
+      <item>dnint</item> <!-- Specific name for anint -->
+      <item>ceiling</item>
+      <item>cmplx</item>
+      <item>dcmplx</item> <!-- (non standard) -->
+      <item>dimag</item>  <!-- (non standard) -->
+      <item>floor</item>
+      <item>nint</item>  <!-- Generic form: nint -->
+      <item>idnint</item><!-- Specific name for nint -->
+      <item>int</item>   <!-- Generic form: int -->
+      <item>idint</item> <!-- Specific names for int -->
+      <item>ifix</item>
+      <item>real</item>  <!-- Generic form: real -->
+      <item>float</item> <!-- Specific names for real -->
+      <item>sngl</item>
+      <item>dble</item>
+      <item>dreal</item> <!-- (non standard) -->
+      <item>aprime</item> <!-- 5 functions from fortran.xml -->
+      <item>dconjg</item> <!-- I don't know if they really belong to -->
+      <item>dfloat</item> <!-- the fortran 90/95 standard! -->
+      <item>ddmim</item>
+      <item>rand</item>
     <!-- Elemental functions that do not convert -->
-      <item> modulo </item>
-      <item> conjg </item>
-      <item> dprod </item>  <!-- dprod(x, y) is the specific name for x*y -->
-      <item> dim </item>    <!-- Generic form: dim -->
-      <item> ddim </item>   <!-- Specific names for dim -->
-      <item> idim </item>
-      <item> max </item>    <!-- Generic form: max -->
-      <item> amax0 </item>  <!-- Specific names for max -->
-      <item> amax1 </item>
-      <item> max0 </item>
-      <item> max1 </item>
-      <item> dmax1 </item>
-      <item> min </item>    <!-- Generic form: min -->
-      <item> amin0 </item>  <!-- Specific names for min -->
-      <item> amin1 </item>
-      <item> min0 </item>
-      <item> min1 </item>
-      <item> dmin1 </item>
-      <item> mod </item>    <!-- Generic form: mod -->
-      <item> amod </item>   <!-- Specific names for mod -->
-      <item> dmod </item>
-      <item> sign </item>   <!-- Generic form: sign -->
-      <item> dsign </item>  <!-- Specific names for sign -->
-      <item> isign </item>
+      <item>modulo</item>
+      <item>conjg</item>
+      <item>dprod</item>  <!-- dprod(x, y) is the specific name for x*y -->
+      <item>dim</item>    <!-- Generic form: dim -->
+      <item>ddim</item>   <!-- Specific names for dim -->
+      <item>idim</item>
+      <item>max</item>    <!-- Generic form: max -->
+      <item>amax0</item>  <!-- Specific names for max -->
+      <item>amax1</item>
+      <item>max0</item>
+      <item>max1</item>
+      <item>dmax1</item>
+      <item>min</item>    <!-- Generic form: min -->
+      <item>amin0</item>  <!-- Specific names for min -->
+      <item>amin1</item>
+      <item>min0</item>
+      <item>min1</item>
+      <item>dmin1</item>
+      <item>mod</item>    <!-- Generic form: mod -->
+      <item>amod</item>   <!-- Specific names for mod -->
+      <item>dmod</item>
+      <item>sign</item>   <!-- Generic form: sign -->
+      <item>dsign</item>  <!-- Specific names for sign -->
+      <item>isign</item>
     <!-- Elemental mathematical functions -->
-      <item> acos </item>    <!-- Generic form: acos -->
-      <item> dacos </item>   <!-- Specific names for acos -->
-      <item> asin </item>    <!-- Generic form: asin -->
-      <item> dasin </item>   <!-- Specific names for asin -->
-      <item> atan </item>    <!-- Generic form: atan -->
-      <item> datan </item>   <!-- Specific names for atan -->
-      <item> atan2 </item>   <!-- Generic form: atan2 -->
-      <item> datan2 </item>  <!-- Specific names for atan2 -->
-      <item> cos </item>     <!-- Generic form: cos -->
-      <item> ccos </item>    <!-- Specific names for cos -->
-      <item> dcos </item>
-      <item> cosh </item>    <!-- Generic form: cosh -->
-      <item> dcosh </item>   <!-- Specific names for cosh -->
-      <item> exp </item>     <!-- Generic form: exp -->
-      <item> cexp </item>    <!-- Specific names for exp -->
-      <item> dexp </item>
-      <item> log </item>     <!-- Generic form: log -->
-      <item> alog </item>    <!-- Specific names for log -->
-      <item> dlog </item>
-      <item> clog </item>
-      <item> log10 </item>   <!-- Generic form: log10 -->
-      <item> alog10 </item>  <!-- Specific names for log10 -->
-      <item> dlog10 </item>
-      <item> sin </item>     <!-- Generic form: sin -->
-      <item> csin </item>    <!-- Specific names for sin -->
-      <item> dsin </item>
-      <item> sinh </item>    <!-- Generic form: sinh -->
-      <item> dsinh </item>   <!-- Specific name for sinh -->
-      <item> sqrt </item>    <!-- Generic form: sqrt -->
-      <item> csqrt </item>   <!-- Specific names for sqrt -->
-      <item> dsqrt </item>
-      <item> tan </item>     <!-- Generic form: tan -->
-      <item> dtan </item>    <!-- Generic form: dtan -->
-      <item> tanh </item>    <!-- Generic form: tanh -->
-      <item> dtanh </item>   <!-- Specific names for tanh -->
+      <item>acos</item>    <!-- Generic form: acos -->
+      <item>dacos</item>   <!-- Specific names for acos -->
+      <item>asin</item>    <!-- Generic form: asin -->
+      <item>dasin</item>   <!-- Specific names for asin -->
+      <item>atan</item>    <!-- Generic form: atan -->
+      <item>datan</item>   <!-- Specific names for atan -->
+      <item>atan2</item>   <!-- Generic form: atan2 -->
+      <item>datan2</item>  <!-- Specific names for atan2 -->
+      <item>cos</item>     <!-- Generic form: cos -->
+      <item>ccos</item>    <!-- Specific names for cos -->
+      <item>dcos</item>
+      <item>cosh</item>    <!-- Generic form: cosh -->
+      <item>dcosh</item>   <!-- Specific names for cosh -->
+      <item>exp</item>     <!-- Generic form: exp -->
+      <item>cexp</item>    <!-- Specific names for exp -->
+      <item>dexp</item>
+      <item>log</item>     <!-- Generic form: log -->
+      <item>alog</item>    <!-- Specific names for log -->
+      <item>dlog</item>
+      <item>clog</item>
+      <item>log10</item>   <!-- Generic form: log10 -->
+      <item>alog10</item>  <!-- Specific names for log10 -->
+      <item>dlog10</item>
+      <item>sin</item>     <!-- Generic form: sin -->
+      <item>csin</item>    <!-- Specific names for sin -->
+      <item>dsin</item>
+      <item>sinh</item>    <!-- Generic form: sinh -->
+      <item>dsinh</item>   <!-- Specific name for sinh -->
+      <item>sqrt</item>    <!-- Generic form: sqrt -->
+      <item>csqrt</item>   <!-- Specific names for sqrt -->
+      <item>dsqrt</item>
+      <item>tan</item>     <!-- Generic form: tan -->
+      <item>dtan</item>    <!-- Generic form: dtan -->
+      <item>tanh</item>    <!-- Generic form: tanh -->
+      <item>dtanh</item>   <!-- Specific names for tanh -->
     <!-- Elemental character and logical functions -->
     <!-- Character-integer conversions -->
-      <item> achar </item>
-      <item> char </item>
-      <item> iachar </item>
-      <item> ichar </item>
+      <item>achar</item>
+      <item>char</item>
+      <item>iachar</item>
+      <item>ichar</item>
     <!-- Lexical comparison functions -->
-      <item> lge </item>
-      <item> lgt </item>
-      <item> lle </item>
-      <item> llt </item>
+      <item>lge</item>
+      <item>lgt</item>
+      <item>lle</item>
+      <item>llt</item>
     <!-- String-handling elemental functions -->
-      <item> adjustl </item>
-      <item> adjustr </item>
-      <item> index </item>
-      <item> len_trim </item>
-      <item> scan </item>
-      <item> verify </item>
+      <item>adjustl</item>
+      <item>adjustr</item>
+      <item>index</item>
+      <item>len_trim</item>
+      <item>scan</item>
+      <item>verify</item>
     <!-- Logical conversion -->
-      <item> logical </item>
+      <item>logical</item>
     <!-- Elemental functions to manipulate reals -->
-      <item> exponent </item>
-      <item> fraction </item>
-      <item> nearest </item>
-      <item> rrspacing </item>
-      <item> scale </item>
-      <item> set_exponent </item>
-      <item> spacing </item>
+      <item>exponent</item>
+      <item>fraction</item>
+      <item>nearest</item>
+      <item>rrspacing</item>
+      <item>scale</item>
+      <item>set_exponent</item>
+      <item>spacing</item>
     <!-- Bit manipulation elemental functions -->
-      <item> btest </item>
-      <item> iand </item>
-      <item> ibclr </item>
-      <item> ibits </item>
-      <item> ibset </item>
-      <item> ieor </item>
-      <item> ior </item>
-      <item> ishft </item>
-      <item> ishftc </item>
-      <item> not </item>
+      <item>btest</item>
+      <item>iand</item>
+      <item>ibclr</item>
+      <item>ibits</item>
+      <item>ibset</item>
+      <item>ieor</item>
+      <item>ior</item>
+      <item>ishft</item>
+      <item>ishftc</item>
+      <item>not</item>
     <!-- Bit manipulation elemental subroutine -->
-      <item> mvbits </item>
+      <item>mvbits</item>
     <!-- Merge elemental function -->
-      <item> merge </item>
+      <item>merge</item>
     </list>
 
 <!-- I N Q U I R Y    F U N C T I O N S -->
     <list name="inquiry_fn">
     <!-- Inquiry functions for any type -->
-      <item> associated </item>
-      <item> present </item>
-      <item> kind </item>
+      <item>associated</item>
+      <item>present</item>
+      <item>kind</item>
     <!-- String-handling inquiry function -->
-      <item> len </item>
+      <item>len</item>
     <!-- Numeric inquiry functions -->
-      <item> digits </item>
-      <item> epsilon </item>
-      <item> huge </item>
-      <item> maxexponent </item>
-      <item> minexponent </item>
-      <item> precision </item>
-      <item> radix </item>
-      <item> range </item>
-      <item> tiny </item>
+      <item>digits</item>
+      <item>epsilon</item>
+      <item>huge</item>
+      <item>maxexponent</item>
+      <item>minexponent</item>
+      <item>precision</item>
+      <item>radix</item>
+      <item>range</item>
+      <item>tiny</item>
     <!-- Bit inquiry function -->
-      <item> bit_size </item>
+      <item>bit_size</item>
     <!-- Array inquiry functions -->
-      <item> allocated </item>
-      <item> lbound </item>
-      <item> ubound </item>
-      <item> shape </item>
-      <item> size </item>
+      <item>allocated</item>
+      <item>lbound</item>
+      <item>ubound</item>
+      <item>shape</item>
+      <item>size</item>
     </list>
 
 <!-- T R A N S F O R M A T I O N A L    F U N C T I O N S -->
     <list name="transform_fn">
     <!-- String-handling transformational functions -->
-      <item> repeat </item>
-      <item> trim </item>
+      <item>repeat</item>
+      <item>trim</item>
     <!-- Transformational functions for kind values -->
-      <item> selected_int_kind </item>
-      <item> selected_real_kind </item>
+      <item>selected_int_kind</item>
+      <item>selected_real_kind</item>
     <!-- Transfer function -->
-      <item> transfer </item>
+      <item>transfer</item>
     <!-- Vector and matrix multiplication functions -->
-      <item> dot_product </item>
-      <item> matmul </item>
+      <item>dot_product</item>
+      <item>matmul</item>
     <!-- Transformational functions that reduce arrays -->
-      <item> all </item>
-      <item> any </item>
-      <item> count </item>
-      <item> maxval </item>
-      <item> minval </item>
-      <item> product </item>
-      <item> sum </item>
+      <item>all</item>
+      <item>any</item>
+      <item>count</item>
+      <item>maxval</item>
+      <item>minval</item>
+      <item>product</item>
+      <item>sum</item>
     <!-- Packing and unpacking arrays -->
-      <item> pack </item>
-      <item> unpack </item>
+      <item>pack</item>
+      <item>unpack</item>
     <!-- Transformational function for reshaping an array -->
-      <item> reshape </item>
+      <item>reshape</item>
     <!-- Transformational function for replication -->
-      <item> spread </item>
+      <item>spread</item>
     <!-- Array shifting functions -->
-      <item> cshift </item>
-      <item> eoshift </item>
+      <item>cshift</item>
+      <item>eoshift</item>
     <!-- Matrix transpose -->
-      <item> transpose </item>
+      <item>transpose</item>
     <!-- Transformational functions for geometric location -->
-      <item> maxloc </item>
-      <item> minloc </item>
+      <item>maxloc</item>
+      <item>minloc</item>
     </list>
 
 <!-- N O N    E L E M E N T A L    S U B R O U T I N E S -->
     <list name="non_elem_subr">
     <!-- Real time clock -->
-      <item> date_and_time </item>
-      <item> system_clock </item>
+      <item>date_and_time</item>
+      <item>system_clock</item>
     <!-- Random numbers -->
-      <item> random_number </item>
-      <item> random_seed </item>
+      <item>random_number</item>
+      <item>random_seed</item>
     </list>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->

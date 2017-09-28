@@ -37,215 +37,215 @@
 <language name="Rust" version="4" kateversion="5.0" section="Sources" extensions="*.rs" mimetype="text/rust" priority="15" license="MIT" author="The Rust Project Developers">
 <highlighting>
 	<list name="fn">
-		<item> fn </item>
+		<item>fn</item>
 	</list>
 	<list name="type">
-		<item> type </item>
+		<item>type</item>
 	</list>
 	<list name="keywords">
-		<item> abstract </item>
-		<item> alignof </item>
-		<item> as </item>
-		<item> become </item>
-		<item> box </item>
-		<item> break </item>
-		<item> const </item>
-		<item> continue </item>
-		<item> crate </item>
-		<item> do </item>
-		<item> else </item>
-		<item> enum </item>
-		<item> extern </item>
-		<item> final </item>
-		<item> for </item>
-		<item> if </item>
-		<item> impl </item>
-		<item> in </item>
-		<item> let </item>
-		<item> loop </item>
-		<item> macro </item>
-		<item> match </item>
-		<item> mod </item>
-		<item> move </item>
-		<item> mut </item>
-		<item> offsetof </item>
-		<item> override </item>
-		<item> priv </item>
-		<item> proc </item>
-		<item> pub </item>
-		<item> pure </item>
-		<item> ref </item>
-		<item> return </item>
-		<item> Self </item>
-		<item> self </item>
-		<item> sizeof </item>
-		<item> static </item>
-		<item> struct </item>
-		<item> super </item>
-		<item> trait </item>
-		<item> type </item>
-		<item> typeof </item>
-		<item> unsafe </item>
-		<item> unsized </item>
-		<item> use </item>
-		<item> virtual </item>
-		<item> where </item>
-		<item> while </item>
-		<item> yield </item>
+		<item>abstract</item>
+		<item>alignof</item>
+		<item>as</item>
+		<item>become</item>
+		<item>box</item>
+		<item>break</item>
+		<item>const</item>
+		<item>continue</item>
+		<item>crate</item>
+		<item>do</item>
+		<item>else</item>
+		<item>enum</item>
+		<item>extern</item>
+		<item>final</item>
+		<item>for</item>
+		<item>if</item>
+		<item>impl</item>
+		<item>in</item>
+		<item>let</item>
+		<item>loop</item>
+		<item>macro</item>
+		<item>match</item>
+		<item>mod</item>
+		<item>move</item>
+		<item>mut</item>
+		<item>offsetof</item>
+		<item>override</item>
+		<item>priv</item>
+		<item>proc</item>
+		<item>pub</item>
+		<item>pure</item>
+		<item>ref</item>
+		<item>return</item>
+		<item>Self</item>
+		<item>self</item>
+		<item>sizeof</item>
+		<item>static</item>
+		<item>struct</item>
+		<item>super</item>
+		<item>trait</item>
+		<item>type</item>
+		<item>typeof</item>
+		<item>unsafe</item>
+		<item>unsized</item>
+		<item>use</item>
+		<item>virtual</item>
+		<item>where</item>
+		<item>while</item>
+		<item>yield</item>
 	</list>
 	<list name="traits">
-		<item> AsSlice </item>
-		<item> CharExt </item>
-		<item> Clone </item>
-		<item> Copy </item>
-		<item> Debug </item>
-		<item> Decodable </item>
-		<item> Default </item>
-		<item> Display </item>
-		<item> DoubleEndedIterator </item>
-		<item> Drop </item>
-		<item> Encodable </item>
-		<item> Eq </item>
-		<item> Default </item>
-		<item> Extend </item>
-		<item> Fn </item>
-		<item> FnMut </item>
-		<item> FnOnce </item>
-		<item> FromPrimitive </item>
-		<item> Hash </item>
-		<item> Iterator </item>
-		<item> IteratorExt </item>
-		<item> MutPtrExt </item>
-		<item> Ord </item>
-		<item> PartialEq </item>
-		<item> PartialOrd </item>
-		<item> PtrExt </item>
-		<item> Rand </item>
-		<item> Send </item>
-		<item> Sized </item>
-		<item> SliceConcatExt </item>
-		<item> SliceExt </item>
-		<item> Str </item>
-		<item> StrExt </item>
-		<item> Sync </item>
-		<item> ToString </item>
+		<item>AsSlice</item>
+		<item>CharExt</item>
+		<item>Clone</item>
+		<item>Copy</item>
+		<item>Debug</item>
+		<item>Decodable</item>
+		<item>Default</item>
+		<item>Display</item>
+		<item>DoubleEndedIterator</item>
+		<item>Drop</item>
+		<item>Encodable</item>
+		<item>Eq</item>
+		<item>Default</item>
+		<item>Extend</item>
+		<item>Fn</item>
+		<item>FnMut</item>
+		<item>FnOnce</item>
+		<item>FromPrimitive</item>
+		<item>Hash</item>
+		<item>Iterator</item>
+		<item>IteratorExt</item>
+		<item>MutPtrExt</item>
+		<item>Ord</item>
+		<item>PartialEq</item>
+		<item>PartialOrd</item>
+		<item>PtrExt</item>
+		<item>Rand</item>
+		<item>Send</item>
+		<item>Sized</item>
+		<item>SliceConcatExt</item>
+		<item>SliceExt</item>
+		<item>Str</item>
+		<item>StrExt</item>
+		<item>Sync</item>
+		<item>ToString</item>
 	</list>
 	<list name="types">
-		<item> bool </item>
-		<item> int </item>
-		<item> isize </item>
-		<item> uint </item>
-		<item> usize </item>
-		<item> i8 </item>
-		<item> i16 </item>
-		<item> i32 </item>
-		<item> i64 </item>
-		<item> u8 </item>
-		<item> u16 </item>
-		<item> u32 </item>
-		<item> u64 </item>
-		<item> f32 </item>
-		<item> f64 </item>
-		<item> float </item>
-		<item> char </item>
-		<item> str </item>
-		<item> Option </item>
-		<item> Result </item>
-		<item> Self </item>
-		<item> Box </item>
-		<item> Vec </item>
-		<item> String </item>
+		<item>bool</item>
+		<item>int</item>
+		<item>isize</item>
+		<item>uint</item>
+		<item>usize</item>
+		<item>i8</item>
+		<item>i16</item>
+		<item>i32</item>
+		<item>i64</item>
+		<item>u8</item>
+		<item>u16</item>
+		<item>u32</item>
+		<item>u64</item>
+		<item>f32</item>
+		<item>f64</item>
+		<item>float</item>
+		<item>char</item>
+		<item>str</item>
+		<item>Option</item>
+		<item>Result</item>
+		<item>Self</item>
+		<item>Box</item>
+		<item>Vec</item>
+		<item>String</item>
 	</list>
 	<list name="ctypes">
-		<item> c_float </item>
-		<item> c_double </item>
-		<item> c_void </item>
-		<item> FILE </item>
-		<item> fpos_t </item>
-		<item> DIR </item>
-		<item> dirent </item>
-		<item> c_char </item>
-		<item> c_schar </item>
-		<item> c_uchar </item>
-		<item> c_short </item>
-		<item> c_ushort </item>
-		<item> c_int </item>
-		<item> c_uint </item>
-		<item> c_long </item>
-		<item> c_ulong </item>
-		<item> size_t </item>
-		<item> ptrdiff_t </item>
-		<item> clock_t </item>
-		<item> time_t </item>
-		<item> c_longlong </item>
-		<item> c_ulonglong </item>
-		<item> intptr_t </item>
-		<item> uintptr_t </item>
-		<item> off_t </item>
-		<item> dev_t </item>
-		<item> ino_t </item>
-		<item> pid_t </item>
-		<item> mode_t </item>
-		<item> ssize_t </item>
+		<item>c_float</item>
+		<item>c_double</item>
+		<item>c_void</item>
+		<item>FILE</item>
+		<item>fpos_t</item>
+		<item>DIR</item>
+		<item>dirent</item>
+		<item>c_char</item>
+		<item>c_schar</item>
+		<item>c_uchar</item>
+		<item>c_short</item>
+		<item>c_ushort</item>
+		<item>c_int</item>
+		<item>c_uint</item>
+		<item>c_long</item>
+		<item>c_ulong</item>
+		<item>size_t</item>
+		<item>ptrdiff_t</item>
+		<item>clock_t</item>
+		<item>time_t</item>
+		<item>c_longlong</item>
+		<item>c_ulonglong</item>
+		<item>intptr_t</item>
+		<item>uintptr_t</item>
+		<item>off_t</item>
+		<item>dev_t</item>
+		<item>ino_t</item>
+		<item>pid_t</item>
+		<item>mode_t</item>
+		<item>ssize_t</item>
 	</list>
 	<list name="self">
-		<item> self </item>
+		<item>self</item>
 	</list>
 	<list name="constants">
-		<item> true </item>
-		<item> false </item>
-		<item> Some </item>
-		<item> None </item>
-		<item> Ok </item>
-		<item> Err </item>
-		<item> Success </item>
-		<item> Failure </item>
-		<item> Cons </item>
-		<item> Nil </item>
+		<item>true</item>
+		<item>false</item>
+		<item>Some</item>
+		<item>None</item>
+		<item>Ok</item>
+		<item>Err</item>
+		<item>Success</item>
+		<item>Failure</item>
+		<item>Cons</item>
+		<item>Nil</item>
 	</list>
 	<list name="cconstants">
-		<item> EXIT_FAILURE </item>
-		<item> EXIT_SUCCESS </item>
-		<item> RAND_MAX </item>
-		<item> EOF </item>
-		<item> SEEK_SET </item>
-		<item> SEEK_CUR </item>
-		<item> SEEK_END </item>
-		<item> _IOFBF </item>
-		<item> _IONBF </item>
-		<item> _IOLBF </item>
-		<item> BUFSIZ </item>
-		<item> FOPEN_MAX </item>
-		<item> FILENAME_MAX </item>
-		<item> L_tmpnam </item>
-		<item> TMP_MAX </item>
-		<item> O_RDONLY </item>
-		<item> O_WRONLY </item>
-		<item> O_RDWR </item>
-		<item> O_APPEND </item>
-		<item> O_CREAT </item>
-		<item> O_EXCL </item>
-		<item> O_TRUNC </item>
-		<item> S_IFIFO </item>
-		<item> S_IFCHR </item>
-		<item> S_IFBLK </item>
-		<item> S_IFDIR </item>
-		<item> S_IFREG </item>
-		<item> S_IFMT </item>
-		<item> S_IEXEC </item>
-		<item> S_IWRITE </item>
-		<item> S_IREAD </item>
-		<item> S_IRWXU </item>
-		<item> S_IXUSR </item>
-		<item> S_IWUSR </item>
-		<item> S_IRUSR </item>
-		<item> F_OK </item>
-		<item> R_OK </item>
-		<item> W_OK </item>
-		<item> X_OK </item>
-		<item> STDIN_FILENO </item>
-		<item> STDOUT_FILENO </item>
-		<item> STDERR_FILENO </item>
+		<item>EXIT_FAILURE</item>
+		<item>EXIT_SUCCESS</item>
+		<item>RAND_MAX</item>
+		<item>EOF</item>
+		<item>SEEK_SET</item>
+		<item>SEEK_CUR</item>
+		<item>SEEK_END</item>
+		<item>_IOFBF</item>
+		<item>_IONBF</item>
+		<item>_IOLBF</item>
+		<item>BUFSIZ</item>
+		<item>FOPEN_MAX</item>
+		<item>FILENAME_MAX</item>
+		<item>L_tmpnam</item>
+		<item>TMP_MAX</item>
+		<item>O_RDONLY</item>
+		<item>O_WRONLY</item>
+		<item>O_RDWR</item>
+		<item>O_APPEND</item>
+		<item>O_CREAT</item>
+		<item>O_EXCL</item>
+		<item>O_TRUNC</item>
+		<item>S_IFIFO</item>
+		<item>S_IFCHR</item>
+		<item>S_IFBLK</item>
+		<item>S_IFDIR</item>
+		<item>S_IFREG</item>
+		<item>S_IFMT</item>
+		<item>S_IEXEC</item>
+		<item>S_IWRITE</item>
+		<item>S_IREAD</item>
+		<item>S_IRWXU</item>
+		<item>S_IXUSR</item>
+		<item>S_IWUSR</item>
+		<item>S_IRUSR</item>
+		<item>F_OK</item>
+		<item>R_OK</item>
+		<item>W_OK</item>
+		<item>X_OK</item>
+		<item>STDIN_FILENO</item>
+		<item>STDOUT_FILENO</item>
+		<item>STDERR_FILENO</item>
 	</list>
 	<contexts>
 		<context attribute="Normal Text" lineEndContext="#stay" name="Normal">

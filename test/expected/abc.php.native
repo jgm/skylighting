@@ -2,7 +2,7 @@
 , [ ( KeywordTok , "<?php" ) ]
 , [ ( KeywordTok , "$words" )
   , ( NormalTok , " = " )
-  , ( FunctionTok , "array" )
+  , ( KeywordTok , "array" )
   , ( OtherTok , "(" )
   , ( StringTok , "\"A\"" )
   , ( OtherTok , "," )
@@ -44,7 +44,7 @@
 , [ ( NormalTok , "    " )
   , ( KeywordTok , "$blocks" )
   , ( NormalTok , " = " )
-  , ( FunctionTok , "array" )
+  , ( KeywordTok , "array" )
   , ( OtherTok , "(" )
   ]
 , [ ( NormalTok , "            " )
@@ -159,7 +159,7 @@
   , ( NormalTok , " {" )
   ]
 , [ ( NormalTok , "                " )
-  , ( FunctionTok , "unset" )
+  , ( KeywordTok , "unset" )
   , ( OtherTok , "(" )
   , ( KeywordTok , "$blocks" )
   , ( OtherTok , "[" )
@@ -201,7 +201,7 @@
   , ( NormalTok , " {" )
   ]
 , [ ( NormalTok , "    " )
-  , ( FunctionTok , "echo" )
+  , ( KeywordTok , "echo" )
   , ( NormalTok , " " )
   , ( KeywordTok , "$word" )
   , ( NormalTok , "." )
@@ -209,7 +209,7 @@
   , ( OtherTok , ";" )
   ]
 , [ ( NormalTok , "    " )
-  , ( FunctionTok , "echo" )
+  , ( KeywordTok , "echo" )
   , ( NormalTok , " canMakeWord" )
   , ( OtherTok , "(" )
   , ( KeywordTok , "$word" )
@@ -225,7 +225,7 @@
   , ( OtherTok , ";" )
   ]
 , [ ( NormalTok , "    " )
-  , ( FunctionTok , "echo" )
+  , ( KeywordTok , "echo" )
   , ( NormalTok , " " )
   , ( StringTok , "\"" )
   , ( KeywordTok , "\\r\\n" )

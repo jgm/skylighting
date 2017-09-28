@@ -3,148 +3,148 @@
 <language name="Verilog" version="2" kateversion="2.4" section="Hardware" extensions="*.v;*.V;*.vl" mimetype="text/x-verilog-src" author="Yevgen Voronenko (ysv22@drexel.edu), Ryan Dalzell (ryan@tullyroan.com)" license="">
   <highlighting>
     <list name="keywords">
-      <item> macromodule </item>
-      <item> table </item>
-      <item> endtable </item>
-      <item> specify </item>
-      <item> specparam </item>
-      <item> endspecify </item>
+      <item>macromodule</item>
+      <item>table</item>
+      <item>endtable</item>
+      <item>specify</item>
+      <item>specparam</item>
+      <item>endspecify</item>
 
-      <item> defparam </item>
-      <item> default </item>
-      <item> if </item>
-      <item> ifnone </item>
-      <item> else </item>
-      <item> forever </item>
-      <item> while </item>
-      <item> for </item>
-      <item> wait </item>
-      <item> repeat </item>
-      <item> disable </item>
+      <item>defparam</item>
+      <item>default</item>
+      <item>if</item>
+      <item>ifnone</item>
+      <item>else</item>
+      <item>forever</item>
+      <item>while</item>
+      <item>for</item>
+      <item>wait</item>
+      <item>repeat</item>
+      <item>disable</item>
 
-      <item> assign </item>
-      <item> deassign </item>
-      <item> force </item>
-      <item> release </item>
+      <item>assign</item>
+      <item>deassign</item>
+      <item>force</item>
+      <item>release</item>
 
-      <item> always </item>
-      <item> initial </item>
-      <item> edge </item>
-      <item> posedge </item>
-      <item> negedge </item>
+      <item>always</item>
+      <item>initial</item>
+      <item>edge</item>
+      <item>posedge</item>
+      <item>negedge</item>
 
       <!-- verilog-2001 keywords -->
-      <item> config </item>
-      <item> endconfig </item>
-      <item> library </item>
-      <item> design </item>
-      <item> liblist </item>
-      <item> cell </item>
-      <item> use </item>
-      <item> instance </item>
+      <item>config</item>
+      <item>endconfig</item>
+      <item>library</item>
+      <item>design</item>
+      <item>liblist</item>
+      <item>cell</item>
+      <item>use</item>
+      <item>instance</item>
     </list>
 
     <list name="beginwords">
-        <item> begin </item>
-        <item> fork </item>
-        <item> module </item>
-        <item> case </item>
-        <item> casex </item>
-        <item> casez </item>
-        <item> task </item>
-        <item> function </item>
-        <item> generate </item>
+        <item>begin</item>
+        <item>fork</item>
+        <item>module</item>
+        <item>case</item>
+        <item>casex</item>
+        <item>casez</item>
+        <item>task</item>
+        <item>function</item>
+        <item>generate</item>
     </list>
 
     <list name="endwords">
-        <item> end </item>
-        <item> join </item>
-        <item> endmodule </item>
-        <item> endcase </item>
-        <item> endtask </item>
-        <item> endfunction </item>
-        <item> endgenerate </item>
+        <item>end</item>
+        <item>join</item>
+        <item>endmodule</item>
+        <item>endcase</item>
+        <item>endtask</item>
+        <item>endfunction</item>
+        <item>endgenerate</item>
     </list>
 
     <list name="strength">
 	<!-- drive strength supply0/supply1 omitted, its in types.. -->
-	<item> strong0 </item>
-	<item> strong1 </item>
-	<item> pull0 </item>
-	<item> pull1 </item>
-	<item> weak0 </item>
-	<item> weak1 </item>
-	<item> highz0 </item>
-	<item> highz1 </item>
+	<item>strong0</item>
+	<item>strong1</item>
+	<item>pull0</item>
+	<item>pull1</item>
+	<item>weak0</item>
+	<item>weak1</item>
+	<item>highz0</item>
+	<item>highz1</item>
 	<!-- charge strength -->
-	<item> small </item>
-	<item> medium </item>
-	<item> large </item>
+	<item>small</item>
+	<item>medium</item>
+	<item>large</item>
     </list>
 
     <list name="gates">
-       <item> pullup </item>
-       <item> pulldown </item>
-       <item> cmos </item>
-       <item> rcmos </item>
-       <item> nmos </item>
-       <item> pmos </item>
-       <item> rnmos </item>
-       <item> rpmos </item>
-       <item> and </item>
-       <item> nand </item>
-       <item> or </item>
-       <item> nor </item>
-       <item> xor </item>
-       <item> xnor </item>
-       <item> not </item>
-       <item> buf </item>
-       <item> tran </item>
-       <item> rtran </item>
-       <item> tranif0 </item>
-       <item> tranif1 </item>
-       <item> rtranif0 </item>
-       <item> rtranif1 </item>
-       <item> bufif0 </item>
-       <item> bufif1 </item>
-       <item> notif0 </item>
-       <item> notif1 </item>
+       <item>pullup</item>
+       <item>pulldown</item>
+       <item>cmos</item>
+       <item>rcmos</item>
+       <item>nmos</item>
+       <item>pmos</item>
+       <item>rnmos</item>
+       <item>rpmos</item>
+       <item>and</item>
+       <item>nand</item>
+       <item>or</item>
+       <item>nor</item>
+       <item>xor</item>
+       <item>xnor</item>
+       <item>not</item>
+       <item>buf</item>
+       <item>tran</item>
+       <item>rtran</item>
+       <item>tranif0</item>
+       <item>tranif1</item>
+       <item>rtranif0</item>
+       <item>rtranif1</item>
+       <item>bufif0</item>
+       <item>bufif1</item>
+       <item>notif0</item>
+       <item>notif1</item>
     </list>
 
     <list name="types">
       <!-- port direction -->
-      <item> input </item>
-      <item> output </item>
-      <item> inout </item>
+      <item>input</item>
+      <item>output</item>
+      <item>inout</item>
       <!-- net type -->
-      <item> wire </item>
-      <item> tri </item>
-      <item> tri0 </item>
-      <item> tri1 </item>
-      <item> wand </item>
-      <item> wor </item>
-      <item> triand </item>
-      <item> trior </item>
-      <item> supply0 </item>
-      <item> supply1 </item>
+      <item>wire</item>
+      <item>tri</item>
+      <item>tri0</item>
+      <item>tri1</item>
+      <item>wand</item>
+      <item>wor</item>
+      <item>triand</item>
+      <item>trior</item>
+      <item>supply0</item>
+      <item>supply1</item>
       <!-- reg/variable -->
-      <item> reg </item>
-      <item> integer </item>
-      <item> real </item>
-      <item> realtime </item>
-      <item> time </item>
+      <item>reg</item>
+      <item>integer</item>
+      <item>real</item>
+      <item>realtime</item>
+      <item>time</item>
       <!-- modifier -->
-      <item> vectored </item>
-      <item> scalared </item>
-      <item> trireg </item>
+      <item>vectored</item>
+      <item>scalared</item>
+      <item>trireg</item>
       <!-- other -->
-      <item> parameter </item>
-      <item> event </item>
+      <item>parameter</item>
+      <item>event</item>
       <!-- verilog-2001 types -->
-      <item> signed </item>
-      <item> automatic </item>
-      <item> genvar </item>
-      <item> localparam </item>
+      <item>signed</item>
+      <item>automatic</item>
+      <item>genvar</item>
+      <item>localparam</item>
     </list>
 
     <contexts>

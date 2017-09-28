@@ -2,93 +2,93 @@
 <language name="C#" version="2" kateversion="5.0" section="Sources" extensions="*.cs" mimetype="text/x-csharp-src;text/x-csharp-hde">
   <highlighting>
     <list name="keywords">
-      <item> abstract</item>
-      <item> as</item>
-      <item> base</item>
-      <item> break</item>
-      <item> case</item>
-      <item> catch</item>
-      <item> class</item>
-      <item> checked</item>
-      <item> continue</item>
-      <item> default</item>
-      <item> delegate</item>
-      <item> do</item>
-      <item> else</item>
-      <item> enum</item>
-      <item> event</item>
-      <item> explicit</item>
-      <item> extern</item>
-      <item> false</item>
-      <item> for</item>
-      <item> foreach</item>
-      <item> finally</item>
-      <item> fixed</item>
-      <item> goto</item>
-      <item> if</item>
-      <item> implicit</item>
-      <item> in</item>
-      <item> interface</item>
-      <item> internal</item>
-      <item> is</item>
-      <item> lock</item>
-      <item> namespace</item>
-      <item> new</item>
-      <item> null</item>
-      <item> operator</item>
-      <item> out</item>
-      <item> override</item>
-      <item> params</item>
-      <item> private</item>
-      <item> protected</item>
-      <item> public</item>
-      <item> readonly</item>
-      <item> ref</item>
-      <item> return</item>
-      <item> sealed</item>
-      <item> sizeof</item>
-      <item> stackalloc</item>
-      <item> static</item>
-      <item> struct</item>
-      <item> switch</item>
-      <item> this</item>
-      <item> throw</item>
-      <item> true</item>
-      <item> try</item>
-      <item> typeof</item>
-      <item> unchecked</item>
-      <item> unsafe</item>
-      <item> using</item>
-      <item> virtual</item>
-      <item> while</item>
-      <item> #if</item>
-      <item> #else</item>
-      <item> #elif</item>
-      <item> #endif</item>
-      <item> #define</item>
-      <item> #undef</item>
-      <item> #warning</item>
-      <item> #error</item>
-      <item> #line</item>
+      <item>abstract</item>
+      <item>as</item>
+      <item>base</item>
+      <item>break</item>
+      <item>case</item>
+      <item>catch</item>
+      <item>class</item>
+      <item>checked</item>
+      <item>continue</item>
+      <item>default</item>
+      <item>delegate</item>
+      <item>do</item>
+      <item>else</item>
+      <item>enum</item>
+      <item>event</item>
+      <item>explicit</item>
+      <item>extern</item>
+      <item>false</item>
+      <item>for</item>
+      <item>foreach</item>
+      <item>finally</item>
+      <item>fixed</item>
+      <item>goto</item>
+      <item>if</item>
+      <item>implicit</item>
+      <item>in</item>
+      <item>interface</item>
+      <item>internal</item>
+      <item>is</item>
+      <item>lock</item>
+      <item>namespace</item>
+      <item>new</item>
+      <item>null</item>
+      <item>operator</item>
+      <item>out</item>
+      <item>override</item>
+      <item>params</item>
+      <item>private</item>
+      <item>protected</item>
+      <item>public</item>
+      <item>readonly</item>
+      <item>ref</item>
+      <item>return</item>
+      <item>sealed</item>
+      <item>sizeof</item>
+      <item>stackalloc</item>
+      <item>static</item>
+      <item>struct</item>
+      <item>switch</item>
+      <item>this</item>
+      <item>throw</item>
+      <item>true</item>
+      <item>try</item>
+      <item>typeof</item>
+      <item>unchecked</item>
+      <item>unsafe</item>
+      <item>using</item>
+      <item>virtual</item>
+      <item>while</item>
+      <item>#if</item>
+      <item>#else</item>
+      <item>#elif</item>
+      <item>#endif</item>
+      <item>#define</item>
+      <item>#undef</item>
+      <item>#warning</item>
+      <item>#error</item>
+      <item>#line</item>
     </list>
     <list name="types">
-      <item> bool</item>
-      <item> byte</item>
-      <item> char</item>
-      <item> const</item>
-      <item> decimal</item>
-      <item> double</item>
-      <item> float</item>
-      <item> int</item>
-      <item> long</item>
-      <item> object</item>
-      <item> uint</item>
-      <item> ushort</item>
-      <item> ulong</item>
-      <item> sbyte</item>
-      <item> short</item>
-      <item> string</item>
-      <item> void</item>
+      <item>bool</item>
+      <item>byte</item>
+      <item>char</item>
+      <item>const</item>
+      <item>decimal</item>
+      <item>double</item>
+      <item>float</item>
+      <item>int</item>
+      <item>long</item>
+      <item>object</item>
+      <item>uint</item>
+      <item>ushort</item>
+      <item>ulong</item>
+      <item>sbyte</item>
+      <item>short</item>
+      <item>string</item>
+      <item>void</item>
     </list>
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">

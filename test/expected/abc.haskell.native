@@ -1,8 +1,10 @@
-[ [ ( KeywordTok , "import " )
+[ [ ( KeywordTok , "import" )
+  , ( NormalTok , " " )
   , ( DataTypeTok , "Data.List" )
   , ( NormalTok , " (delete)" )
   ]
-, [ ( KeywordTok , "import " )
+, [ ( KeywordTok , "import" )
+  , ( NormalTok , " " )
   , ( DataTypeTok , "Data.Char" )
   , ( NormalTok , " (toUpper)" )
   ]

@@ -6,12 +6,12 @@
     <!ENTITY ns_punctuators "!&#37;&space;&amp;()+-/.*&lt;=&gt;?[]{|}~^&separators;">
     <!ENTITY punctuators ":&ns_punctuators;">
     <!-- printf-like format strings conversion specifiers -->
-    <!ENTITY convspec "diouxXeEfFgGaAcsP&#37;">
+    <!ENTITY convspec "diouxXeEfFgGaAcspn&#37;">
 ]>
 <language
     name="ISO C++"
     section="Sources"
-    version="6"
+    version="10"
     kateversion="5.0"
     indenter="cstyle"
     style="C++"
@@ -28,162 +28,166 @@
   -->
   <highlighting>
     <list name="controlflow">
-      <item> break </item>
-      <item> case </item>
-      <item> catch </item>
-      <item> continue </item>
-      <item> default </item>
-      <item> do </item>
-      <item> else </item>
-      <item> for </item>
-      <item> goto </item>
-      <item> if </item>
-      <item> return </item>
-      <item> switch </item>
-      <item> throw </item>
-      <item> try </item>
-      <item> while </item>
+      <item>break</item>
+      <item>case</item>
+      <item>catch</item>
+      <item>continue</item>
+      <item>default</item>
+      <item>do</item>
+      <item>else</item>
+      <item>for</item>
+      <item>goto</item>
+      <item>if</item>
+      <item>return</item>
+      <item>switch</item>
+      <item>throw</item>
+      <item>try</item>
+      <item>while</item>
     </list>
     <list name="keywords">
-      <item> alignof </item>
-      <item> alignas </item>
-      <item> asm </item>
-      <item> auto </item>
-      <item> class </item>
-      <item> constexpr </item>
-      <item> const_cast </item>
-      <item> decltype </item>
-      <item> delete </item>
-      <item> dynamic_cast</item>
-      <item> enum </item>
-      <item> explicit </item>
-      <item> export </item> <!-- Unused but reserved for future use -->
-      <item> false </item>
-      <item> final </item> <!-- According N3272 -->
-      <item> friend </item>
-      <item> inline </item>
-      <item> namespace </item>
-      <item> new </item>
-      <item> noexcept </item>
-      <item> nullptr </item>
-      <item> operator </item>
-      <item> override </item> <!-- According N3272 -->
-      <item> private </item>
-      <item> protected </item>
-      <item> public </item>
-      <item> reinterpret_cast </item>
-      <item> sizeof </item>
-      <item> static_assert </item>
-      <item> static_cast </item>
-      <item> struct </item>
-      <item> template </item>
-      <item> this </item>
-      <item> true </item>
-      <item> typedef </item>
-      <item> typeid </item>
-      <item> typename </item>
-      <item> union </item>
-      <item> using </item>
-      <item> virtual </item>
+      <item>alignof</item>
+      <item>alignas</item>
+      <item>asm</item>
+      <item>auto</item>
+      <item>class</item>
+      <item>constexpr</item>
+      <item>const_cast</item>
+      <item>decltype</item>
+      <item>delete</item>
+      <item>dynamic_cast</item>
+      <item>enum</item>
+      <item>explicit</item>
+      <item>export</item> <!-- Unused but reserved for future use -->
+      <item>false</item>
+      <item>final</item> <!-- According N3272 -->
+      <item>friend</item>
+      <item>inline</item>
+      <item>namespace</item>
+      <item>new</item>
+      <item>noexcept</item>
+      <item>nullptr</item>
+      <item>operator</item>
+      <item>override</item> <!-- According N3272 -->
+      <item>private</item>
+      <item>protected</item>
+      <item>public</item>
+      <item>reinterpret_cast</item>
+      <item>sizeof</item>
+      <item>static_assert</item>
+      <item>static_cast</item>
+      <item>struct</item>
+      <item>template</item>
+      <item>this</item>
+      <item>true</item>
+      <item>typedef</item>
+      <item>typeid</item>
+      <item>typename</item>
+      <item>union</item>
+      <item>using</item>
+      <item>virtual</item>
       <!-- Alternative operators (see 2.12) -->
-      <item> and </item>
-      <item> and_eq </item>
-      <item> bitand </item>
-      <item> bitor </item>
-      <item> compl </item>
-      <item> not </item>
-      <item> not_eq </item>
-      <item> or </item>
-      <item> or_eq </item>
-      <item> xor </item>
-      <item> xor_eq </item>
+      <item>and</item>
+      <item>and_eq</item>
+      <item>bitand</item>
+      <item>bitor</item>
+      <item>compl</item>
+      <item>not</item>
+      <item>not_eq</item>
+      <item>or</item>
+      <item>or_eq</item>
+      <item>xor</item>
+      <item>xor_eq</item>
     </list>
     <!-- This keyword may appear in InternalsNS context. For example in code:
       details::some_class::template some_templated_static();
       and it should be displayed as keyword, not like part of details namespace...
       -->
     <list name="template">
-      <item> template </item>
+      <item>template</item>
     </list>
 
     <!-- 7.6 Attributes -->
     <list name="attributes">
       <!-- C++11 -->
-      <item> noreturn </item>
-      <item> carries_dependency </item>
+      <item>noreturn</item>
+      <item>carries_dependency</item>
       <!-- C++1y -->
-      <item> deprecated </item>
+      <item>deprecated</item>
     </list>
 
     <list name="types">
-      <item> bool </item>
-      <item> char </item>
-      <item> char16_t </item>
-      <item> char32_t </item>
-      <item> double </item>
-      <item> float </item>
-      <item> int </item>
-      <item> long </item>
-      <item> short </item>
-      <item> signed </item>
-      <item> unsigned </item>
-      <item> void </item>
-      <item> int8_t </item>
-      <item> int16_t </item>
-      <item> int32_t </item>
-      <item> int64_t </item>
-      <item> uint8_t </item>
-      <item> uint16_t </item>
-      <item> uint32_t </item>
-      <item> uint64_t </item>
-      <item> int_least8_t </item>
-      <item> int_least16_t </item>
-      <item> int_least32_t </item>
-      <item> int_least64_t </item>
-      <item> uint_least8_t </item>
-      <item> uint_least16_t </item>
-      <item> uint_least32_t </item>
-      <item> uint_least64_t </item>
-      <item> int_fast8_t </item>
-      <item> int_fast16_t </item>
-      <item> int_fast32_t </item>
-      <item> int_fast64_t </item>
-      <item> uint_fast8_t </item>
-      <item> uint_fast16_t </item>
-      <item> uint_fast32_t </item>
-      <item> uint_fast64_t </item>
-      <item> size_t </item>
-      <item> ssize_t </item>
-      <item> wchar_t </item>
-      <item> intptr_t </item>
-      <item> uintptr_t </item>
-      <item> intmax_t </item>
-      <item> uintmax_t </item>
-      <item> ptrdiff_t </item>
-      <item> sig_atomic_t </item>
-      <item> wint_t </item>
+      <item>bool</item>
+      <item>char</item>
+      <item>char16_t</item>
+      <item>char32_t</item>
+      <item>double</item>
+      <item>float</item>
+      <item>int</item>
+      <item>long</item>
+      <item>short</item>
+      <item>signed</item>
+      <item>unsigned</item>
+      <item>void</item>
+      <item>int8_t</item>
+      <item>int16_t</item>
+      <item>int32_t</item>
+      <item>int64_t</item>
+      <item>uint8_t</item>
+      <item>uint16_t</item>
+      <item>uint32_t</item>
+      <item>uint64_t</item>
+      <item>int_least8_t</item>
+      <item>int_least16_t</item>
+      <item>int_least32_t</item>
+      <item>int_least64_t</item>
+      <item>uint_least8_t</item>
+      <item>uint_least16_t</item>
+      <item>uint_least32_t</item>
+      <item>uint_least64_t</item>
+      <item>int_fast8_t</item>
+      <item>int_fast16_t</item>
+      <item>int_fast32_t</item>
+      <item>int_fast64_t</item>
+      <item>uint_fast8_t</item>
+      <item>uint_fast16_t</item>
+      <item>uint_fast32_t</item>
+      <item>uint_fast64_t</item>
+      <item>size_t</item>
+      <item>ssize_t</item>
+      <item>wchar_t</item>
+      <item>intptr_t</item>
+      <item>uintptr_t</item>
+      <item>intmax_t</item>
+      <item>uintmax_t</item>
+      <item>ptrdiff_t</item>
+      <item>sig_atomic_t</item>
+      <item>wint_t</item>
+      <item>va_list</item>
+      <item>FILE</item>
+      <item>fpos_t</item>
+      <item>time_t</item>
     </list>
     <list name="modifiers">
-      <item> const </item>
-      <item> extern </item>
-      <item> mutable </item>
-      <item> register </item>
-      <item> static </item>
-      <item> thread_local </item>
-      <item> volatile </item>
+      <item>const</item>
+      <item>extern</item>
+      <item>mutable</item>
+      <item>register</item>
+      <item>static</item>
+      <item>thread_local</item>
+      <item>volatile</item>
     </list>
     <list name="StdMacros">
-      <item> __FILE__ </item>
-      <item> __LINE__ </item>
-      <item> __DATE__ </item>
-      <item> __TIME__ </item>
-      <item> __STDC__ </item>
-      <item> __STDC_VERSION__ </item>
-      <item> __STDC_HOSTED__ </item>
-      <item> __STDC_ISO_10646__ </item>
-      <item> __STDC_MB_MIGHT_NEQ_WC__ </item>
-      <item> __cplusplus </item>
-      <item> __func__ </item>
+      <item>__FILE__</item>
+      <item>__LINE__</item>
+      <item>__DATE__</item>
+      <item>__TIME__</item>
+      <item>__STDC__</item>
+      <item>__STDC_VERSION__</item>
+      <item>__STDC_HOSTED__</item>
+      <item>__STDC_ISO_10646__</item>
+      <item>__STDC_MB_MIGHT_NEQ_WC__</item>
+      <item>__cplusplus</item>
+      <item>__func__</item>
     </list>
 
     <contexts>
@@ -233,10 +237,10 @@
         <StringDetect attribute="String" context="String" String="u8&quot;" />
         <RegExpr attribute="String" context="RawString" String="(u|u8|U|L)?R&quot;([^\(]{0,16})\(" lookAhead="true" />
         <RegExpr attribute="Error" context="#stay" String="(u|u8|U|L)?R&quot;([^\(]{16,})\(" />
-        <DetectChar attribute="String" context="Char Literal" char="'" />
-        <Detect2Chars attribute="String" context="Char Literal" char="L" char1="'" />
-        <Detect2Chars attribute="String" context="U-Char Literal" char="u" char1="'" />
-        <Detect2Chars attribute="String" context="U-Char Literal" char="U" char1="'" />
+        <DetectChar attribute="Char" context="Char Literal" char="'" />
+        <Detect2Chars attribute="Char" context="Char Literal" char="L" char1="'" />
+        <Detect2Chars attribute="Char" context="U-Char Literal" char="u" char1="'" />
+        <Detect2Chars attribute="Char" context="U-Char Literal" char="U" char1="'" />
         <!-- Match GCC extensions -->
         <IncludeRules context="DetectGccExtensions##GCCExtensions" />
         <!-- Match most used namespaces and styles -->
@@ -282,18 +286,18 @@
         <DetectIdentifier context="#pop" />
       </context>
 
-      <context name="Char Literal" attribute="String" lineEndContext="#pop">
+      <context name="Char Literal" attribute="Char" lineEndContext="#pop">
         <IncludeRules context="Universal Char" />
         <DetectChar attribute="String Char" context="Simple Esc" char="\" />
-        <DetectChar attribute="String" context="#pop" char="'" />
+        <DetectChar attribute="Char" context="#pop" char="'" />
       </context>
 
-      <context name="U-Char Literal" attribute="String" lineEndContext="#pop">
+      <context name="U-Char Literal" attribute="Char" lineEndContext="#pop">
         <IncludeRules context="Universal Char" />
         <DetectChar attribute="String Char" context="Simple Esc" char="\" />
-        <DetectChar attribute="String" context="#pop" char="'" />
+        <DetectChar attribute="Char" context="#pop" char="'" />
         <RegExpr attribute="Error" context="#stay" String="[^']{2,}" />
-        <RegExpr attribute="String" context="#stay" String=".{1}" />
+        <RegExpr attribute="Char" context="#stay" String=".{1}" />
       </context>
 
       <context  name="Simple Esc" attribute="String Char" lineEndContext="#pop">
@@ -318,10 +322,9 @@
         <DetectChar attribute="String" context="UDLStringSuffix" char="&quot;" />
       </context>
 
-      <context name="UDLStringSuffix" attribute="String" lineEndContext="#pop#pop">
-        <RegExpr attribute="String" context="#pop#pop" String="_[_0-9A-Z-a-z]*\b" />
-        <!-- TODO Is there any better way to quit the current context ?? -->
-        <RegExpr context="#pop#pop" String=".*" lookAhead="true" />
+      <context name="UDLStringSuffix" attribute="String" fallthrough="true" fallthroughContext="#pop#pop" lineEndContext="#pop#pop">
+        <!-- Standard UDL is not matched. BUG?? -->
+        <RegExpr attribute="String" context="#pop#pop" String="_[_0-9A-Za-z]*\b" />
       </context>
 
       <context name="Attribute" attribute="Attribute" lineEndContext="#stay">

@@ -107,268 +107,268 @@
     <list name="userkeywords">
     </list>
     <list name="statements">
-      <item> asm </item>
-      <item> body </item>
-      <item> break </item>
-      <item> case </item>
-      <item> catch </item>
-      <item> continue </item>
-      <item> default </item>
-      <item> do </item>
-      <item> else </item>
-      <item> finally </item>
-      <item> for </item>
-      <item> foreach </item>
-      <item> foreach_reverse </item>
-      <item> goto </item>
-      <item> if </item>
-      <item> mixin </item>
-      <item> return </item>
-      <item> switch </item>
-      <item> throw </item>
-      <item> try </item>
-      <item> while </item>
-      <item> with </item>
+      <item>asm</item>
+      <item>body</item>
+      <item>break</item>
+      <item>case</item>
+      <item>catch</item>
+      <item>continue</item>
+      <item>default</item>
+      <item>do</item>
+      <item>else</item>
+      <item>finally</item>
+      <item>for</item>
+      <item>foreach</item>
+      <item>foreach_reverse</item>
+      <item>goto</item>
+      <item>if</item>
+      <item>mixin</item>
+      <item>return</item>
+      <item>switch</item>
+      <item>throw</item>
+      <item>try</item>
+      <item>while</item>
+      <item>with</item>
       
       <!-- these are statements according to the spec, although I might call them attributes -->
-      <item> synchronized </item>
+      <item>synchronized</item>
 
     </list>
 
     <list name="attributes">
       <!-- also storage classes -->
-      <item> abstract </item>
-      <item> align </item>
-      <item> auto </item>
-      <item> const </item>
-      <item> export </item>
-      <item> final </item>
-      <item> immutable </item>
-      <item> inout </item>
-      <item> invariant </item>
-      <item> lazy </item>
-      <item> nothrow </item>
-      <item> override </item>
-      <item> package </item>
-      <item> private </item>
-      <item> protected </item>
-      <item> public </item>
-      <item> pure </item>
-      <item> ref </item>
-      <item> static </item>
+      <item>abstract</item>
+      <item>align</item>
+      <item>auto</item>
+      <item>const</item>
+      <item>export</item>
+      <item>final</item>
+      <item>immutable</item>
+      <item>inout</item>
+      <item>invariant</item>
+      <item>lazy</item>
+      <item>nothrow</item>
+      <item>override</item>
+      <item>package</item>
+      <item>private</item>
+      <item>protected</item>
+      <item>public</item>
+      <item>pure</item>
+      <item>ref</item>
+      <item>static</item>
       
       <!-- these may be statements -->
       <!-- in (more common to use as an expression since in attribute is only ever the default) -->
-      <item> out </item>
-      <item> scope </item>
+      <item>out</item>
+      <item>scope</item>
     </list>
     
     <list name="expressions">
       <!-- primary expressions -->
-      <item> false </item>
-      <item> null </item>
-      <item> super </item>
-      <item> this </item>
-      <item> true </item>
-      <item> typeid </item>
+      <item>false</item>
+      <item>null</item>
+      <item>super</item>
+      <item>this</item>
+      <item>true</item>
+      <item>typeid</item>
       
       <!-- other expressions -->
-      <item> assert </item>
-      <item> cast </item>
-      <item> is </item>
-      <item> new </item>
-      <item> delete </item>
-      <item> in </item> <!-- also an attribute and a statement -->
+      <item>assert</item>
+      <item>cast</item>
+      <item>is</item>
+      <item>new</item>
+      <item>delete</item>
+      <item>in</item> <!-- also an attribute and a statement -->
       
       <!-- sometimes declarators -->
-      <item> delegate </item>
-      <item> function </item>
+      <item>delegate</item>
+      <item>function</item>
     </list>
     
     <list name="modules">
-      <item> module </item>
-      <item> import </item> <!-- also an expression -->
+      <item>module</item>
+      <item>import</item> <!-- also an expression -->
     </list>
 
     <list name="declarators">
-      <item> alias </item>
-      <item> enum </item>
-      <item> typedef </item>
-      <item> class </item>
-      <item> interface </item>
-      <item> struct </item>
-      <item> union </item>
+      <item>alias</item>
+      <item>enum</item>
+      <item>typedef</item>
+      <item>class</item>
+      <item>interface</item>
+      <item>struct</item>
+      <item>union</item>
     </list>
     
     <list name="types">
-      <item> typeof </item>
+      <item>typeof</item>
       
-      <item> void </item>
-      <item> bool </item>
-      <item> byte </item>
-      <item> ubyte </item>
-      <item> short </item>
-      <item> ushort </item>
-      <item> int </item>
-      <item> uint </item>
-      <item> long </item>
-      <item> ulong </item>
-      <item> cent </item>
-      <item> ucent </item>
-      <item> float </item>
-      <item> double </item>
-      <item> real </item>
-      <item> ireal </item>
-      <item> ifloat </item>
-      <item> idouble </item>
-      <item> creal </item>
-      <item> cfloat </item>
-      <item> cdouble </item>
-      <item> char </item>
-      <item> wchar </item>
-      <item> dchar </item>
+      <item>void</item>
+      <item>bool</item>
+      <item>byte</item>
+      <item>ubyte</item>
+      <item>short</item>
+      <item>ushort</item>
+      <item>int</item>
+      <item>uint</item>
+      <item>long</item>
+      <item>ulong</item>
+      <item>cent</item>
+      <item>ucent</item>
+      <item>float</item>
+      <item>double</item>
+      <item>real</item>
+      <item>ireal</item>
+      <item>ifloat</item>
+      <item>idouble</item>
+      <item>creal</item>
+      <item>cfloat</item>
+      <item>cdouble</item>
+      <item>char</item>
+      <item>wchar</item>
+      <item>dchar</item>
     </list>
 
     <list name="templates">
-      <item> macro </item> <!-- what's this? just reserved? -->
-      <item> template </item>
+      <item>macro</item> <!-- what's this? just reserved? -->
+      <item>template</item>
     </list>
     
     <list name="properties">
-      <item> init </item>
-      <item> sizeof </item>
-      <item> alignof </item>
-      <item> mangleof </item>
-      <item> stringof </item>
-      <item> tupleof </item>
-      <item> offsetof </item>
-      <item> max </item>
-      <item> min </item>
-      <item> infinity </item>
-      <item> nan </item>
-      <item> dig </item>
-      <item> epsilon </item>
-      <item> mant_dig </item>
-      <item> max_10_exp </item>
-      <item> max_exp </item>
-      <item> min_10_exp </item>
-      <item> min_exp </item>
-      <item> re </item>
-      <item> im </item>
-      <item> length </item>
-      <item> ptr </item>
-      <item> dup </item>
-      <item> idup </item>
-      <item> reverse </item>
-      <item> sort </item>
-      <item> keys </item>
-      <item> values </item>
-      <item> rehash </item>
+      <item>init</item>
+      <item>sizeof</item>
+      <item>alignof</item>
+      <item>mangleof</item>
+      <item>stringof</item>
+      <item>tupleof</item>
+      <item>offsetof</item>
+      <item>max</item>
+      <item>min</item>
+      <item>infinity</item>
+      <item>nan</item>
+      <item>dig</item>
+      <item>epsilon</item>
+      <item>mant_dig</item>
+      <item>max_10_exp</item>
+      <item>max_exp</item>
+      <item>min_10_exp</item>
+      <item>min_exp</item>
+      <item>re</item>
+      <item>im</item>
+      <item>length</item>
+      <item>ptr</item>
+      <item>dup</item>
+      <item>idup</item>
+      <item>reverse</item>
+      <item>sort</item>
+      <item>keys</item>
+      <item>values</item>
+      <item>rehash</item>
     </list>
     
     <list name="libsymbols">
       <!-- these are only symbols defined in object.d(i) -->
-      <item> size_t </item>
-      <item> ptrdiff_t </item>
-      <item> hash_t </item>
-      <item> Error </item>
-      <item> Exception </item>
-      <item> Object </item>
-      <item> TypeInfo </item>
-      <item> ClassInfo </item>
-      <item> ModuleInfo </item>
-      <item> Interface </item>
-      <item> OffsetTypeInfo </item>
-      <item> TypeInfo_Typedef </item>
-      <item> TypeInfo_Enum </item>
-      <item> TypeInfo_Pointer </item>
-      <item> TypeInfo_Array </item>
-      <item> TypeInfo_StaticArray </item>
-      <item> TypeInfo_AssociativeArray </item>
-      <item> TypeInfo_Function </item>
-      <item> TypeInfo_Delegate </item>
-      <item> TypeInfo_Class </item>
-      <item> TypeInfo_Interface </item>
-      <item> TypeInfo_Struct </item>
-      <item> TypeInfo_Tuple </item>
+      <item>size_t</item>
+      <item>ptrdiff_t</item>
+      <item>hash_t</item>
+      <item>Error</item>
+      <item>Exception</item>
+      <item>Object</item>
+      <item>TypeInfo</item>
+      <item>ClassInfo</item>
+      <item>ModuleInfo</item>
+      <item>Interface</item>
+      <item>OffsetTypeInfo</item>
+      <item>TypeInfo_Typedef</item>
+      <item>TypeInfo_Enum</item>
+      <item>TypeInfo_Pointer</item>
+      <item>TypeInfo_Array</item>
+      <item>TypeInfo_StaticArray</item>
+      <item>TypeInfo_AssociativeArray</item>
+      <item>TypeInfo_Function</item>
+      <item>TypeInfo_Delegate</item>
+      <item>TypeInfo_Class</item>
+      <item>TypeInfo_Interface</item>
+      <item>TypeInfo_Struct</item>
+      <item>TypeInfo_Tuple</item>
       
       <!-- phobos only as of tango 0.99.3 -->
-      <item> string </item>
-      <item> wstring </item>
-      <item> dstring </item>
-      <item> bit </item>
-      <item> TypeInfo_Const </item>
-      <item> TypeInfo_Invariant </item>
+      <item>string</item>
+      <item>wstring</item>
+      <item>dstring</item>
+      <item>bit</item>
+      <item>TypeInfo_Const</item>
+      <item>TypeInfo_Invariant</item>
     </list>
 
     <list name="linkage">
-      <item> extern </item>
+      <item>extern</item>
     </list>
     <list name="ltypes">
-      <item> C </item>
-      <!-- <item> C++ </item> --><!-- is handled specially in Linkage rule -->
-      <item> D </item>
-      <item> Windows </item>
-      <item> Pascal </item>
-      <item> System </item>
+      <item>C</item>
+      <!-- <item>C++</item> --><!-- is handled specially in Linkage rule -->
+      <item>D</item>
+      <item>Windows</item>
+      <item>Pascal</item>
+      <item>System</item>
     </list>
 
     <list name="ptypes">
-      <item> msg </item>
-      <item> lib </item>
+      <item>msg</item>
+      <item>lib</item>
     </list>
     
     <list name="scope_keywords">
-      <item> exit </item>
-      <item> success </item>
-      <item> failure </item>
+      <item>exit</item>
+      <item>success</item>
+      <item>failure</item>
     </list>
 
     <list name="vtypes">
-      <item> DigitalMars </item>
-      <item> X86 </item>
-      <item> X86_64 </item>
-      <item> Windows </item>
-      <item> Win32 </item>
-      <item> Win64 </item>
-      <item> linux </item>
-      <item> LittleEndian </item>
-      <item> BigEndian </item>
-      <item> D_Coverage </item>
-      <item> D_InlineAsm_X86 </item>
-      <item> unittest </item>
-      <item> D_Version2 </item>
-      <item> none </item>
-      <item> all </item>
+      <item>DigitalMars</item>
+      <item>X86</item>
+      <item>X86_64</item>
+      <item>Windows</item>
+      <item>Win32</item>
+      <item>Win64</item>
+      <item>linux</item>
+      <item>LittleEndian</item>
+      <item>BigEndian</item>
+      <item>D_Coverage</item>
+      <item>D_InlineAsm_X86</item>
+      <item>unittest</item>
+      <item>D_Version2</item>
+      <item>none</item>
+      <item>all</item>
     </list>
 
     <list name="specialtokens">
-      <item> __FILE__ </item>
-      <item> __LINE__ </item>
-      <item> __DATE__ </item>
-      <item> __TIME__ </item>
-      <item> __TIMESTAMP__ </item>
-      <item> __VENDOR__ </item>
-      <item> __VERSION__ </item>
-      <item> __EOF__ </item>
+      <item>__FILE__</item>
+      <item>__LINE__</item>
+      <item>__DATE__</item>
+      <item>__TIME__</item>
+      <item>__TIMESTAMP__</item>
+      <item>__VENDOR__</item>
+      <item>__VERSION__</item>
+      <item>__EOF__</item>
     </list>
     
     <list name="tests">
-      <item> debug </item>
-      <item> unittest </item>
+      <item>debug</item>
+      <item>unittest</item>
     </list>
     
     <list name="pragma">
-        <item> pragma </item>
+        <item>pragma</item>
     </list>
 
     <list name="version">
-        <item> version </item>
+        <item>version</item>
     </list>
     
     <list name="deprecated">
-        <item> deprecated </item>
-        <item> volatile </item> <!-- has been deprecated -->
+        <item>deprecated</item>
+        <item>volatile</item> <!-- has been deprecated -->
     </list>
     
     <contexts>

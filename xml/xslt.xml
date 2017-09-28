@@ -55,195 +55,195 @@
 <language version="2" kateversion="2.4" name="xslt" section="Markup" extensions="*.xsl;*.xslt" license="LGPL" author="Peter Lammich (views@gmx.de)">
   <highlighting>
     <list name="keytags">
-      <item> xsl:value-of </item>
-      <item> xsl:output </item>
-      <item> xsl:decimal-format </item>
-      <item> xsl:apply-templates </item>
-      <item> xsl:param </item>
-      <item> xsl:transform </item>
-      <item> xsl:namespace-alias </item>
-      <item> xsl:comment </item>
-      <item> xsl:element </item>
-      <item> xsl:attribute </item>
-      <item> xsl:apply-imports </item>
-      <item> xsl:text </item>
-      <item> xsl:when </item>
-      <item> xsl:template </item>
-      <item> xsl:processing-instruction </item>
-      <item> xsl:include </item>
-      <item> xsl:copy-of </item>
-      <item> xsl:copy </item>
-      <item> xsl:with-param </item>
-      <item> xsl:stylesheet </item>
-      <item> xsl:for-each </item>
-      <item> xsl:choose </item>
-      <item> xsl:sort </item>
-      <item> xsl:otherwise </item>
-      <item> xsl:key </item>
-      <item> xsl:variable </item>
-      <item> xsl:number </item>
-      <item> xsl:message </item>
-      <item> xsl:fallback </item>
-      <item> xsl:strip-space </item>
-      <item> xsl:import </item>
-      <item> xsl:preserve-space </item>
-      <item> xsl:if </item>
-      <item> xsl:call-template </item>
-      <item> xsl:attribute-set </item>
+      <item>xsl:value-of</item>
+      <item>xsl:output</item>
+      <item>xsl:decimal-format</item>
+      <item>xsl:apply-templates</item>
+      <item>xsl:param</item>
+      <item>xsl:transform</item>
+      <item>xsl:namespace-alias</item>
+      <item>xsl:comment</item>
+      <item>xsl:element</item>
+      <item>xsl:attribute</item>
+      <item>xsl:apply-imports</item>
+      <item>xsl:text</item>
+      <item>xsl:when</item>
+      <item>xsl:template</item>
+      <item>xsl:processing-instruction</item>
+      <item>xsl:include</item>
+      <item>xsl:copy-of</item>
+      <item>xsl:copy</item>
+      <item>xsl:with-param</item>
+      <item>xsl:stylesheet</item>
+      <item>xsl:for-each</item>
+      <item>xsl:choose</item>
+      <item>xsl:sort</item>
+      <item>xsl:otherwise</item>
+      <item>xsl:key</item>
+      <item>xsl:variable</item>
+      <item>xsl:number</item>
+      <item>xsl:message</item>
+      <item>xsl:fallback</item>
+      <item>xsl:strip-space</item>
+      <item>xsl:import</item>
+      <item>xsl:preserve-space</item>
+      <item>xsl:if</item>
+      <item>xsl:call-template</item>
+      <item>xsl:attribute-set</item>
     </list>
   
     <list name="keytags_2.0">
-      <item> xsl:perform-sort </item>
-      <item> xsl:import-schema </item>
-      <item> xsl:for-each-group </item>
-      <item> xsl:sequence </item>
-      <item> xsl:non-matching-substring </item>
-      <item> xsl:namespace </item>
-      <item> xsl:next-match </item>
-      <item> xsl:function </item>
-      <item> xsl:analyze-string </item>
-      <item> xsl:output-character </item>
-      <item> xsl:matching-substring </item>
-      <item> xsl:result-document </item>
-      <item> xsl:character-map </item>
-      <item> xsl:document </item>
+      <item>xsl:perform-sort</item>
+      <item>xsl:import-schema</item>
+      <item>xsl:for-each-group</item>
+      <item>xsl:sequence</item>
+      <item>xsl:non-matching-substring</item>
+      <item>xsl:namespace</item>
+      <item>xsl:next-match</item>
+      <item>xsl:function</item>
+      <item>xsl:analyze-string</item>
+      <item>xsl:output-character</item>
+      <item>xsl:matching-substring</item>
+      <item>xsl:result-document</item>
+      <item>xsl:character-map</item>
+      <item>xsl:document</item>
     </list>
     
     <list name="functions">    
-      <item> format-number </item>
-      <item> position </item>
-      <item> lang </item>
-      <item> substring-before </item>
-      <item> substring </item>
-      <item> normalize-space </item>
-      <item> round </item>
-      <item> translate </item>
-      <item> starts-with </item>
-      <item> concat </item>
-      <item> local-name </item>
-      <item> key </item>
-      <item> count </item>
-      <item> document </item>
-      <item> system-property </item>
-      <item> current </item>
-      <item> boolean </item>
-      <item> number </item>
-      <item> contains </item>
-      <item> name </item>
-      <item> last </item>
-      <item> unparsed-entity-uri </item>
-      <item> sum </item>
-      <item> generate-id </item>
-      <item> function-available </item>
-      <item> element-available </item>
-      <item> false </item>
-      <item> substring-after </item>
-      <item> not </item>
-      <item> string-length </item>
-      <item> id </item>
-      <item> floor </item>
-      <item> ceiling </item>
-      <item> namespace-uri </item>
-      <item> true </item>
-      <item> string </item>
-      <item> text </item>
+      <item>format-number</item>
+      <item>position</item>
+      <item>lang</item>
+      <item>substring-before</item>
+      <item>substring</item>
+      <item>normalize-space</item>
+      <item>round</item>
+      <item>translate</item>
+      <item>starts-with</item>
+      <item>concat</item>
+      <item>local-name</item>
+      <item>key</item>
+      <item>count</item>
+      <item>document</item>
+      <item>system-property</item>
+      <item>current</item>
+      <item>boolean</item>
+      <item>number</item>
+      <item>contains</item>
+      <item>name</item>
+      <item>last</item>
+      <item>unparsed-entity-uri</item>
+      <item>sum</item>
+      <item>generate-id</item>
+      <item>function-available</item>
+      <item>element-available</item>
+      <item>false</item>
+      <item>substring-after</item>
+      <item>not</item>
+      <item>string-length</item>
+      <item>id</item>
+      <item>floor</item>
+      <item>ceiling</item>
+      <item>namespace-uri</item>
+      <item>true</item>
+      <item>string</item>
+      <item>text</item>
     </list>
 
     <list name="functions_2.0">
-      <item> zero-or-one </item>
-      <item> replace </item>
-      <item> namespace-uri-for-prefix </item>
-      <item> current-grouping-key </item>
-      <item> seconds-from-duration </item>
-      <item> resolve-uri </item>
-      <item> node-kind </item>
-      <item> minutes-from-dateTime </item>
-      <item> implicit-timezone </item>
-      <item> exactly-one </item>
-      <item> current-time </item>
-      <item> current-dateTime </item>
-      <item> unordered </item>
-      <item> subtract-dates-yielding-dayTimeDuration </item>
-      <item> string-join </item>
-      <item> static-base-uri </item>
-      <item> months-from-duration </item>
-      <item> input </item>
-      <item> exists </item>
-      <item> default-collation </item>
-      <item> dateTime </item>
-      <item> current-group </item>
-      <item> current-date </item>
-      <item> collection </item>
-      <item> timezone-from-time </item>
-      <item> matches </item>
-      <item> local-name-from-QName </item>
-      <item> day-from-date </item>
-      <item> timezone-from-date </item>
-      <item> round-half-to-even </item>
-      <item> month-from-dateTime </item>
-      <item> month-from-date </item>
-      <item> hours-from-duration </item>
-      <item> escape-uri </item>
-      <item> distinct-values </item>
-      <item> avg </item>
-      <item> years-from-duration </item>
-      <item> unparsed-text </item>
-      <item> unparsed-entity-public-id </item>
-      <item> subtract-dateTimes-yielding-dayTimeDuration </item>
-      <item> subtract-dates-yielding-yearMonthDuration </item>
-      <item> string-to-codepoints </item>
-      <item> sequence-node-identical </item>
-      <item> hours-from-time </item>
-      <item> hours-from-dateTime </item>
-      <item> format-time </item>
-      <item> codepoints-to-string </item>
-      <item> trace </item>
-      <item> tokenize </item>
-      <item> subtract-dateTimes-yielding-yearMonthDuration </item>
-      <item> subsequence </item>
-      <item> seconds-from-dateTime </item>
-      <item> regex-group </item>
-      <item> one-or-more </item>
-      <item> node-name </item>
-      <item> namespace-uri-from-QName </item>
-      <item> min </item>
-      <item> idref </item>
-      <item> format-dateTime </item>
-      <item> format-date </item>
-      <item> days-from-duration </item>
-      <item> compare </item>
-      <item> base-uri </item>
-      <item> seconds-from-time </item>
-      <item> in-scope-prefixes </item>
-      <item> expanded-QName </item>
-      <item> adjust-date-to-timezone </item>
-      <item> year-from-date </item>
-      <item> resolve-QName </item>
-      <item> remove </item>
-      <item> QName </item>
-      <item> minutes-from-time </item>
-      <item> max </item>
-      <item> lower-case </item>
-      <item> index-of </item>
-      <item> doc </item>
-      <item> deep-equal </item>
-      <item> data </item>
-      <item> minutes-from-duration </item>
-      <item> adjust-dateTime-to-timezone </item>
-      <item> abs </item>
-      <item> timezone-from-dateTime </item>
-      <item> reverse </item>
-      <item> error </item>
-      <item> ends-with </item>
-      <item> day-from-dateTime </item>
-      <item> year-from-dateTime </item>
-      <item> upper-case </item>
-      <item> root </item>
-      <item> normalize-unicode </item>
-      <item> empty </item>
-      <item> insert-before </item>
-      <item> document-uri </item>
-      <item> adjust-time-to-timezone </item>
+      <item>zero-or-one</item>
+      <item>replace</item>
+      <item>namespace-uri-for-prefix</item>
+      <item>current-grouping-key</item>
+      <item>seconds-from-duration</item>
+      <item>resolve-uri</item>
+      <item>node-kind</item>
+      <item>minutes-from-dateTime</item>
+      <item>implicit-timezone</item>
+      <item>exactly-one</item>
+      <item>current-time</item>
+      <item>current-dateTime</item>
+      <item>unordered</item>
+      <item>subtract-dates-yielding-dayTimeDuration</item>
+      <item>string-join</item>
+      <item>static-base-uri</item>
+      <item>months-from-duration</item>
+      <item>input</item>
+      <item>exists</item>
+      <item>default-collation</item>
+      <item>dateTime</item>
+      <item>current-group</item>
+      <item>current-date</item>
+      <item>collection</item>
+      <item>timezone-from-time</item>
+      <item>matches</item>
+      <item>local-name-from-QName</item>
+      <item>day-from-date</item>
+      <item>timezone-from-date</item>
+      <item>round-half-to-even</item>
+      <item>month-from-dateTime</item>
+      <item>month-from-date</item>
+      <item>hours-from-duration</item>
+      <item>escape-uri</item>
+      <item>distinct-values</item>
+      <item>avg</item>
+      <item>years-from-duration</item>
+      <item>unparsed-text</item>
+      <item>unparsed-entity-public-id</item>
+      <item>subtract-dateTimes-yielding-dayTimeDuration</item>
+      <item>subtract-dates-yielding-yearMonthDuration</item>
+      <item>string-to-codepoints</item>
+      <item>sequence-node-identical</item>
+      <item>hours-from-time</item>
+      <item>hours-from-dateTime</item>
+      <item>format-time</item>
+      <item>codepoints-to-string</item>
+      <item>trace</item>
+      <item>tokenize</item>
+      <item>subtract-dateTimes-yielding-yearMonthDuration</item>
+      <item>subsequence</item>
+      <item>seconds-from-dateTime</item>
+      <item>regex-group</item>
+      <item>one-or-more</item>
+      <item>node-name</item>
+      <item>namespace-uri-from-QName</item>
+      <item>min</item>
+      <item>idref</item>
+      <item>format-dateTime</item>
+      <item>format-date</item>
+      <item>days-from-duration</item>
+      <item>compare</item>
+      <item>base-uri</item>
+      <item>seconds-from-time</item>
+      <item>in-scope-prefixes</item>
+      <item>expanded-QName</item>
+      <item>adjust-date-to-timezone</item>
+      <item>year-from-date</item>
+      <item>resolve-QName</item>
+      <item>remove</item>
+      <item>QName</item>
+      <item>minutes-from-time</item>
+      <item>max</item>
+      <item>lower-case</item>
+      <item>index-of</item>
+      <item>doc</item>
+      <item>deep-equal</item>
+      <item>data</item>
+      <item>minutes-from-duration</item>
+      <item>adjust-dateTime-to-timezone</item>
+      <item>abs</item>
+      <item>timezone-from-dateTime</item>
+      <item>reverse</item>
+      <item>error</item>
+      <item>ends-with</item>
+      <item>day-from-dateTime</item>
+      <item>year-from-dateTime</item>
+      <item>upper-case</item>
+      <item>root</item>
+      <item>normalize-unicode</item>
+      <item>empty</item>
+      <item>insert-before</item>
+      <item>document-uri</item>
+      <item>adjust-time-to-timezone</item>
     </list>
     
     <contexts>

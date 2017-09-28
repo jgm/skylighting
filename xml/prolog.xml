@@ -304,20 +304,20 @@ TODO sorted by priority
     <highlighting>
 	<!-- aka "guru meditation trigger" -->
 	<list name="error term ISO">
-	    <item> error </item>
+	    <item>error</item>
 	</list>
 	<list name="guru meditation terms ISO">
-	    <item> instantiation_error </item>
-	    <item> uninstantiation_error </item>
-	    <item> type_error </item>
-	    <item> domain_error </item>
-	    <item> existence_error </item>
-	    <item> permission_error </item>
-	    <item> representation_error </item>
-	    <item> evaluation_error </item>
-	    <item> resource_error </item>
-	    <item> syntax_error </item>
-	    <item> system_error </item>
+	    <item>instantiation_error</item>
+	    <item>uninstantiation_error</item>
+	    <item>type_error</item>
+	    <item>domain_error</item>
+	    <item>existence_error</item>
+	    <item>permission_error</item>
+	    <item>representation_error</item>
+	    <item>evaluation_error</item>
+	    <item>resource_error</item>
+	    <item>syntax_error</item>
+	    <item>system_error</item>
 	</list>
 
 	<!-- These are in fact bogus, DO NOT USE them and bug the ISO standard
@@ -326,245 +326,245 @@ TODO sorted by priority
 	Bomb them w/ e-mails! It's not the purpose of a standard to fixate
 	errors till eternity. -->
 	<list name="bogus ISO">
-	    <item> char_conversion </item>
-	    <item> current_char_conversion </item>
-	    <item> include </item>
-	    <item> ensure_loaded </item>
+	    <item>char_conversion</item>
+	    <item>current_char_conversion</item>
+	    <item>include</item>
+	    <item>ensure_loaded</item>
 	    <!-- Use atan2 instead -->
-	    <item> atan </item>
+	    <item>atan</item>
 	    <!-- Unspecified integer representation/format -->
-	    <item> xor </item>
+	    <item>xor</item>
 	</list>
 	<list name="directives non-ISO">
 	    <!-- FIXME is this a top_level goal only? (consult :- include) -->
-	    <item> consult </item>
-	    <item> built_in </item>
-<!--GNU            <item> foreign </item> -->
-<!--GNU            <item> ensure_linked </item> -->
-<!--GNU            <item> built_in_fd </item> -->
-<!--             <item> if </item> -->
-<!-- 	    <item> else </item> -->
-<!-- 	    <item> endif </item> -->
-<!--             <item> elif </item> -->
+	    <item>consult</item>
+	    <item>built_in</item>
+<!--GNU            <item>foreign</item> -->
+<!--GNU            <item>ensure_linked</item> -->
+<!--GNU            <item>built_in_fd</item> -->
+<!--             <item>if</item> -->
+<!-- 	    <item>else</item> -->
+<!-- 	    <item>endif</item> -->
+<!--             <item>elif</item> -->
         </list>
 
         <!-- including directive "initialization" -->
         <list name="logic+control ISO">
-	    <item> initialization </item>
-<!-- 	    <item> ! </item> -->
-	    <item> fail </item>
-	    <item> repeat </item>
-	    <item> call </item>
-            <item> catch </item>
-	    <item> throw </item>
-	    <item> true </item>
-	    <item> false </item>
-	    <item> once </item>
+	    <item>initialization</item>
+<!-- 	    <item>!</item> -->
+	    <item>fail</item>
+	    <item>repeat</item>
+	    <item>call</item>
+            <item>catch</item>
+	    <item>throw</item>
+	    <item>true</item>
+	    <item>false</item>
+	    <item>once</item>
 	</list>
 
 	<!-- including directive "dynamic" -->
         <list name="dyn clause mgmt ISO">
-	    <item> dynamic </item>
-	    <item> asserta </item>
-            <item> assertz </item>
-            <item> retractall </item>
-	    <item> retract </item>
-	    <item> abolish </item>
-	    <item> clause </item>
-<!-- 	    <item> numbervars </item> -->
-<!-- 	    <item> current_predicate </item> -->
+	    <item>dynamic</item>
+	    <item>asserta</item>
+            <item>assertz</item>
+            <item>retractall</item>
+	    <item>retract</item>
+	    <item>abolish</item>
+	    <item>clause</item>
+<!-- 	    <item>numbervars</item> -->
+<!-- 	    <item>current_predicate</item> -->
 	</list>
 	<list name="listing non-ISO">
 	    <!-- FIXME is this a top_level goal? -->
-	    <item> listing </item>
-<!-- standard/compatible	    <item> public </item> -->
+	    <item>listing</item>
+<!-- standard/compatible	    <item>public</item> -->
 	</list>
 	<list name="terms ISO">
 	    <!-- keep tokens with same prefix sorted by length? -->
-	    <item> atom_concat </item>
-	    <item> atom_length </item>
-	    <item> atom_chars </item>
-	    <item> atom_codes </item>
-	    <item> arg </item>
-	    <item> subsumes_term </item>
-	    <item> acyclic_term </item>
-	    <item> char_code </item>
-	    <item> compare </item>
-	    <item> copy_term </item>
-	    <item> functor </item>
-	    <item> number_chars </item>
-	    <item> number_codes </item>
-<!--FIXME check if GNU or ISO 	    <item> sub_atom </item> -->
-	    <item> term_variables </item>
-	    <item> unify_with_occurs_check </item>
+	    <item>atom_concat</item>
+	    <item>atom_length</item>
+	    <item>atom_chars</item>
+	    <item>atom_codes</item>
+	    <item>arg</item>
+	    <item>subsumes_term</item>
+	    <item>acyclic_term</item>
+	    <item>char_code</item>
+	    <item>compare</item>
+	    <item>copy_term</item>
+	    <item>functor</item>
+	    <item>number_chars</item>
+	    <item>number_codes</item>
+<!--FIXME check if GNU or ISO 	    <item>sub_atom</item> -->
+	    <item>term_variables</item>
+	    <item>unify_with_occurs_check</item>
 	</list>
 	<list name="terms non-ISO">
 	    <!-- keep tokens with same prefix sorted by length? -->
-	    <item> number_atom </item>
-	    <item> expand_term </item>
-	    <item> term_expansion </item>
+	    <item>number_atom</item>
+	    <item>expand_term</item>
+	    <item>term_expansion</item>
 
 	    <!--FIXME These go to streams non-ISO: -->
-	    <item> display </item>
-	    <item> print </item>
-	    <item> format </item>
-	    <item> portray_clause </item>
-	    <item> portray </item>
-	    <item> term_expansion </item>
+	    <item>display</item>
+	    <item>print</item>
+	    <item>format</item>
+	    <item>portray_clause</item>
+	    <item>portray</item>
+	    <item>term_expansion</item>
 	</list>
 	<list name="DCG non-ISO">
-	    <item> phrase </item>
+	    <item>phrase</item>
 	</list>
 	<list name="lists ISO">
-	    <item> sort </item>
-	    <item> keysort </item>
+	    <item>sort</item>
+	    <item>keysort</item>
 	</list>
 	<list name="lists non-ISO">
-	    <item> append </item>
-	    <item> delete </item>
-	    <item> length </item>
-	    <item> last </item>
-	    <item> map_list </item>
-	    <item> min_list </item>
-	    <item> maplist </item>
-	    <item> msort </item>
-	    <item> memberchk </item>
-	    <item> member </item>
-	    <item> nth </item>
-	    <item> permutation </item>
-	    <item> reverse </item>
-	    <item> select </item>
-	    <item> prefix </item>
-	    <item> suffix </item>
-	    <item> sublist </item>
-	    <item> sum_list </item>
+	    <item>append</item>
+	    <item>delete</item>
+	    <item>length</item>
+	    <item>last</item>
+	    <item>map_list</item>
+	    <item>min_list</item>
+	    <item>maplist</item>
+	    <item>msort</item>
+	    <item>memberchk</item>
+	    <item>member</item>
+	    <item>nth</item>
+	    <item>permutation</item>
+	    <item>reverse</item>
+	    <item>select</item>
+	    <item>prefix</item>
+	    <item>suffix</item>
+	    <item>sublist</item>
+	    <item>sum_list</item>
 	</list>
 	<list name="streams ISO">
-	    <item> open </item>
-<!--GNU	    <item> current_stream </item>-->
-	    <item> set_stream_position </item>
-	    <item> get_char </item>
-	    <item> get_code </item>
-	    <item> peek_char </item>
-	    <item> peek_code </item>
-	    <item> get_byte </item>
-	    <item> peek_byte </item>
+	    <item>open</item>
+<!--GNU	    <item>current_stream</item>-->
+	    <item>set_stream_position</item>
+	    <item>get_char</item>
+	    <item>get_code</item>
+	    <item>peek_char</item>
+	    <item>peek_code</item>
+	    <item>get_byte</item>
+	    <item>peek_byte</item>
 
-	    <item> put_char </item>
-	    <item> put_code </item>
-	    <item> put_byte </item>
-	    <item> nl </item>
+	    <item>put_char</item>
+	    <item>put_code</item>
+	    <item>put_byte</item>
+	    <item>nl</item>
 
-	    <item> read_term </item>
-	    <item> read </item>
-	    <item> write_canonical </item>
-	    <item> writeq </item>
-	    <item> write </item>
+	    <item>read_term</item>
+	    <item>read</item>
+	    <item>write_canonical</item>
+	    <item>writeq</item>
+	    <item>write</item>
 	</list>
 	<list name="streams deprecated">
-	    <item> append </item>
-	    <item> seeing </item>
-	    <item> seen </item>
-	    <item> see </item>
-	    <item> telling </item>
-	    <item> tell </item>
-	    <item> told </item>
-	    <item> get0 </item>
-	    <item> get </item>
-	    <item> skip </item>
-	    <item> put </item>
-	    <item> tab </item>
+	    <item>append</item>
+	    <item>seeing</item>
+	    <item>seen</item>
+	    <item>see</item>
+	    <item>telling</item>
+	    <item>tell</item>
+	    <item>told</item>
+	    <item>get0</item>
+	    <item>get</item>
+	    <item>skip</item>
+	    <item>put</item>
+	    <item>tab</item>
 	</list>
 	<list name="arith eval ISO">
-	    <item> is </item>
+	    <item>is</item>
 	</list>
 	<list name="arith ops int ISO">
-	    <item> rem </item>
-	    <item> mod </item>
-	    <item> div </item>
+	    <item>rem</item>
+	    <item>mod</item>
+	    <item>div</item>
 	</list>
         <list name="arith expr mixed ISO">
-<!--GNU	arith IF expr    <item> inc </item> -->
-<!--GNU	arith IF expr    <item> dec </item> -->
-	    <item> abs </item>
-	    <item> sign </item>
-	    <item> min </item>
-	    <item> max </item>
+<!--GNU	arith IF expr    <item>inc</item> -->
+<!--GNU	arith IF expr    <item>dec</item> -->
+	    <item>abs</item>
+	    <item>sign</item>
+	    <item>min</item>
+	    <item>max</item>
         </list>
         <list name="arith expr int ISO">
-<!--GNU	arith IF expr    <item> inc </item> -->
-<!--GNU	arith IF expr    <item> dec </item> -->
-	    <item> ceiling </item>
-	    <item> floor </item>
-	    <item> round </item>
-            <item> truncate </item>
-<!-- ISO bogus	    <item> xor </item> -->
+<!--GNU	arith IF expr    <item>inc</item> -->
+<!--GNU	arith IF expr    <item>dec</item> -->
+	    <item>ceiling</item>
+	    <item>floor</item>
+	    <item>round</item>
+            <item>truncate</item>
+<!-- ISO bogus	    <item>xor</item> -->
         </list>
         <list name="arith expr float ISO">
-	    <item> pi </item>
-<!--GNU	(see pi)    <item> e </item> -->
-<!--GNU	(see pi)    <item> epsilon </item> -->
-	    <item> sqrt </item>
-	    <item> tan </item>
-	    <item> cos </item>
-	    <item> sin </item>
-	    <item> atan2 </item>
-	    <item> acos </item>
-	    <item> asin </item>
-	    <item> exp </item>
-            <item> log </item>
-	    <item> float </item>
-	    <item> float_fractional_part </item>
-            <item> float_integer_part </item>
+	    <item>pi</item>
+<!--GNU	(see pi)    <item>e</item> -->
+<!--GNU	(see pi)    <item>epsilon</item> -->
+	    <item>sqrt</item>
+	    <item>tan</item>
+	    <item>cos</item>
+	    <item>sin</item>
+	    <item>atan2</item>
+	    <item>acos</item>
+	    <item>asin</item>
+	    <item>exp</item>
+            <item>log</item>
+	    <item>float</item>
+	    <item>float_fractional_part</item>
+            <item>float_integer_part</item>
         </list>
 
 	<!-- including directives "op/multifile/discontigous" -->
 	<list name="prolog state ISO">
-	    <item> multifile </item>
-	    <item> discontigous </item>
-	    <item> op </item>
-	    <item> set_prolog_flag </item>
+	    <item>multifile</item>
+	    <item>discontigous</item>
+	    <item>op</item>
+	    <item>set_prolog_flag</item>
 	</list>
 	<list name="types ISO">
-	    <item> var </item>
-	    <item> nonvar </item>
-	    <item> atom </item>
-	    <item> integer </item>
-	    <item> float </item>
-	    <item> number </item>
-	    <item> atomic </item>
-	    <item> compound </item>
-	    <item> callable </item>
-	    <item> ground </item>
+	    <item>var</item>
+	    <item>nonvar</item>
+	    <item>atom</item>
+	    <item>integer</item>
+	    <item>float</item>
+	    <item>number</item>
+	    <item>atomic</item>
+	    <item>compound</item>
+	    <item>callable</item>
+	    <item>ground</item>
 	</list>
 	<!-- FIXME rename to "types non-ISO"? -->
 	<list name="list+is_list non-ISO">
-	    <item> list </item>
-	    <item> is_list </item>
-	<!--GNU            <item> partial_list </item> -->
-	    <!--GNU            <item> list_or_partial_list </item> -->
+	    <item>list</item>
+	    <item>is_list</item>
+	<!--GNU            <item>partial_list</item> -->
+	    <!--GNU            <item>list_or_partial_list</item> -->
 	</list>
 	<list name="built-ins ISO">
-	    <item> current_op </item>
-	    <item> current_prolog_flag </item>
-	    <item> current_input </item>
-	    <item> current_output </item>
+	    <item>current_op</item>
+	    <item>current_prolog_flag</item>
+	    <item>current_input</item>
+	    <item>current_output</item>
 
 	    <!-- These act on streams, but the permission_error is only thrown
 	    if the programmer tries to set_input(S) when S is alread an output
 	    stream and vice versa; so: not affected by 'outside world' -->
-	    <item> set_input </item>
-	    <item> set_output </item>
+	    <item>set_input</item>
+	    <item>set_output</item>
 
 	    <!-- may throw a system_error in GNU -->
-	    <item> close </item>
+	    <item>close</item>
 
-	    <item> flush_output </item>
+	    <item>flush_output</item>
 
 	    <!-- may throw permission_error in GNU if S is an output stream -->
-	    <item> at_end_of_stream </item>
+	    <item>at_end_of_stream</item>
 
-	    <item> stream_property </item>
+	    <item>stream_property</item>
 	</list>
 
 	<!-- !FOLD the <context> rules & comments for an overview, then it's no magic. -->

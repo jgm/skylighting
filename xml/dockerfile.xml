@@ -4,24 +4,24 @@
 <language name="Dockerfile" section="Other" version="5" kateversion="3.4" extensions="Dockerfile" author="James Turnbull (james@lovedthanlost.net)" license="LGPLv2+">
   <highlighting>
     <list name="keywords">
-      <item> ADD </item>
-      <item> ARG </item>
-      <item> CMD </item>
-      <item> COPY </item>
-      <item> ENTRYPOINT </item>
-      <item> ENV </item>
-      <item> EXPOSE </item>
-      <item> FROM </item>
-      <item> HEALTHCHECK </item>
-      <item> LABEL </item>
-      <item> MAINTAINER </item>
-      <item> ONBUILD </item>
-      <item> RUN </item>
-      <item> SHELL </item>
-      <item> STOPSIGNAL </item>
-      <item> USER </item>
-      <item> VOLUME </item>
-      <item> WORKDIR </item>
+      <item>ADD</item>
+      <item>ARG</item>
+      <item>CMD</item>
+      <item>COPY</item>
+      <item>ENTRYPOINT</item>
+      <item>ENV</item>
+      <item>EXPOSE</item>
+      <item>FROM</item>
+      <item>HEALTHCHECK</item>
+      <item>LABEL</item>
+      <item>MAINTAINER</item>
+      <item>ONBUILD</item>
+      <item>RUN</item>
+      <item>SHELL</item>
+      <item>STOPSIGNAL</item>
+      <item>USER</item>
+      <item>VOLUME</item>
+      <item>WORKDIR</item>
     </list>
 
     <contexts>

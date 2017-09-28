@@ -32,255 +32,255 @@
     <!-- note: all tags may begin with a \ or @ char
          so if you add/change tags you have to do it twice -->
     <list name="TagOnly">
-      <item> \arg </item>
-      <item> \attention </item>
-      <item> \author </item>
-      <item> \callgraph </item>
-      <item> \code </item>
-      <item> \dot </item>
-      <item> \else </item>
-      <item> \endcode </item>
-      <item> \endcond </item>
-      <item> \enddot </item>
-      <item> \endhtmlonly </item>
-      <item> \endif </item>
-      <item> \endlatexonly </item>
-      <item> \endlink </item>
-      <item> \endmanonly </item>
-      <item> \endverbatim </item>
-      <item> \endxmlonly </item>
-      <item> \f[ </item>
-      <item> \f] </item>
-      <item> \f$ </item>
-      <item> \hideinitializer </item>
-      <item> \htmlonly </item>
-      <item> \interface </item>
-      <item> \internal </item>
-      <item> \invariant </item>
-      <item> \~ </item>
-      <item> \@ </item>
-      <item> \$ </item>
-      <item> \\ </item>
-      <item> \# </item>
-      <item> \latexonly </item>
-      <item> \li </item>
-      <item> \manonly </item>
-      <item> \n </item>
-      <item> \nosubgrouping </item>
-      <item> \note </item>
-      <item> \only </item>
-      <item> \post </item>
-      <item> \pre </item>
-      <item> \remarks </item>
-      <item> \return </item>
-      <item> \returns </item>
-      <item> \sa </item>
-      <item> \see </item>
-      <item> \showinitializer </item>
-      <item> \since </item>
-      <item> \test </item>
-      <item> \todo </item>
-      <item> \verbatim </item>
-      <item> \warning </item>
-      <item> \xmlonly </item>
+      <item>\arg</item>
+      <item>\attention</item>
+      <item>\author</item>
+      <item>\callgraph</item>
+      <item>\code</item>
+      <item>\dot</item>
+      <item>\else</item>
+      <item>\endcode</item>
+      <item>\endcond</item>
+      <item>\enddot</item>
+      <item>\endhtmlonly</item>
+      <item>\endif</item>
+      <item>\endlatexonly</item>
+      <item>\endlink</item>
+      <item>\endmanonly</item>
+      <item>\endverbatim</item>
+      <item>\endxmlonly</item>
+      <item>\f[</item>
+      <item>\f]</item>
+      <item>\f$</item>
+      <item>\hideinitializer</item>
+      <item>\htmlonly</item>
+      <item>\interface</item>
+      <item>\internal</item>
+      <item>\invariant</item>
+      <item>\~</item>
+      <item>\@</item>
+      <item>\$</item>
+      <item>\\</item>
+      <item>\#</item>
+      <item>\latexonly</item>
+      <item>\li</item>
+      <item>\manonly</item>
+      <item>\n</item>
+      <item>\nosubgrouping</item>
+      <item>\note</item>
+      <item>\only</item>
+      <item>\post</item>
+      <item>\pre</item>
+      <item>\remarks</item>
+      <item>\return</item>
+      <item>\returns</item>
+      <item>\sa</item>
+      <item>\see</item>
+      <item>\showinitializer</item>
+      <item>\since</item>
+      <item>\test</item>
+      <item>\todo</item>
+      <item>\verbatim</item>
+      <item>\warning</item>
+      <item>\xmlonly</item>
 
-      <item> @arg </item>
-      <item> @attention </item>
-      <item> @author </item>
-      <item> @callgraph </item>
-      <item> @code </item>
-      <item> @dot </item>
-      <item> @else </item>
-      <item> @endcode </item>
-      <item> @endcond </item>
-      <item> @enddot </item>
-      <item> @endhtmlonly </item>
-      <item> @endif </item>
-      <item> @endlatexonly </item>
-      <item> @endlink </item>
-      <item> @endmanonly </item>
-      <item> @endverbatim </item>
-      <item> @endxmlonly </item>
-      <item> @f[ </item>
-      <item> @f] </item>
-      <item> @f$ </item>
-      <item> @hideinitializer </item>
-      <item> @htmlonly </item>
-      <item> @interface </item>
-      <item> @internal </item>
-      <item> @invariant </item>
-      <item> @~ </item>
-      <item> @@ </item>
-      <item> @$ </item>
-      <item> @\ </item>
-      <item> @# </item>
-      <item> @latexonly </item>
-      <item> @li </item>
-      <item> @manonly </item>
-      <item> @n </item>
-      <item> @nosubgrouping </item>
-      <item> @note </item>
-      <item> @only </item>
-      <item> @post </item>
-      <item> @pre </item>
-      <item> @remarks </item>
-      <item> @return </item>
-      <item> @returns </item>
-      <item> @sa </item>
-      <item> @see </item>
-      <item> @showinitializer </item>
-      <item> @since </item>
-      <item> @test </item>
-      <item> @todo </item>
-      <item> @verbatim </item>
-      <item> @warning </item>
-      <item> @xmlonly </item>
+      <item>@arg</item>
+      <item>@attention</item>
+      <item>@author</item>
+      <item>@callgraph</item>
+      <item>@code</item>
+      <item>@dot</item>
+      <item>@else</item>
+      <item>@endcode</item>
+      <item>@endcond</item>
+      <item>@enddot</item>
+      <item>@endhtmlonly</item>
+      <item>@endif</item>
+      <item>@endlatexonly</item>
+      <item>@endlink</item>
+      <item>@endmanonly</item>
+      <item>@endverbatim</item>
+      <item>@endxmlonly</item>
+      <item>@f[</item>
+      <item>@f]</item>
+      <item>@f$</item>
+      <item>@hideinitializer</item>
+      <item>@htmlonly</item>
+      <item>@interface</item>
+      <item>@internal</item>
+      <item>@invariant</item>
+      <item>@~</item>
+      <item>@@</item>
+      <item>@$</item>
+      <item>@\</item>
+      <item>@#</item>
+      <item>@latexonly</item>
+      <item>@li</item>
+      <item>@manonly</item>
+      <item>@n</item>
+      <item>@nosubgrouping</item>
+      <item>@note</item>
+      <item>@only</item>
+      <item>@post</item>
+      <item>@pre</item>
+      <item>@remarks</item>
+      <item>@return</item>
+      <item>@returns</item>
+      <item>@sa</item>
+      <item>@see</item>
+      <item>@showinitializer</item>
+      <item>@since</item>
+      <item>@test</item>
+      <item>@todo</item>
+      <item>@verbatim</item>
+      <item>@warning</item>
+      <item>@xmlonly</item>
     </list>
 
     <list name="TagWord">
-      <item> \addtogroup </item>
-      <item> \a </item>
-      <item> \anchor </item>
-      <item> \b </item>
-      <item> \c </item>
-      <item> \class </item>
-      <item> \cond </item>
-      <item> \copydoc </item>
-      <item> \def </item>
-      <item> \dontinclude </item>
-      <item> \dotfile </item>
-      <item> \e </item>
-      <item> \elseif </item>
-      <item> \em </item>
-      <item> \enum </item>
-      <item> \example </item>
-      <item> \exception </item>
-      <item> \exceptions </item>
-      <item> \file </item>
-      <item> \htmlinclude </item>
-      <item> \if </item>
-      <item> \ifnot </item>
-      <item> \include </item>
-      <item> \link </item>
-      <item> \namespace </item>
-      <item> \p </item>
-      <item> \package </item>
-      <item> \ref </item>
-      <item> \relatesalso </item>
-      <item> \relates </item>
-      <item> \retval </item>
-      <item> \throw </item>
-      <item> \throws </item>
-      <item> \verbinclude </item>
-      <item> \version </item>
-      <item> \xrefitem </item>
+      <item>\addtogroup</item>
+      <item>\a</item>
+      <item>\anchor</item>
+      <item>\b</item>
+      <item>\c</item>
+      <item>\class</item>
+      <item>\cond</item>
+      <item>\copydoc</item>
+      <item>\def</item>
+      <item>\dontinclude</item>
+      <item>\dotfile</item>
+      <item>\e</item>
+      <item>\elseif</item>
+      <item>\em</item>
+      <item>\enum</item>
+      <item>\example</item>
+      <item>\exception</item>
+      <item>\exceptions</item>
+      <item>\file</item>
+      <item>\htmlinclude</item>
+      <item>\if</item>
+      <item>\ifnot</item>
+      <item>\include</item>
+      <item>\link</item>
+      <item>\namespace</item>
+      <item>\p</item>
+      <item>\package</item>
+      <item>\ref</item>
+      <item>\relatesalso</item>
+      <item>\relates</item>
+      <item>\retval</item>
+      <item>\throw</item>
+      <item>\throws</item>
+      <item>\verbinclude</item>
+      <item>\version</item>
+      <item>\xrefitem</item>
 
-      <item> @addtogroup </item>
-      <item> @a </item>
-      <item> @anchor </item>
-      <item> @b </item>
-      <item> @c </item>
-      <item> @class </item>
-      <item> @cond </item>
-      <item> @copydoc </item>
-      <item> @def </item>
-      <item> @dontinclude </item>
-      <item> @dotfile </item>
-      <item> @e </item>
-      <item> @elseif </item>
-      <item> @em </item>
-      <item> @enum </item>
-      <item> @example </item>
-      <item> @exception </item>
-      <item> @exceptions </item>
-      <item> @file </item>
-      <item> @htmlinclude </item>
-      <item> @if </item>
-      <item> @ifnot </item>
-      <item> @include </item>
-      <item> @link </item>
-      <item> @namespace </item>
-      <item> @p </item>
-      <item> @package </item>
-      <item> @ref </item>
-      <item> @relatesalso </item>
-      <item> @relates </item>
-      <item> @retval </item>
-      <item> @throw </item>
-      <item> @throws </item>
-      <item> @verbinclude </item>
-      <item> @version </item>
-      <item> @xrefitem </item>
+      <item>@addtogroup</item>
+      <item>@a</item>
+      <item>@anchor</item>
+      <item>@b</item>
+      <item>@c</item>
+      <item>@class</item>
+      <item>@cond</item>
+      <item>@copydoc</item>
+      <item>@def</item>
+      <item>@dontinclude</item>
+      <item>@dotfile</item>
+      <item>@e</item>
+      <item>@elseif</item>
+      <item>@em</item>
+      <item>@enum</item>
+      <item>@example</item>
+      <item>@exception</item>
+      <item>@exceptions</item>
+      <item>@file</item>
+      <item>@htmlinclude</item>
+      <item>@if</item>
+      <item>@ifnot</item>
+      <item>@include</item>
+      <item>@link</item>
+      <item>@namespace</item>
+      <item>@p</item>
+      <item>@package</item>
+      <item>@ref</item>
+      <item>@relatesalso</item>
+      <item>@relates</item>
+      <item>@retval</item>
+      <item>@throw</item>
+      <item>@throws</item>
+      <item>@verbinclude</item>
+      <item>@version</item>
+      <item>@xrefitem</item>
     </list>
     <list name="TagParam">
-      <item> \param </item>
+      <item>\param</item>
 
-      <item> @param </item>
+      <item>@param</item>
     </list>
     <list name="TagWordWord">
-      <item> \image </item>
+      <item>\image</item>
 
-      <item> @image </item>
+      <item>@image</item>
     </list>
     <list name="TagWordString">
-      <item> \defgroup </item>
-      <item> \page </item>
-      <item> \paragraph </item>
-      <item> \section </item>
-      <item> \struct </item>
-      <item> \subsection </item>
-      <item> \subsubsection </item>
-      <item> \union </item>
-      <item> \weakgroup </item>
+      <item>\defgroup</item>
+      <item>\page</item>
+      <item>\paragraph</item>
+      <item>\section</item>
+      <item>\struct</item>
+      <item>\subsection</item>
+      <item>\subsubsection</item>
+      <item>\union</item>
+      <item>\weakgroup</item>
 
-      <item> @defgroup </item>
-      <item> @page </item>
-      <item> @paragraph </item>
-      <item> @section </item>
-      <item> @struct </item>
-      <item> @subsection </item>
-      <item> @subsubsection </item>
-      <item> @union </item>
-      <item> @weakgroup </item>
+      <item>@defgroup</item>
+      <item>@page</item>
+      <item>@paragraph</item>
+      <item>@section</item>
+      <item>@struct</item>
+      <item>@subsection</item>
+      <item>@subsubsection</item>
+      <item>@union</item>
+      <item>@weakgroup</item>
     </list>
     <list name="TagString">
-      <item> \addindex </item>
-      <item> \brief </item>
-      <item> \bug </item>
-      <item> \date </item>
-      <item> \deprecated </item>
-      <item> \fn </item>
-      <item> \ingroup </item>
-      <item> \line </item>
-      <item> \mainpage </item>
-      <item> \name </item>
-      <item> \overload </item>
-      <item> \par </item>
-      <item> \short </item>
-      <item> \skip </item>
-      <item> \skipline </item>
-      <item> \typedef </item>
-      <item> \until </item>
-      <item> \var </item>
+      <item>\addindex</item>
+      <item>\brief</item>
+      <item>\bug</item>
+      <item>\date</item>
+      <item>\deprecated</item>
+      <item>\fn</item>
+      <item>\ingroup</item>
+      <item>\line</item>
+      <item>\mainpage</item>
+      <item>\name</item>
+      <item>\overload</item>
+      <item>\par</item>
+      <item>\short</item>
+      <item>\skip</item>
+      <item>\skipline</item>
+      <item>\typedef</item>
+      <item>\until</item>
+      <item>\var</item>
 
-      <item> @addindex </item>
-      <item> @brief </item>
-      <item> @bug </item>
-      <item> @date </item>
-      <item> @deprecated </item>
-      <item> @fn </item>
-      <item> @ingroup </item>
-      <item> @line </item>
-      <item> @mainpage </item>
-      <item> @name </item>
-      <item> @overload </item>
-      <item> @par </item>
-      <item> @short </item>
-      <item> @skip </item>
-      <item> @skipline </item>
-      <item> @typedef </item>
-      <item> @until </item>
-      <item> @var </item>
+      <item>@addindex</item>
+      <item>@brief</item>
+      <item>@bug</item>
+      <item>@date</item>
+      <item>@deprecated</item>
+      <item>@fn</item>
+      <item>@ingroup</item>
+      <item>@line</item>
+      <item>@mainpage</item>
+      <item>@name</item>
+      <item>@overload</item>
+      <item>@par</item>
+      <item>@short</item>
+      <item>@skip</item>
+      <item>@skipline</item>
+      <item>@typedef</item>
+      <item>@until</item>
+      <item>@var</item>
     </list>
     <contexts>
     <!-- different formats:

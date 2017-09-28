@@ -8,119 +8,119 @@
           priority="5">
   <highlighting>
     <list name="keywords">
-      <item> __constant </item>
-      <item> __global </item>
-      <item> __local </item>
-      <item> __private </item>
-      <item> __kernel </item>
-      <item> __read_only </item>
-      <item> __write_only </item>
-      <item> constant </item>
-      <item> global </item>
-      <item> local </item>
-      <item> private </item>
-      <item> kernel </item>
-      <item> read_only </item>
-      <item> write_only </item>
-      <item> break </item>
-      <item> case </item>
-      <item> continue </item>
-      <item> default </item>
-      <item> do </item>
-      <item> else </item>
-      <item> enum </item>
-      <item> for </item>
-      <item> goto </item>
-      <item> if </item>
-      <item> inline </item>
-      <item> return </item>
-      <item> sizeof </item>
-      <item> struct </item>
-      <item> switch </item>
-      <item> typedef </item>
-      <item> union </item>
-      <item> while </item>
+      <item>__constant</item>
+      <item>__global</item>
+      <item>__local</item>
+      <item>__private</item>
+      <item>__kernel</item>
+      <item>__read_only</item>
+      <item>__write_only</item>
+      <item>constant</item>
+      <item>global</item>
+      <item>local</item>
+      <item>private</item>
+      <item>kernel</item>
+      <item>read_only</item>
+      <item>write_only</item>
+      <item>break</item>
+      <item>case</item>
+      <item>continue</item>
+      <item>default</item>
+      <item>do</item>
+      <item>else</item>
+      <item>enum</item>
+      <item>for</item>
+      <item>goto</item>
+      <item>if</item>
+      <item>inline</item>
+      <item>return</item>
+      <item>sizeof</item>
+      <item>struct</item>
+      <item>switch</item>
+      <item>typedef</item>
+      <item>union</item>
+      <item>while</item>
     </list>
     <list name="types">
-      <item> bool </item>
-      <item> uchar </item>
-      <item> uchar2 </item>
-      <item> uchar3 </item>
-      <item> uchar4 </item>
-      <item> uchar8 </item>
-      <item> uchar16 </item>
-      <item> char </item>
-      <item> char2 </item>
-      <item> char3 </item>
-      <item> char4 </item>
-      <item> char8 </item>
-      <item> char16 </item>
-      <item> const </item>
-      <item> double </item>
-      <item> double2 </item>
-      <item> double3 </item>
-      <item> double4 </item>
-      <item> double8 </item>
-      <item> double16 </item>
-      <item> event_t </item>
-      <item> float </item>
-      <item> float2 </item>
-      <item> float3 </item>
-      <item> float4 </item>
-      <item> float8 </item>
-      <item> float16 </item>
-      <item> half </item>
-      <item> half2 </item>
-      <item> half3 </item>
-      <item> half4 </item>
-      <item> half8 </item>
-      <item> half16 </item>
-      <item> image1d_t </item>
-      <item> image2d_t </item>
-      <item> image3d_t </item>
-      <item> uint </item>
-      <item> uint2 </item>
-      <item> uint3 </item>
-      <item> uint4 </item>
-      <item> uint8 </item>
-      <item> uint16 </item>
-	  <item> int </item>
-      <item> int2 </item>
-      <item> int3 </item>
-      <item> int4 </item>
-      <item> int8 </item>
-      <item> int16 </item>
-      <item> ulong </item>
-      <item> ulong2 </item>
-      <item> ulong3 </item>
-      <item> ulong4 </item>
-      <item> ulong8 </item>
-      <item> ulong16 </item>
-      <item> long </item>
-      <item> long2 </item>
-      <item> long3 </item>
-      <item> long4 </item>
-      <item> long8 </item>
-      <item> long16 </item>
-      <item> restrict </item>
-      <item> sampler_t </item>
-      <item> ushort </item>
-      <item> ushort2 </item>
-      <item> ushort3 </item>
-      <item> ushort4 </item>
-      <item> ushort8 </item>
-      <item> ushort16 </item>
-      <item> short </item>
-      <item> short2 </item>
-      <item> short3 </item>
-      <item> short4 </item>
-      <item> short8 </item>
-      <item> short16 </item>
-      <item> signed </item>
-      <item> static </item>
-      <item> unsigned </item>
-      <item> void </item>
-      <item> volatile </item>
+      <item>bool</item>
+      <item>uchar</item>
+      <item>uchar2</item>
+      <item>uchar3</item>
+      <item>uchar4</item>
+      <item>uchar8</item>
+      <item>uchar16</item>
+      <item>char</item>
+      <item>char2</item>
+      <item>char3</item>
+      <item>char4</item>
+      <item>char8</item>
+      <item>char16</item>
+      <item>const</item>
+      <item>double</item>
+      <item>double2</item>
+      <item>double3</item>
+      <item>double4</item>
+      <item>double8</item>
+      <item>double16</item>
+      <item>event_t</item>
+      <item>float</item>
+      <item>float2</item>
+      <item>float3</item>
+      <item>float4</item>
+      <item>float8</item>
+      <item>float16</item>
+      <item>half</item>
+      <item>half2</item>
+      <item>half3</item>
+      <item>half4</item>
+      <item>half8</item>
+      <item>half16</item>
+      <item>image1d_t</item>
+      <item>image2d_t</item>
+      <item>image3d_t</item>
+      <item>uint</item>
+      <item>uint2</item>
+      <item>uint3</item>
+      <item>uint4</item>
+      <item>uint8</item>
+      <item>uint16</item>
+	  <item>int</item>
+      <item>int2</item>
+      <item>int3</item>
+      <item>int4</item>
+      <item>int8</item>
+      <item>int16</item>
+      <item>ulong</item>
+      <item>ulong2</item>
+      <item>ulong3</item>
+      <item>ulong4</item>
+      <item>ulong8</item>
+      <item>ulong16</item>
+      <item>long</item>
+      <item>long2</item>
+      <item>long3</item>
+      <item>long4</item>
+      <item>long8</item>
+      <item>long16</item>
+      <item>restrict</item>
+      <item>sampler_t</item>
+      <item>ushort</item>
+      <item>ushort2</item>
+      <item>ushort3</item>
+      <item>ushort4</item>
+      <item>ushort8</item>
+      <item>ushort16</item>
+      <item>short</item>
+      <item>short2</item>
+      <item>short3</item>
+      <item>short4</item>
+      <item>short8</item>
+      <item>short16</item>
+      <item>signed</item>
+      <item>static</item>
+      <item>unsigned</item>
+      <item>void</item>
+      <item>volatile</item>
     </list>
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">

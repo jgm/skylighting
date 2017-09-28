@@ -62,29 +62,29 @@
 
     <!-- Reserved keywords in MATLAB -->
     <list name="KeywordsList">
-      <item> break </item>
-      <item> case </item>
-      <item> catch </item>
-      <item> classdef </item>
-      <item> continue </item>
-      <item> else </item>
-      <item> elseif </item>
-      <item> end </item>
-      <item> for </item>
-      <item> function </item>
-      <item> global </item>
-      <item> if </item>
-      <item> otherwise </item>
-      <item> parfor </item>
-      <item> persistent </item>
-      <item> return </item>
-      <item> spmd </item>
-      <item> switch </item>
-      <item> try </item>
-      <item> while </item>
-      <item> methods </item>
-      <item> properties </item>
-      <item> events </item>
+      <item>break</item>
+      <item>case</item>
+      <item>catch</item>
+      <item>classdef</item>
+      <item>continue</item>
+      <item>else</item>
+      <item>elseif</item>
+      <item>end</item>
+      <item>for</item>
+      <item>function</item>
+      <item>global</item>
+      <item>if</item>
+      <item>otherwise</item>
+      <item>parfor</item>
+      <item>persistent</item>
+      <item>return</item>
+      <item>spmd</item>
+      <item>switch</item>
+      <item>try</item>
+      <item>while</item>
+      <item>methods</item>
+      <item>properties</item>
+      <item>events</item>
     </list>
 
     <contexts>

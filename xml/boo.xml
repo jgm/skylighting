@@ -12,12 +12,12 @@
 		</list>
 
 		<list name="operators">
-			<item> and </item>
-			<item> assert </item>
-			<item> in </item>
-			<item> is </item>
-			<item> not </item>
-			<item> or </item>
+			<item>and</item>
+			<item>assert</item>
+			<item>in</item>
+			<item>is</item>
+			<item>not</item>
+			<item>or</item>
 		</list>
 
 		<list name="primitive">

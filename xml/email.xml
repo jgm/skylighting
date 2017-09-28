@@ -1,106 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<!--
-  Copyright (C) 2005 Carl A Joslin <carl.joslin@joslin.dyndns.org>
--->
-<language name="Email" version="2" kateversion="2.3" extensions="*.eml" section="Other" mimetype="message/rfc822" casesensitive="0" author="Carl A Joslin (carl.joslin@joslin.dyndns.org)" license="GPL">
-  <highlighting>
-    <contexts>      
-      <context name="headder" attribute="Normal Text" lineEndContext="#stay">
-        <RegExpr attribute="rfc-main" context="#stay" String="^[Tt]o:.*$"/>
-        <RegExpr attribute="rfc-main" context="#stay" String="^[Ff]rom:.*$"/>
-        <RegExpr attribute="rfc-main" context="#stay" String="^[Cc][Cc]:.*$"/>
-        <RegExpr attribute="rfc-main" context="#stay" String="^[Bb][Cc][Cc]:.*$"/>
-        <RegExpr attribute="rfc-main" context="#stay" String="^[Ss]ubject:.*$"/>
-        <RegExpr attribute="rfc-main" context="#stay" String="^[Dd]ate:.*$"/>
-        
-        <RegExpr attribute="rfc" context="#stay" String="^[Ss]ender:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]eply-[Tt]o:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Mm]essage-[Ii][Dd]:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Ii]n-[Rr]eply-[Tt]o:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]eferences:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Cc]omments:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Kk]eywors:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]esent-[Dd]ate:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]esent-[Ff]rom:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]esent-[Ss]ender:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]esent-[Tt]o:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]esent-[Cc][Cc]:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]esent-[Bb][Cc][Cc]:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]esent-[Mm]essage-[Ii][Dd]:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]esent-[Rr]eply-[Tt]o:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]eturn-[Pp]ath:"/>
-        <RegExpr attribute="rfc" context="#stay" String="^[Rr]eceived:"/>
-        
-        <RegExpr attribute="common" context="#stay" String="^[Xx]-[Mm]ozilla-[Ss]tatus:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Xx]-[Mm]ozilla-[Ss]tatus2:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Ee]nverlope-[Tt]o:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Dd]elivery-[Dd]ate:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Xx]-[Oo]riginating-[Ii][Pp]:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Xx]-[Oo]riginating-[Ee]mail:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Xx]-[Ss]ender:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Mm]ime-[Vv]ersion:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Cc]ontent-[Tt]ype:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Xx]-[Mm]ailing-[Ll]ist:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Xx]-[Ll]oop:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Ll]ist-[Pp]ost:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Ll]ist-[Hh]elp:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Ll]ist-[Uu]nsubscribe:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Pp]recedence:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Cc]ontent-[Tt]ransfer-[Ee]ncoding:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Cc]ontent-[Tt]ype:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Xx]-[Bb]ulkmail:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Pp]recedence:"/>
-        <RegExpr attribute="common" context="#stay" String="^[Cc]ontent-[Dd]isposition:"/>
-        
-        <RegExpr attribute="other" context="#stay" String="^[0-9a-zA-Z-.]+:"/>
-        
-        <RegExpr attribute="email" context="#stay" String='[a-zA-Z0-9.\-]+\@[a-zA-Z0-9.\-]+'/>
-        <RegExpr attribute="email" context="#stay" String='[a-zA-Z0-9.\-]*\s*&lt;[a-zA-Z0-9.\-]+\@[a-zA-Z0-9.\-]+&gt;'/>
-        <RegExpr attribute="email" context="#stay" String='"[a-zA-Z0-9. \-]+"\s*&lt;[a-zA-Z0-9.\-]+\@[a-zA-Z0-9.\-]+&gt;'/>
-        
-        <RegExpr attribute="string" context="#stay" String='".*"'/>
-        <RegExpr attribute="string" context="#stay" String="'.*'"/>
-        
-        <!--<RegExpr attribute="sign" context="sign" String="^[|&gt;]*[\s_-]*[_-][_-][\s_-]*$"/>-->
-        
-        <RegExpr attribute="indent6" context="#stay" String="^[|>]\s*[|>]\s*[|>]\s*[|>]\s*[|>]\s*[|>].*"/>
-        <RegExpr attribute="indent5" context="#stay" String="^[|>]\s*[|>]\s*[|>]\s*[|>]\s*[|>].*"/>
-        <RegExpr attribute="indent4" context="#stay" String="^[|>]\s*[|>]\s*[|>]\s*[|>].*"/>
-        <RegExpr attribute="indent3" context="#stay" String="^[|>]\s*[|>]\s*[|>].*"/>
-        <RegExpr attribute="indent2" context="#stay" String="^[|>]\s*[|>].*"/>
-        <RegExpr attribute="indent1" context="#stay" String="^[|>].*"/>
-        
-        <RegExpr attribute="base64" context="#stay" String="^([A-Za-z0-9+/][A-Za-z0-9+/][A-Za-z0-9+/][A-Za-z0-9+/]){10,20}$"/>
-        <RegExpr attribute="base64" context="#stay" String="^[A-Za-z0-9+=/]+=$"/>
-        
-        <RegExpr attribute="marker" context="#stay" String="^(- )?--(--.*)?"/>
-      </context>
-    </contexts>
-    <itemDatas>
-      <itemData name="Normal Text" defStyleNum="dsNormal"/>
-      <itemData name="rfc" color="darkgreen" defStyleNum="dsNormal"/>
-      <itemData name="rfc-main" bold="1" color="darkgreen" defStyleNum="dsAlert"/>
-      <itemData name="common" color="gold" defStyleNum="dsComment"/>
-      <itemData name="other" color="red" defStyleNum="dsNormal"/>
-      <itemData name="email" color="blue" defStyleNum="dsNormal"/>
-      <itemData name="string" defStyleNum="dsString"/>
-      
-      <itemData name="base64" defStyleNum="dsRegionMarker"/>
-      <itemData name="marker" defStyleNum="dsAlert"/>
-      
-      <itemData name="indent1" bold="1" color="red" defStyleNum="dsNormal"/>
-      <itemData name="indent2" bold="1" color="green" defStyleNum="dsNormal"/>
-      <itemData name="indent3" bold="1" color="blue" defStyleNum="dsNormal"/>
-      <itemData name="indent4" bold="1" color="cyan" defStyleNum="dsNormal"/>
-      <itemData name="indent5" bold="1" color="magenta" defStyleNum="dsNormal"/>
-      <itemData name="indent6" bold="1" color="yellow" defStyleNum="dsNormal"/>
-      
-      
-      <itemData name="sign" defStyleNum="dsComment"/>
-    </itemDatas>
-  </highlighting>
-  <general>
-    <keywords casesensitive="0" />
-  </general>
+<language name="Email" version="3" kateversion="5.0" extensions="*.eml;*.emlx;*.mbox;*.mbx" section="Other" mimetype="message/rfc822" casesensitive="0" author="Volker Krause (vkrause@kde.org)" license="MIT">
+    <highlighting>
+        <list name="header-names">
+            <item>Authentication-Results:</item>
+            <item>Bcc:</item>
+            <item>Cc:</item>
+            <item>Comments:</item>
+            <item>Content-Description:</item>
+            <item>Content-Disposition:</item>
+            <item>Content-Transfer-Encoding:</item>
+            <item>Content-Type:</item>
+            <item>Date:</item>
+            <item>Delivered-To:</item>
+            <item>DKIM-Signature:</item>
+            <item>Errors-To:</item>
+            <item>From:</item>
+            <item>In-Reply-To:</item>
+            <item>Keywords:</item>
+            <item>Lines:</item>
+            <item>Message-Id:</item>
+            <item>List-Archive:</item>
+            <item>List-Id:</item>
+            <item>List-Help:</item>
+            <item>List-Post:</item>
+            <item>List-Unsubscribe:</item>
+            <item>List-Subscribe:</item>
+            <item>MIME-Version:</item>
+            <item>Organization:</item>
+            <item>Precedence:</item>
+            <item>Received:</item>
+            <item>Received-SPF:</item>
+            <item>References:</item>
+            <item>Resent-Bcc:</item>
+            <item>Resent-Cc:</item>
+            <item>Resent-Date:</item>
+            <item>Resent-From:</item>
+            <item>Resent-Message-Id:</item>
+            <item>Return-Path:</item>
+            <item>Resent-Reply-To:</item>
+            <item>Resent-Sender:</item>
+            <item>Resent-To:</item>
+            <item>Reply-To:</item>
+            <item>Sender:</item>
+            <item>Subject:</item>
+            <item>Supersedes:</item>
+            <item>To:</item>
+            <item>User-Agent:</item>
+        </list>
+
+        <contexts>
+            <context name="header" attribute="Normal Text" lineEndContext="#stay" lineEmptyContext="#pop!body-context">
+                <keyword attribute="Common Header" context="header-structured-content" String="header-names" column="0"/>
+                <RegExpr attribute="Other Header" context="header-content" String="[0-9a-zA-Z-]+:\s" column="0"/>
+            </context>
+
+            <context name="header-structured-content" attribute="Normal Text" lineEndContext="#stay" lineEmptyContext="#pop#pop!body-context">
+                <RegExpr context="#pop" String="\S" column="0" lookAhead="true"/>
+                <DetectChar attribute="String" context="string-context" char="&quot;"/>
+                <DetectChar attribute="Comment" context="comment-context" char="("/>
+                <RegExpr attribute="Address" context="#stay" String="&lt;?[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+&gt;?"/>
+            </context>
+
+            <context name="header-content" attribute="Normal Text" lineEndContext="#stay" lineEmptyContext="#pop#pop!body-context">
+                <RegExpr context="#pop" String="\S" column="0" lookAhead="true"/>
+            </context>
+
+            <context name="string-context" attribute="String" lineEndContext="#stay">
+                <HlCStringChar/>
+                <DetectChar attribute="String" context="#pop" char="&quot;"/>
+            </context>
+
+            <context name="comment-context" attribute="Comment" lineEndContext="#stay">
+                <DetectChar attribute="Comment" context="#pop" char=")"/>
+            </context>
+
+            <context name="body-context" attribute="Normal Text" lineEndContext="#stay">
+                <RegExpr attribute="Content Boundary" context="#pop!header" String="--[0-9a-zA-Z._=-]{10,}(--)?$" column="0"/>
+            </context>
+        </contexts>
+        <itemDatas>
+            <itemData name="Normal Text" defStyleNum="dsNormal" spellChecking="false"/>
+            <itemData name="Common Header" defStyleNum="dsBuiltIn" spellChecking="false"/>
+            <itemData name="Other Header" defStyleNum="dsFunction" spellChecking="false"/>
+            <itemData name="String" defStyleNum="dsString" spellChecking="false"/>
+            <itemData name="Address" defStyleNum="dsVariable" spellChecking="false"/>
+            <itemData name="Comment" defStyleNum="dsComment" spellChecking="false"/>
+            <itemData name="Content Boundary" defStyleNum="dsRegionMarker" spellChecking="false"/>
+        </itemDatas>
+    </highlighting>
+    <general>
+        <keywords casesensitive="0" weakDeliminator=":-"/>
+    </general>
 </language>

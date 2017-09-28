@@ -13,36 +13,37 @@
 
         You'll find the "Writing a Kate Highlighting XML File HOWTO" at http://kate.kde.org/doc/hlhowto.php
 -->
-<language name="ASN.1" section="Markup" version="2" kateversion="2.3" extensions="*.asn;*.asn1" mimetype="" author="Philippe Rigault" license="GPL">
+<language name="ASN.1" section="Markup" version="3" kateversion="2.3" extensions="*.asn;*.asn1" mimetype="" author="Philippe Rigault" license="GPL">
   <highlighting>
     <list name="keywords">
-      <item> DEFINITIONS </item>
-      <item> BEGIN </item>
-      <item> END </item>
-      <item> EXPORTS </item>
-      <item> IMPORTS </item>
-      <item> FROM </item>
-      <item> APPLICATION </item>
-      <item> PRIVATE </item>
-      <item> UNIVERSAL </item>
-      <item> DEFAULT </item>
-      <item> OPTIONAL </item>
-      <item> FALSE </item>
-      <item> TRUE </item>
+      <item>DEFINITIONS</item>
+      <item>BEGIN</item>
+      <item>END</item>
+      <item>EXPORTS</item>
+      <item>IMPORTS</item>
+      <item>FROM</item>
+      <item>APPLICATION</item>
+      <item>PRIVATE</item>
+      <item>UNIVERSAL</item>
+      <item>DEFAULT</item>
+      <item>OPTIONAL</item>
+      <item>FALSE</item>
+      <item>TRUE</item>
     </list>
     <list name="types">
-      <item> BOOLEAN </item>
-      <item> INTEGER </item>
-      <item> OCTET STRING </item>
-      <item> NULL </item>
-      <item> REAL </item>
-      <item> ENUMERATED </item>
-      <item> SEQUENCE </item>
-      <item> SET </item>
-      <item> CHOICE </item>
-      <item> OF </item>
-      <item> VisibleString </item>
-      <item> StringStore </item>
+      <item>BOOLEAN</item>
+      <item>INTEGER</item>
+      <item>OCTET</item>
+      <item>STRING</item>
+      <item>NULL</item>
+      <item>REAL</item>
+      <item>ENUMERATED</item>
+      <item>SEQUENCE</item>
+      <item>SET</item>
+      <item>CHOICE</item>
+      <item>OF</item>
+      <item>VisibleString</item>
+      <item>StringStore</item>
     </list>
     
     <contexts>

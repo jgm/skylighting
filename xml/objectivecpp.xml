@@ -3,161 +3,161 @@
 <language name="Objective-C++" version="2" kateversion="5.0" section="Sources" extensions="*.mm;*.M;*.h" mimetype="text/x-objcpp-src;text/x-c-hdr" author="Gennady Telegin (gepo@lvk.cs.msu.su">
   <highlighting>
     <list name="keywords">
-      <item> break </item>
-      <item> case </item>
-      <item> continue </item>
-      <item> default </item>
-      <item> do </item>
-      <item> else </item>
-      <item> enum </item>
-      <item> extern </item>
-      <item> for </item>
-      <item> goto </item>
-      <item> if </item>
-      <item> return </item>
-      <item> sizeof </item>
-      <item> struct </item>
-      <item> switch </item>
-      <item> typedef </item>
-      <item> union </item>
-      <item> while </item>
-      <item> @class </item>
-      <item> @defs </item>
-      <item> @encode </item>
-      <item> @end </item>
-      <item> @implementation </item>
-      <item> @interface </item>
-      <item> @private </item>
-      <item> @protected </item>
-      <item> @protocol </item>
-      <item> @public </item>
-      <item> @selector </item>
-      <item> self </item>
-      <item> super </item>
+      <item>break</item>
+      <item>case</item>
+      <item>continue</item>
+      <item>default</item>
+      <item>do</item>
+      <item>else</item>
+      <item>enum</item>
+      <item>extern</item>
+      <item>for</item>
+      <item>goto</item>
+      <item>if</item>
+      <item>return</item>
+      <item>sizeof</item>
+      <item>struct</item>
+      <item>switch</item>
+      <item>typedef</item>
+      <item>union</item>
+      <item>while</item>
+      <item>@class</item>
+      <item>@defs</item>
+      <item>@encode</item>
+      <item>@end</item>
+      <item>@implementation</item>
+      <item>@interface</item>
+      <item>@private</item>
+      <item>@protected</item>
+      <item>@protocol</item>
+      <item>@public</item>
+      <item>@selector</item>
+      <item>self</item>
+      <item>super</item>
       
-      <item> asm </item>
-      <item> catch </item>
-      <item> class </item>
-      <item> const_cast </item>
-      <item> delete </item>
-      <item> dynamic_cast</item>
-      <item> explicit </item>
-      <item> export </item>
-      <item> false </item>
-      <item> friend </item>
-      <item> inline </item>
-      <item> namespace </item>
-      <item> new </item>
-      <item> operator </item>
-      <item> private </item>
-      <item> protected </item>
-      <item> public </item>
-      <item> qobject_cast </item>
-      <item> reinterpret_cast </item>
-      <item> static_cast </item>
-      <item> template </item>
-      <item> this </item>
-      <item> throw </item>
-      <item> true </item>
-      <item> try </item>
-      <item> typeid </item>
-      <item> type_info </item>
-      <item> typename </item>
-      <item> using </item>
-      <item> virtual </item>
+      <item>asm</item>
+      <item>catch</item>
+      <item>class</item>
+      <item>const_cast</item>
+      <item>delete</item>
+      <item>dynamic_cast</item>
+      <item>explicit</item>
+      <item>export</item>
+      <item>false</item>
+      <item>friend</item>
+      <item>inline</item>
+      <item>namespace</item>
+      <item>new</item>
+      <item>operator</item>
+      <item>private</item>
+      <item>protected</item>
+      <item>public</item>
+      <item>qobject_cast</item>
+      <item>reinterpret_cast</item>
+      <item>static_cast</item>
+      <item>template</item>
+      <item>this</item>
+      <item>throw</item>
+      <item>true</item>
+      <item>try</item>
+      <item>typeid</item>
+      <item>type_info</item>
+      <item>typename</item>
+      <item>using</item>
+      <item>virtual</item>
 
-      <item> and </item>
-      <item> and_eq </item>
-      <item> bad_cast </item>
-      <item> bad_typeid </item>
-      <item> bitand </item>
-      <item> bitor </item>
-      <item> compl </item>
-      <item> not </item>
-      <item> not_eq </item>
-      <item> or </item>
-      <item> or_eq </item>
-      <item> xor </item>
-      <item> xor_eq </item>
+      <item>and</item>
+      <item>and_eq</item>
+      <item>bad_cast</item>
+      <item>bad_typeid</item>
+      <item>bitand</item>
+      <item>bitor</item>
+      <item>compl</item>
+      <item>not</item>
+      <item>not_eq</item>
+      <item>or</item>
+      <item>or_eq</item>
+      <item>xor</item>
+      <item>xor_eq</item>
     </list>
     <list name="extensions">
-      <item> K_DCOP </item>
-      <item> SLOT </item>
-      <item> SIGNAL </item>
-      <item> Q_CLASSINFO </item>
-      <item> Q_ENUMS </item>
-      <item> Q_EXPORT </item>
-      <item> Q_OBJECT </item>
-      <item> Q_OVERRIDE </item>
-      <item> Q_PROPERTY </item>
-      <item> Q_SETS </item>
-      <item> Q_SIGNALS </item>
-      <item> Q_SLOTS </item>
-      <item> Q_FOREACH </item>
-      <item> Q_DECLARE_FLAGS </item>
-      <item> Q_INIT_RESOURCE </item>
-      <item> Q_CLEANUP_RESOURCE </item>
-      <item> Q_GLOBAL_STATIC </item>
-      <item> Q_GLOBAL_STATIC_WITH_ARGS </item>
-      <item> Q_DECLARE_INTERFACE </item>
-      <item> Q_DECLARE_TYPEINFO </item>
-      <item> Q_DECLARE_SHARED </item>
-      <item> Q_DECLARE_FLAGS </item>
-      <item> Q_DECLARE_OPERATORS_FOR_FLAGS </item>
-      <item> Q_FOREVER </item>
-      <item> Q_DECLARE_PRIVATE </item>
-      <item> Q_DECLARE_PUBLIC </item>
-      <item> Q_D </item>
-      <item> Q_Q </item>
-      <item> Q_DISABLE_COPY </item>
-      <item> Q_INTERFACES </item>
-      <item> Q_FLAGS </item>
-      <item> Q_SCRIPTABLE </item>
-      <item> Q_INVOKABLE </item>
-      <item> Q_GADGET </item>
-      <item> Q_ARG </item>
-      <item> Q_RETURN_ARG </item>
-      <item> Q_ASSERT </item>
-      <item> Q_ASSERT_X </item>
-      <item> TRUE </item>
-      <item> FALSE </item>
-      <item> connect </item>
-      <item> disconnect </item>
-      <item> emit </item>
-      <item> signals </item>
-      <item> slots </item>
-      <item> foreach </item>
-      <item> forever </item>
+      <item>K_DCOP</item>
+      <item>SLOT</item>
+      <item>SIGNAL</item>
+      <item>Q_CLASSINFO</item>
+      <item>Q_ENUMS</item>
+      <item>Q_EXPORT</item>
+      <item>Q_OBJECT</item>
+      <item>Q_OVERRIDE</item>
+      <item>Q_PROPERTY</item>
+      <item>Q_SETS</item>
+      <item>Q_SIGNALS</item>
+      <item>Q_SLOTS</item>
+      <item>Q_FOREACH</item>
+      <item>Q_DECLARE_FLAGS</item>
+      <item>Q_INIT_RESOURCE</item>
+      <item>Q_CLEANUP_RESOURCE</item>
+      <item>Q_GLOBAL_STATIC</item>
+      <item>Q_GLOBAL_STATIC_WITH_ARGS</item>
+      <item>Q_DECLARE_INTERFACE</item>
+      <item>Q_DECLARE_TYPEINFO</item>
+      <item>Q_DECLARE_SHARED</item>
+      <item>Q_DECLARE_FLAGS</item>
+      <item>Q_DECLARE_OPERATORS_FOR_FLAGS</item>
+      <item>Q_FOREVER</item>
+      <item>Q_DECLARE_PRIVATE</item>
+      <item>Q_DECLARE_PUBLIC</item>
+      <item>Q_D</item>
+      <item>Q_Q</item>
+      <item>Q_DISABLE_COPY</item>
+      <item>Q_INTERFACES</item>
+      <item>Q_FLAGS</item>
+      <item>Q_SCRIPTABLE</item>
+      <item>Q_INVOKABLE</item>
+      <item>Q_GADGET</item>
+      <item>Q_ARG</item>
+      <item>Q_RETURN_ARG</item>
+      <item>Q_ASSERT</item>
+      <item>Q_ASSERT_X</item>
+      <item>TRUE</item>
+      <item>FALSE</item>
+      <item>connect</item>
+      <item>disconnect</item>
+      <item>emit</item>
+      <item>signals</item>
+      <item>slots</item>
+      <item>foreach</item>
+      <item>forever</item>
     </list>
     <list name="types">
-      <item> auto </item>
-      <item> char </item>
-      <item> const </item>
-      <item> double </item>
-      <item> float </item>
-      <item> int </item>
-      <item> long </item>
-      <item> register </item>
-      <item> short </item>
-      <item> signed </item>
-      <item> static </item>
-      <item> unsigned </item>
-      <item> void </item>
-      <item> volatile </item>
+      <item>auto</item>
+      <item>char</item>
+      <item>const</item>
+      <item>double</item>
+      <item>float</item>
+      <item>int</item>
+      <item>long</item>
+      <item>register</item>
+      <item>short</item>
+      <item>signed</item>
+      <item>static</item>
+      <item>unsigned</item>
+      <item>void</item>
+      <item>volatile</item>
       
-      <item> bool </item>
-      <item> mutable </item>
-      <item> uchar </item>
-      <item> uint </item>
-      <item> int8_t </item>
-      <item> int16_t </item>
-      <item> int32_t </item>
-      <item> int64_t </item>
-      <item> uint8_t </item>
-      <item> uint16_t </item>
-      <item> uint32_t </item>
-      <item> uint64_t </item>
-      <item> wchar_t </item>
+      <item>bool</item>
+      <item>mutable</item>
+      <item>uchar</item>
+      <item>uint</item>
+      <item>int8_t</item>
+      <item>int16_t</item>
+      <item>int32_t</item>
+      <item>int64_t</item>
+      <item>uint8_t</item>
+      <item>uint16_t</item>
+      <item>uint32_t</item>
+      <item>uint64_t</item>
+      <item>wchar_t</item>
     </list>
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Default">

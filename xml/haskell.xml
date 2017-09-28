@@ -1,346 +1,466 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Haskell" version="5" kateversion="3.4" section="Sources" extensions="*.hs;*.chs" mimetype="text/x-haskell" author="Nicolas Wu (zenzike@gmail.com)" license="LGPL" indenter="haskell" style="haskell">
+<language name="Haskell" version="8" kateversion="3.4" section="Sources" extensions="*.hs;*.chs;*.hs-boot" mimetype="text/x-haskell" author="Nicolas Wu (zenzike@gmail.com)" license="LGPL" indenter="haskell" style="haskell">
   <highlighting>
   <list name="keywords">
-    <item> case </item>
-    <item> class </item>
-    <item> data </item>
-    <item> deriving </item>
-    <item> do </item>
-    <item> else </item>
-    <item> if </item>
-    <item> in </item>
-    <item> infixl </item>
-    <item> infixr </item>
-    <item> instance </item>
-    <item> let </item>
-    <item> module </item>
-    <item> newtype </item>
-    <item> of </item>
-    <item> primitive </item>
-    <item> then </item>
-    <item> type </item>
-    <item> where </item>
+    <item>case</item>
+    <item>class</item>
+    <item>data</item>
+    <item>deriving</item>
+    <item>do</item>
+    <item>else</item>
+    <item>if</item>
+    <item>in</item>
+    <item>infixl</item>
+    <item>infixr</item>
+    <item>instance</item>
+    <item>let</item>
+    <item>module</item>
+    <item>newtype</item>
+    <item>of</item>
+    <item>primitive</item>
+    <item>then</item>
+    <item>type</item>
+    <item>where</item>
   </list>
   <list name="prelude function">
-    <item> FilePath </item>
-    <item> IOError </item>
-    <item> abs </item>
-    <item> acos </item>
-    <item> acosh </item>
-    <item> all </item>
-    <item> and </item>
-    <item> any </item>
-    <item> appendFile </item>
-    <item> approxRational </item>
-    <item> asTypeOf </item>
-    <item> asin </item>
-    <item> asinh </item>
-    <item> atan </item>
-    <item> atan2 </item>
-    <item> atanh </item>
-    <item> basicIORun </item>
-    <item> break </item>
-    <item> catch </item>
-    <item> ceiling </item>
-    <item> chr </item>
-    <item> compare </item>
-    <item> concat </item>
-    <item> concatMap </item>
-    <item> const </item>
-    <item> cos </item>
-    <item> cosh </item>
-    <item> curry </item>
-    <item> cycle </item>
-    <item> decodeFloat </item>
-    <item> denominator </item>
-    <item> digitToInt </item>
-    <item> div </item>
-    <item> divMod </item>
-    <item> drop </item>
-    <item> dropWhile </item>
-    <item> either </item>
-    <item> elem </item>
-    <item> encodeFloat </item>
-    <item> enumFrom </item>
-    <item> enumFromThen </item>
-    <item> enumFromThenTo </item>
-    <item> enumFromTo </item>
-    <item> error </item>
-    <item> even </item>
-    <item> exp </item>
-    <item> exponent </item>
-    <item> fail </item>
-    <item> filter </item>
-    <item> flip </item>
-    <item> floatDigits </item>
-    <item> floatRadix </item>
-    <item> floatRange </item>
-    <item> floor </item>
-    <item> fmap </item>
-    <item> foldl </item>
-    <item> foldl1 </item>
-    <item> foldMap </item>
-    <item> foldr </item>
-    <item> foldr1 </item>
-    <item> fromDouble </item>
-    <item> fromEnum </item>
-    <item> fromInt </item>
-    <item> fromInteger </item>
-    <item> fromIntegral </item>
-    <item> fromRational </item>
-    <item> fst </item>
-    <item> gcd </item>
-    <item> getChar </item>
-    <item> getContents </item>
-    <item> getLine </item>
-    <item> group </item>
-    <item> head </item>
-    <item> id </item>
-    <item> inRange </item>
-    <item> index </item>
-    <item> init </item>
-    <item> intToDigit </item>
-    <item> interact </item>
-    <item> ioError </item>
-    <item> isAlpha </item>
-    <item> isAlphaNum </item>
-    <item> isAscii </item>
-    <item> isControl </item>
-    <item> isDenormalized </item>
-    <item> isDigit </item>
-    <item> isHexDigit </item>
-    <item> isIEEE </item>
-    <item> isInfinite </item>
-    <item> isLower </item>
-    <item> isNaN </item>
-    <item> isNegativeZero </item>
-    <item> isOctDigit </item>
-    <item> isPrint </item>
-    <item> isSpace </item>
-    <item> isUpper </item>
-    <item> iterate </item>
-    <item> last </item>
-    <item> lcm </item>
-    <item> length </item>
-    <item> lex </item>
-    <item> lexDigits </item>
-    <item> lexLitChar </item>
-    <item> lines </item>
-    <item> log </item>
-    <item> logBase </item>
-    <item> lookup </item>
-    <item> map </item>
-    <item> mappend </item>
-    <item> mapM </item>
-    <item> mapM_ </item>
-    <item> max </item>
-    <item> maxBound </item>
-    <item> maximum </item>
-    <item> maybe </item>
-    <item> mconcat </item>
-    <item> mempty </item>
-    <item> min </item>
-    <item> minBound </item>
-    <item> minimum </item>
-    <item> mod </item>
-    <item> negate </item>
-    <item> not </item>
-    <item> notElem </item>
-    <item> null </item>
-    <item> numerator </item>
-    <item> odd </item>
-    <item> or </item>
-    <item> ord </item>
-    <item> otherwise </item>
-    <item> pack </item>
-    <item> pi </item>
-    <item> pred </item>
-    <item> primExitWith </item>
-    <item> print </item>
-    <item> product </item>
-    <item> properFraction </item>
-    <item> pure </item>
-    <item> putChar </item>
-    <item> putStr </item>
-    <item> putStrLn </item>
-    <item> quot </item>
-    <item> quotRem </item>
-    <item> range </item>
-    <item> rangeSize </item>
-    <item> read </item>
-    <item> readDec </item>
-    <item> readFile </item>
-    <item> readFloat </item>
-    <item> readHex </item>
-    <item> readIO </item>
-    <item> readInt </item>
-    <item> readList </item>
-    <item> readLitChar </item>
-    <item> readLn </item>
-    <item> readOct </item>
-    <item> readParen </item>
-    <item> readSigned </item>
-    <item> reads </item>
-    <item> readsPrec </item>
-    <item> realToFrac </item>
-    <item> recip </item>
-    <item> rem </item>
-    <item> repeat </item>
-    <item> replicate </item>
-    <item> return </item>
-    <item> reverse </item>
-    <item> round </item>
-    <item> scaleFloat </item>
-    <item> scanl </item>
-    <item> scanl1 </item>
-    <item> scanr </item>
-    <item> scanr1 </item>
-    <item> seq </item>
-    <item> sequence </item>
-    <item> sequenceA </item>
-    <item> sequence_ </item>
-    <item> show </item>
-    <item> showChar </item>
-    <item> showInt </item>
-    <item> showList </item>
-    <item> showLitChar </item>
-    <item> showParen </item>
-    <item> showSigned </item>
-    <item> showString </item>
-    <item> shows </item>
-    <item> showsPrec </item>
-    <item> significand </item>
-    <item> signum </item>
-    <item> sin </item>
-    <item> sinh </item>
-    <item> snd </item>
-    <item> sort </item>
-    <item> span </item>
-    <item> splitAt </item>
-    <item> sqrt </item>
-    <item> subtract </item>
-    <item> succ </item>
-    <item> sum </item>
-    <item> tail </item>
-    <item> take </item>
-    <item> takeWhile </item>
-    <item> tan </item>
-    <item> tanh </item>
-    <item> threadToIOResult </item>
-    <item> toEnum </item>
-    <item> toInt </item>
-    <item> toInteger </item>
-    <item> toLower </item>
-    <item> toRational </item>
-    <item> toUpper </item>
-    <item> traverse </item>
-    <item> truncate </item>
-    <item> uncurry </item>
-    <item> undefined </item>
-    <item> unlines </item>
-    <item> until </item>
-    <item> unwords </item>
-    <item> unzip </item>
-    <item> unzip3 </item>
-    <item> userError </item>
-    <item> words </item>
-    <item> writeFile </item>
-    <item> zip </item>
-    <item> zip3 </item>
-    <item> zipWith </item>
-    <item> zipWith3 </item>
+    <item>FilePath</item>
+    <item>IOError</item>
+    <item>abs</item>
+    <item>acos</item>
+    <item>acosh</item>
+    <item>all</item>
+    <item>and</item>
+    <item>any</item>
+    <item>appendFile</item>
+    <item>approxRational</item>
+    <item>asTypeOf</item>
+    <item>asin</item>
+    <item>asinh</item>
+    <item>atan</item>
+    <item>atan2</item>
+    <item>atanh</item>
+    <item>basicIORun</item>
+    <item>break</item>
+    <item>catch</item>
+    <item>ceiling</item>
+    <item>chr</item>
+    <item>compare</item>
+    <item>concat</item>
+    <item>concatMap</item>
+    <item>const</item>
+    <item>cos</item>
+    <item>cosh</item>
+    <item>curry</item>
+    <item>cycle</item>
+    <item>decodeFloat</item>
+    <item>denominator</item>
+    <item>digitToInt</item>
+    <item>div</item>
+    <item>divMod</item>
+    <item>drop</item>
+    <item>dropWhile</item>
+    <item>either</item>
+    <item>elem</item>
+    <item>encodeFloat</item>
+    <item>enumFrom</item>
+    <item>enumFromThen</item>
+    <item>enumFromThenTo</item>
+    <item>enumFromTo</item>
+    <item>error</item>
+    <item>even</item>
+    <item>exp</item>
+    <item>exponent</item>
+    <item>fail</item>
+    <item>filter</item>
+    <item>flip</item>
+    <item>floatDigits</item>
+    <item>floatRadix</item>
+    <item>floatRange</item>
+    <item>floor</item>
+    <item>fmap</item>
+    <item>foldl</item>
+    <item>foldl1</item>
+    <item>foldMap</item>
+    <item>foldr</item>
+    <item>foldr1</item>
+    <item>fromDouble</item>
+    <item>fromEnum</item>
+    <item>fromInt</item>
+    <item>fromInteger</item>
+    <item>fromIntegral</item>
+    <item>fromRational</item>
+    <item>fst</item>
+    <item>gcd</item>
+    <item>getChar</item>
+    <item>getContents</item>
+    <item>getLine</item>
+    <item>group</item>
+    <item>head</item>
+    <item>id</item>
+    <item>inRange</item>
+    <item>index</item>
+    <item>init</item>
+    <item>intToDigit</item>
+    <item>interact</item>
+    <item>ioError</item>
+    <item>isAlpha</item>
+    <item>isAlphaNum</item>
+    <item>isAscii</item>
+    <item>isControl</item>
+    <item>isDenormalized</item>
+    <item>isDigit</item>
+    <item>isHexDigit</item>
+    <item>isIEEE</item>
+    <item>isInfinite</item>
+    <item>isLower</item>
+    <item>isNaN</item>
+    <item>isNegativeZero</item>
+    <item>isOctDigit</item>
+    <item>isPrint</item>
+    <item>isSpace</item>
+    <item>isUpper</item>
+    <item>iterate</item>
+    <item>last</item>
+    <item>lcm</item>
+    <item>length</item>
+    <item>lex</item>
+    <item>lexDigits</item>
+    <item>lexLitChar</item>
+    <item>lines</item>
+    <item>log</item>
+    <item>logBase</item>
+    <item>lookup</item>
+    <item>map</item>
+    <item>mappend</item>
+    <item>mapM</item>
+    <item>mapM_</item>
+    <item>max</item>
+    <item>maxBound</item>
+    <item>maximum</item>
+    <item>maybe</item>
+    <item>mconcat</item>
+    <item>mempty</item>
+    <item>min</item>
+    <item>minBound</item>
+    <item>minimum</item>
+    <item>mod</item>
+    <item>negate</item>
+    <item>not</item>
+    <item>notElem</item>
+    <item>null</item>
+    <item>numerator</item>
+    <item>odd</item>
+    <item>or</item>
+    <item>ord</item>
+    <item>otherwise</item>
+    <item>pack</item>
+    <item>pi</item>
+    <item>pred</item>
+    <item>primExitWith</item>
+    <item>print</item>
+    <item>product</item>
+    <item>properFraction</item>
+    <item>pure</item>
+    <item>putChar</item>
+    <item>putStr</item>
+    <item>putStrLn</item>
+    <item>quot</item>
+    <item>quotRem</item>
+    <item>range</item>
+    <item>rangeSize</item>
+    <item>read</item>
+    <item>readDec</item>
+    <item>readFile</item>
+    <item>readFloat</item>
+    <item>readHex</item>
+    <item>readIO</item>
+    <item>readInt</item>
+    <item>readList</item>
+    <item>readLitChar</item>
+    <item>readLn</item>
+    <item>readOct</item>
+    <item>readParen</item>
+    <item>readSigned</item>
+    <item>reads</item>
+    <item>readsPrec</item>
+    <item>realToFrac</item>
+    <item>recip</item>
+    <item>rem</item>
+    <item>repeat</item>
+    <item>replicate</item>
+    <item>return</item>
+    <item>reverse</item>
+    <item>round</item>
+    <item>scaleFloat</item>
+    <item>scanl</item>
+    <item>scanl1</item>
+    <item>scanr</item>
+    <item>scanr1</item>
+    <item>seq</item>
+    <item>sequence</item>
+    <item>sequenceA</item>
+    <item>sequence_</item>
+    <item>show</item>
+    <item>showChar</item>
+    <item>showInt</item>
+    <item>showList</item>
+    <item>showLitChar</item>
+    <item>showParen</item>
+    <item>showSigned</item>
+    <item>showString</item>
+    <item>shows</item>
+    <item>showsPrec</item>
+    <item>significand</item>
+    <item>signum</item>
+    <item>sin</item>
+    <item>sinh</item>
+    <item>snd</item>
+    <item>sort</item>
+    <item>span</item>
+    <item>splitAt</item>
+    <item>sqrt</item>
+    <item>subtract</item>
+    <item>succ</item>
+    <item>sum</item>
+    <item>tail</item>
+    <item>take</item>
+    <item>takeWhile</item>
+    <item>tan</item>
+    <item>tanh</item>
+    <item>threadToIOResult</item>
+    <item>toEnum</item>
+    <item>toInt</item>
+    <item>toInteger</item>
+    <item>toLower</item>
+    <item>toRational</item>
+    <item>toUpper</item>
+    <item>traverse</item>
+    <item>truncate</item>
+    <item>uncurry</item>
+    <item>undefined</item>
+    <item>unlines</item>
+    <item>until</item>
+    <item>unwords</item>
+    <item>unzip</item>
+    <item>unzip3</item>
+    <item>userError</item>
+    <item>words</item>
+    <item>writeFile</item>
+    <item>zip</item>
+    <item>zip3</item>
+    <item>zipWith</item>
+    <item>zipWith3</item>
   </list>
   <list name="prelude class">
-    <item> Applicative </item>
-    <item> Bounded </item>
-    <item> Enum </item>
-    <item> Eq </item>
-    <item> Floating </item>
-    <item> Foldable </item>
-    <item> Fractional </item>
-    <item> Functor </item>
-    <item> Integral </item>
-    <item> Ix </item>
-    <item> Monad </item>
-    <item> Monoid </item>
-    <item> Num </item>
-    <item> Ord </item>
-    <item> Read </item>
-    <item> Real </item>
-    <item> RealFloat </item>
-    <item> RealFrac </item>
-    <item> Show </item>
-    <item> Traversable </item>
+    <item>Applicative</item>
+    <item>Bounded</item>
+    <item>Enum</item>
+    <item>Eq</item>
+    <item>Floating</item>
+    <item>Foldable</item>
+    <item>Fractional</item>
+    <item>Functor</item>
+    <item>Integral</item>
+    <item>Ix</item>
+    <item>Monad</item>
+    <item>Monoid</item>
+    <item>Num</item>
+    <item>Ord</item>
+    <item>Read</item>
+    <item>Real</item>
+    <item>RealFloat</item>
+    <item>RealFrac</item>
+    <item>Show</item>
+    <item>Traversable</item>
   </list>
   <list name="prelude type">
-    <item> Bool </item>
-    <item> ByteString </item>
-    <item> Char </item>
-    <item> Double </item>
-    <item> Either </item>
-    <item> FilePath </item>
-    <item> Float </item>
-    <item> Int </item>
-    <item> Integer </item>
-    <item> IO </item>
-    <item> IOError </item>
-    <item> Maybe </item>
-    <item> Ordering </item>
-    <item> Ratio </item>
-    <item> Rational </item>
-    <item> ReadS </item>
-    <item> ShowS </item>
-    <item> String </item>
-    <item> Word </item>
+    <item>Bool</item>
+    <item>ByteString</item>
+    <item>Char</item>
+    <item>Double</item>
+    <item>Either</item>
+    <item>FilePath</item>
+    <item>Float</item>
+    <item>Int</item>
+    <item>Integer</item>
+    <item>IO</item>
+    <item>IOError</item>
+    <item>Maybe</item>
+    <item>Ordering</item>
+    <item>Ratio</item>
+    <item>Rational</item>
+    <item>ReadS</item>
+    <item>ShowS</item>
+    <item>String</item>
+    <item>Word</item>
   </list>
   <list name="prelude data">
-    <item> False </item>
-    <item> True </item>
-    <item> Left </item>
-    <item> Right </item>
-    <item> Just </item>
-    <item> Nothing </item>
-    <item> EQ </item>
-    <item> LT </item>
-    <item> GT </item>
+    <item>False</item>
+    <item>True</item>
+    <item>Left</item>
+    <item>Right</item>
+    <item>Just</item>
+    <item>Nothing</item>
+    <item>EQ</item>
+    <item>LT</item>
+    <item>GT</item>
   </list>
   <list name="cpp_keywords">
-    <item> defined </item>
-    <item> if </item>
-    <item> ifdef </item>
-    <item> ifndef </item>
-    <item> include </item>
-    <item> undef </item>
+    <item>defined</item>
+    <item>if</item>
+    <item>ifdef</item>
+    <item>ifndef</item>
+    <item>include</item>
+    <item>undef</item>
   </list>
   <list name="c2hs_keywords">
-    <item> qualified </item>
-    <item> lib </item>
-    <item> prefix </item>
-    <item> as </item>
-    <item> with </item>
-    <item> call </item>
-    <item> pure </item>
-    <item> unsafe </item>
-    <item> get </item>
-    <item> set </item>
-    <item> foreign </item>
-    <item> stable </item>
-    <item> nocode </item>
+    <item>qualified</item>
+    <item>lib</item>
+    <item>prefix</item>
+    <item>as</item>
+    <item>with</item>
+    <item>call</item>
+    <item>pure</item>
+    <item>unsafe</item>
+    <item>get</item>
+    <item>set</item>
+    <item>foreign</item>
+    <item>stable</item>
+    <item>nocode</item>
   </list>
   <list name="import_keywords">
-    <item> as </item>
-    <item> qualified </item>
-    <item> hiding </item>
+    <item>as</item>
+    <item>qualified</item>
+    <item>hiding</item>
+  </list>
+  <list name="language_pragmas">
+    <item>AllowAmbiguousTypes</item>
+    <item>ApplicativeDo</item>
+    <item>Arrows</item>
+    <item>AutoDeriveTypeable</item>
+    <item>BangPatterns</item>
+    <item>BinaryLiterals</item>
+    <item>CApiFFI</item>
+    <item>CPP</item>
+    <item>ConstrainedClassMethods</item>
+    <item>ConstraintKinds</item>
+    <item>DataKinds</item>
+    <item>DatatypeContexts</item>
+    <item>DefaultSignatures</item>
+    <item>DeriveAnyClass</item>
+    <item>DeriveDataTypeable</item>
+    <item>DeriveFoldable</item>
+    <item>DeriveFunctor</item>
+    <item>DeriveGeneric</item>
+    <item>DeriveLift</item>
+    <item>DeriveTraversable</item>
+    <item>DisambiguateRecordFields</item>
+    <item>DoAndIfThenElse</item>
+    <item>DoRec</item>
+    <item>DuplicateRecordFields</item>
+    <item>EmptyCase</item>
+    <item>EmptyDataDecls</item>
+    <item>ExistentialQuantification</item>
+    <item>ExplicitForAll</item>
+    <item>ExplicitNamespaces</item>
+    <item>ExtendedDefaultRules</item>
+    <item>ExtensibleRecords</item>
+    <item>FlexibleContexts</item>
+    <item>FlexibleInstances</item>
+    <item>ForeignFunctionInterface</item>
+    <item>FunctionalDependencies</item>
+    <item>GADTSyntax</item>
+    <item>GADTs</item>
+    <item>GHCForeignImportPrim</item>
+    <item>GeneralizedNewtypeDeriving</item>
+    <item>Generics</item>
+    <item>HereDocuments</item>
+    <item>ImplicitParams</item>
+    <item>ImplicitPrelude</item>
+    <item>ImpredicativeTypes</item>
+    <item>IncoherentInstances</item>
+    <item>InstanceSigs</item>
+    <item>InterruptibleFFI</item>
+    <item>JavaScriptFFI</item>
+    <item>KindSignatures</item>
+    <item>LambdaCase</item>
+    <item>LiberalTypeSynonyms</item>
+    <item>MagicHash</item>
+    <item>MonadComprehensions</item>
+    <item>MonadFailDesugaring</item>
+    <item>MonoLocalBinds</item>
+    <item>MonoPatBinds</item>
+    <item>MonomorphismRestriction</item>
+    <item>MultiParamTypeClasses</item>
+    <item>MultiWayIf</item>
+    <item>NPlusKPatterns</item>
+    <item>NamedFieldPuns</item>
+    <item>NamedWildCards</item>
+    <item>NegativeLiterals</item>
+    <item>NewQualifiedOperators</item>
+    <item>NondecreasingIndentation</item>
+    <item>NullaryTypeClasses</item>
+    <item>NumDecimals</item>
+    <item>OverlappingInstances</item>
+    <item>OverloadedLabels</item>
+    <item>OverloadedLists</item>
+    <item>OverloadedStrings</item>
+    <item>PackageImports</item>
+    <item>ParallelArrays</item>
+    <item>ParallelListComp</item>
+    <item>PartialTypeSignatures</item>
+    <item>PatternGuards</item>
+    <item>PatternSignatures</item>
+    <item>PatternSynonyms</item>
+    <item>PolyKinds</item>
+    <item>PolymorphicComponents</item>
+    <item>PostfixOperators</item>
+    <item>QuasiQuotes</item>
+    <item>Rank2Types</item>
+    <item>RankNTypes</item>
+    <item>RebindableSyntax</item>
+    <item>RecordPuns</item>
+    <item>RecordWildCards</item>
+    <item>RecursiveDo</item>
+    <item>RegularPatterns</item>
+    <item>RelaxedPolyRec</item>
+    <item>RestrictedTypeSynonyms</item>
+    <item>RoleAnnotations</item>
+    <item>Safe</item>
+    <item>SafeImports</item>
+    <item>ScopedTypeVariables</item>
+    <item>StandaloneDeriving</item>
+    <item>StaticPointers</item>
+    <item>Strict</item>
+    <item>StrictData</item>
+    <item>TemplateHaskell</item>
+    <item>TemplateHaskellQuotes</item>
+    <item>TraditionalRecordSyntax</item>
+    <item>TransformListComp</item>
+    <item>Trustworthy</item>
+    <item>TupleSections</item>
+    <item>TypeApplications</item>
+    <item>TypeFamilies</item>
+    <item>TypeInType</item>
+    <item>TypeOperators</item>
+    <item>TypeSynonymInstances</item>
+    <item>UnboxedTuples</item>
+    <item>UndecidableInstances</item>
+    <item>UndecidableSuperClasses</item>
+    <item>UnicodeSyntax</item>
+    <item>UnliftedFFITypes</item>
+    <item>Unsafe</item>
+    <item>ViewPatterns</item>
+    <item>XmlSyntax</item>
   </list>
   <contexts>
     <context attribute="Normal" lineEndContext="#stay" name="code">
-      <RegExpr attribute="Pragma"  context="#stay" String="\{-#.*#-\}"/>
+      <StringDetect attribute="Pragma"  context="pragma" String="{-#"/>
       <StringDetect attribute="Comment" context="#stay" String="{--}"/>
       <RegExpr attribute="Comment" context="comments" String="\{-[^#]?" />
       <RegExpr attribute="Comment" context="comment"  String="--[\-]*([^!#\$%&amp;\*\+\./&lt;=&gt;\?@&#92;\^\|\-~:]|$)" />
-      <RegExpr attribute="Keyword" context="import"   String="import\s+" />
+      <WordDetect attribute="Keyword" context="import"   String="import" />
       <Detect2Chars attribute="C2HS Directive" context="c2hs directive" char="{" char1="#"/>
       <DetectChar attribute="C Preprocessor" context="C Preprocessor" char="#" column="0"/>
 
@@ -383,6 +503,10 @@
     <context attribute="Normal" lineEndContext="#stay" name="Hamlet">
       <IncludeRules context="QuasiQuote"/>
       <IncludeRules context="##Hamlet" />
+    </context>
+    <context attribute="Pragma" lineEndContext="#stay" name="pragma">
+      <keyword attribute="Pragma" context="#stay" String="language_pragmas" />
+      <StringDetect attribute="Pragma"  context="#pop" String="#-}"/>
     </context>
     <context attribute="Comment" lineEndContext="#pop" name="comment">
       <IncludeRules context="Haddock" />

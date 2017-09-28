@@ -12,28 +12,28 @@
 <highlighting>
 
 	<list name="controls">
-		<item> for </item>
-		<item> in </item>
-		<item> next </item>
-		<item> break </item>
-		<item> while </item>
-		<item> repeat </item>
-		<item> if </item>
-		<item> else </item>
-		<item> switch </item>
-		<item> function </item>
+		<item>for</item>
+		<item>in</item>
+		<item>next</item>
+		<item>break</item>
+		<item>while</item>
+		<item>repeat</item>
+		<item>if</item>
+		<item>else</item>
+		<item>switch</item>
+		<item>function</item>
 	</list>
 	<list name="words">
-		<item> TRUE </item>
-		<item> FALSE </item>
-		<item> NULL </item>
-		<item> NA </item>
-		<item> NA_integer_ </item>
-		<item> NA_real_ </item>
-		<item> NA_complex_ </item>
-		<item> NA_character_ </item>
-		<item> Inf </item>
-		<item> NaN </item>
+		<item>TRUE</item>
+		<item>FALSE</item>
+		<item>NULL</item>
+		<item>NA</item>
+		<item>NA_integer_</item>
+		<item>NA_real_</item>
+		<item>NA_complex_</item>
+		<item>NA_character_</item>
+		<item>Inf</item>
+		<item>NaN</item>
 	</list>
 
 	<contexts>

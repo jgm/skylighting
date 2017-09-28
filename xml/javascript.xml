@@ -3,71 +3,71 @@
 <!-- Author: Anders Lund <anders@alweb.dk> //-->
 <!-- Minor changes: Joseph Wenninger <jowenn@kde.org> //-->
 <!-- Full JavaScript 1.0 support by Whitehawk Stormchaser //-->
-<language name="JavaScript" version="2" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript"
+<language name="JavaScript" version="4" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
   <highlighting>
     <list name="controlflow">
-      <item> break </item>
-      <item> case </item>
-      <item> catch </item>
-      <item> continue </item>
-      <item> debugger </item>
-      <item> do </item>
-      <item> else </item>
-      <item> finally </item>
-      <item> for </item>
-      <item> if </item>
-      <item> return </item>
-      <item> switch </item>
-      <item> throw </item>
-      <item> try </item>
-      <item> while </item>
-      <item> with </item>
+      <item>break</item>
+      <item>case</item>
+      <item>catch</item>
+      <item>continue</item>
+      <item>debugger</item>
+      <item>do</item>
+      <item>else</item>
+      <item>finally</item>
+      <item>for</item>
+      <item>if</item>
+      <item>return</item>
+      <item>switch</item>
+      <item>throw</item>
+      <item>try</item>
+      <item>while</item>
+      <item>with</item>
     </list>
     <list name="keywords">
-      <item> const </item>
-      <item> delete </item>
-      <item> function </item>
-      <item> in </item>
-      <item> instanceof </item>
-      <item> new </item>
-      <item> this </item>
-      <item> typeof </item>
-      <item> var </item>
-      <item> void </item>
+      <item>const</item>
+      <item>delete</item>
+      <item>function</item>
+      <item>in</item>
+      <item>instanceof</item>
+      <item>new</item>
+      <item>this</item>
+      <item>typeof</item>
+      <item>var</item>
+      <item>void</item>
     </list>
     <list name="reserved">
-      <item> class </item>
-      <item> enum </item>
-      <item> extends </item>
-      <item> super </item>
+      <item>class</item>
+      <item>enum</item>
+      <item>extends</item>
+      <item>super</item>
 
       <!-- The following keywords are reserved only in strict-mode -->
-      <item> implements </item>
-      <item> interface </item>
-      <item> let </item>
-      <item> private </item>
-      <item> protected </item>
-      <item> public </item>
-      <item> static </item>
-      <item> yield </item>
+      <item>implements</item>
+      <item>interface</item>
+      <item>let</item>
+      <item>private</item>
+      <item>protected</item>
+      <item>public</item>
+      <item>static</item>
+      <item>yield</item>
     </list>
     <list name="module">
-      <item> import </item>
-      <item> from </item>
-      <item> as </item>
-      <item> default </item>
-      <item> export </item>
-      <item> package </item>
+      <item>import</item>
+      <item>from</item>
+      <item>as</item>
+      <item>default</item>
+      <item>export</item>
+      <item>package</item>
     </list>
     <list name="primitives">
-      <item> Infinity </item>
-      <item> NaN </item>
-      <item> false </item>
-      <item> null </item>
-      <item> true </item>
-      <item> undefined </item>
+      <item>Infinity</item>
+      <item>NaN</item>
+      <item>false</item>
+      <item>null</item>
+      <item>true</item>
+      <item>undefined</item>
     </list>
     <contexts>
 
@@ -116,6 +116,9 @@
         <Detect2Chars attribute="Comment" context="Comment" char="/" char1="/" />
         <Detect2Chars attribute="Comment" context="Multi/inline Comment" char="/" char1="*" beginRegion="Comment" />
 
+        <!-- E4X extension (=xml inside JavaScript), see bug #373713 -->
+        <Detect2Chars attribute="Normal Text" context="NoRegExp" char="&lt;" char1="/" />
+        <Detect2Chars attribute="Normal Text" context="NoRegExp" char="/" char1="&gt;" />
         <DetectChar attribute="Regular Expression" context="(regex caret first check)" char="/" />
 
         <DetectChar attribute="Symbol" context="Object" char="{" beginRegion="Brace" />

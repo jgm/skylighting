@@ -25,319 +25,319 @@
 
   <highlighting>
     <list name="qtest keywords">
-      <item> in </item>
-      <item> as </item>
-      <item> forall </item>
+      <item>in</item>
+      <item>as</item>
+      <item>forall</item>
     </list>
     <list name="Keywords">
-      <item> and </item>
-      <item> as </item>
-      <item> assert </item>
-      <item> asr </item>
-      <item> begin </item>
-      <item> class </item>
-      <item> closed </item>
-      <item> constraint </item>
-      <item> do </item>
-      <item> done </item>
-      <item> downto </item>
-      <item> else </item>
-      <item> end </item>
-      <item> exception </item>
-      <item> external </item>
-      <item> false </item>
-      <item> for </item>
-      <item> fun </item>
-      <item> function </item>
-      <item> functor </item>
-      <item> if </item>
-      <item> in </item>
-      <item> include </item>
-      <item> inherit </item>
-      <item> land </item>
-      <item> lazy </item>
-      <item> let </item>
-      <item> lor </item>
-      <item> lsl </item>
-      <item> lsr </item>
-      <item> lxor </item>
-      <item> match </item>
-      <item> method </item>
-      <item> mod </item>
-      <item> module </item>
-      <item> mutable </item>
-      <item> new </item>
-      <item> nonrec </item>
-      <item> object </item>
-      <item> of </item>
-      <item> open </item>
-      <item> or </item>
-      <item> parser </item>
-      <item> private </item>
-      <item> rec </item>
-      <item> sig </item>
-      <item> struct </item>
-      <item> then </item>
-      <item> to </item>
-      <item> true </item>
-      <item> try </item>
-      <item> type </item>
-      <item> val </item>
-      <item> virtual </item>
-      <item> when </item>
-      <item> while </item>
-      <item> with </item>
+      <item>and</item>
+      <item>as</item>
+      <item>assert</item>
+      <item>asr</item>
+      <item>begin</item>
+      <item>class</item>
+      <item>closed</item>
+      <item>constraint</item>
+      <item>do</item>
+      <item>done</item>
+      <item>downto</item>
+      <item>else</item>
+      <item>end</item>
+      <item>exception</item>
+      <item>external</item>
+      <item>false</item>
+      <item>for</item>
+      <item>fun</item>
+      <item>function</item>
+      <item>functor</item>
+      <item>if</item>
+      <item>in</item>
+      <item>include</item>
+      <item>inherit</item>
+      <item>land</item>
+      <item>lazy</item>
+      <item>let</item>
+      <item>lor</item>
+      <item>lsl</item>
+      <item>lsr</item>
+      <item>lxor</item>
+      <item>match</item>
+      <item>method</item>
+      <item>mod</item>
+      <item>module</item>
+      <item>mutable</item>
+      <item>new</item>
+      <item>nonrec</item>
+      <item>object</item>
+      <item>of</item>
+      <item>open</item>
+      <item>or</item>
+      <item>parser</item>
+      <item>private</item>
+      <item>rec</item>
+      <item>sig</item>
+      <item>struct</item>
+      <item>then</item>
+      <item>to</item>
+      <item>true</item>
+      <item>try</item>
+      <item>type</item>
+      <item>val</item>
+      <item>virtual</item>
+      <item>when</item>
+      <item>while</item>
+      <item>with</item>
     </list>
 
     <!-- Revised Syntax keywords are highlighted as identifiers by default. -->
     <!-- Change their highlighting colour to match the standard keywords    -->
     <!-- if you intend to use the Camlp4 Revised Syntax.                    -->
     <list name="Revised Syntax Keywords">
-      <item> declare </item>
-      <item> value </item>
-      <item> where </item>
+      <item>declare</item>
+      <item>value</item>
+      <item>where</item>
     </list>
 
     <list name="Pervasive Functions">
-      <item> abs </item>
-      <item> abs_float </item>
-      <item> acos </item>
-      <item> asin </item>
-      <item> at_exit </item>
-      <item> atan </item>
-      <item> atan2 </item>
-      <item> bool_of_string </item>
-      <item> ceil </item>
-      <item> char_of_int </item>
-      <item> classify_float </item>
-      <item> close_in </item>
-      <item> close_in_noerr </item>
-      <item> close_out </item>
-      <item> close_out_noerr </item>
-      <item> compare </item>
-      <item> copysign </item>
-      <item> cos </item>
-      <item> cosh </item>
-      <item> decr </item>
-      <item> do_at_exit </item>
-      <item> epsilon_float </item>
-      <item> exp </item>
-      <item> expm1 </item>
-      <item> float </item>
-      <item> float_of_int </item>
-      <item> float_of_string </item>
-      <item> floor </item>
-      <item> flush </item>
-      <item> flush_all </item>
-      <item> format_of_string </item>
-      <item> frexp </item>
-      <item> fst </item>
-      <item> hypot </item>
-      <item> ignore </item>
-      <item> in_channel_length </item>
-      <item> incr </item>
-      <item> infinity </item>
-      <item> input </item>
-      <item> input_binary_int </item>
-      <item> input_byte </item>
-      <item> input_char </item>
-      <item> input_line </item>
-      <item> input_value </item>
-      <item> int_of_char </item>
-      <item> int_of_float </item>
-      <item> int_of_string </item>
-      <item> ldexp </item>
-      <item> lnot </item>
-      <item> log </item>
-      <item> log10 </item>
-      <item> log1p </item>
-      <item> max </item>
-      <item> max_float </item>
-      <item> max_int </item>
-      <item> min </item>
-      <item> min_float </item>
-      <item> min_int </item>
-      <item> mod_float </item>
-      <item> modf </item>
-      <item> nan </item>
-      <item> neg_infinity </item>
-      <item> not </item>
-      <item> open_in </item>
-      <item> open_in_bin </item>
-      <item> open_in_gen </item>
-      <item> open_out </item>
-      <item> open_out_bin </item>
-      <item> open_out_gen </item>
-      <item> out_channel_length </item>
-      <item> output </item>
-      <item> output_binary_int </item>
-      <item> output_byte </item>
-      <item> output_bytes </item>
-      <item> output_char </item>
-      <item> output_string </item>
-      <item> output_substring </item>
-      <item> output_value </item>
-      <item> pos_in </item>
-      <item> pos_out </item>
-      <item> pred </item>
-      <item> prerr_bytes </item>
-      <item> prerr_char </item>
-      <item> prerr_endline </item>
-      <item> prerr_float </item>
-      <item> prerr_int </item>
-      <item> prerr_newline </item>
-      <item> prerr_string </item>
-      <item> print_bytes </item>
-      <item> print_char </item>
-      <item> print_endline </item>
-      <item> print_float </item>
-      <item> print_int </item>
-      <item> print_newline </item>
-      <item> print_string </item>
-      <item> read_float </item>
-      <item> read_int </item>
-      <item> read_line </item>
-      <item> really_input </item>
-      <item> really_input_string </item>
-      <item> ref </item>
-      <item> seek_in </item>
-      <item> seek_out </item>
-      <item> set_binary_mode_in </item>
-      <item> set_binary_mode_out </item>
-      <item> sin </item>
-      <item> sinh </item>
-      <item> snd </item>
-      <item> sqrt </item>
-      <item> stderr </item>
-      <item> stdin </item>
-      <item> stdout </item>
-      <item> string_of_bool </item>
-      <item> string_of_float </item>
-      <item> string_of_format </item>
-      <item> string_of_int </item>
-      <item> succ </item>
-      <item> tan </item>
-      <item> tanh </item>
-      <item> truncate </item>
-      <item> unsafe_really_input </item>
-      <item> valid_float_lexem </item>
+      <item>abs</item>
+      <item>abs_float</item>
+      <item>acos</item>
+      <item>asin</item>
+      <item>at_exit</item>
+      <item>atan</item>
+      <item>atan2</item>
+      <item>bool_of_string</item>
+      <item>ceil</item>
+      <item>char_of_int</item>
+      <item>classify_float</item>
+      <item>close_in</item>
+      <item>close_in_noerr</item>
+      <item>close_out</item>
+      <item>close_out_noerr</item>
+      <item>compare</item>
+      <item>copysign</item>
+      <item>cos</item>
+      <item>cosh</item>
+      <item>decr</item>
+      <item>do_at_exit</item>
+      <item>epsilon_float</item>
+      <item>exp</item>
+      <item>expm1</item>
+      <item>float</item>
+      <item>float_of_int</item>
+      <item>float_of_string</item>
+      <item>floor</item>
+      <item>flush</item>
+      <item>flush_all</item>
+      <item>format_of_string</item>
+      <item>frexp</item>
+      <item>fst</item>
+      <item>hypot</item>
+      <item>ignore</item>
+      <item>in_channel_length</item>
+      <item>incr</item>
+      <item>infinity</item>
+      <item>input</item>
+      <item>input_binary_int</item>
+      <item>input_byte</item>
+      <item>input_char</item>
+      <item>input_line</item>
+      <item>input_value</item>
+      <item>int_of_char</item>
+      <item>int_of_float</item>
+      <item>int_of_string</item>
+      <item>ldexp</item>
+      <item>lnot</item>
+      <item>log</item>
+      <item>log10</item>
+      <item>log1p</item>
+      <item>max</item>
+      <item>max_float</item>
+      <item>max_int</item>
+      <item>min</item>
+      <item>min_float</item>
+      <item>min_int</item>
+      <item>mod_float</item>
+      <item>modf</item>
+      <item>nan</item>
+      <item>neg_infinity</item>
+      <item>not</item>
+      <item>open_in</item>
+      <item>open_in_bin</item>
+      <item>open_in_gen</item>
+      <item>open_out</item>
+      <item>open_out_bin</item>
+      <item>open_out_gen</item>
+      <item>out_channel_length</item>
+      <item>output</item>
+      <item>output_binary_int</item>
+      <item>output_byte</item>
+      <item>output_bytes</item>
+      <item>output_char</item>
+      <item>output_string</item>
+      <item>output_substring</item>
+      <item>output_value</item>
+      <item>pos_in</item>
+      <item>pos_out</item>
+      <item>pred</item>
+      <item>prerr_bytes</item>
+      <item>prerr_char</item>
+      <item>prerr_endline</item>
+      <item>prerr_float</item>
+      <item>prerr_int</item>
+      <item>prerr_newline</item>
+      <item>prerr_string</item>
+      <item>print_bytes</item>
+      <item>print_char</item>
+      <item>print_endline</item>
+      <item>print_float</item>
+      <item>print_int</item>
+      <item>print_newline</item>
+      <item>print_string</item>
+      <item>read_float</item>
+      <item>read_int</item>
+      <item>read_line</item>
+      <item>really_input</item>
+      <item>really_input_string</item>
+      <item>ref</item>
+      <item>seek_in</item>
+      <item>seek_out</item>
+      <item>set_binary_mode_in</item>
+      <item>set_binary_mode_out</item>
+      <item>sin</item>
+      <item>sinh</item>
+      <item>snd</item>
+      <item>sqrt</item>
+      <item>stderr</item>
+      <item>stdin</item>
+      <item>stdout</item>
+      <item>string_of_bool</item>
+      <item>string_of_float</item>
+      <item>string_of_format</item>
+      <item>string_of_int</item>
+      <item>succ</item>
+      <item>tan</item>
+      <item>tanh</item>
+      <item>truncate</item>
+      <item>unsafe_really_input</item>
+      <item>valid_float_lexem</item>
     </list>
 
     <!-- These pervasive functions control program flow,    -->
     <!-- so some people like to highlight them as keywords: -->
     <list name="Flow Control Functions">
-      <item> exit </item>
-      <item> failwith </item>
-      <item> invalid_arg </item>
-      <item> raise </item>
-      <item> raise_notrace </item>
+      <item>exit</item>
+      <item>failwith</item>
+      <item>invalid_arg</item>
+      <item>raise</item>
+      <item>raise_notrace</item>
     </list>
 
     <list name="Pervasive Types">
-      <item> array </item>
-      <item> bool </item>
-      <item> bytes </item>
-      <item> char </item>
-      <item> exn </item>
-      <item> float </item>
-      <item> format4 </item>
-      <item> format6 </item>
-      <item> fpclass </item>
-      <item> in_channel </item>
-      <item> int </item>
-      <item> int32 </item>
-      <item> int64 </item>
-      <item> lazy_t </item>
-      <item> list </item>
-      <item> nativeint </item>
-      <item> open_flag </item>
-      <item> option </item>
-      <item> out_channel </item>
-      <item> real </item>
-      <item> ref </item>
-      <item> string </item>
-      <item> unit </item>
+      <item>array</item>
+      <item>bool</item>
+      <item>bytes</item>
+      <item>char</item>
+      <item>exn</item>
+      <item>float</item>
+      <item>format4</item>
+      <item>format6</item>
+      <item>fpclass</item>
+      <item>in_channel</item>
+      <item>int</item>
+      <item>int32</item>
+      <item>int64</item>
+      <item>lazy_t</item>
+      <item>list</item>
+      <item>nativeint</item>
+      <item>open_flag</item>
+      <item>option</item>
+      <item>out_channel</item>
+      <item>real</item>
+      <item>ref</item>
+      <item>string</item>
+      <item>unit</item>
     </list>
 
     <list name="Pervasive Variant Tags">
-      <item> FP_infinite </item>
-      <item> FP_nan </item>
-      <item> FP_normal </item>
-      <item> FP_subnormal </item>
-      <item> FP_zero </item>
-      <item> None </item>
-      <item> Open_append </item>
-      <item> Open_binary </item>
-      <item> Open_creat </item>
-      <item> Open_excl </item>
-      <item> Open_nonblock </item>
-      <item> Open_rdonly </item>
-      <item> Open_text </item>
-      <item> Open_trunc </item>
-      <item> Open_wronly </item>
-      <item> Some </item>
+      <item>FP_infinite</item>
+      <item>FP_nan</item>
+      <item>FP_normal</item>
+      <item>FP_subnormal</item>
+      <item>FP_zero</item>
+      <item>None</item>
+      <item>Open_append</item>
+      <item>Open_binary</item>
+      <item>Open_creat</item>
+      <item>Open_excl</item>
+      <item>Open_nonblock</item>
+      <item>Open_rdonly</item>
+      <item>Open_text</item>
+      <item>Open_trunc</item>
+      <item>Open_wronly</item>
+      <item>Some</item>
     </list>
 
     <list name="Pervasive Exceptions">
-      <item> Assert_failure </item>
-      <item> Division_by_zero </item>
-      <item> End_of_file </item>
-      <item> Exit </item>
-      <item> Failure </item>
-      <item> Invalid_argument </item>
-      <item> Match_failure </item>
-      <item> Not_found </item>
-      <item> Out_of_memory </item>
-      <item> Stack_overflow </item>
-      <item> Sys_blocked_io </item>
-      <item> Sys_error </item>
-      <item> Undefined_recursive_module </item>
+      <item>Assert_failure</item>
+      <item>Division_by_zero</item>
+      <item>End_of_file</item>
+      <item>Exit</item>
+      <item>Failure</item>
+      <item>Invalid_argument</item>
+      <item>Match_failure</item>
+      <item>Not_found</item>
+      <item>Out_of_memory</item>
+      <item>Stack_overflow</item>
+      <item>Sys_blocked_io</item>
+      <item>Sys_error</item>
+      <item>Undefined_recursive_module</item>
     </list>
 
     <list name="Standard Library Modules">
-      <item> Arg </item>
-      <item> Array </item>
-      <item> ArrayLabels </item>
-      <item> Buffer </item>
-      <item> Bytes </item>
-      <item> Callback </item>
-      <item> Char </item>
-      <item> Complex </item>
-      <item> Digest </item>
-      <item> Ephemeron </item>
-      <item> Filename </item>
-      <item> Format </item>
-      <item> Gc </item>
-      <item> Genlex </item>
-      <item> Hashtbl </item>
-      <item> Int32 </item>
-      <item> Int64 </item>
-      <item> Lazy </item>
-      <item> Lexing </item>
-      <item> List </item>
-      <item> ListLabels </item>
-      <item> Map </item>
-      <item> Marshal </item>
-      <item> MoreLabels </item>
-      <item> Nativeint </item>
-      <item> Oo </item>
-      <item> Parsing </item>
-      <item> Printexc </item>
-      <item> Printf </item>
-      <item> Queue </item>
-      <item> Random </item>
-      <item> Scanf </item>
-      <item> Set </item>
-      <item> Sort </item>
-      <item> Spacetime </item>
-      <item> Stack </item>
-      <item> StdLabels </item>
-      <item> Stream </item>
-      <item> String </item>
-      <item> StringLabels </item>
-      <item> Sys </item>
-      <item> Uchar </item>
-      <item> Weak </item>
+      <item>Arg</item>
+      <item>Array</item>
+      <item>ArrayLabels</item>
+      <item>Buffer</item>
+      <item>Bytes</item>
+      <item>Callback</item>
+      <item>Char</item>
+      <item>Complex</item>
+      <item>Digest</item>
+      <item>Ephemeron</item>
+      <item>Filename</item>
+      <item>Format</item>
+      <item>Gc</item>
+      <item>Genlex</item>
+      <item>Hashtbl</item>
+      <item>Int32</item>
+      <item>Int64</item>
+      <item>Lazy</item>
+      <item>Lexing</item>
+      <item>List</item>
+      <item>ListLabels</item>
+      <item>Map</item>
+      <item>Marshal</item>
+      <item>MoreLabels</item>
+      <item>Nativeint</item>
+      <item>Oo</item>
+      <item>Parsing</item>
+      <item>Printexc</item>
+      <item>Printf</item>
+      <item>Queue</item>
+      <item>Random</item>
+      <item>Scanf</item>
+      <item>Set</item>
+      <item>Sort</item>
+      <item>Spacetime</item>
+      <item>Stack</item>
+      <item>StdLabels</item>
+      <item>Stream</item>
+      <item>String</item>
+      <item>StringLabels</item>
+      <item>Sys</item>
+      <item>Uchar</item>
+      <item>Weak</item>
     </list>
 
     <contexts>

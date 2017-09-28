@@ -118,581 +118,581 @@
 
   <highlighting>
     <list name="contexts">
-      <item> ChoirStaff </item>
-      <item> ChordNames </item>
-      <item> CueVoice </item>
-      <item> Devnull </item>
-      <item> DrumStaff </item>
-      <item> DrumVoice </item>
-      <item> Dynamics </item>
-      <item> FiguredBass </item>
-      <item> FretBoards </item>
-      <item> Global </item>
-      <item> GrandStaff </item>
-      <item> GregorianTranscriptionStaff </item>
-      <item> GregorianTranscriptionVoice </item>
-      <item> Lyrics </item>
-      <item> MensuralStaff </item>
-      <item> MensuralVoice </item>
-      <item> NoteNames </item>
-      <item> PianoStaff </item>
-      <item> RhythmicStaff </item>
-      <item> Score </item>
-      <item> Staff </item>
-      <item> StaffGroup </item>
-      <item> TabStaff </item>
-      <item> TabVoice </item>
-      <item> Timing </item>
-      <item> VaticanaStaff </item>
-      <item> VaticanaVoice </item>
-      <item> Voice </item>
+      <item>ChoirStaff</item>
+      <item>ChordNames</item>
+      <item>CueVoice</item>
+      <item>Devnull</item>
+      <item>DrumStaff</item>
+      <item>DrumVoice</item>
+      <item>Dynamics</item>
+      <item>FiguredBass</item>
+      <item>FretBoards</item>
+      <item>Global</item>
+      <item>GrandStaff</item>
+      <item>GregorianTranscriptionStaff</item>
+      <item>GregorianTranscriptionVoice</item>
+      <item>Lyrics</item>
+      <item>MensuralStaff</item>
+      <item>MensuralVoice</item>
+      <item>NoteNames</item>
+      <item>PianoStaff</item>
+      <item>RhythmicStaff</item>
+      <item>Score</item>
+      <item>Staff</item>
+      <item>StaffGroup</item>
+      <item>TabStaff</item>
+      <item>TabVoice</item>
+      <item>Timing</item>
+      <item>VaticanaStaff</item>
+      <item>VaticanaVoice</item>
+      <item>Voice</item>
     </list>
     <list name="deprecatedcontexts">
-      <item> InnerChoirStaff </item>
-      <item> InnerStaffGroup </item>
+      <item>InnerChoirStaff</item>
+      <item>InnerStaffGroup</item>
     </list>
     <list name="layoutobjects">
-      <item> Accidental </item>
-      <item> AccidentalCautionary </item>
-      <item> AccidentalPlacement </item>
-      <item> AccidentalSuggestion </item>
-      <item> Ambitus </item>
-      <item> AmbitusAccidental </item>
-      <item> AmbitusLine </item>
-      <item> AmbitusNoteHead </item>
-      <item> Arpeggio </item>
-      <item> BalloonTextItem </item>
-      <item> BarLine </item>
-      <item> BarNumber </item>
-      <item> BassFigure </item>
-      <item> BassFigureAlignment </item>
-      <item> BassFigureAlignmentPositioning </item>
-      <item> BassFigureBracket </item>
-      <item> BassFigureContinuation </item>
-      <item> BassFigureLine </item>
-      <item> Beam </item>
-      <item> BendAfter </item>
-      <item> BreakAlignGroup </item>
-      <item> BreakAlignment </item>
-      <item> BreathingSign </item>
-      <item> ChordName </item>
-      <item> Clef </item>
-      <item> ClusterSpanner </item>
-      <item> ClusterSpannerBeacon </item>
-      <item> CombineTextScript </item>
-      <item> Custos </item>
-      <item> DotColumn </item>
-      <item> Dots </item>
-      <item> DoublePercentRepeat </item>
-      <item> DoublePercentRepeatCounter </item>
-      <item> DynamicLineSpanner </item>
-      <item> DynamicText </item>
-      <item> DynamicTextSpanner </item>
-      <item> Episema </item>
-      <item> Fingering </item>
-      <item> FretBoard </item>
-      <item> Glissando </item>
-      <item> GraceSpacing </item>
-      <item> GridLine </item>
-      <item> GridPoint </item>
-      <item> Hairpin </item>
-      <item> HarmonicParenthesesItem </item>
-      <item> HorizontalBracket </item>
-      <item> InstrumentName </item>
-      <item> InstrumentSwitch </item>
-      <item> KeyCancellation </item>
-      <item> KeySignature </item>
-      <item> LaissezVibrerTie </item>
-      <item> LaissezVibrerTieColumn </item>
-      <item> LedgerLineSpanner </item>
-      <item> LeftEdge </item>
-      <item> LigatureBracket </item>
-      <item> LyricExtender </item>
-      <item> LyricHyphen </item>
-      <item> LyricSpace </item>
-      <item> LyricText </item>
-      <item> MeasureGrouping </item>
-      <item> MelodyItem </item>
-      <item> MensuralLigature </item>
-      <item> MetronomeMark </item>
-      <item> MultiMeasureRest </item>
-      <item> MultiMeasureRestNumber </item>
-      <item> MultiMeasureRestText </item>
-      <item> NonMusicalPaperColumn </item>
-      <item> NoteCollision </item>
-      <item> NoteColumn </item>
-      <item> NoteHead </item>
-      <item> NoteName </item>
-      <item> NoteSpacing </item>
-      <item> OctavateEight </item>
-      <item> OttavaBracket </item>
-      <item> PaperColumn </item>
-      <item> ParenthesesItem </item>
-      <item> PercentRepeat </item>
-      <item> PercentRepeatCounter </item>
-      <item> PhrasingSlur </item>
-      <item> PianoPedalBracket </item>
-      <item> RehearsalMark </item>
-      <item> RepeatSlash </item>
-      <item> RepeatTie </item>
-      <item> RepeatTieColumn </item>
-      <item> Rest </item>
-      <item> RestCollision </item>
-      <item> Script </item>
-      <item> ScriptColumn </item>
-      <item> ScriptRow </item>
-      <item> SeparationItem </item>
-      <item> Slur </item>
-      <item> SostenutoPedal </item>
-      <item> SostenutoPedalLineSpanner </item>
-      <item> SpacingSpanner </item>
-      <item> SpanBar </item>
-      <item> StaffGrouper </item>
-      <item> StaffSpacing </item>
-      <item> StaffSymbol </item>
-      <item> StanzaNumber </item>
-      <item> Stem </item>
-      <item> StemTremolo </item>
-      <item> StringNumber </item>
-      <item> StrokeFinger </item>
-      <item> SustainPedal </item>
-      <item> SustainPedalLineSpanner </item>
-      <item> System </item>
-      <item> SystemStartBar </item>
-      <item> SystemStartBrace </item>
-      <item> SystemStartBracket </item>
-      <item> SystemStartSquare </item>
-      <item> TabNoteHead </item>
-      <item> TextScript </item>
-      <item> TextSpanner </item>
-      <item> Tie </item>
-      <item> TieColumn </item>
-      <item> TimeSignature </item>
-      <item> TrillPitchAccidental </item>
-      <item> TrillPitchGroup </item>
-      <item> TrillPitchHead </item>
-      <item> TrillSpanner </item>
-      <item> TupletBracket </item>
-      <item> TupletNumber </item>
-      <item> UnaCordaPedal </item>
-      <item> UnaCordaPedalLineSpanner </item>
-      <item> VaticanaLigature </item>
-      <item> VerticalAlignment </item>
-      <item> VerticalAxisGroup </item>
-      <item> VoiceFollower </item>
-      <item> VoltaBracket </item>
-      <item> VoltaBracketSpanner </item>
+      <item>Accidental</item>
+      <item>AccidentalCautionary</item>
+      <item>AccidentalPlacement</item>
+      <item>AccidentalSuggestion</item>
+      <item>Ambitus</item>
+      <item>AmbitusAccidental</item>
+      <item>AmbitusLine</item>
+      <item>AmbitusNoteHead</item>
+      <item>Arpeggio</item>
+      <item>BalloonTextItem</item>
+      <item>BarLine</item>
+      <item>BarNumber</item>
+      <item>BassFigure</item>
+      <item>BassFigureAlignment</item>
+      <item>BassFigureAlignmentPositioning</item>
+      <item>BassFigureBracket</item>
+      <item>BassFigureContinuation</item>
+      <item>BassFigureLine</item>
+      <item>Beam</item>
+      <item>BendAfter</item>
+      <item>BreakAlignGroup</item>
+      <item>BreakAlignment</item>
+      <item>BreathingSign</item>
+      <item>ChordName</item>
+      <item>Clef</item>
+      <item>ClusterSpanner</item>
+      <item>ClusterSpannerBeacon</item>
+      <item>CombineTextScript</item>
+      <item>Custos</item>
+      <item>DotColumn</item>
+      <item>Dots</item>
+      <item>DoublePercentRepeat</item>
+      <item>DoublePercentRepeatCounter</item>
+      <item>DynamicLineSpanner</item>
+      <item>DynamicText</item>
+      <item>DynamicTextSpanner</item>
+      <item>Episema</item>
+      <item>Fingering</item>
+      <item>FretBoard</item>
+      <item>Glissando</item>
+      <item>GraceSpacing</item>
+      <item>GridLine</item>
+      <item>GridPoint</item>
+      <item>Hairpin</item>
+      <item>HarmonicParenthesesItem</item>
+      <item>HorizontalBracket</item>
+      <item>InstrumentName</item>
+      <item>InstrumentSwitch</item>
+      <item>KeyCancellation</item>
+      <item>KeySignature</item>
+      <item>LaissezVibrerTie</item>
+      <item>LaissezVibrerTieColumn</item>
+      <item>LedgerLineSpanner</item>
+      <item>LeftEdge</item>
+      <item>LigatureBracket</item>
+      <item>LyricExtender</item>
+      <item>LyricHyphen</item>
+      <item>LyricSpace</item>
+      <item>LyricText</item>
+      <item>MeasureGrouping</item>
+      <item>MelodyItem</item>
+      <item>MensuralLigature</item>
+      <item>MetronomeMark</item>
+      <item>MultiMeasureRest</item>
+      <item>MultiMeasureRestNumber</item>
+      <item>MultiMeasureRestText</item>
+      <item>NonMusicalPaperColumn</item>
+      <item>NoteCollision</item>
+      <item>NoteColumn</item>
+      <item>NoteHead</item>
+      <item>NoteName</item>
+      <item>NoteSpacing</item>
+      <item>OctavateEight</item>
+      <item>OttavaBracket</item>
+      <item>PaperColumn</item>
+      <item>ParenthesesItem</item>
+      <item>PercentRepeat</item>
+      <item>PercentRepeatCounter</item>
+      <item>PhrasingSlur</item>
+      <item>PianoPedalBracket</item>
+      <item>RehearsalMark</item>
+      <item>RepeatSlash</item>
+      <item>RepeatTie</item>
+      <item>RepeatTieColumn</item>
+      <item>Rest</item>
+      <item>RestCollision</item>
+      <item>Script</item>
+      <item>ScriptColumn</item>
+      <item>ScriptRow</item>
+      <item>SeparationItem</item>
+      <item>Slur</item>
+      <item>SostenutoPedal</item>
+      <item>SostenutoPedalLineSpanner</item>
+      <item>SpacingSpanner</item>
+      <item>SpanBar</item>
+      <item>StaffGrouper</item>
+      <item>StaffSpacing</item>
+      <item>StaffSymbol</item>
+      <item>StanzaNumber</item>
+      <item>Stem</item>
+      <item>StemTremolo</item>
+      <item>StringNumber</item>
+      <item>StrokeFinger</item>
+      <item>SustainPedal</item>
+      <item>SustainPedalLineSpanner</item>
+      <item>System</item>
+      <item>SystemStartBar</item>
+      <item>SystemStartBrace</item>
+      <item>SystemStartBracket</item>
+      <item>SystemStartSquare</item>
+      <item>TabNoteHead</item>
+      <item>TextScript</item>
+      <item>TextSpanner</item>
+      <item>Tie</item>
+      <item>TieColumn</item>
+      <item>TimeSignature</item>
+      <item>TrillPitchAccidental</item>
+      <item>TrillPitchGroup</item>
+      <item>TrillPitchHead</item>
+      <item>TrillSpanner</item>
+      <item>TupletBracket</item>
+      <item>TupletNumber</item>
+      <item>UnaCordaPedal</item>
+      <item>UnaCordaPedalLineSpanner</item>
+      <item>VaticanaLigature</item>
+      <item>VerticalAlignment</item>
+      <item>VerticalAxisGroup</item>
+      <item>VoiceFollower</item>
+      <item>VoltaBracket</item>
+      <item>VoltaBracketSpanner</item>
     </list>
     <list name="properties">
-      <item> aDueText </item>
-      <item> alignAboveContext </item>
-      <item> alignBassFigureAccidentals </item>
-      <item> alignBelowContext </item>
-      <item> allowBeamBreak </item>
-      <item> associatedVoice </item>
-      <item> autoAccidentals </item>
-      <item> autoBeamCheck </item>
-      <item> autoBeamSettings </item>
-      <item> autoBeaming </item>
-      <item> autoCautionaries </item>
-      <item> automaticBars </item>
-      <item> barAlways </item>
-      <item> barCheckSynchronize </item>
-      <item> barNumberVisibility </item>
-      <item> baseMoment </item>
-      <item> bassFigureFormatFunction </item>
-      <item> bassStaffProperties </item>
-      <item> beamExceptions </item>
-      <item> beatGrouping </item>
-      <item> beatLength </item>
-      <item> beatStructure </item>
-      <item> chordChanges </item>
-      <item> chordNameExceptions </item>
-      <item> chordNameExceptionsFull </item>
-      <item> chordNameExceptionsPartial </item>
-      <item> chordNameFunction </item>
-      <item> chordNameSeparator </item>
-      <item> chordNoteNamer </item>
-      <item> chordPrefixSpacer </item>
-      <item> chordRootNamer </item>
-      <item> clefGlyph </item>
-      <item> clefOctavation </item>
-      <item> clefPosition </item>
-      <item> connectArpeggios </item>
-      <item> countPercentRepeats </item>
-      <item> createKeyOnClefChange </item>
-      <item> createSpacing </item>
-      <item> crescendoSpanner </item>
-      <item> crescendoText </item>
-      <item> currentBarNumber </item>
-      <item> decrescendoSpanner </item>
-      <item> decrescendoText </item>
-      <item> defaultBarType </item>
-      <item> doubleSlurs </item>
-      <item> doubleRepeatType </item>
-      <item> drumPitchTable </item>
-      <item> drumStyleTable </item>
-      <item> dynamicAbsoluteVolumeFunction </item>
-      <item> explicitClefVisibility </item>
-      <item> explicitKeySignatureVisibility </item>
-      <item> extendersOverRests </item>
-      <item> extraNatural </item>
-      <item> figuredBassAlterationDirection </item>
-      <item> figuredBassCenterContinuations </item>
-      <item> figuredBassFormatter </item>
-      <item> figuredBassPlusDirection </item>
-      <item> fingeringOrientations </item>
-      <item> firstClef </item>
-      <item> followVoice </item>
-      <item> fontSize </item>
-      <item> forbidBreak </item>
-      <item> forceClef </item>
-      <item> gridInterval </item>
-      <item> hairpinToBarline </item>
-      <item> harmonicAccidentals </item>
-      <item> highStringOne </item>
-      <item> ignoreBarChecks </item>
-      <item> ignoreFiguredBassRest </item>
-      <item> ignoreMelismata </item>
-      <item> implicitBassFigures </item>
-      <item> implicitTimeSignatureVisibility </item>
-      <item> instrumentCueName </item>
-      <item> instrumentEqualizer </item>
-      <item> instrumentName </item>
-      <item> instrumentTransposition </item>
-      <item> internalBarNumber </item>
-      <item> keepAliveInterfaces </item>
-      <item> keyAlterationOrder </item>
-      <item> keySignature </item>
-      <item> lyricMelismaAlignment </item>
-      <item> majorSevenSymbol </item>
-      <item> markFormatter </item>
-      <item> maximumFretStretch </item>
-      <item> measureLength </item>
-      <item> measurePosition </item>
-      <item> melismaBusyProperties </item>
-      <item> metronomeMarkFormatter </item>
-      <item> middleCClefPosition </item>
-      <item> middleCOffset </item>
-      <item> middleCPosition </item>
-      <item> midiInstrument </item>
-      <item> midiMaximumVolume </item>
-      <item> midiMinimumVolume </item>
-      <item> minimumFret </item>
-      <item> minimumPageTurnLength </item>
-      <item> minimumRepeatLengthForPageTurn </item>
-      <item> noteToFretFunction </item>
-      <item> ottavation </item>
-      <item> output </item>
-      <item> pedalSostenutoStrings </item>
-      <item> pedalSostenutoStyle </item>
-      <item> pedalSustainStrings </item>
-      <item> pedalSustainStyle </item>
-      <item> pedalUnaCordaStrings </item>
-      <item> pedalUnaCordaStyle </item>
-      <item> printKeyCancellation </item>
-      <item> printOctaveNames </item>
-      <item> printPartCombineTexts </item>
-      <item> proportionalNotationDuration </item>
-      <item> recordEventSequence </item>
-      <item> rehearsalMark </item>
-      <item> repeatCommands </item>
-      <item> restNumberThreshold </item>
-      <item> scriptDefinitions </item>
-      <item> shapeNoteStyles </item>
-      <item> shortInstrumentName </item>
-      <item> shortVocalName </item>
-      <item> skipBars </item>
-      <item> skipTypesetting </item>
-      <item> soloIIText </item>
-      <item> soloText </item>
-      <item> squashedPosition </item>
-      <item> staffLineLayoutFunction </item>
-      <item> stanza </item>
-      <item> stemLeftBeamCount </item>
-      <item> stemRightBeamCount </item>
-      <item> stringNumberOrientations </item>
-      <item> stringOneTopmost </item>
-      <item> stringTunings </item>
-      <item> strokeFingerOrientations </item>
-      <item> subdivideBeams </item>
-      <item> suggestAccidentals </item>
-      <item> systemStartDelimiter </item>
-      <item> systemStartDelimiterHierarchy </item>
-      <item> tablatureFormat </item>
-      <item> tempoUnitCount </item>
-      <item> tempoUnitDuration </item>
-      <item> tempoWholesPerMinute </item>
-      <item> tieWaitForNote </item>
-      <item> timeSignatureFraction </item>
-      <item> timing </item>
-      <item> tonic </item>
-      <item> topLevelAlignment </item>
-      <item> trebleStaffProperties </item>
-      <item> tremoloFlags </item>
-      <item> tupletFullLength </item>
-      <item> tupletFullLengthNote </item>
-      <item> tupletSpannerDuration </item>
-      <item> useBassFigureExtenders </item>
-      <item> verticallySpacedContexts </item>
-      <item> vocalName </item>
-      <item> voltaOnThisStaff </item> <!-- gone in 2.12 and 2.13 -->
-      <item> voltaSpannerDuration </item>
-      <item> whichBar </item>
+      <item>aDueText</item>
+      <item>alignAboveContext</item>
+      <item>alignBassFigureAccidentals</item>
+      <item>alignBelowContext</item>
+      <item>allowBeamBreak</item>
+      <item>associatedVoice</item>
+      <item>autoAccidentals</item>
+      <item>autoBeamCheck</item>
+      <item>autoBeamSettings</item>
+      <item>autoBeaming</item>
+      <item>autoCautionaries</item>
+      <item>automaticBars</item>
+      <item>barAlways</item>
+      <item>barCheckSynchronize</item>
+      <item>barNumberVisibility</item>
+      <item>baseMoment</item>
+      <item>bassFigureFormatFunction</item>
+      <item>bassStaffProperties</item>
+      <item>beamExceptions</item>
+      <item>beatGrouping</item>
+      <item>beatLength</item>
+      <item>beatStructure</item>
+      <item>chordChanges</item>
+      <item>chordNameExceptions</item>
+      <item>chordNameExceptionsFull</item>
+      <item>chordNameExceptionsPartial</item>
+      <item>chordNameFunction</item>
+      <item>chordNameSeparator</item>
+      <item>chordNoteNamer</item>
+      <item>chordPrefixSpacer</item>
+      <item>chordRootNamer</item>
+      <item>clefGlyph</item>
+      <item>clefOctavation</item>
+      <item>clefPosition</item>
+      <item>connectArpeggios</item>
+      <item>countPercentRepeats</item>
+      <item>createKeyOnClefChange</item>
+      <item>createSpacing</item>
+      <item>crescendoSpanner</item>
+      <item>crescendoText</item>
+      <item>currentBarNumber</item>
+      <item>decrescendoSpanner</item>
+      <item>decrescendoText</item>
+      <item>defaultBarType</item>
+      <item>doubleSlurs</item>
+      <item>doubleRepeatType</item>
+      <item>drumPitchTable</item>
+      <item>drumStyleTable</item>
+      <item>dynamicAbsoluteVolumeFunction</item>
+      <item>explicitClefVisibility</item>
+      <item>explicitKeySignatureVisibility</item>
+      <item>extendersOverRests</item>
+      <item>extraNatural</item>
+      <item>figuredBassAlterationDirection</item>
+      <item>figuredBassCenterContinuations</item>
+      <item>figuredBassFormatter</item>
+      <item>figuredBassPlusDirection</item>
+      <item>fingeringOrientations</item>
+      <item>firstClef</item>
+      <item>followVoice</item>
+      <item>fontSize</item>
+      <item>forbidBreak</item>
+      <item>forceClef</item>
+      <item>gridInterval</item>
+      <item>hairpinToBarline</item>
+      <item>harmonicAccidentals</item>
+      <item>highStringOne</item>
+      <item>ignoreBarChecks</item>
+      <item>ignoreFiguredBassRest</item>
+      <item>ignoreMelismata</item>
+      <item>implicitBassFigures</item>
+      <item>implicitTimeSignatureVisibility</item>
+      <item>instrumentCueName</item>
+      <item>instrumentEqualizer</item>
+      <item>instrumentName</item>
+      <item>instrumentTransposition</item>
+      <item>internalBarNumber</item>
+      <item>keepAliveInterfaces</item>
+      <item>keyAlterationOrder</item>
+      <item>keySignature</item>
+      <item>lyricMelismaAlignment</item>
+      <item>majorSevenSymbol</item>
+      <item>markFormatter</item>
+      <item>maximumFretStretch</item>
+      <item>measureLength</item>
+      <item>measurePosition</item>
+      <item>melismaBusyProperties</item>
+      <item>metronomeMarkFormatter</item>
+      <item>middleCClefPosition</item>
+      <item>middleCOffset</item>
+      <item>middleCPosition</item>
+      <item>midiInstrument</item>
+      <item>midiMaximumVolume</item>
+      <item>midiMinimumVolume</item>
+      <item>minimumFret</item>
+      <item>minimumPageTurnLength</item>
+      <item>minimumRepeatLengthForPageTurn</item>
+      <item>noteToFretFunction</item>
+      <item>ottavation</item>
+      <item>output</item>
+      <item>pedalSostenutoStrings</item>
+      <item>pedalSostenutoStyle</item>
+      <item>pedalSustainStrings</item>
+      <item>pedalSustainStyle</item>
+      <item>pedalUnaCordaStrings</item>
+      <item>pedalUnaCordaStyle</item>
+      <item>printKeyCancellation</item>
+      <item>printOctaveNames</item>
+      <item>printPartCombineTexts</item>
+      <item>proportionalNotationDuration</item>
+      <item>recordEventSequence</item>
+      <item>rehearsalMark</item>
+      <item>repeatCommands</item>
+      <item>restNumberThreshold</item>
+      <item>scriptDefinitions</item>
+      <item>shapeNoteStyles</item>
+      <item>shortInstrumentName</item>
+      <item>shortVocalName</item>
+      <item>skipBars</item>
+      <item>skipTypesetting</item>
+      <item>soloIIText</item>
+      <item>soloText</item>
+      <item>squashedPosition</item>
+      <item>staffLineLayoutFunction</item>
+      <item>stanza</item>
+      <item>stemLeftBeamCount</item>
+      <item>stemRightBeamCount</item>
+      <item>stringNumberOrientations</item>
+      <item>stringOneTopmost</item>
+      <item>stringTunings</item>
+      <item>strokeFingerOrientations</item>
+      <item>subdivideBeams</item>
+      <item>suggestAccidentals</item>
+      <item>systemStartDelimiter</item>
+      <item>systemStartDelimiterHierarchy</item>
+      <item>tablatureFormat</item>
+      <item>tempoUnitCount</item>
+      <item>tempoUnitDuration</item>
+      <item>tempoWholesPerMinute</item>
+      <item>tieWaitForNote</item>
+      <item>timeSignatureFraction</item>
+      <item>timing</item>
+      <item>tonic</item>
+      <item>topLevelAlignment</item>
+      <item>trebleStaffProperties</item>
+      <item>tremoloFlags</item>
+      <item>tupletFullLength</item>
+      <item>tupletFullLengthNote</item>
+      <item>tupletSpannerDuration</item>
+      <item>useBassFigureExtenders</item>
+      <item>verticallySpacedContexts</item>
+      <item>vocalName</item>
+      <item>voltaOnThisStaff</item> <!-- gone in 2.12 and 2.13 -->
+      <item>voltaSpannerDuration</item>
+      <item>whichBar</item>
     </list>
     <list name="deprecatedproperties">
-      <item> barNumberAlignSymbol </item>
-      <item> centralCPosition </item>
-      <item> extraVerticalExtent </item>
-      <item> fingerHorizontalDirection </item>
-      <item> instr </item>
-      <item> instrument </item>
-      <item> keyAccidentalOrder </item>
-      <item> minimumVerticalExtent </item>
-      <item> rehearsalMarkAlignSymbol </item>
-      <item> soloADue </item>
-      <item> tupletNumberFormatFunction </item>
-      <item> vocNam </item>
+      <item>barNumberAlignSymbol</item>
+      <item>centralCPosition</item>
+      <item>extraVerticalExtent</item>
+      <item>fingerHorizontalDirection</item>
+      <item>instr</item>
+      <item>instrument</item>
+      <item>keyAccidentalOrder</item>
+      <item>minimumVerticalExtent</item>
+      <item>rehearsalMarkAlignSymbol</item>
+      <item>soloADue</item>
+      <item>tupletNumberFormatFunction</item>
+      <item>vocNam</item>
     </list>
     <list name="musicexpressions">
-      <item> AbsoluteDynamicEvent </item>
-      <item> AnnotateOutputEvent </item>
-      <item> ApplyContext </item>
-      <item> ApplyOutputEvent </item>
-      <item> ArpeggioEvent </item>
-      <item> ArticulationEvent </item>
-      <item> AutoChangeMusic </item>
-      <item> BarCheck </item>
-      <item> BassFigureEvent </item>
-      <item> BeamEvent </item>
-      <item> BeamForbidEvent </item>
-      <item> BendAfterEvent </item>
-      <item> BreathingEvent </item>
-      <item> ClusterNoteEvent </item>
-      <item> ContextChange </item>
-      <item> ContextSpeccedMusic </item>
-      <item> CrescendoEvent </item>
-      <item> DecrescendoEvent </item>
-      <item> Event </item>
-      <item> EventChord </item>
-      <item> ExtenderEvent </item>
-      <item> FingeringEvent </item>
-      <item> GlissandoEvent </item>
-      <item> GraceMusic </item>
-      <item> HarmonicEvent </item>
-      <item> HyphenEvent </item>
-      <item> KeyChangeEvent </item>
-      <item> LabelEvent </item>
-      <item> LaissezVibrerEvent </item>
-      <item> LigatureEvent </item>
-      <item> LineBreakEvent </item>
-      <item> LyricCombineMusic </item>
-      <item> LyricEvent </item>
-      <item> MarkEvent </item>
-      <item> MultiMeasureRestEvent </item>
-      <item> MultiMeasureRestMusic </item>
-      <item> MultiMeasureTextEvent </item>
-      <item> Music </item>
-      <item> NoteEvent </item>
-      <item> NoteGroupingEvent </item>
-      <item> OverrideProperty </item>
-      <item> PageBreakEvent </item>
-      <item> PageTurnEvent </item>
-      <item> PartCombineMusic </item>
-      <item> PercentEvent </item>
-      <item> PercentRepeatedMusic </item>
-      <item> PesOrFlexaEvent </item>
-      <item> PhrasingSlurEvent </item>
-      <item> PropertySet </item>
-      <item> PropertyUnset </item>
-      <item> QuoteMusic </item>
-      <item> RelativeOctaveCheck </item>
-      <item> RelativeOctaveMusic </item>
-      <item> RepeatTieEvent </item>
-      <item> RepeatedMusic </item>
-      <item> RestEvent </item>
-      <item> RevertProperty </item>
-      <item> ScriptEvent </item>
-      <item> SequentialMusic </item>
-      <item> SimultaneousMusic </item>
-      <item> SkipEvent </item>
-      <item> SkipMusic </item>
-      <item> SlurEvent </item>
-      <item> SoloOneEvent </item>
-      <item> SoloTwoEvent </item>
-      <item> SostenutoEvent </item>
-      <item> SpacingSectionEvent </item>
-      <item> SpanEvent </item>
-      <item> StaffSpanEvent </item>
-      <item> StringNumberEvent </item>
-      <item> StrokeFingerEvent </item>
-      <item> SustainEvent </item>
-      <item> TextScriptEvent </item>
-      <item> TextSpanEvent </item>
-      <item> TieEvent </item>
-      <item> TimeScaledMusic </item>
-      <item> TransposedMusic </item>
-      <item> TremoloEvent </item>
-      <item> TremoloRepeatedMusic </item>
-      <item> TremoloSpanEvent </item>
-      <item> TrillSpanEvent </item>
-      <item> TupletSpanEvent </item>
-      <item> UnaCordaEvent </item>
-      <item> UnfoldedRepeatedMusic </item>
-      <item> UnisonoEvent </item>
-      <item> UnrelativableMusic </item>
-      <item> VoiceSeparator </item>
-      <item> VoltaRepeatedMusic </item>
+      <item>AbsoluteDynamicEvent</item>
+      <item>AnnotateOutputEvent</item>
+      <item>ApplyContext</item>
+      <item>ApplyOutputEvent</item>
+      <item>ArpeggioEvent</item>
+      <item>ArticulationEvent</item>
+      <item>AutoChangeMusic</item>
+      <item>BarCheck</item>
+      <item>BassFigureEvent</item>
+      <item>BeamEvent</item>
+      <item>BeamForbidEvent</item>
+      <item>BendAfterEvent</item>
+      <item>BreathingEvent</item>
+      <item>ClusterNoteEvent</item>
+      <item>ContextChange</item>
+      <item>ContextSpeccedMusic</item>
+      <item>CrescendoEvent</item>
+      <item>DecrescendoEvent</item>
+      <item>Event</item>
+      <item>EventChord</item>
+      <item>ExtenderEvent</item>
+      <item>FingeringEvent</item>
+      <item>GlissandoEvent</item>
+      <item>GraceMusic</item>
+      <item>HarmonicEvent</item>
+      <item>HyphenEvent</item>
+      <item>KeyChangeEvent</item>
+      <item>LabelEvent</item>
+      <item>LaissezVibrerEvent</item>
+      <item>LigatureEvent</item>
+      <item>LineBreakEvent</item>
+      <item>LyricCombineMusic</item>
+      <item>LyricEvent</item>
+      <item>MarkEvent</item>
+      <item>MultiMeasureRestEvent</item>
+      <item>MultiMeasureRestMusic</item>
+      <item>MultiMeasureTextEvent</item>
+      <item>Music</item>
+      <item>NoteEvent</item>
+      <item>NoteGroupingEvent</item>
+      <item>OverrideProperty</item>
+      <item>PageBreakEvent</item>
+      <item>PageTurnEvent</item>
+      <item>PartCombineMusic</item>
+      <item>PercentEvent</item>
+      <item>PercentRepeatedMusic</item>
+      <item>PesOrFlexaEvent</item>
+      <item>PhrasingSlurEvent</item>
+      <item>PropertySet</item>
+      <item>PropertyUnset</item>
+      <item>QuoteMusic</item>
+      <item>RelativeOctaveCheck</item>
+      <item>RelativeOctaveMusic</item>
+      <item>RepeatTieEvent</item>
+      <item>RepeatedMusic</item>
+      <item>RestEvent</item>
+      <item>RevertProperty</item>
+      <item>ScriptEvent</item>
+      <item>SequentialMusic</item>
+      <item>SimultaneousMusic</item>
+      <item>SkipEvent</item>
+      <item>SkipMusic</item>
+      <item>SlurEvent</item>
+      <item>SoloOneEvent</item>
+      <item>SoloTwoEvent</item>
+      <item>SostenutoEvent</item>
+      <item>SpacingSectionEvent</item>
+      <item>SpanEvent</item>
+      <item>StaffSpanEvent</item>
+      <item>StringNumberEvent</item>
+      <item>StrokeFingerEvent</item>
+      <item>SustainEvent</item>
+      <item>TextScriptEvent</item>
+      <item>TextSpanEvent</item>
+      <item>TieEvent</item>
+      <item>TimeScaledMusic</item>
+      <item>TransposedMusic</item>
+      <item>TremoloEvent</item>
+      <item>TremoloRepeatedMusic</item>
+      <item>TremoloSpanEvent</item>
+      <item>TrillSpanEvent</item>
+      <item>TupletSpanEvent</item>
+      <item>UnaCordaEvent</item>
+      <item>UnfoldedRepeatedMusic</item>
+      <item>UnisonoEvent</item>
+      <item>UnrelativableMusic</item>
+      <item>VoiceSeparator</item>
+      <item>VoltaRepeatedMusic</item>
     </list>
     <list name="drumpitchnames">
-      <item> acousticbassdrum </item>
-      <item> acousticsnare </item>
-      <item> agh </item>
-      <item> agl </item>
-      <item> bassdrum </item>
-      <item> bd </item>
-      <item> bda </item>
-      <item> boh </item>
-      <item> bohm </item>
-      <item> boho </item>
-      <item> bol </item>
-      <item> bolm </item>
-      <item> bolo </item>
-      <item> cab </item>
-      <item> cabasa </item>
-      <item> cb </item>
-      <item> cgh </item>
-      <item> cghm </item>
-      <item> cgho </item>
-      <item> cgl </item>
-      <item> cglm </item>
-      <item> cglo </item>
-      <item> chinesecymbal </item>
-      <item> cl </item>
-      <item> claves </item>
-      <item> closedhihat </item>
-      <item> cowbell </item>
-      <item> crashcymbal </item>
-      <item> crashcymbala </item>
-      <item> crashcymbalb </item>
-      <item> cuim </item>
-      <item> cuio </item>
-      <item> cymc </item>
-      <item> cymca </item>
-      <item> cymcb </item>
-      <item> cymch </item>
-      <item> cymr </item>
-      <item> cymra </item>
-      <item> cymrb </item>
-      <item> cyms </item>
-      <item> da </item>
-      <item> db </item>
-      <item> dc </item>
-      <item> dd </item>
-      <item> de </item>
-      <item> electricsnare </item>
-      <item> fivedown </item>
-      <item> fiveup </item>
-      <item> fourdown </item>
-      <item> fourup </item>
-      <item> gui </item>
-      <item> guil </item>
-      <item> guiro </item>
-      <item> guis </item>
-      <item> halfopenhihat </item>
-      <item> handclap </item>
-      <item> hc </item>
-      <item> hh </item>
-      <item> hhc </item>
-      <item> hhho </item>
-      <item> hho </item>
-      <item> hhp </item>
-      <item> hiagogo </item>
-      <item> hibongo </item>
-      <item> hiconga </item>
-      <item> highfloortom </item>
-      <item> hightom </item>
-      <item> hihat </item>
-      <item> himidtom </item>
-      <item> hisidestick </item>
-      <item> hitimbale </item>
-      <item> hiwoodblock </item>
-      <item> loagogo </item>
-      <item> lobongo </item>
-      <item> loconga </item>
-      <item> longguiro </item>
-      <item> longwhistle </item>
-      <item> losidestick </item>
-      <item> lotimbale </item>
-      <item> lowfloortom </item>
-      <item> lowmidtom </item>
-      <item> lowoodblock </item>
-      <item> lowtom </item>
-      <item> mar </item>
-      <item> maracas </item>
-      <item> mutecuica </item>
-      <item> mutehibongo </item>
-      <item> mutehiconga </item>
-      <item> mutelobongo </item>
-      <item> muteloconga </item>
-      <item> mutetriangle </item>
-      <item> onedown </item>
-      <item> oneup </item>
-      <item> opencuica </item>
-      <item> openhibongo </item>
-      <item> openhiconga </item>
-      <item> openhihat </item>
-      <item> openlobongo </item>
-      <item> openloconga </item>
-      <item> opentriangle </item>
-      <item> pedalhihat </item>
-      <item> rb </item>
-      <item> ridebell </item>
-      <item> ridecymbal </item>
-      <item> ridecymbala </item>
-      <item> ridecymbalb </item>
-      <item> shortguiro </item>
-      <item> shortwhistle </item>
-      <item> sidestick </item>
-      <item> sn </item>
-      <item> sna </item>
-      <item> snare </item>
-      <item> sne </item>
-      <item> splashcymbal </item>
-      <item> ss </item>
-      <item> ssh </item>
-      <item> ssl </item>
-      <item> tamb </item>
-      <item> tambourine </item>
-      <item> tamtam </item>
-      <item> threedown </item>
-      <item> threeup </item>
-      <item> timh </item>
-      <item> timl </item>
-      <item> tomfh </item>
-      <item> tomfl </item>
-      <item> tomh </item>
-      <item> toml </item>
-      <item> tommh </item>
-      <item> tomml </item>
-      <item> tri </item>
-      <item> triangle </item>
-      <item> trim </item>
-      <item> trio </item>
-      <item> tt </item>
-      <item> twodown </item>
-      <item> twoup </item>
-      <item> ua </item>
-      <item> ub </item>
-      <item> uc </item>
-      <item> ud </item>
-      <item> ue </item>
-      <item> vibraslap </item>
-      <item> vibs </item>
-      <item> wbh </item>
-      <item> wbl </item>
-      <item> whl </item>
-      <item> whs </item>
+      <item>acousticbassdrum</item>
+      <item>acousticsnare</item>
+      <item>agh</item>
+      <item>agl</item>
+      <item>bassdrum</item>
+      <item>bd</item>
+      <item>bda</item>
+      <item>boh</item>
+      <item>bohm</item>
+      <item>boho</item>
+      <item>bol</item>
+      <item>bolm</item>
+      <item>bolo</item>
+      <item>cab</item>
+      <item>cabasa</item>
+      <item>cb</item>
+      <item>cgh</item>
+      <item>cghm</item>
+      <item>cgho</item>
+      <item>cgl</item>
+      <item>cglm</item>
+      <item>cglo</item>
+      <item>chinesecymbal</item>
+      <item>cl</item>
+      <item>claves</item>
+      <item>closedhihat</item>
+      <item>cowbell</item>
+      <item>crashcymbal</item>
+      <item>crashcymbala</item>
+      <item>crashcymbalb</item>
+      <item>cuim</item>
+      <item>cuio</item>
+      <item>cymc</item>
+      <item>cymca</item>
+      <item>cymcb</item>
+      <item>cymch</item>
+      <item>cymr</item>
+      <item>cymra</item>
+      <item>cymrb</item>
+      <item>cyms</item>
+      <item>da</item>
+      <item>db</item>
+      <item>dc</item>
+      <item>dd</item>
+      <item>de</item>
+      <item>electricsnare</item>
+      <item>fivedown</item>
+      <item>fiveup</item>
+      <item>fourdown</item>
+      <item>fourup</item>
+      <item>gui</item>
+      <item>guil</item>
+      <item>guiro</item>
+      <item>guis</item>
+      <item>halfopenhihat</item>
+      <item>handclap</item>
+      <item>hc</item>
+      <item>hh</item>
+      <item>hhc</item>
+      <item>hhho</item>
+      <item>hho</item>
+      <item>hhp</item>
+      <item>hiagogo</item>
+      <item>hibongo</item>
+      <item>hiconga</item>
+      <item>highfloortom</item>
+      <item>hightom</item>
+      <item>hihat</item>
+      <item>himidtom</item>
+      <item>hisidestick</item>
+      <item>hitimbale</item>
+      <item>hiwoodblock</item>
+      <item>loagogo</item>
+      <item>lobongo</item>
+      <item>loconga</item>
+      <item>longguiro</item>
+      <item>longwhistle</item>
+      <item>losidestick</item>
+      <item>lotimbale</item>
+      <item>lowfloortom</item>
+      <item>lowmidtom</item>
+      <item>lowoodblock</item>
+      <item>lowtom</item>
+      <item>mar</item>
+      <item>maracas</item>
+      <item>mutecuica</item>
+      <item>mutehibongo</item>
+      <item>mutehiconga</item>
+      <item>mutelobongo</item>
+      <item>muteloconga</item>
+      <item>mutetriangle</item>
+      <item>onedown</item>
+      <item>oneup</item>
+      <item>opencuica</item>
+      <item>openhibongo</item>
+      <item>openhiconga</item>
+      <item>openhihat</item>
+      <item>openlobongo</item>
+      <item>openloconga</item>
+      <item>opentriangle</item>
+      <item>pedalhihat</item>
+      <item>rb</item>
+      <item>ridebell</item>
+      <item>ridecymbal</item>
+      <item>ridecymbala</item>
+      <item>ridecymbalb</item>
+      <item>shortguiro</item>
+      <item>shortwhistle</item>
+      <item>sidestick</item>
+      <item>sn</item>
+      <item>sna</item>
+      <item>snare</item>
+      <item>sne</item>
+      <item>splashcymbal</item>
+      <item>ss</item>
+      <item>ssh</item>
+      <item>ssl</item>
+      <item>tamb</item>
+      <item>tambourine</item>
+      <item>tamtam</item>
+      <item>threedown</item>
+      <item>threeup</item>
+      <item>timh</item>
+      <item>timl</item>
+      <item>tomfh</item>
+      <item>tomfl</item>
+      <item>tomh</item>
+      <item>toml</item>
+      <item>tommh</item>
+      <item>tomml</item>
+      <item>tri</item>
+      <item>triangle</item>
+      <item>trim</item>
+      <item>trio</item>
+      <item>tt</item>
+      <item>twodown</item>
+      <item>twoup</item>
+      <item>ua</item>
+      <item>ub</item>
+      <item>uc</item>
+      <item>ud</item>
+      <item>ue</item>
+      <item>vibraslap</item>
+      <item>vibs</item>
+      <item>wbh</item>
+      <item>wbl</item>
+      <item>whl</item>
+      <item>whs</item>
     </list>
     <contexts>
       <!-- Entry point -->

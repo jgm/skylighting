@@ -44,81 +44,81 @@
 -->
 	
 <!-- Hold the "language" opening tag on a single line, as mentioned in "language.dtd". -->
-<language name="Ruby/Rails/RHTML" version="5" kateversion="2.4" section="Markup" extensions="*.rhtml;*.RHTML;*.html.erb" mimetype="" author="Richard Dale rdale@foton.es" license="LGPLv2+">
+<language name="Ruby/Rails/RHTML" version="6" kateversion="2.4" section="Markup" extensions="*.rhtml;*.RHTML;*.html.erb" mimetype="" author="Richard Dale rdale@foton.es" license="LGPLv2+">
 	
 	<highlighting>
 	
 		<list name="keywords">
-			<item> BEGIN </item>
-			<item> END </item>
-			<item> and </item>
-			<item> begin </item>
-			<item> break </item>
-			<item> case </item>
-			<item> defined? </item>
-			<item> do </item>
-			<item> else </item>
-			<item> elsif </item>
-			<item> end </item>
-			<item> ensure </item>
-			<item> for </item>
-			<item> if </item>
-			<item> in </item>
-			<item> include </item>
-			<item> next </item>
-			<item> not </item>
-			<item> or </item>
-			<item> redo </item>
-			<item> rescue </item>
-			<item> retry </item>
-			<item> return </item>
-			<item> then </item>
-			<item> unless </item>
-			<item> until </item>
-			<item> when </item>
-			<item> while </item>
-			<item> yield </item>
+			<item>BEGIN</item>
+			<item>END</item>
+			<item>and</item>
+			<item>begin</item>
+			<item>break</item>
+			<item>case</item>
+			<item>defined?</item>
+			<item>do</item>
+			<item>else</item>
+			<item>elsif</item>
+			<item>end</item>
+			<item>ensure</item>
+			<item>for</item>
+			<item>if</item>
+			<item>in</item>
+			<item>include</item>
+			<item>next</item>
+			<item>not</item>
+			<item>or</item>
+			<item>redo</item>
+			<item>rescue</item>
+			<item>retry</item>
+			<item>return</item>
+			<item>then</item>
+			<item>unless</item>
+			<item>until</item>
+			<item>when</item>
+			<item>while</item>
+			<item>yield</item>
 		</list>
 		
 		<list name="access-control">
-			<item> private_class_method </item>
-			<item> private </item>
-			<item> protected </item>
-			<item> public_class_method </item>
-			<item> public </item>
+			<item>private_class_method</item>
+			<item>private</item>
+			<item>protected</item>
+			<item>public_class_method</item>
+			<item>public</item>
 		</list>
 
 		<list name="attribute-definitions">
-			<item> attr_reader </item>
-			<item> attr_writer </item>
-			<item> attr_accessor </item>
+			<item>attr_reader</item>
+			<item>attr_writer</item>
+			<item>attr_accessor</item>
 		</list>
 		
 		<list name="definitions">
-			<item> alias </item>
-			<item> module </item>
-			<item> class </item>
-			<item> def </item>
-			<item> undef </item>
+			<item>alias</item>
+			<item>module</item>
+			<item>class</item>
+			<item>def</item>
+			<item>undef</item>
 		</list>
 		
 		<list name="pseudo-variables">
-			<item> self </item>
-			<item> super </item>
-			<item> nil </item>
-			<item> false </item>
-			<item> true </item>
-			<item> caller </item>
-			<item> __FILE__ </item>
-			<item> __LINE__ </item>
+			<item>self</item>
+			<item>super</item>
+			<item>nil</item>
+			<item>false</item>
+			<item>true</item>
+			<item>caller</item>
+			<item>__FILE__</item>
+			<item>__LINE__</item>
 		</list>
 		
 		<list name="default-globals">
-			<item> $stdout </item>
-			<item> $defout </item>
-			<item> $stderr </item>
-			<item> $deferr </item>
-			<item> $stdin </item>
+			<item>$stdout</item>
+			<item>$defout</item>
+			<item>$stderr</item>
+			<item>$deferr</item>
+			<item>$stdin</item>
 		</list>
 		
 		<!-- Kernel module methods.
@@ -127,66 +127,66 @@
 		-->
 		<list name="kernel-methods">
 			<!-- backquote ` -->
-			<item> abort </item>
-			<item> at_exit </item>
-			<item> autoload </item>
-			<item> autoload? </item>
-			<item> binding </item>
-			<item> block_given? </item>
-			<item> callcc </item>
-			<item> caller </item>
-			<item> catch </item>
-			<item> chomp </item>
-			<item> chomp! </item>
-			<item> chop </item>
-			<item> chop! </item>
-			<item> eval </item>
-			<item> exec </item>
-			<item> exit </item>
-			<item> exit! </item>
-			<item> fail </item>
-			<item> fork </item>
-			<item> format </item>
-			<item> getc </item>
-			<item> gets </item>
-			<item> global_variables </item>
-			<item> gsub </item>
-			<item> gsub! </item>
-			<item> iterator? </item>
-			<item> lambda </item>
-			<item> load </item>
-			<item> local_variables </item>
-			<item> loop </item>
-			<item> method_missing </item>
-			<item> open </item>
-			<item> p </item>
-			<item> print </item>
-			<item> printf </item>
-			<item> proc </item>
-			<item> putc </item>
-			<item> puts </item>
-			<item> raise </item>
-			<item> rand </item>
-			<item> readline </item>
-			<item> readlines </item>
-			<item> require </item>
-			<item> scan </item>
-			<item> select </item>
-			<item> set_trace_func </item>
-			<item> sleep </item>
-			<item> split </item>
-			<item> sprintf </item>
-			<item> srand </item>
-			<item> sub </item>
-			<item> sub! </item>
-			<item> syscall </item>
-			<item> system </item>
-			<item> test </item>
-			<item> throw </item>
-			<item> trace_var </item>
-			<item> trap </item>
-			<item> untrace_var </item>
-			<item> warn </item>
+			<item>abort</item>
+			<item>at_exit</item>
+			<item>autoload</item>
+			<item>autoload?</item>
+			<item>binding</item>
+			<item>block_given?</item>
+			<item>callcc</item>
+			<item>caller</item>
+			<item>catch</item>
+			<item>chomp</item>
+			<item>chomp!</item>
+			<item>chop</item>
+			<item>chop!</item>
+			<item>eval</item>
+			<item>exec</item>
+			<item>exit</item>
+			<item>exit!</item>
+			<item>fail</item>
+			<item>fork</item>
+			<item>format</item>
+			<item>getc</item>
+			<item>gets</item>
+			<item>global_variables</item>
+			<item>gsub</item>
+			<item>gsub!</item>
+			<item>iterator?</item>
+			<item>lambda</item>
+			<item>load</item>
+			<item>local_variables</item>
+			<item>loop</item>
+			<item>method_missing</item>
+			<item>open</item>
+			<item>p</item>
+			<item>print</item>
+			<item>printf</item>
+			<item>proc</item>
+			<item>putc</item>
+			<item>puts</item>
+			<item>raise</item>
+			<item>rand</item>
+			<item>readline</item>
+			<item>readlines</item>
+			<item>require</item>
+			<item>scan</item>
+			<item>select</item>
+			<item>set_trace_func</item>
+			<item>sleep</item>
+			<item>split</item>
+			<item>sprintf</item>
+			<item>srand</item>
+			<item>sub</item>
+			<item>sub!</item>
+			<item>syscall</item>
+			<item>system</item>
+			<item>test</item>
+			<item>throw</item>
+			<item>trace_var</item>
+			<item>trap</item>
+			<item>untrace_var</item>
+			<item>warn</item>
 			
 			<!-- ActionView methods from Rails docs -->
 			<item>auto_complete_field</item>
@@ -316,9 +316,9 @@
 		</list>
 		
 		<list name="attention">
-			<item> TODO </item>
-			<item> FIXME </item>
-			<item> NOTE </item>
+			<item>TODO</item>
+			<item>FIXME</item>
+			<item>NOTE</item>
 		</list>
 		
 		<contexts>
@@ -584,7 +584,7 @@
 					Match them before $_.
 					-->
 				<RegExpr attribute="Global Variable" String="\$[a-zA-Z_0-9]+" context="#stay"/>
-				<RegExpr attribute="Global Variable" String="\$\-[a-zA-z_]\b" context="#stay"/>
+				<RegExpr attribute="Global Variable" String="\$\-[a-zA-Z_]\b" context="#stay"/>
 				<!-- special-character globals -->
 				<RegExpr attribute="Default globals" String="\$[\d_*`\!:?'/\\\-\&amp;]" context="#stay"/>
 				<RegExpr attribute="Global Constant" String="\b[_A-Z]+[A-Z_0-9]+\b" context="#stay"/>

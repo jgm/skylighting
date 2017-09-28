@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <language name="C" section="Sources"
-          version="2" kateversion="5.0"
+          version="3" kateversion="5.0"
           indenter="cstyle"
           extensions="*.c;*.C;*.h"
           mimetype="text/x-csrc;text/x-c++src;text/x-chdr"
@@ -15,81 +15,96 @@
 -->
   <highlighting>
     <list name="controlflow">
-      <item> break </item>
-      <item> case </item>
-      <item> continue </item>
-      <item> default </item>
-      <item> do </item>
-      <item> else </item>
-      <item> for </item>
-      <item> goto </item>
-      <item> if </item>
-      <item> return </item>
-      <item> switch </item>
-      <item> while </item>
+      <item>break</item>
+      <item>case</item>
+      <item>continue</item>
+      <item>default</item>
+      <item>do</item>
+      <item>else</item>
+      <item>for</item>
+      <item>goto</item>
+      <item>if</item>
+      <item>return</item>
+      <item>switch</item>
+      <item>while</item>
     </list>
     <list name="keywords">
-      <item> enum </item>
-      <item> extern </item>
-      <item> inline </item>
-      <item> sizeof </item>
-      <item> struct </item>
-      <item> typedef </item>
-      <item> union </item>
+      <item>enum</item>
+      <item>extern</item>
+      <item>inline</item>
+      <item>sizeof</item>
+      <item>struct</item>
+      <item>typedef</item>
+      <item>union</item>
+      <item>_Alignas</item>
+      <item>_Alignof</item>
+      <item>_Atomic</item>
+      <item>_Noreturn</item>
+      <item>_Static_assert</item>
+      <item>_Thread_local</item>
     </list>
     <list name="types">
-      <item> auto </item>
-      <item> char </item>
-      <item> const </item>
-      <item> double </item>
-      <item> float </item>
-      <item> int </item>
-      <item> long </item>
-      <item> register </item>
-      <item> restrict </item>
-      <item> short </item>
-      <item> signed </item>
-      <item> static </item>
-      <item> unsigned </item>
-      <item> void </item>
-      <item> volatile </item>
-      <item> int8_t </item>
-      <item> int16_t </item>
-      <item> int32_t </item>
-      <item> int64_t </item>
-      <item> uint8_t </item>
-      <item> uint16_t </item>
-      <item> uint32_t </item>
-      <item> uint64_t </item>
-      <item> int_least8_t </item>
-      <item> int_least16_t </item>
-      <item> int_least32_t </item>
-      <item> int_least64_t </item>
-      <item> uint_least8_t </item>
-      <item> uint_least16_t </item>
-      <item> uint_least32_t </item>
-      <item> uint_least64_t </item>
-      <item> int_fast8_t </item>
-      <item> int_fast16_t </item>
-      <item> int_fast32_t </item>
-      <item> int_fast64_t </item>
-      <item> uint_fast8_t </item>
-      <item> uint_fast16_t </item>
-      <item> uint_fast32_t </item>
-      <item> uint_fast64_t </item>
-      <item> size_t </item>
-      <item> ssize_t </item>
-      <item> wchar_t </item>
-      <item> intptr_t </item>
-      <item> uintptr_t </item>
-      <item> intmax_t </item>
-      <item> uintmax_t </item>
-      <item> ptrdiff_t </item>
-      <item> sig_atomic_t </item>
-      <item> wint_t </item>
-      <item> _Imaginary </item>
-      <item> _Complex </item>
-      <item> _Bool </item>
+      <item>auto</item>
+      <item>char</item>
+      <item>const</item>
+      <item>double</item>
+      <item>float</item>
+      <item>int</item>
+      <item>long</item>
+      <item>register</item>
+      <item>restrict</item>
+      <item>short</item>
+      <item>signed</item>
+      <item>static</item>
+      <item>unsigned</item>
+      <item>void</item>
+      <item>volatile</item>
+      <item>int8_t</item>
+      <item>int16_t</item>
+      <item>int32_t</item>
+      <item>int64_t</item>
+      <item>uint8_t</item>
+      <item>uint16_t</item>
+      <item>uint32_t</item>
+      <item>uint64_t</item>
+      <item>int_least8_t</item>
+      <item>int_least16_t</item>
+      <item>int_least32_t</item>
+      <item>int_least64_t</item>
+      <item>uint_least8_t</item>
+      <item>uint_least16_t</item>
+      <item>uint_least32_t</item>
+      <item>uint_least64_t</item>
+      <item>int_fast8_t</item>
+      <item>int_fast16_t</item>
+      <item>int_fast32_t</item>
+      <item>int_fast64_t</item>
+      <item>uint_fast8_t</item>
+      <item>uint_fast16_t</item>
+      <item>uint_fast32_t</item>
+      <item>uint_fast64_t</item>
+      <item>size_t</item>
+      <item>ssize_t</item>
+      <item>wchar_t</item>
+      <item>intptr_t</item>
+      <item>uintptr_t</item>
+      <item>intmax_t</item>
+      <item>uintmax_t</item>
+      <item>ptrdiff_t</item>
+      <item>sig_atomic_t</item>
+      <item>wint_t</item>
+      <item>_Bool</item>
+      <item>bool</item>
+      <item>_Complex</item>
+      <item>complex</item>
+      <item>_Imaginary</item>
+      <item>imaginary</item>
+      <item>_Generic</item>
+      <item>va_list</item>
+      <item>FILE</item>
+      <item>fpos_t</item>
+      <item>time_t</item>
+      <item>max_align_t</item>
     </list>
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
