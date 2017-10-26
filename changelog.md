@@ -1,5 +1,12 @@
 # Revision history for skylighting
 
+## 0.4.2 --- 2017-10-26
+
+  * HTML output: remove outer div.  This prevented margin
+    collapsing between the pre and surrounding block elements,
+    and often gave us excess white space around code blocks.
+    See jgm/pandoc#3996.
+
 ## 0.4.1 --- 2017-09-28
 
   * Updated XML definitions from KDE repository.
