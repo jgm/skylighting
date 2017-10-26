@@ -52,8 +52,7 @@ formatHtmlInline opts = wrapCode opts
                       . map (mapM_ (tokenToHtml opts))
 
 -- | Format tokens as an HTML @pre@ block. Each line is wrapped in a div
--- with the class ‘source-line’. The whole code block is wrapped in a @div@
--- element to aid styling (e.g. the overflow-x property). If line numbering
+-- with the class ‘source-line’. If line numbering
 -- is selected, this surrounding div is given the class ‘number-source’,
 -- and the resulting html will display line numbers thanks to the included
 -- css. Note that the html produced will always include the line numbers as
@@ -61,18 +60,16 @@ formatHtmlInline opts = wrapCode opts
 -- See the documentation for 'formatHtmlInline' for information about how
 -- tokens are encoded.
 formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
-formatHtmlBlock opts ls = H.div ! A.class_ sourceCode $
-                            pre ! A.class_ (toValue $ Text.unwords classes)
-  where  sourceCode = toValue . Text.unwords $ Text.pack "sourceCode" :
-                      if numberLines opts
-                        then [Text.pack "numberSource"]
-                        else []
-         classes = Text.pack "sourceCode" :
-                   [x | x <- containerClasses opts, x /= Text.pack "sourceCode"]
+formatHtmlBlock opts ls =
+  H.pre ! A.class_ (toValue $ Text.unwords classes)
+        $ wrapCode opts
+        $ mconcat . intersperse (toHtml "\n")
+        $ zipWith (sourceLineToHtml opts) [startNum..] ls
+  where  classes = Text.pack "sourceCode" :
+                   [Text.pack "numberSource" | numberLines opts] ++
+                   [x | x <- containerClasses opts
+                      , x /= Text.pack "sourceCode"]
          startNum = LineNo $ startNumber opts
-         pre = H.pre $ wrapCode opts
-                     $ mconcat . intersperse (toHtml "\n")
-                     $ zipWith (sourceLineToHtml opts) [startNum..] ls
 
 wrapCode :: FormatOptions -> Html -> Html
 wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
@@ -145,9 +142,9 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
                           (Just c1, Just c2) -> ["pre, code { color: " ++ fromColor c1 ++ "; background-color: " ++
                                                   fromColor c2 ++ "; }"]
          numberspec = [
-            ".numberSource div.sourceLine, .numberSource a.sourceLine"
+            "pre.numberSource div.sourceLine, .numberSource a.sourceLine"
           , "  { position: relative; }"
-          , ".numberSource div.sourceLine::before, .numberSource a.sourceLine::before"
+          , "pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before"
           , "  { content: attr(data-line-number);"
           , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
           , "    border: none; pointer-events: all;"
@@ -155,14 +152,14 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
           , "    -khtml-user-select: none; -moz-user-select: none;"
           , "    -ms-user-select: none; user-select: none;"
           , "    padding: 0 4px; width: 4em; }"
-          , ".numberSource pre.sourceCode { margin-left: 3em; " ++
+          , "pre.numberSource { margin-left: 3em; " ++
               maybe "" (\c -> "border-left: 1px solid " ++ fromColor c ++ "; ") (lineNumberColor f) ++
               maybe "" (\c -> "background-color: " ++ fromColor c ++ "; ") (lineNumberBackgroundColor f) ++
               maybe "" (\c -> "color: " ++ fromColor c ++ "; ") (lineNumberColor f) ++
               " padding-left: 4px; }"
           ]
-         divspec = [ "div.sourceCode { overflow-x: auto; }"
-          , "div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }"
+         divspec = [
+            "div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }"
           , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
           , ".sourceCode { overflow: visible; }"
           , "code.sourceCode { white-space: pre; }"
