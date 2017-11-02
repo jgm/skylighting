@@ -370,6 +370,7 @@ data FormatOptions = FormatOptions{
        , titleAttributes  :: Bool     -- ^ Html titles with token types
        , codeClasses      :: [Text]   -- ^ Additional classes for Html code tag
        , containerClasses :: [Text]   -- ^ Additional classes for Html container tag
+       , lineIdPrefix     :: Text     -- ^ Prefix for id attributes on lines
        } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
 
 instance Binary FormatOptions
@@ -383,4 +384,5 @@ defaultFormatOpts = FormatOptions{
                     , titleAttributes = False
                     , codeClasses = []
                     , containerClasses = []
+                    , lineIdPrefix = ""
                     }
