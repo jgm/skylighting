@@ -1,5 +1,14 @@
 # Revision history for skylighting
 
+## 0.4.3 --- 2017-11-02
+
+  * `FormatOptions`: added `lineIdPrefix` (jgm/pandoc#4031).
+    This is needed because a web page may contain several
+    code samples, and we need to make sure that the ids on
+    lines are unique.
+  * HTML formatter: use `lineIdPrefix` in ids for lines.
+  * HTML formatter: Don't put href attributes on divs.
+
 ## 0.4.2 --- 2017-10-26
 
   * HTML output: remove outer div.  This prevented margin
