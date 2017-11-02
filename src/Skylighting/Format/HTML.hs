@@ -5,6 +5,7 @@ module Skylighting.Format.HTML (
     ) where
 
 import Data.List (intersperse)
+import Data.Monoid ((<>))
 import Data.String (fromString)
 import qualified Data.Text as Text
 import Skylighting.Types
@@ -89,8 +90,9 @@ sourceLineToHtml opts lno cont =
                  ! A.id lineNum
                  ! dataAttrib) $ mapM_ (tokenToHtml opts) cont
   where  sourceLine = toValue "sourceLine"
-         lineNum = toValue . show . lineNo $ lno
-         lineRef = toValue . ('#':) . show . lineNo $ lno
+         lineNum = toValue prefixedLineNo
+         lineRef = toValue ('#':prefixedLineNo)
+         prefixedLineNo = Text.unpack (lineIdPrefix opts) <> show (lineNo lno)
          dataAttrib = H.dataAttribute (fromString "line-number") lineNum
 
 tokenToHtml :: FormatOptions -> Token -> Html
