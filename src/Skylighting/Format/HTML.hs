@@ -79,17 +79,19 @@ wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
 -- | Each line of source is wrapped in an (inline-block) div that makes
 -- subsequent per-line processing (e.g. adding line numnbers) possible.
 sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
-sourceLineToHtml opts lno cont = wrapElement ! A.class_ sourceLine
-                                       ! A.id lineNum
-                                       ! A.href lineRef
-                                       ! H.dataAttribute (fromString "line-number") lineNum $
-                                mapM_ (tokenToHtml opts) cont
+sourceLineToHtml opts lno cont =
+  (if lineAnchors opts
+      then H.a   ! A.class_ sourceLine
+                 ! A.id lineNum
+                 ! A.href lineRef
+                 ! dataAttrib
+      else H.div ! A.class_ sourceLine
+                 ! A.id lineNum
+                 ! dataAttrib) $ mapM_ (tokenToHtml opts) cont
   where  sourceLine = toValue "sourceLine"
          lineNum = toValue . show . lineNo $ lno
          lineRef = toValue . ('#':) . show . lineNo $ lno
-         wrapElement = if lineAnchors opts
-                then H.a
-                else H.div
+         dataAttrib = H.dataAttribute (fromString "line-number") lineNum
 
 tokenToHtml :: FormatOptions -> Token -> Html
 tokenToHtml _ (NormalTok, txt)  = toHtml txt
