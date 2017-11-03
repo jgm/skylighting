@@ -173,7 +173,7 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
           , "}"
           ]
          linkspec = [ "@media screen {"
-          , "a.sourceLine::before { text-decoration: underline; color = initial; }"
+          , "a.sourceLine::before { text-decoration: underline; color: initial; }"
           , "}"
           ]
 
