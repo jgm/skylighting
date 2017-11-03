@@ -3,6 +3,7 @@
 ## 0.4.3.1 -- 2017-11-03
 
   * Fixed typo in css (Artymort).
+  * Fixed travis build times.
 
 ## 0.4.3 --- 2017-11-02
 
