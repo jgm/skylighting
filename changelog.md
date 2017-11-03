@@ -1,5 +1,9 @@
 # Revision history for skylighting
 
+## 0.4.3.1 -- 2017-11-03
+
+  * Fixed typo in css (Artymort).
+
 ## 0.4.3 --- 2017-11-02
 
   * `FormatOptions`: added `lineIdPrefix` (jgm/pandoc#4031).
