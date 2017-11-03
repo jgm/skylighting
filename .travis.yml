@@ -133,7 +133,7 @@ script:
       cabal configure --enable-tests --enable-benchmarks -v2 -ffast -f-bootstrap -fexecutable --ghc-options="$OPTS" && \
       cabal sdist --output-directory=sourcedist && \
       cd sourcedist && \
-      cabal configure --ghc-options="$OPTS" --enable-tests --force-reinstalls && \
+      cabal configure --ghc-options="$OPTS" --enable-tests && \
       cabal build -j2 && \
       cabal test
       ;;
