@@ -83,6 +83,7 @@ before_install:
 
 # We want to always allow newer versions of packages when building on GHC HEAD
 - CABALARGS=""
+- OPTS="-O0 -Wall -fno-warn-unused-do-bind -Werror"
 - if [ "x$GHCVER" = "xhead" ]; then CABALARGS=--allow-newer; fi
 
 # Download and unpack the stack executable
@@ -103,12 +104,12 @@ install:
   case "$BUILD" in
     stack)
       ulimit -n 4096
-      stack --no-terminal --install-ghc $ARGS test --flag 'aeson:fast' --flag 'skylighting:executable' --only-dependencies
+      stack --no-terminal --install-ghc $ARGS test --flag 'aeson:fast' --flag 'skylighting:executable' --ghc-options="$OPTS" --only-dependencies
       ;;
     cabal)
       cabal --version
       travis_retry cabal update
-      cabal install -j --only-dependencies -ffast --enable-tests --enable-benchmarks --force-reinstalls --reorder-goals --max-backjumps=-1 $CABALARGS
+      cabal install -j --only-dependencies -ffast --enable-tests --enable-benchmarks --force-reinstalls --ghc-options="$OPTS" --reorder-goals --max-backjumps=-1 $CABALARGS
       ;;
   esac
 
@@ -118,24 +119,20 @@ script:
   case "$BUILD" in
     stack)
       ulimit -n 4096
-      stack --no-terminal $ARGS install --flag 'aeson:fast' --flag 'skylighting:bootstrap' --ghc-options="-Wall -fno-warn-unused-do-bind -Werror" && \
+      stack --no-terminal $ARGS install --flag 'aeson:fast' --flag 'skylighting:bootstrap' --ghc-options="$OPTS" && \
       stack exec skylighting-extract -- xml/*.xml && \
       stack sdist && \
       stack clean && \
-      stack --no-terminal $ARGS test --flag 'aeson:fast' --flag 'skylighting:executable' --haddock --no-haddock-deps --ghc-options="-Wall -fno-warn-unused-do-bind -Werror"
+      stack --no-terminal $ARGS test --flag 'aeson:fast' --flag 'skylighting:executable' --haddock --no-haddock-deps --ghc-options="$OPTS"
       ;;
     cabal)
-      cabal configure -v2 -ffast -fbootstrap --ghc-options="-Wall -fno-warn-unused-do-bind -Werror" && \
-      cabal build -j && \
+      cabal configure -v2 -ffast -fbootstrap --ghc-options="$OPTS" && \
+      cabal build -j2 && \
       cabal run skylighting-extract -- xml/*.xml && \
       cabal clean && \
-      cabal configure --enable-tests --enable-benchmarks -v2 -ffast -f-bootstrap -fexecutable --ghc-options="-Wall -fno-warn-unused-do-bind -Werror" && \
-      cabal build -j && \
-      cabal check && \
-      cabal test -j && \
-      cabal copy && \
-      cabal sdist && \
-      SRC_TGZ=$(cabal info . | awk '{print $2;exit}').tar.gz && \
-        (cd dist && cabal install -j --enable-tests --force-reinstalls "$SRC_TGZ")
+      cabal configure --enable-tests --enable-benchmarks -v2 -ffast -f-bootstrap -fexecutable --ghc-options="$OPTS" && \
+      cabal sdist --output-directory=sourcedist && \
+      cd sourcedist && \
+      cabal install -j2 --ghc-options="$OPTS" --enable-tests --run-tests --force-reinstalls "$SRC_TGZ")
       ;;
   esac
