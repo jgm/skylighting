@@ -133,6 +133,6 @@ script:
       cabal configure --enable-tests --enable-benchmarks -v2 -ffast -f-bootstrap -fexecutable --ghc-options="$OPTS" && \
       cabal sdist --output-directory=sourcedist && \
       cd sourcedist && \
-      cabal install -j2 --ghc-options="$OPTS" --enable-tests --run-tests --force-reinstalls "$SRC_TGZ")
+      cabal install -j2 --ghc-options="$OPTS" --enable-tests --run-tests --force-reinstalls
       ;;
   esac
