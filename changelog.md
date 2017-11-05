@@ -1,5 +1,11 @@
 # Revision history for skylighting
 
+## 0.4.3.2 -- 2017-11-04
+
+  * Fixed regression in `data-line-number` attributes in HTML
+    output.  We should not include the `lineIdPrefix` in
+    front of this.
+
 ## 0.4.3.1 -- 2017-11-03
 
   * Fixed typo in css (Artymort).
