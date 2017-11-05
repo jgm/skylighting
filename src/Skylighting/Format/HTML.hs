@@ -93,7 +93,8 @@ sourceLineToHtml opts lno cont =
          lineNum = toValue prefixedLineNo
          lineRef = toValue ('#':prefixedLineNo)
          prefixedLineNo = Text.unpack (lineIdPrefix opts) <> show (lineNo lno)
-         dataAttrib = H.dataAttribute (fromString "line-number") lineNum
+         dataAttrib = H.dataAttribute (fromString "line-number")
+                          (toValue (show (lineNo lno)))
 
 tokenToHtml :: FormatOptions -> Token -> Html
 tokenToHtml _ (NormalTok, txt)  = toHtml txt
