@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable  #-}
 {-# LANGUAGE DeriveGeneric       #-}
+{-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE OverloadedStrings  #-}
 
 module Skylighting.Regex (
                 Regex
@@ -13,18 +13,18 @@ module Skylighting.Regex (
               ) where
 
 import qualified Control.Exception as E
+import Data.Aeson
+import Data.Binary (Binary)
+import qualified Data.ByteString.Base64 as Base64
 import qualified Data.ByteString.Char8 as BS
 import Data.ByteString.UTF8 (toString)
+import Data.Data
+import qualified Data.Text as Text
+import qualified Data.Text.Encoding as TE
 import GHC.Generics (Generic)
 import System.IO.Unsafe (unsafePerformIO)
 import Text.Printf
 import Text.Regex.PCRE.ByteString
-import Data.Data
-import Data.Binary (Binary)
-import Data.Aeson
-import qualified Data.Text as Text
-import qualified Data.Text.Encoding as TE
-import qualified Data.ByteString.Base64 as Base64
 
 -- | An exception in compiling or executing a regex.
 newtype RegexException = RegexException String

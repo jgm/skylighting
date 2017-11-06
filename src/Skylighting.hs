@@ -10,6 +10,7 @@ module Skylighting (
   , module Skylighting.Regex
   , module Skylighting.Syntax
   , module Skylighting.Styles
+  , module Skylighting.Format.ANSI
   , module Skylighting.Format.HTML
   , module Skylighting.Format.LaTeX
   ) where
@@ -19,6 +20,7 @@ import qualified Data.Map as Map
 import Data.Maybe (listToMaybe)
 import Data.Text (Text)
 import qualified Data.Text as Text
+import Skylighting.Format.ANSI
 import Skylighting.Format.HTML
 import Skylighting.Format.LaTeX
 import Skylighting.Parser

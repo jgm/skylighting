@@ -12,15 +12,15 @@ bench:
 
 format:
 	stylish-haskell -i -c .stylish-haskell \
-	      bin/*.hs test/test-skylighting.hs \
+	      bin/*.hs test/test-skylighting.hs benchmark/benchmark.hs \
+	      prelude/Prelude.hs Setup.hs \
 	      src/Skylighting/*.hs src/Skylighting/Format/*.hs src/Skylighting.hs
 
 bootstrap: $(XMLS)
 	-rm -rf src/Skylighting/Syntax src/Skylighting/Syntax.hs
-	cabal install -fbootstrap --disable-optimization
+	stack install --flag "skylighting:bootstrap" --fast --no-test --no-bench
 	skylighting-extract $(XMLS)
-	cabal install -f-bootstrap -fexecutable --enable-tests --disable-optimization
-	cabal test
+	stack install --flag "skylighting:-bootstrap" --flag "skylighting:executable" --test --test-arguments '--hide-successes $(TESTARGS)' --fast
 
 syntax-highlighting:
 	git clone https://github.com/KDE/syntax-highlighting

@@ -8,9 +8,9 @@ import Data.ByteString.UTF8 (fromString)
 import Data.Char (isAlphaNum, toUpper)
 import qualified Data.Map as Map
 import Data.Maybe (fromMaybe)
+import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
-import qualified Data.Set as Set
 import Safe
 import Skylighting.Regex
 import Skylighting.Types

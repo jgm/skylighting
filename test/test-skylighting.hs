@@ -5,9 +5,10 @@
 module Main where
 import qualified Control.Exception as E
 import Data.Aeson (decode, encode)
-import Data.Monoid ((<>))
 import Data.Algorithm.Diff
 import qualified Data.ByteString.Lazy as BL
+import qualified Data.Map as Map
+import Data.Monoid ((<>))
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
@@ -15,13 +16,12 @@ import Skylighting
 import System.Directory
 import System.Environment (getArgs)
 import System.FilePath
+import Test.QuickCheck
 import Test.Tasty
 import Test.Tasty.Golden.Advanced (goldenTest)
 import Test.Tasty.HUnit
-import Test.Tasty.QuickCheck(testProperty)
-import Test.QuickCheck
+import Test.Tasty.QuickCheck (testProperty)
 import Text.Show.Pretty
-import qualified Data.Map as Map
 
 syntaxes :: [Syntax]
 syntaxes = Map.elems defaultSyntaxMap

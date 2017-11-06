@@ -29,12 +29,14 @@ data Flag = Sty String
           | NumberLines
           | Syn String
           | TitleAttributes
+          | ColorLevel String
           | Definition String
           | Trace
           | Version
           deriving (Eq, Show)
 
-data HighlightFormat = FormatHtml
+data HighlightFormat = FormatANSI
+                     | FormatHtml
                      | FormatLaTeX
                      | FormatNative
                      deriving (Eq, Show)
@@ -52,7 +54,7 @@ options =
   ,Option ['f']
           ["format"]
           (ReqArg Format "FORMAT")
-          "output format (html|latex|native)"
+          "output format (ansi|html|latex|native)"
   ,Option ['r']
           ["fragment"]
           (NoArg Fragment)
@@ -77,6 +79,10 @@ options =
           ["title-attributes"]
           (NoArg TitleAttributes)
           "include structure in title attributes"
+  ,Option ['C']
+          ["color-level"]
+          (ReqArg ColorLevel "LEVEL")
+          "ANSI color support level to use (auto|16|256|true)"
   ,Option ['d']
           ["definition"]
           (ReqArg Definition "PATH")
@@ -108,24 +114,46 @@ styleOf (Theme fp : _) = do
        Left e    -> err e
        Right sty -> return sty
 styleOf (Sty s : _) = case map toLower s of
-                            "pygments"   -> return pygments
-                            "espresso"   -> return espresso
-                            "kate"       -> return kate
-                            "tango"      -> return tango
-                            "haddock"    -> return haddock
-                            "monochrome" -> return monochrome
+                            "pygments"    -> return pygments
+                            "espresso"    -> return espresso
+                            "kate"        -> return kate
+                            "tango"       -> return tango
+                            "haddock"     -> return haddock
+                            "monochrome"  -> return monochrome
                             "breeze-dark" -> return breezeDark
-                            _            -> err $ "Unknown style: " ++ s
+                            _             -> err $ "Unknown style: " ++ s
 styleOf (_ : xs) = styleOf xs
 
 formatOf :: [Flag] -> IO HighlightFormat
-formatOf [] = return FormatHtml  -- default
+formatOf [] = return FormatANSI  -- default
 formatOf (Format s : _) = case map toLower s of
+                            "ansi"   -> return FormatANSI
                             "html"   -> return FormatHtml
                             "latex"  -> return FormatLaTeX
                             "native" -> return FormatNative
                             _        -> err $ "Unknown format: " ++ s
 formatOf (_ : xs) = formatOf xs
+
+colorLevelOf :: [Flag] -> IO (Maybe ANSIColorLevel)
+colorLevelOf [] = return Nothing
+colorLevelOf (ColorLevel s : _) = case map toLower s of
+                                    "auto" -> return Nothing
+                                    "16"   -> return $ Just ANSI16Color
+                                    "256"  -> return $ Just ANSI256Color
+                                    "true" -> return $ Just ANSITrueColor
+                                    _      -> err $ "Unknown color level: " ++ s
+colorLevelOf (_ : xs) = colorLevelOf xs
+
+-- Crude, but conservative enough to work.  Maybe extendable later?
+getActualColorLevel :: Maybe ANSIColorLevel -> IO ANSIColorLevel
+getActualColorLevel (Just cl) = return cl
+getActualColorLevel Nothing   = do mct <- lookupEnv "COLORTERM"
+                                   mtm <- lookupEnv "TERM"
+                                   if mct == Just "truecolor" || mct == Just "24bit"
+                                   then return ANSITrueColor
+                                   else if mtm == Just "xterm-256color"
+                                   then return ANSI256Color
+                                   else return ANSI16Color
 
 extractDefinitions :: [Flag] -> IO [Syntax]
 extractDefinitions [] = return []
@@ -174,9 +202,11 @@ main = do
              then Text.getContents
              else mconcat <$> mapM Text.readFile fnames
 
+  actualColorLevel <- colorLevelOf opts >>= getActualColorLevel
   let highlightOpts = defaultFormatOpts{ titleAttributes = TitleAttributes `elem` opts
                                        , numberLines = NumberLines `elem` opts
                                        , lineAnchors = NumberLines `elem` opts
+                                       , ansiColorLevel = actualColorLevel
                                        }
   let fragment = Fragment `elem` opts
   let fname = case fnames of
@@ -196,9 +226,16 @@ main = do
                       Right ls -> return ls
 
   case format of
+       FormatANSI   -> hlANSI highlightOpts style sourceLines
        FormatHtml   -> hlHtml fragment fname highlightOpts style sourceLines
        FormatLaTeX  -> hlLaTeX fragment fname highlightOpts style sourceLines
        FormatNative -> putStrLn $ ppShow sourceLines
+
+hlANSI :: FormatOptions
+      -> Style
+      -> [SourceLine]
+      -> IO ()
+hlANSI opts sty = Text.putStrLn . formatANSI opts sty
 
 hlHtml :: Bool               -- ^ Fragment
       -> FilePath            -- ^ Filename
