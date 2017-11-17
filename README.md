@@ -60,9 +60,9 @@ Using stack:
 
 Using cabal:
 
-    cabal install -fbootstrap --disable-optimizations
+    cabal install -fbootstrap --disable-optimization
     cabal run skylighting-extract -- xml/*.xml
-    cabal install -f-bootstrap --disable-optimizations
+    cabal install -f-bootstrap --disable-optimization
 
 Command-line tool
 -----------------
