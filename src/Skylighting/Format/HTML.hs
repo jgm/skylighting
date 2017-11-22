@@ -52,13 +52,11 @@ formatHtmlInline opts = wrapCode opts
                       . mconcat . intersperse (toHtml "\n")
                       . map (mapM_ (tokenToHtml opts))
 
--- | Format tokens as an HTML @pre@ block. Each line is wrapped in a div
--- with the class ‘source-line’. If line numbering
--- is selected, this surrounding div is given the class ‘number-source’,
+-- | Format tokens as an HTML @pre@ block. Each line is wrapped in an a
+-- element with the class ‘source-line’. If line numbering
+-- is selected, the surrounding pre is given the class ‘numberSource’,
 -- and the resulting html will display line numbers thanks to the included
--- css. Note that the html produced will always include the line numbers as
--- the 'data-line-number' attribute.
--- See the documentation for 'formatHtmlInline' for information about how
+-- CSS.  See the documentation for 'formatHtmlInline' for information about how
 -- tokens are encoded.
 formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlock opts ls =
@@ -77,7 +75,7 @@ wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
                                              $ Text.pack "sourceCode"
                                                : codeClasses opts) $ h
 
--- | Each line of source is wrapped in an (inline-block) div that makes
+-- | Each line of source is wrapped in an (inline-block) anchor that makes
 -- subsequent per-line processing (e.g. adding line numnbers) possible.
 sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
 sourceLineToHtml opts lno cont =
@@ -86,7 +84,7 @@ sourceLineToHtml opts lno cont =
                  ! A.id lineNum
                  ! A.href lineRef
                  ! dataAttrib
-      else H.div ! A.class_ sourceLine
+      else H.a   ! A.class_ sourceLine
                  ! A.id lineNum
                  ! dataAttrib) $ mapM_ (tokenToHtml opts) cont
   where  sourceLine = toValue "sourceLine"
@@ -147,9 +145,9 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
                           (Just c1, Just c2) -> ["pre, code { color: " ++ fromColor c1 ++ "; background-color: " ++
                                                   fromColor c2 ++ "; }"]
          numberspec = [
-            "pre.numberSource div.sourceLine, .numberSource a.sourceLine"
+            "pre.numberSource a.sourceLine"
           , "  { position: relative; }"
-          , "pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before"
+          , "pre.numberSource a.sourceLine::before"
           , "  { content: attr(data-line-number);"
           , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
           , "    border: none; pointer-events: all;"
@@ -164,13 +162,13 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
               " padding-left: 4px; }"
           ]
          divspec = [
-            "div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }"
+            "a.sourceLine { display: inline-block; min-height: 1.25em; }"
           , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
           , ".sourceCode { overflow: visible; }"
           , "code.sourceCode { white-space: pre; }"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
-          , "div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }"
+          , "a.sourceLine { text-indent: -1em; padding-left: 1em; }"
           , "}"
           ]
          linkspec = [ "@media screen {"
