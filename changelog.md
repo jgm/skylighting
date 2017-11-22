@@ -1,5 +1,14 @@
 # Revision history for skylighting
 
+## 0.4.4 -- 2017-11-21
+
+  * HTML formatter: always use an a element (rather than a div)
+    for source lines.  The divs were invalid, because code
+    elements must contain phrasing content.  Previously we used
+    a elements when line anchors were called for, but there is
+    no clear reason not to use them always.
+  * skylighting binary: add doctype to generated HTML.
+
 ## 0.4.3.2 -- 2017-11-04
 
   * Fixed regression in `data-line-number` attributes in HTML
