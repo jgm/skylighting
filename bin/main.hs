@@ -216,8 +216,14 @@ hlHtml :: Bool               -- ^ Fragment
 hlHtml frag fname opts sty sourceLines =
  if frag
     then putStrLn $ renderHtml fragment
-    else putStrLn $ renderHtml $ H.html $
-           H.head (pageTitle >> metadata >> css) >> H.body (H.toHtml fragment)
+    else putStrLn $ renderHtml $ do
+           H.docType
+           H.html $ do
+             H.head $ do
+               pageTitle
+               metadata
+               css
+             H.body $ H.toHtml fragment
   where fragment = formatHtmlBlock opts sourceLines
         css = H.style H.! A.type_ "text/css" $ H.toHtml $ styleToCss sty
         pageTitle = H.title $ H.toHtml fname
