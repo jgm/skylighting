@@ -8,7 +8,7 @@
 	R      : http://www.r-project.org/
 	RKWard : http://rkward.sourceforge.net/
 	-->
-<language version="6" kateversion="5.0" name="R Script" section="Scientific" extensions="*.R;*.r;*.S;*.s;*.q" mimetype="" license="GPLv2">
+<language version="7" kateversion="5.0" name="R Script" section="Scientific" extensions="*.R;*.r;*.S;*.s;*.q" mimetype="" license="GPLv2">
 <highlighting>
 
 	<list name="controls">
@@ -53,7 +53,7 @@
 		</context>
 
 		<context attribute="Normal Text" lineEndContext="#stay" name="parenthesis">
-			<LineContinue attribute="Boolean" context="#stay"/>
+			<LineContinue attribute="Operator" context="#stay"/>
 			<DetectChar attribute="Symbol" context="#pop" char=")"/>
 
 			<RegExpr attribute="Identifier" context="#stay" String="[a-zA-Z_\.][0-9a-zA-Z_\.]*[\s]*=(?=([^=]|$))"/>

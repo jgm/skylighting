@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="scilab" version="2" kateversion="2.2" section="Scientific" extensions="*.sci;*.sce" mimetype="text/x-sci">
+<language name="scilab" version="3" kateversion="2.2" section="Scientific" extensions="*.sci;*.sce" mimetype="text/x-sci">
   <highlighting>
     <list name="Structure-keywords">
       <item>do</item>
@@ -1162,7 +1162,7 @@
         <keyword attribute="Warning-keywords" context="#stay" String="Warning-keywords"/>
         <keyword attribute="Constants-keyword" context="#stay" String="Constants-keyword"/>
         <keyword attribute="functions" context="#stay" String="functions"/>
-        <Float attribute = "Flo" context="#stay"/>
+        <Float attribute = "Float" context="#stay"/>
         <Int attribute = "Decimal" context="#stay"/>
         <RegExpr String= "//.*$" attribute = "Comment" context="#stay"/>
         <RangeDetect char = "&quot;" char1 = "&quot;" attribute = "String" context="#stay"/>

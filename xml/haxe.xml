@@ -12,7 +12,7 @@
   ========================================================================
 -->
 
-<language name="Haxe" section="Sources" extensions="*.hx;*.Hx;*.hX;*.HX;" mimetype="text/x-hxsrc" version="1" kateversion="2.4" casesensitive="true" author="Chad Joan" license="MIT">
+<language name="Haxe" section="Sources" extensions="*.hx;*.Hx;*.hX;*.HX;" mimetype="text/x-hxsrc" version="2" kateversion="2.4" casesensitive="true" author="Chad Joan" license="MIT">
   <highlighting>
     <list name="keywords">
     
@@ -100,7 +100,7 @@
       
         <DetectIdentifier attribute="Normal Text"/>
 
-        <HlCStringChar attribute="EscapeString" context="#pop"/>
+        <HlCStringChar attribute="EscapeSequence" context="#pop"/>
 
         <DetectChar attribute="RawString" context="RawString"   char="'"/>
         <DetectChar attribute="String"    context="String"      char="&quot;"/>

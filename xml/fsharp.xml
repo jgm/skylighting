@@ -9,7 +9,7 @@
 <!ENTITY ESC    "(\\[ntbr'&quot;\\]|\\[0-9]{3}|\\x[0-9A-Fa-f]{2})"> <!-- OCaml character code escapes. -->
 <!ENTITY DEC    "[0-9][0-9_]*">                                     <!-- Decimal digits with underscores. -->
 ]>
-<language name="FSharp" version="2" kateversion="5.0" section="Sources" extensions="*.fs;*.fsi;*.fsx" mimetype="" priority="10" author="Bas Bossink (bas.bossink@gmail.com)" license="LGPL">
+<language name="FSharp" version="3" kateversion="5.0" section="Sources" extensions="*.fs;*.fsi;*.fsx" mimetype="" priority="10" author="Bas Bossink (bas.bossink@gmail.com)" license="LGPL">
 
   <highlighting>
     <list name="keywords">
@@ -208,35 +208,35 @@
         <RegExpr attribute="Escaped characters" context="#stay" String="\\$" />
       </context>
 
-      <context attribute="Normal text" lineEndContext="#stay" name="Block">
+      <context attribute="Normal Text" lineEndContext="#stay" name="Block">
         <keyword attribute="Region Marker" context="#pop" String="end" endRegion="block"/>
         <IncludeRules context="Normal"/>
       </context>
 
-      <context attribute="Normal text" lineEndContext="#stay" name="Sig">
+      <context attribute="Normal Text" lineEndContext="#stay" name="Sig">
         <keyword attribute="Region Marker" context="#pop" String="end" endRegion="sig"/>
         <IncludeRules context="Normal"/>
       </context>
 
-      <context attribute="Normal text" lineEndContext="#stay" name="Struct">
+      <context attribute="Normal Text" lineEndContext="#stay" name="Struct">
         <keyword attribute="Region Marker" context="#pop" String="end" endRegion="struct"/>
         <IncludeRules context="Normal"/>
       </context>
 
-      <context attribute="Normal text" lineEndContext="#stay" name="Object">
+      <context attribute="Normal Text" lineEndContext="#stay" name="Object">
         <keyword attribute="Region Marker" context="#pop" String="end" endRegion="object"/>
         <IncludeRules context="Normal"/>
       </context>
 
-      <context attribute="Normal text" lineEndContext="#stay" name="ModuleEnv" fallthrough="true" fallthroughContext="#pop">
-        <DetectSpaces attribute="Normal text" context="#stay"/>
+      <context attribute="Normal Text" lineEndContext="#stay" name="ModuleEnv" fallthrough="true" fallthroughContext="#pop">
+        <DetectSpaces attribute="Normal Text" context="#stay"/>
         <RegExpr attribute="Module" lookAhead="true" context="ModuleEnv2" String="&MIDENT;\s*\."/>
         <RegExpr attribute="Module" context="#pop" String="&MIDENT;"/>
       </context>
 
-      <context attribute="Normal text" lineEndContext="#stay" name="ModuleEnv2">
+      <context attribute="Normal Text" lineEndContext="#stay" name="ModuleEnv2">
         <RegExpr attribute="Module" context="#stay" String="&MIDENT;"/>
-        <DetectSpaces attribute="Normal text" context="#stay"/>
+        <DetectSpaces attribute="Normal Text" context="#stay"/>
         <StringDetect attribute="Keyword" context="#pop" String="."/>
       </context>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Literate Curry" version="1" kateversion="3.4"
+<language name="Literate Curry" version="2" kateversion="3.4"
           section="Sources" extensions="*.lcurry" mimetype="text/x-curry"
           author="Björn Peemöller (bjp@informatik.uni-kiel.de)" license="LGPL"
           indenter="haskell">
@@ -16,14 +16,14 @@
       <StringDetect attribute="Text" context="normals" String="&#92;begin&#123;spec&#125;"/>
     </context>
 
-    <context attribute="Normal" lineEndContext="#pop" name="Code">
+    <context attribute="Text" lineEndContext="#pop" name="Code">
       <RegExpr attribute="Comment" context="multiline" String="\{-[^#]" />
       <IncludeRules context="##Curry" />
     </context>
 
-    <context attribute="Normal" lineEndContext="#stay" name="normals">
-      <StringDetect attribute="Normal" context="#pop" String="&#92;end&#123;code&#125;"/>
-      <StringDetect attribute="Normal" context="#pop" String="&#92;end&#123;spec&#125;"/>
+    <context attribute="Text" lineEndContext="#stay" name="normals">
+      <StringDetect attribute="Text" context="#pop" String="&#92;end&#123;code&#125;"/>
+      <StringDetect attribute="Text" context="#pop" String="&#92;end&#123;spec&#125;"/>
       <IncludeRules context="##Curry" />
     </context>
 

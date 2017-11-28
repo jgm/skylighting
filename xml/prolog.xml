@@ -59,7 +59,7 @@ to make the rules more expressive. -->
       They are used in other contexts as well, e.g. traditionally A-B is used
       for 'a pair of something', the "^" in bagof/3 and setof/3.
       => highlight as "Arithmetics" only in an arith_expr.
-    - the 3rd are true ISO bogus: it is not specified whether it is arithmetic
+    - the 3rd are true ISO Bogus: it is not specified whether it is arithmetic
       or logical shift, and for bitwise AND, OR and NEG the integer format is
       unspecified => not portable, depend on Prolog implementation. -->
     <!ENTITY arith_compare_iso  "(=:=|=\\=|=&lt;|&lt;|>=|>)(?!&gr_char_iso;)">
@@ -105,7 +105,7 @@ to make the rules more expressive. -->
     <!ENTITY bs         "\">
 ]>
 <language name="Prolog" section="Sources"
-	  version="3" kateversion="3.4"
+	  version="5" kateversion="3.4"
 	  mimetype="text/x-prolog"
 	  extensions="*.prolog;*.dcg;*.pro"
 	  author="Torsten Eichstädt (torsten.eichstaedt@web.de)"
@@ -221,7 +221,7 @@ DONE- Parse (m)any (!) conforming Prolog texts w/ correct highlighting (LIMITS)
 	    - Iff it's an arithmetic expression; else arith ops and built-ins
 	      are highlighted normal.
     - Incl. Sep2012 DRAFT Technical Corrigendum 2: Prolog - Part 1: General Core
-    - Incl. honourable Richard O'Keefe's remarks as warnings as "ISO bogus".
+    - Incl. honourable Richard O'Keefe's remarks as warnings as "ISO Bogus".
     - Detect 'shebang' shell scripts, see BUGs
     - Includes alert_indent.xml to highlight alert keywords in comments.
     - Dot "." may be an _unquoted_ user-defined operator in nested terms (but is
@@ -498,7 +498,7 @@ TODO sorted by priority
 	    <item>floor</item>
 	    <item>round</item>
             <item>truncate</item>
-<!-- ISO bogus	    <item>xor</item> -->
+<!-- ISO Bogus	    <item>xor</item> -->
         </list>
         <list name="arith expr float ISO">
 	    <item>pi</item>
@@ -954,7 +954,7 @@ TODO sorted by priority
 		<IncludeRules context="layout" />
 		<IncludeRules context="number" />
 		<keyword String="arith eval ISO" context="#pop" attribute="Syntax Error" />
-		<keyword String="bogus ISO" context="#stay" attribute="ISO bogus" />
+		<keyword String="bogus ISO" context="#stay" attribute="ISO Bogus" />
 		<keyword String="arith expr mixed ISO" context="#stay" attribute="Arithmetics" />
 		<keyword String="arith expr int ISO" context="#stay" attribute="Integer Arithmetics" />
 		<keyword String="arith expr float ISO" context="#stay" attribute="Float Arithmetics" />
@@ -963,7 +963,7 @@ TODO sorted by priority
 		<RegExpr String="&arith_ops_mixed_iso;" context="#stay" attribute="Arithmetics" />
 		<RegExpr String="&arith_ops_int_iso;" context="#stay" attribute="Integer Arithmetics" />
 		<RegExpr String="&arith_ops_float_iso;" context="#stay" attribute="Float Arithmetics" />
-		<RegExpr String="&arith_bogus_iso;" context="#stay" attribute="ISO bogus" />
+		<RegExpr String="&arith_bogus_iso;" context="#stay" attribute="ISO Bogus" />
 		<!-- do not miss user-def'd arithmetic expr and number expr-->
  		<IncludeRules context="operator" />
 		<AnyChar lookAhead="true" String="&any_lower_iso;" context="id" attribute="Normal Text" />
@@ -1003,7 +1003,7 @@ TODO sorted by priority
 		<RegExpr String="&arith_ops_mixed_iso;" context="#stay" attribute="other built-in operator" />
 		<RegExpr String="&arith_ops_int_iso;" context="#stay" attribute="other built-in operator" />
 		<RegExpr String="&arith_ops_float_iso;" context="#stay" attribute="other built-in operator" />
-		<RegExpr String="&arith_bogus_iso;" context="#stay" attribute="ISO bogus" />
+		<RegExpr String="&arith_bogus_iso;" context="#stay" attribute="ISO Bogus" />
 	    </context>
 
 <!--####### END sub rules to be included - <context> never taken -->
@@ -1018,7 +1018,7 @@ TODO sorted by priority
 	<itemDatas>
 	    <itemData name="Normal Text" defStyleNum="dsNormal" spellChecking="false" />
 	    <itemData name="_VARIABLE" defStyleNum="dsDataType" bold="false" spellChecking="false" />
-	    <itemData name="'quo  Ted'" defStyleNum="dsString" />
+	    <itemData name="'quo Ted'" defStyleNum="dsString" />
 	    <itemData name="`back-quoted`" defStyleNum="dsString" italic="true" />
 	    <!-- The standard wants double-quoted to be a list of char codes, but
 	    e.g. GNU Prolog allows that to be set with set_prolog_flag/2 -->

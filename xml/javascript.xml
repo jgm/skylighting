@@ -3,8 +3,8 @@
 <!-- Author: Anders Lund <anders@alweb.dk> //-->
 <!-- Minor changes: Joseph Wenninger <jowenn@kde.org> //-->
 <!-- Full JavaScript 1.0 support by Whitehawk Stormchaser //-->
-<language name="JavaScript" version="4" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
-          mimetype="text/x-javascript;application/x-javascript" indenter="cstyle"
+<language name="JavaScript" version="6" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
+          mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
   <highlighting>
     <list name="controlflow">
@@ -77,7 +77,7 @@
         this rule will still match it as a shebang, even tough the shebang is only valid on
         the very first line.
       -->
-      <context name="Shebang" lineEndContext="Normal" attribute="Syntax Error" fallthrough="true" fallthroughContext="Normal" >
+      <context name="Shebang" lineEndContext="Normal" attribute="Normal Text" fallthrough="true" fallthroughContext="Normal" >
         <Detect2Chars column="0" char="#" char1="!" context="Comment" attribute="Comment" />
       </context>
 

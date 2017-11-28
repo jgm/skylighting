@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Scala" version="3" kateversion="2.3" section="Sources"
+<language name="Scala" version="4" kateversion="2.3" section="Sources"
           extensions="*.scala;*.sbt" mimetype="text/x-scala" license="LGPL"
           author="Stephane Micheloud (stephane.micheloud@epfl.ch)">
 <!--
@@ -3444,7 +3444,7 @@ adapted from "java.xml" by Alfredo Luiz Foltran Fialho (alfoltran@ig.com.br)
         <HlCStringChar attribute="String Char" context="#stay"/>
         <DetectChar attribute="String" context="#pop" char="&quot;"/>
       </context>
-      <context attribute="Printf" lineEndContext="#pop" name="Printf">
+      <context attribute="Normal Text" lineEndContext="#pop" name="Printf">
         <DetectChar attribute="Normal Text" context="#pop" char="&#059;" />
         <DetectChar attribute="String" context="PrintfString" char="&quot;"/>
       </context>

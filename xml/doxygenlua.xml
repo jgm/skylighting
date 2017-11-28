@@ -27,7 +27,7 @@
  * Boston, MA  02110-1301, USA.                                       *
  **********************************************************************
  -->
-<language name="DoxygenLua" version="3" kateversion="5.0" section="Markup" extensions="*.dox;*.doxygen" mimetype="text/x-doxygen" author="Bruno Massa (brmassa@gmail.com)" license="LGPLv2+">
+<language name="DoxygenLua" version="4" kateversion="5.0" section="Markup" extensions="*.dox;*.doxygen" mimetype="text/x-doxygen" author="Bruno Massa (brmassa@gmail.com)" license="LGPLv2+">
   <highlighting>
     <!-- note: all tags may begin with a \ or @ char
          so if you add/change tags you have to do it twice -->
@@ -382,7 +382,7 @@
       </context>
       <context name="ML_identifiers" attribute="Identifier" lineEndContext="#stay">
         <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" lookAhead="true"/>
-        <RegExpr attribute="String" context="#pop" String="\s*#?[a-zA-Z0-9]*" />
+        <RegExpr attribute="Identifier" context="#pop" String="\s*#?[a-zA-Z0-9]*" />
         <DetectChar attribute="Types" context="ML_types1" char="'" />
         <DetectChar attribute="Types" context="ML_types2" char="&quot;" />
       </context>
@@ -446,7 +446,7 @@
         <StringDetect attribute="HTML Comment" context="#pop" String="--&gt;" />
       </context>
       <context name="SL_identifiers" attribute="Identifier" lineEndContext="#pop">
-        <RegExpr attribute="String" context="#pop" String="\s*#?[a-zA-Z0-9]*" />
+        <RegExpr attribute="Identifier" context="#pop" String="\s*#?[a-zA-Z0-9]*" />
         <DetectChar attribute="Types" context="SL_types1" char="'" />
         <DetectChar attribute="Types" context="SL_types2" char="&quot;" />
       </context>

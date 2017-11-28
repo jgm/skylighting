@@ -29,7 +29,7 @@
 
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Julia" section="Sources" version="1" kateversion="2.4" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
+<language name="Julia" section="Sources" version="3" kateversion="5.0" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
 
   <highlighting>
     <list name="block_begin">
@@ -225,13 +225,13 @@ endRegion="block" />
       </context>
 
       <!-- Contexts entered after beginning a list or array -->
-      <context name="nested" attribute="Normal text" lineEndContext="#stay">
+      <context name="nested" attribute="Normal Text" lineEndContext="#stay">
         <DetectChar char=")" context="#pop" endRegion="nested" attribute="Delimiter" />
       </context>
-      <context name="squared" attribute="Normal text" lineEndContext="#stay">
+      <context name="squared" attribute="Normal Text" lineEndContext="#stay">
         <DetectChar char="]" context="#pop" endRegion="squared" attribute="Delimiter" />
       </context>
-      <context name="curly" attribute="Normal text" lineEndContext="#stay">
+      <context name="curly" attribute="Normal Text" lineEndContext="#stay">
         <DetectChar char="}" context="#pop" endRegion="curly" attribute="Delimiter" />
       </context>
 
@@ -266,6 +266,7 @@ endRegion="block" />
       <itemData name="Hex" defStyleNum="dsBaseN" />
       <itemData name="Delimiter" defStyleNum="dsNormal" />
       <itemData name="String" defStyleNum="dsString"/>
+      <itemData name="String Char" defStyleNum="dsSpecialChar"/>
       <itemData name="Char" defStyleNum="dsChar"/>
       <itemData name="Incomplete Char" defStyleNum="dsChar"/>
       <itemData name="System" defStyleNum="dsBaseN"/>

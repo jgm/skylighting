@@ -22,7 +22,7 @@
  * Boston, MA  02110-1301, USA.                                       *
  **********************************************************************
  -->
-<language version="7" kateversion="5.0" name="Clojure" section="Sources" extensions="*.clj;*.cljs;*.cljc" mimetype="" author="Dominik Haumann [lisp] modified for clojure by Caspar Hasenclever" license="LGPLv2+">
+<language version="8" kateversion="5.0" name="Clojure" section="Sources" extensions="*.clj;*.cljs;*.cljc" mimetype="" author="Dominik Haumann [lisp] modified for clojure by Caspar Hasenclever" license="LGPLv2+">
   <highlighting>
     <list name="definitions">
       <item>def</item>
@@ -760,17 +760,16 @@
       </context>
       <context name="Regexpr" attribute="Regexpr" lineEndContext="#stay">
         <RegExpr attribute="Char" context="#stay" String="#\\."/>
-        <HlCStringChar attribute="Regexpr Char" context="#stay"/>
+        <HlCStringChar attribute="String Char" context="#stay"/>
         <DetectChar attribute="Regexpr" context="#pop" char="&quot;"/>
       </context>
-      <context name="DocumentationPossible" attribute="DocumentationPossible" lineEndContext="#stay">
+      <context name="DocumentationPossible" attribute="Normal" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop">
         <DetectChar attribute="Comment" context="Comment" char=";"/>
         <DetectChar attribute="Documentation" context="#pop!Documentation" char="&quot;"/>
-        <RegExpr attribute="Documentation" context="#pop" String="\S" lookAhead="true"/>
       </context>
       <context name="Documentation" attribute="Documentation" lineEndContext="#stay">
         <RegExpr attribute="Char" context="#stay" String="#\\."/>
-        <HlCStringChar attribute="Documentation Char" context="#stay"/>
+        <HlCStringChar attribute="Char" context="#stay"/>
         <DetectChar attribute="Documentation" context="#pop" char="&quot;"/>
       </context>
       <context name="BracketsSet" attribute="Normal" lineEndContext="#stay">
@@ -856,6 +855,7 @@
       <itemData name="Function" defStyleNum="dsFunction" spellChecking="false"/>
       <itemData name="Char" defStyleNum="dsChar" spellChecking="false"/>
       <itemData name="String" defStyleNum="dsString"/>
+      <itemData name="String Char" defStyleNum="dsSpecialChar"/>
       <itemData name="Regexpr" defStyleNum="dsSpecialString"/>
       <itemData name="Comment" defStyleNum="dsComment"/>
       <itemData name="Documentation" defStyleNum="dsDocumentation"/>

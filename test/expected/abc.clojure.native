@@ -21,9 +21,7 @@
   , ( FunctionTok , " omit " )
   ]
 , [ ( NormalTok , "  " )
-  , ( DocumentationTok
-    , "\"return bs with (one instance of) b omitted\""
-    )
+  , ( StringTok , "\"return bs with (one instance of) b omitted\"" )
   ]
 , [ ( NormalTok , "  [bs b] " ) ]
 , [ ( NormalTok , "  (" )
@@ -48,7 +46,7 @@
   , ( FunctionTok , " abc " )
   ]
 , [ ( NormalTok , "  " )
-  , ( DocumentationTok
+  , ( StringTok
     , "\"return lazy sequence of solutions (i.e. block lists)\""
     )
   ]
@@ -100,7 +98,7 @@
   , ( KeywordTok , "printf" )
   , ( NormalTok , " " )
   , ( StringTok , "\"%s: %b" )
-  , ( NormalTok , "\\n" )
+  , ( SpecialCharTok , "\\n" )
   , ( StringTok , "\"" )
   , ( NormalTok , " word)))" )
   ]

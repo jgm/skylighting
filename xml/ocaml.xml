@@ -17,7 +17,7 @@
           extensions="*.ml;*.mli"
           mimetype="text/x-ocaml"
           section="Sources"
-          version="4"
+          version="6"
           priority="10"
           kateversion="2.4"
           author="Glyn Webster (glynwebster@orcon.net.nz) and Vincent Hugot (vincent.hugot@gmail.com)"
@@ -512,7 +512,7 @@
 
       <!-- A single qualified Ocaml identifier, perhaps preceeded by whitespace. } -->
       <context name="Ocamldoc Identifier" lineEndContext="#stay" attribute="Mismatched Brackets">
-        <RegExpr      String="&IDENT;(\.&IDENT;)*" context="#pop" attribute="Identifier"  />
+        <RegExpr      String="&IDENT;(\.&IDENT;)*" context="#pop" attribute="Ocamldoc Link"  />
         <Detect2Chars char="*" char1=")"           context="#pop" attribute="Mismatched Brackets" />
         <DetectSpaces />
       </context>

@@ -10,7 +10,7 @@
     License: GNU General Public License
 -->
 
-<language name="MonoBasic" section="Sources" version="2" kateversion="2.3" extensions="*.vb" mimetype="" author="Davide Bettio (davide.bettio@kdemail.net)" license="GPL">
+<language name="MonoBasic" section="Sources" version="3" kateversion="2.3" extensions="*.vb" mimetype="" author="Davide Bettio (davide.bettio@kdemail.net)" license="GPL">
   <highlighting>
      <list name="keywords">
         <item>Option</item>
@@ -200,6 +200,7 @@
        <itemData name="Keyword" defStyleNum="dsKeyword" color="#000080" bold="0"/>
        <itemData name="Type" defStyleNum="dsDataType" color="#000080" bold="0"/>
        <itemData name="String" defStyleNum="dsString" color="#800000"/>
+       <itemData name="String Char" defStyleNum="dsSpecialChar"/>
        <itemData name="Preprocessor" defStyleNum="dsOthers" color="#008000"/>
        <itemData name="Comment" defStyleNum="dsComment" color="#008000"/>
     </itemDatas>

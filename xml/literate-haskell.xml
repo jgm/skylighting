@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Literate Haskell" version="3" kateversion="3.4" section="Sources" extensions="*.lhs" mimetype="text/x-haskell" author="Nicolas Wu (zenzike@gmail.com)" license="LGPL">
+<language name="Literate Haskell" version="4" kateversion="3.4" section="Sources" extensions="*.lhs" mimetype="text/x-haskell" author="Nicolas Wu (zenzike@gmail.com)" license="LGPL">
   <highlighting>
   <contexts>
     <context attribute="Text" lineEndContext="#stay" name="text">
@@ -9,13 +9,13 @@
       <StringDetect attribute="Text" context="normals" String="&#92;begin&#123;code&#125;"/>
       <StringDetect attribute="Text" context="normals" String="&#92;begin&#123;spec&#125;"/>
     </context>
-    <context attribute="Normal" lineEndContext="#pop" name="normal">
+    <context attribute="Text" lineEndContext="#pop" name="normal">
       <RegExpr attribute="Comment" context="comments'" String="\{-[^#]" />
       <IncludeRules context="##Haskell" />
     </context>
-    <context attribute="Normal" lineEndContext="#stay" name="normals">
-      <StringDetect attribute="Normal" context="#pop" String="&#92;end&#123;code&#125;"/>
-      <StringDetect attribute="Normal" context="#pop" String="&#92;end&#123;spec&#125;"/>
+    <context attribute="Text" lineEndContext="#stay" name="normals">
+      <StringDetect attribute="Text" context="#pop" String="&#92;end&#123;code&#125;"/>
+      <StringDetect attribute="Text" context="#pop" String="&#92;end&#123;spec&#125;"/>
       <IncludeRules context="##Haskell" />
     </context>
     <context attribute="Comment" lineEndContext="uncomments" name="comments'" >

@@ -15,7 +15,7 @@
     2008-02-13: 1.11 Eduardo Robles Elvira <edulix AT gmail DOT com>
      Fixed folding.
 -->
-<language name="Diff" version="2" kateversion="5.0" section="Other" extensions="*.diff;*patch" mimetype="text/x-patch">
+<language name="Diff" version="3" kateversion="5.0" section="Other" extensions="*.diff;*patch" mimetype="text/x-patch">
 
   <highlighting>
 
@@ -29,7 +29,7 @@
         <RegExpr attribute="File" context="#stay" String="====.*$" column="0"/>
         <RegExpr attribute="File" context="File" String="(\*\*\*|\-\-\-).*$" beginRegion="chunk" column="0"/>
         <IncludeRules context="FindDiff"/>
-        <DetectChar attribute="Changed line" context="ChangedOld" char="!" column="0"/>
+        <DetectChar attribute="Changed line (old)" context="ChangedOld" char="!" column="0"/>
       </context>
 
       <context attribute="Normal Text" lineEndContext="#stay" name="FindDiff">

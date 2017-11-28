@@ -16,7 +16,7 @@
    - Namespace rules
 -->
 
-<language version="1"
+<language version="2"
           kateversion="2.4"
           name="RELAX NG"
           section="Markup"
@@ -105,7 +105,8 @@
       <itemData name="Attribute" defStyleNum="dsOthers"/>
       <itemData name="Attribute Value" defStyleNum="dsString" color="#800000" selColor="#ffffff" bold="0" italic="0"/>
       <itemData name="Comment" defStyleNum="dsComment"/>
-      <itemData name="RELAX NG Tags" defStyleNum="dsKeyword" color="#000080" selColor="#ffffff" bold="1" italic="0" />
+      <itemData name="RELAX NG Tag" defStyleNum="dsKeyword" color="#000080" selColor="#ffffff" bold="1" italic="0" />
+      <itemData name="Error" defStyleNum="dsError" />
     </itemDatas>
   </highlighting>
   <general>
