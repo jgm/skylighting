@@ -40,7 +40,7 @@ main = do
   allcases <- mconcat <$>
                mapM (Text.readFile . (("test" </> "cases") </>)) inputs
   args <- getArgs
-  let regen = "--regenerate" `elem` args
+  let regen = "--accept" `elem` args
   defaultTheme <- BL.readFile ("test" </> "default.theme")
   putStrLn $ "randomText = " ++ show randomText
   defaultMain $ testGroup "skylighting tests" $
