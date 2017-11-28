@@ -154,11 +154,14 @@ styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map t
           , "    -webkit-touch-callout: none; -webkit-user-select: none;"
           , "    -khtml-user-select: none; -moz-user-select: none;"
           , "    -ms-user-select: none; user-select: none;"
-          , "    padding: 0 4px; width: 4em; }"
+          , "    padding: 0 4px; width: 4em;"
+          , maybe "" (\c -> "    background-color: " ++ fromColor c ++ ";\n")
+              (lineNumberBackgroundColor f) ++
+            maybe "" (\c -> "    color: " ++ fromColor c ++ ";\n")
+              (lineNumberColor f) ++
+            "  }"
           , "pre.numberSource { margin-left: 3em; " ++
               maybe "" (\c -> "border-left: 1px solid " ++ fromColor c ++ "; ") (lineNumberColor f) ++
-              maybe "" (\c -> "background-color: " ++ fromColor c ++ "; ") (lineNumberBackgroundColor f) ++
-              maybe "" (\c -> "color: " ++ fromColor c ++ "; ") (lineNumberColor f) ++
               " padding-left: 4px; }"
           ]
          divspec = [
