@@ -1,5 +1,17 @@
 # Revision history for skylighting
 
+## 0.4.4.1 -- 2017-11-27
+
+  * HTML formatting: fix color, bgcolor when numbering enabled.
+    Previously, the code got the color and background color
+    the numbers were supposed to get.  See jgm/pandoc #4103.
+  * Updated syntax descriptions for bash, clojure, commonlisp, diff,
+    dockerfile, doxygen, doxygenlua, fsharp, hamlet, haskell, haxe,
+    java, javascript, julia, latex, literate-curry, literate-haskell,
+    makefile, mediawiki, monobasic, ocaml, prolog, r, relaxng, scala,
+    sci, sql-mysql, sql-postgresql, sql, xslt.
+  * test program:  use --accept instead of --regen.
+
 ## 0.4.4 -- 2017-11-21
 
   * HTML formatter: always use an a element (rather than a div)
