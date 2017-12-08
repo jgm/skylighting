@@ -7,7 +7,9 @@ module Skylighting.Format.LaTeX (
        ) where
 
 import Control.Monad (mplus)
+import qualified Data.Map as Map
 import Data.Char (isSpace)
+import Data.List (sort)
 import Data.Monoid
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -100,7 +102,8 @@ styleToLaTeX f = Text.unlines $
                             ,Text.pack
                               (printf "\\definecolor{shadecolor}{RGB}{%d,%d,%d}" r g b)
                             ,"\\newenvironment{Shaded}{\\begin{snugshade}}{\\end{snugshade}}"])
-  ++ map (macrodef (defaultColor f) (tokenStyles f)) (enumFromTo KeywordTok NormalTok)
+  ++ sort (map (macrodef (defaultColor f) (Map.toList (tokenStyles f)))
+            (enumFromTo KeywordTok NormalTok))
 
 macrodef :: Maybe Color -> [(TokenType, TokenStyle)] -> TokenType -> Text
 macrodef defaultcol tokstyles tokt = "\\newcommand{\\"

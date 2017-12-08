@@ -9,6 +9,7 @@ module Skylighting.Styles (
   , monochrome
   , zenburn) where
 
+import qualified Data.Map as Map
 import Data.Aeson (eitherDecode)
 import Data.ByteString.Lazy (ByteString)
 import Skylighting.Types
@@ -23,7 +24,7 @@ color = toColor
 -- | Style based on kate's default colors.
 kate :: Style
 kate = Style{
-      tokenStyles =
+      tokenStyles = Map.fromList
         [ ( KeywordTok, defStyle { tokenColor = Just (RGB 31 28 27), tokenBold = True })
         , ( DataTypeTok, defStyle { tokenColor = Just (RGB 0 87 174) })
         , ( DecValTok, defStyle { tokenColor = Just (RGB 176 128 0) })
@@ -65,7 +66,7 @@ kate = Style{
 -- | Style from the breeze-dark KDE syntax highlighting theme.
 breezeDark :: Style
 breezeDark = Style
-    { tokenStyles =
+    { tokenStyles = Map.fromList
         [ ( KeywordTok, defStyle { tokenColor = Just (RGB 207 207 194) })
         , ( DataTypeTok, defStyle { tokenColor = Just (RGB 41 128 185) })
         , ( DecValTok, defStyle { tokenColor = Just (RGB 246 116 0) })
@@ -111,7 +112,7 @@ pygments = Style{
   , defaultColor = Nothing
   , lineNumberColor = color 0xaaaaaa
   , lineNumberBackgroundColor = Nothing
-  , tokenStyles =
+  , tokenStyles = Map.fromList
     [ (KeywordTok, defStyle{ tokenColor = color 0x007020, tokenBold = True })
     , (DataTypeTok, defStyle{ tokenColor = color 0x902000 })
     , (DecValTok, defStyle{ tokenColor = color 0x40a070 })
@@ -152,7 +153,7 @@ tango = Style{
   , defaultColor = Nothing
   , lineNumberColor = color 0xaaaaaa
   , lineNumberBackgroundColor = Nothing
-  , tokenStyles =
+  , tokenStyles = Map.fromList
     [ (KeywordTok, defStyle{ tokenColor = color 0x204a87, tokenBold = True })
     , (DataTypeTok, defStyle{ tokenColor = color 0x204a87 })
     , (DecValTok, defStyle{ tokenColor = color 0x0000cf })
@@ -191,7 +192,7 @@ espresso = Style{
   , defaultColor = color 0xBDAE9D
   , lineNumberColor = color 0xBDAE9D
   , lineNumberBackgroundColor = color 0x2A211C
-  , tokenStyles =
+  , tokenStyles = Map.fromList
     [ (KeywordTok, defStyle{ tokenColor = color 0x43A8ED, tokenBold = True })
     , (DataTypeTok, defStyle{ tokenUnderline = True })
     , (DecValTok, defStyle{ tokenColor = color 0x44AA43 })
@@ -230,7 +231,7 @@ haddock = Style{
   , defaultColor = Nothing
   , lineNumberColor = color 0xaaaaaa
   , lineNumberBackgroundColor = Nothing
-  , tokenStyles =
+  , tokenStyles = Map.fromList
     [ (KeywordTok, defStyle{ tokenColor = color 0x0000FF })
     , (CharTok, defStyle{ tokenColor = color 0x008080 })
     , (StringTok, defStyle{ tokenColor = color 0x008080 })
@@ -265,7 +266,7 @@ monochrome = Style{
   , defaultColor = Nothing
   , lineNumberColor = Nothing
   , lineNumberBackgroundColor = Nothing
-  , tokenStyles =
+  , tokenStyles = Map.fromList
     [ (KeywordTok, defStyle{ tokenBold = True })
     , (DataTypeTok, defStyle{ tokenUnderline = True })
     , (CommentTok, defStyle{ tokenItalic = True })
@@ -288,7 +289,7 @@ zenburn = Style{
   , defaultColor = color 0xcccccc
   , lineNumberColor = Nothing
   , lineNumberBackgroundColor = Nothing
-  , tokenStyles =
+  , tokenStyles = Map.fromList
     [ (KeywordTok, defStyle{ tokenColor = color 0xf0dfaf })
     , (DataTypeTok, defStyle{ tokenColor = color 0xdfdfbf })
     , (DecValTok, defStyle{ tokenColor = color 0xdcdccc })

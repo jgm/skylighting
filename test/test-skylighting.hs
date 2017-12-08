@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 module Main where
-import Data.Aeson (decode)
+import Data.Aeson (decode, encode)
 import Data.Monoid ((<>))
 import Data.Algorithm.Diff
 import qualified Data.ByteString.Lazy as BL
@@ -58,6 +58,8 @@ main = do
             decode "{ \"text-color\": \"#1f1c1b\", \"bold\": true }"
        , testCase "decode KDE theme to Style" $
             Just kate @=? decode defaultTheme
+       , testCase "round trip style -> theme -> style" $
+            Just kate @=? decode (encode kate)
        ]
     , testGroup "Skylighting.Regex" $
       [ testCase "convertOctalEscapes" $

@@ -37,11 +37,14 @@ module Skylighting.Types (
               , defaultFormatOpts
               ) where
 
+import Control.Monad (mplus)
+import Data.Aeson.Types (toJSONKeyText)
 import Data.Aeson
 import Data.Bits
 import Data.CaseInsensitive (FoldCase(..))
 import Data.Binary (Binary)
 import Data.Data (Data)
+import Data.Maybe (fromMaybe)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.Text (Text)
@@ -208,15 +211,25 @@ data TokenType = KeywordTok
 instance Binary TokenType
 
 instance ToJSON TokenType where
-  toEncoding t = toEncoding (Text.stripSuffix "Tok" $ Text.pack $ show t)
+  toEncoding = toEncoding . Text.stripSuffix "Tok" . Text.pack . show
 
--- | JSON @"Keyword"@ corresponds to 'KeywordTok', and so on.
+instance ToJSONKey TokenType where
+  toJSONKey = toJSONKeyText
+    (fromMaybe "Unknown" . Text.stripSuffix "Tok" . Text.pack . show)
+
 instance FromJSON TokenType where
   parseJSON (String t) =
+     case readMay (Text.unpack t ++ "Tok") of
+          Just tt -> return tt
+          Nothing -> fail "Not a token type"
+  parseJSON _ = mempty
+
+-- | JSON @"Keyword"@ corresponds to 'KeywordTok', and so on.
+instance FromJSONKey TokenType where
+  fromJSONKey = FromJSONKeyTextParser (\t ->
     case readMay (Text.unpack t ++ "Tok") of
          Just tt -> return tt
-         Nothing -> fail "Not a token type"
-  parseJSON _ = mempty
+         Nothing -> fail "Not a token type")
 
 -- | A line of source: a list of labeled tokens.
 type SourceLine = [Token]
@@ -327,7 +340,7 @@ instance FromColor (Word8, Word8, Word8) where
 -- color for normal tokens.  Line numbers can have a different
 -- color and background color.
 data Style = Style {
-    tokenStyles               :: [(TokenType, TokenStyle)]
+    tokenStyles               :: Map.Map TokenType TokenStyle
   , defaultColor              :: Maybe Color
   , backgroundColor           :: Maybe Color
   , lineNumberColor           :: Maybe Color
@@ -342,15 +355,23 @@ instance Binary Style
 instance FromJSON Style where
   parseJSON (Object v) = do
     (tokstyles :: Map.Map Text TokenStyle) <- v .: "text-styles"
-    (editorColors :: Map.Map Text Color) <- v .: "editor-colors"
-    return Style{ defaultColor = case Map.lookup "Normal" tokstyles of
-                                      Nothing -> Nothing
-                                      Just ts -> tokenColor ts
-                , backgroundColor = Map.lookup "background-color" editorColors
-                , lineNumberColor = Map.lookup "line-numbers" editorColors
-                , lineNumberBackgroundColor = Map.lookup "background-color"
-                                                editorColors
-                , tokenStyles = Map.toList $
+    (editorColors :: Map.Map Text Color) <- v .:? "editor-colors" .!= mempty
+    mbBackgroundColor <- v .:? "background-color"
+    mbLineNumberColor <- v .:? "line-number-color"
+    mbDefaultColor <- v .:? "text-color"
+    mbLineNumberBackgroundColor <- v .:? "line-number-background-color"
+    return Style{ defaultColor = mbDefaultColor `mplus`
+                     (case Map.lookup "Normal" tokstyles of
+                           Nothing -> Nothing
+                           Just ts -> tokenColor ts)
+                , backgroundColor = mbBackgroundColor `mplus`
+                     Map.lookup "background-color" editorColors
+                , lineNumberColor = mbLineNumberColor `mplus`
+                     Map.lookup "line-numbers" editorColors
+                , lineNumberBackgroundColor =
+                     mbLineNumberBackgroundColor `mplus`
+                       Map.lookup "background-color" editorColors
+                , tokenStyles =
                      Map.mapKeys (\s -> maybe OtherTok id $
                                      readMay (Text.unpack s ++ "Tok")) tokstyles }
   parseJSON _ = mempty
@@ -359,7 +380,9 @@ instance ToJSON Style where
   toJSON s = object [ "text-styles" .= toJSON (tokenStyles s)
                     , "background-color" .= toJSON (backgroundColor s)
                     , "text-color" .= toJSON (defaultColor s)
-                    , "line-numbers" .= toJSON (lineNumberColor s)
+                    , "line-number-color" .= toJSON (lineNumberColor s)
+                    , "line-number-background-color" .=
+                         toJSON (lineNumberBackgroundColor s)
                     ]
 
 -- | Options for formatting source code.

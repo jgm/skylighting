@@ -4,7 +4,8 @@ module Skylighting.Format.HTML (
     , styleToCss
     ) where
 
-import Data.List (intersperse)
+import Data.List (intersperse, sort)
+import qualified Data.Map as Map
 import Data.Monoid ((<>))
 import Data.String (fromString)
 import qualified Data.Text as Text
@@ -137,7 +138,9 @@ short NormalTok         = ""
 
 -- | Returns CSS for styling highlighted code according to the given style.
 styleToCss :: Style -> String
-styleToCss f = unlines $ divspec ++ numberspec ++ colorspec ++ linkspec ++ map toCss (tokenStyles f)
+styleToCss f = unlines $
+  divspec ++ numberspec ++ colorspec ++ linkspec ++
+    sort (map toCss (Map.toList (tokenStyles f)))
    where colorspec = case (defaultColor f, backgroundColor f) of
                           (Nothing, Nothing) -> []
                           (Just c, Nothing)  -> ["pre, code { color: " ++ fromColor c ++ "; }"]
