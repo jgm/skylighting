@@ -61,6 +61,7 @@ formatHtmlInline opts = wrapCode opts
 -- tokens are encoded.
 formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlock opts ls =
+  H.div ! A.class_ (toValue "sourceCode") $
   H.pre ! A.class_ (toValue $ Text.unwords classes)
         $ wrapCode opts
         $ mconcat . intersperse (toHtml "\n")
@@ -141,12 +142,15 @@ styleToCss :: Style -> String
 styleToCss f = unlines $
   divspec ++ numberspec ++ colorspec ++ linkspec ++
     sort (map toCss (Map.toList (tokenStyles f)))
-   where colorspec = case (defaultColor f, backgroundColor f) of
-                          (Nothing, Nothing) -> []
-                          (Just c, Nothing)  -> ["pre, code { color: " ++ fromColor c ++ "; }"]
-                          (Nothing, Just c)  -> ["pre, code { background-color: " ++ fromColor c ++ "; }"]
-                          (Just c1, Just c2) -> ["pre, code { color: " ++ fromColor c1 ++ "; background-color: " ++
-                                                  fromColor c2 ++ "; }"]
+   where colorspec = [
+           "div.sourceCode, pre.sourceCode, code.sourceCode\n  { "
+           ++ case (defaultColor f, backgroundColor f) of
+                (Nothing, Nothing) -> ""
+                (Just c, Nothing)  -> "color: " ++ fromColor c ++ ";"
+                (Nothing, Just c)  -> "background-color: " ++ fromColor c ++ ";"
+                (Just c1, Just c2) -> "color: " ++ fromColor c1
+                     ++ "; background-color: " ++ fromColor c2 ++ ";"
+           ++ " }"]
          numberspec = [
             "pre.numberSource a.sourceLine"
           , "  { position: relative; }"
@@ -170,7 +174,7 @@ styleToCss f = unlines $
          divspec = [
             "a.sourceLine { display: inline-block; min-height: 1.25em; }"
           , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
-          , ".sourceCode { overflow: visible; }"
+          , ".sourceCode { overflow: visible; }" -- needed for line numbers
           , "code.sourceCode { white-space: pre; }"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
