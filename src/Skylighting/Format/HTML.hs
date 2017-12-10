@@ -143,7 +143,7 @@ styleToCss f = unlines $
   divspec ++ numberspec ++ colorspec ++ linkspec ++
     sort (map toCss (Map.toList (tokenStyles f)))
    where colorspec = [
-           "div.sourceCode, pre.sourceCode, code.sourceCode\n  { "
+           "div.sourceCode\n  { "
            ++ case (defaultColor f, backgroundColor f) of
                 (Nothing, Nothing) -> ""
                 (Just c, Nothing)  -> "color: " ++ fromColor c ++ ";"
@@ -154,6 +154,8 @@ styleToCss f = unlines $
          numberspec = [
             "pre.numberSource a.sourceLine"
           , "  { position: relative; }"
+          , "pre.numberSource a.sourceLine:empty"
+          , "  { position: absolute; }"
           , "pre.numberSource a.sourceLine::before"
           , "  { content: attr(data-line-number);"
           , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
@@ -172,17 +174,21 @@ styleToCss f = unlines $
               " padding-left: 4px; }"
           ]
          divspec = [
-            "a.sourceLine { display: inline-block; min-height: 1.25em; }"
+            "a.sourceLine { display: inline-block; line-height: 1.25; }"
           , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
+          , "a.sourceLine:empty { height: 1.2em; position: absolute; }" -- correct empty line height
           , ".sourceCode { overflow: visible; }" -- needed for line numbers
-          , "code.sourceCode { white-space: pre; }"
+          , "code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for absolute contents
+          , "@media screen {"
+          , "div.sourceCode { overflow: auto; }" -- do not overflow on screen
+          , "}"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
           , "a.sourceLine { text-indent: -1em; padding-left: 1em; }"
           , "}"
           ]
          linkspec = [ "@media screen {"
-          , "a.sourceLine::before { text-decoration: underline; color: initial; }"
+          , "a.sourceLine::before { text-decoration: underline; }"
           , "}"
           ]
 
