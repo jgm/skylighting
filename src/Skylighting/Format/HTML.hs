@@ -143,7 +143,7 @@ styleToCss f = unlines $
   divspec ++ numberspec ++ colorspec ++ linkspec ++
     sort (map toCss (Map.toList (tokenStyles f)))
    where colorspec = [
-           "div.sourceCode, pre.sourceCode, code.sourceCode\n  { "
+           "div.sourceCode\n  { "
            ++ case (defaultColor f, backgroundColor f) of
                 (Nothing, Nothing) -> ""
                 (Just c, Nothing)  -> "color: " ++ fromColor c ++ ";"
