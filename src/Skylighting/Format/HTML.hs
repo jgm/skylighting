@@ -177,6 +177,9 @@ styleToCss f = unlines $
           , "a.sourceLine:empty { height: 1em; }" -- correct empty line height
           , ".sourceCode { overflow: visible; }" -- needed for line numbers
           , "code.sourceCode { white-space: pre; }"
+          , "@media screen {"
+          , "div.sourceCode { overflow: auto; }" -- do not overflow on screen
+          , "}"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
           , "a.sourceLine { text-indent: -1em; padding-left: 1em; }"
