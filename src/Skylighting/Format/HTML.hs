@@ -172,8 +172,9 @@ styleToCss f = unlines $
               " padding-left: 4px; }"
           ]
          divspec = [
-            "a.sourceLine { display: inline-block; min-height: 1.25em; }"
+            "a.sourceLine { display: inline-block; line-height: 1.25; }"
           , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
+          , "a.sourceLine:empty { height: 1em; }" -- correct empty line height
           , ".sourceCode { overflow: visible; }" -- needed for line numbers
           , "code.sourceCode { white-space: pre; }"
           , "@media print {"
