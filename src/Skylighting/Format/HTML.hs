@@ -154,6 +154,8 @@ styleToCss f = unlines $
          numberspec = [
             "pre.numberSource a.sourceLine"
           , "  { position: relative; }"
+          , "pre.numberSource a.sourceLine:empty"
+          , "  { position: absolute; }"
           , "pre.numberSource a.sourceLine::before"
           , "  { content: attr(data-line-number);"
           , "    position: absolute; left: -5em; text-align: right; vertical-align: baseline;"
@@ -174,9 +176,9 @@ styleToCss f = unlines $
          divspec = [
             "a.sourceLine { display: inline-block; line-height: 1.25; }"
           , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
-          , "a.sourceLine:empty { height: 1em; }" -- correct empty line height
+          , "a.sourceLine:empty { height: 1.2em; position: absolute; }" -- correct empty line height
           , ".sourceCode { overflow: visible; }" -- needed for line numbers
-          , "code.sourceCode { white-space: pre; }"
+          , "code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for absolute contents
           , "@media screen {"
           , "div.sourceCode { overflow: auto; }" -- do not overflow on screen
           , "}"
