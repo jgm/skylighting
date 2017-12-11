@@ -179,6 +179,8 @@ styleToCss f = unlines $
           , "a.sourceLine:empty { height: 1.2em; position: absolute; }" -- correct empty line height
           , ".sourceCode { overflow: visible; }" -- needed for line numbers
           , "code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for absolute contents
+          , "div.sourceCode { margin: 1em 0; }" -- Collapse neighbours correctly
+          , "pre.sourceCode { margin: 0; }" -- Collapse neighbours correctly
           , "@media screen {"
           , "div.sourceCode { overflow: auto; }" -- do not overflow on screen
           , "}"
