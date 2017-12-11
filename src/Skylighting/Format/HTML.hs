@@ -16,6 +16,7 @@ import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 import Clay (Css)
 import qualified Clay as C
+import qualified Clay.Render as C
 import qualified Clay.Media as CM
 import qualified Clay.Text as CT
 
@@ -144,7 +145,11 @@ short NormalTok         = ""
 
 -- | Returns CSS for styling highlighted code according to the given style.
 styleToCss :: Style -> String
-styleToCss = TL.unpack . C.renderWith C.compact [] . styleToCss'
+styleToCss = TL.unpack . C.renderWith config [] . styleToCss'
+  where
+    config = C.compact
+      { C.rbrace = fromString "}\n"
+      }
 
 styleToCss' :: Style -> Css
 styleToCss' f = do
