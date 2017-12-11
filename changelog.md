@@ -1,5 +1,32 @@
 # Revision history for skylighting
 
+## 0.5 -- 2017-12-10
+
+  * Fix line spacing and overflowing content in generated HTML
+    (David Baynard, #25, see jgm/pandoc#4128).
+
+    + Fix empty line height, explicitly
+    + Ensure long lines scroll on screen
+    + Only apply colour to the outer div
+    + Don't reset line number colour
+    + Fix borders on empty code lines
+    + Collapse divs correctly.
+
+  * Changes to Style types and JSON instances.  Previously we could not
+    successfully round-trip through JSON.
+
+    + `tokenStyles` is now a map rather than an association list.
+    + We now use `line-number-color` instead of `line-numbers` at
+      the top level in the JSON instances, falling back to
+      `line-numbers` in `editor-colors`, for KDE theme compatibility.
+    + We use `line-number-background-color` at the top level, falling
+      back to the text background color.
+    + We use `text-color` at the top level, falling back to the `text-color`
+      of the `Normal` token style if it exists, for KDE compatibility.
+    + We use `background-color` at the top level, falling back to
+      the `background-color` in `editor-colors`, for KDE compatibility.
+    + A round-trip JSON test has been added.
+
 ## 0.4.4.1 -- 2017-11-27
 
   * HTML formatting: fix color, bgcolor when numbering enabled.
