@@ -1,5 +1,14 @@
 # Revision history for skylighting
 
+## 0.5.0.1 -- 2017-12-18
+
+  * Small improvements to fuzz tests in test suite.  We now
+    ensure that we print the random text on test failure.  Also,
+    we now run the test with many smaller samples rather than
+    one big one.
+
+  * Add aeson lower bound (because of toEncoding) (#28).
+
 ## 0.5 -- 2017-12-10
 
   * Fix line spacing and overflowing content in generated HTML
