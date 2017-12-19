@@ -2,6 +2,7 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 module Main where
+import qualified Control.Exception as E
 import Data.Aeson (decode, encode)
 import Data.Monoid ((<>))
 import Data.Algorithm.Diff
@@ -33,16 +34,14 @@ tokToText (_, s) = s
 main :: IO ()
 main = do
   stdgen <- newStdGen
-  let randomText = Text.unlines $ Text.chunksOf 31
-                     $ Text.pack $ take 5000 $ randomRs ('\0','\127') stdgen
+  let randomTexts = (Text.chunksOf 250 . Text.unlines . Text.chunksOf 31 .
+                  Text.pack . take 10000) $ randomRs ('\0','\160') stdgen
   inputs <- filter (\fp -> take 1 fp /= ".")
          <$> getDirectoryContents ("test" </> "cases")
-  allcases <- mconcat <$>
-               mapM (Text.readFile . (("test" </> "cases") </>)) inputs
+  allcases <- mapM (Text.readFile . (("test" </> "cases") </>)) inputs
   args <- getArgs
   let regen = "--accept" `elem` args
   defaultTheme <- BL.readFile ("test" </> "default.theme")
-  putStrLn $ "randomText = " ++ show randomText
   defaultMain $ testGroup "skylighting tests" $
     [ testGroup "tokenizer tests" $
         map (tokenizerTest regen) inputs
@@ -74,7 +73,7 @@ main = do
     , testGroup "Doesn't hang or drop text on a mixed syntax sample" $
         map (noDropTest allcases) syntaxes
     , testGroup "Doesn't hang or drop text on fuzz" $
-        map (noDropTest randomText) syntaxes
+        map (noDropTest randomTexts) syntaxes
     , testGroup "Regression tests" $
       let perl = maybe (error "could not find Perl syntax") id
                              (lookupSyntax "Perl" defaultSyntaxMap)
@@ -153,16 +152,25 @@ makeDiff referenceFile expected actual = unlines $
     where notBoth (Both _ _ ) = False
           notBoth _           = True
 
-noDropTest :: Text -> Syntax -> TestTree
-noDropTest inp syntax = localOption (mkTimeout 6000000) $
-  testCase (Text.unpack (sName syntax)) $
-      case tokenize defConfig syntax inp of
-           Right ts -> assertBool ("Text has been dropped:\n" ++ diffs)
-                        (inplines == toklines)
-                where inplines = Text.lines inp
-                      toklines = map (mconcat . map tokToText) ts
-                      diffs = makeDiff "expected" inplines toklines
-           Left  e  -> assert ("Unexpected error: " ++ e)
+noDropTest :: [Text] -> Syntax -> TestTree
+noDropTest inps syntax =
+  localOption (mkTimeout 6000000)
+  $ testCase (Text.unpack (sName syntax))
+  $ mapM_ go inps
+    where go inp =
+            E.catch
+              (case tokenize defConfig syntax inp of
+                    Right ts -> assertBool ("Text has been dropped:\n" ++ diffs)
+                                 (inplines == toklines)
+                         where inplines = Text.lines inp
+                               toklines = map (mconcat . map tokToText) ts
+                               diffs = makeDiff "expected" inplines toklines
+                    Left  e  -> do
+                      assert ("Unexpected error: " ++ e)
+                      assert ("input = " ++ show inp))
+              (\(e :: RegexException) -> do
+                assert (show e)
+                assert ("input = " ++ show inp))
 
 tokenizerTest :: Bool -> FilePath -> TestTree
 tokenizerTest regen inpFile = localOption (mkTimeout 6000000) $
