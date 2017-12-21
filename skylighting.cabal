@@ -340,6 +340,8 @@ test-suite test-skylighting
                   tasty,
                   tasty-golden,
                   tasty-hunit,
+                  tasty-quickcheck,
+                  QuickCheck,
                   containers,
                   random,
                   Diff,

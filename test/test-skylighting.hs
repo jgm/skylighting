@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 {-# LANGUAGE CPP                 #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -17,9 +18,10 @@ import System.FilePath
 import Test.Tasty
 import Test.Tasty.Golden.Advanced (goldenTest)
 import Test.Tasty.HUnit
+import Test.Tasty.QuickCheck(testProperty)
+import Test.QuickCheck
 import Text.Show.Pretty
 import qualified Data.Map as Map
-import System.Random
 
 syntaxes :: [Syntax]
 syntaxes = Map.elems defaultSyntaxMap
@@ -33,9 +35,6 @@ tokToText (_, s) = s
 
 main :: IO ()
 main = do
-  stdgen <- newStdGen
-  let randomTexts = (Text.chunksOf 250 . Text.unlines . Text.chunksOf 31 .
-                  Text.pack . take 10000) $ randomRs ('\0','\160') stdgen
   inputs <- filter (\fp -> take 1 fp /= ".")
          <$> getDirectoryContents ("test" </> "cases")
   allcases <- mapM (Text.readFile . (("test" </> "cases") </>)) inputs
@@ -73,7 +72,8 @@ main = do
     , testGroup "Doesn't hang or drop text on a mixed syntax sample" $
         map (noDropTest allcases) syntaxes
     , testGroup "Doesn't hang or drop text on fuzz" $
-        map (noDropTest randomTexts) syntaxes
+        map (\syn -> testProperty (Text.unpack (sName syn)) (p_no_drop syn))
+        syntaxes
     , testGroup "Regression tests" $
       let perl = maybe (error "could not find Perl syntax") id
                              (lookupSyntax "Perl" defaultSyntaxMap)
@@ -151,6 +151,16 @@ makeDiff referenceFile expected actual = unlines $
   map (Text.unpack . vividize) (filter notBoth (getDiff expected actual))
     where notBoth (Both _ _ ) = False
           notBoth _           = True
+
+instance Arbitrary Text where
+  arbitrary = Text.pack <$> arbitrary
+  shrink xs = Text.pack <$> shrink (Text.unpack xs)
+
+p_no_drop :: Syntax -> Text -> Bool
+p_no_drop syntax t =
+  case tokenize defConfig syntax t of
+       Right ts -> Text.lines t == map (mconcat . map tokToText) ts
+       Left _   -> False
 
 noDropTest :: [Text] -> Syntax -> TestTree
 noDropTest inps syntax =
