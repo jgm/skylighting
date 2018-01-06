@@ -53,16 +53,11 @@ process.  In the first step we build a program,
 definitions from the `xml` directory and writes Haskell source
 files.  In the second we actually build the library.
 
-Using stack:
-
-    make bootstrap
-    make
-
 Using cabal:
 
     cabal install -fbootstrap --disable-optimization
     cabal run skylighting-extract -- xml/*.xml
-    cabal install -f-bootstrap --disable-optimization
+    cabal install -f-bootstrap
 
 Command-line tool
 -----------------
