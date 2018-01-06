@@ -16,10 +16,11 @@ format:
 	      src/Skylighting/*.hs src/Skylighting/Format/*.hs src/Skylighting.hs
 
 bootstrap: $(XMLS)
-	-rm -rf src/Skylighting/Syntax
-	stack install --flag 'skylighting:bootstrap'
+	-rm -rf src/Skylighting/Syntax src/Skylighting/Syntax.hs
+	cabal install -fbootstrap --disable-optimization
 	skylighting-extract $(XMLS)
-	stack install --test --flag 'skylighting:executable'
+	cabal install -f-bootstrap -fexecutable --enable-tests --disable-optimization
+	cabal test
 
 syntax-highlighting:
 	git clone https://github.com/KDE/syntax-highlighting
