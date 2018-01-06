@@ -15,7 +15,6 @@ import Data.CaseInsensitive (mk)
 import Data.Char (isAlphaNum, isAscii, isLetter, isSpace, ord, isPrint)
 import Data.Maybe (catMaybes)
 import Data.Monoid
-import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Text.Encoding (decodeUtf8', encodeUtf8)
@@ -503,8 +502,8 @@ getCapture capnum = do
 keyword :: KeywordAttr -> WordSet Text -> ByteString -> TokenizerM Text
 keyword kwattr kws inp = do
   prev <- gets prevChar
-  guard $ prev `Set.member` (keywordDelims kwattr)
-  let (w,_) = UTF8.break (`Set.member` (keywordDelims kwattr)) inp
+  guard $ prev `inWordSet` (keywordDelims kwattr)
+  let (w,_) = UTF8.break (`inWordSet` (keywordDelims kwattr)) inp
   guard $ not (BS.null w)
   w' <- decodeBS w
   let numchars = Text.length w'

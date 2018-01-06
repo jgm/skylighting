@@ -9,7 +9,6 @@ import Data.Char (isAlphaNum, toUpper)
 import Data.List (nub)
 import qualified Data.Map as Map
 import Data.Maybe (fromMaybe)
-import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Safe
@@ -38,12 +37,12 @@ missingIncludes syns = nub
      , IncludeRules (lang, _) <- map rMatcher (cRules c)
      , lang `notElem` (map sName syns)]
 
-standardDelims :: Set.Set Char
-standardDelims = Set.fromList " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
+standardDelims :: [Char]
+standardDelims = " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
 
 defaultKeywordAttr :: KeywordAttr
-defaultKeywordAttr = KeywordAttr { keywordCaseSensitive = True
-                                 , keywordDelims = standardDelims }
+defaultKeywordAttr = KeywordAttr { keywordDelims = makeWordSet True standardDelims
+                                 , keywordCaseSensitive = True }
 
 stripWhitespace :: String -> String
 stripWhitespace = reverse . stripWhitespaceLeft . reverse . stripWhitespaceLeft
@@ -323,11 +322,9 @@ getKeywordAttrs =
        caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
        weakDelim <- getAttrValue "weakDeliminator" -< x
        additionalDelim <- getAttrValue "additionalDeliminator" -< x
-       returnA -< KeywordAttr
-                         { keywordCaseSensitive = caseSensitive
-                         , keywordDelims = (Set.union standardDelims
-                             (Set.fromList additionalDelim)) Set.\\
-                                Set.fromList weakDelim }
+       returnA -< KeywordAttr { keywordDelims = (makeWordSet True
+                                [d | d <- standardDelims ++ additionalDelim, d `notElem` weakDelim])
+                              , keywordCaseSensitive = caseSensitive }
 
 pathToLangName :: String -> String
 pathToLangName s = capitalize (camelize (takeBaseName s))

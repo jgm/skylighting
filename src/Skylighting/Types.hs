@@ -62,17 +62,22 @@ type ContextName = (Text, Text)
 
 -- | Attributes controlling how keywords are interpreted.
 data KeywordAttr =
-  KeywordAttr  { keywordCaseSensitive :: Bool
-               , keywordDelims        :: Set.Set Char
-               }
-  deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+  KeywordAttr { keywordDelims :: WordSet Char
+              , keywordCaseSensitive :: Bool }
+  deriving (Read, Eq, Ord, Data, Typeable, Generic, Show)
 
 instance Binary KeywordAttr
 
 -- | A set of "words," possibly case insensitive.
 data WordSet a = CaseSensitiveWords (Set.Set a)
                | CaseInsensitiveWords (Set.Set a)
-     deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+     deriving (Read, Eq, Ord, Data, Typeable, Generic)
+
+instance Show a => Show (WordSet a) where
+  show (CaseSensitiveWords ws) =
+    "(makeWordSet True " ++ show (Set.toList ws) ++ ")"
+  show (CaseInsensitiveWords ws) =
+    "(makeWordSet False " ++ show (Set.toList ws) ++ ")"
 
 instance Binary a => Binary (WordSet a)
 

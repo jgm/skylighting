@@ -2,6 +2,7 @@
 
 import Data.Either (partitionEithers)
 import Data.List (intercalate, isInfixOf)
+import qualified Data.Map as Map
 import qualified Data.Text as Text
 import Skylighting.Parser (missingIncludes, parseSyntaxDefinition)
 import Skylighting.Types
@@ -9,7 +10,6 @@ import System.Directory
 import System.Environment (getArgs)
 import System.Exit
 import System.IO (hPutStrLn, stderr)
-import Data.Binary (encode)
 
 main :: IO ()
 main = do
@@ -65,6 +65,10 @@ writeModuleFor :: Syntax -> IO ()
 writeModuleFor syn = do
   let fp = toPathName syn
   putStrLn $ "Writing " ++ fp
+  let isregex (RegExpr{}) = True
+      isregex _           = False
+  let matchers = map rMatcher $ concatMap cRules $ Map.elems $ sContexts syn
+  let hasRegex = any isregex matchers
   writeFile fp $ unlines $
     [ "{-# LANGUAGE OverloadedStrings #-}"
     , "-- | Automatically generated syntax definition for " ++
@@ -74,12 +78,13 @@ writeModuleFor syn = do
     , "module Skylighting.Syntax." ++ Text.unpack (sShortname syn) ++
         " (syntax) where"
     , ""
-    , "import Skylighting.Types"
-    , "import Data.Binary"
-    , ""
+    , "import Data.Map (fromList)"
+    , "import Skylighting.Types" ] ++
+    [ "import Skylighting.Regex" | hasRegex ] ++
+    [ ""
     , "-- | Syntax definition for " ++ Text.unpack (sName syn) ++ "."
     , "syntax :: Syntax"
-    , "syntax = decode " ++ show (encode syn) ]
+    , "syntax = " ++ show syn ]
 
 -- NOTE:  we include string representation of the Syntax,
 -- which we then 'decode', rather than the code for the Syntax,
