@@ -175,12 +175,10 @@ noDropTest inps syntax =
                          where inplines = Text.lines inp
                                toklines = map (mconcat . map tokToText) ts
                                diffs = makeDiff "expected" inplines toklines
-                    Left  e  -> do
-                      assert ("Unexpected error: " ++ e)
-                      assert ("input = " ++ show inp))
-              (\(e :: RegexException) -> do
-                assert (show e)
-                assert ("input = " ++ show inp))
+                    Left  e  ->
+                      assertFailure ("Unexpected error: " ++ e ++ "\ninput = " ++ show inp))
+              (\(e :: RegexException) ->
+                assertFailure (show e ++ "\ninput = " ++ show inp))
 
 tokenizerTest :: Bool -> FilePath -> TestTree
 tokenizerTest regen inpFile = localOption (mkTimeout 6000000) $
