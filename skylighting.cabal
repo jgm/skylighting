@@ -327,6 +327,7 @@ executable skylighting
     buildable:         True
   else
     buildable:         False
+  other-modules:  Paths_skylighting
 
 test-suite test-skylighting
   type:           exitcode-stdio-1.0
@@ -356,7 +357,6 @@ test-suite test-skylighting
   ghc-options:    -Wall
   if flag(bootstrap)
     buildable:         False
-  other-modules:  Paths_skylighting
 
 benchmark benchmark-skylighting
   Type:            exitcode-stdio-1.0
