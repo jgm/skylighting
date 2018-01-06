@@ -164,7 +164,7 @@ p_no_drop syntax t =
 
 noDropTest :: [Text] -> Syntax -> TestTree
 noDropTest inps syntax =
-  localOption (mkTimeout 6000000)
+  localOption (mkTimeout 9000000)
   $ testCase (Text.unpack (sName syntax))
   $ mapM_ go inps
     where go inp =
@@ -181,7 +181,7 @@ noDropTest inps syntax =
                 assertFailure (show e ++ "\ninput = " ++ show inp))
 
 tokenizerTest :: Bool -> FilePath -> TestTree
-tokenizerTest regen inpFile = localOption (mkTimeout 6000000) $
+tokenizerTest regen inpFile = localOption (mkTimeout 9000000) $
   goldenTest testname getExpected getActual
       (compareValues referenceFile) updateGolden
   where testname = lang ++ " tokenizing of " ++ inpFile
