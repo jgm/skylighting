@@ -127,7 +127,7 @@ script:
       stack exec skylighting-extract -- xml/*.xml && \
       stack sdist && \
       stack clean && \
-      stack --no-terminal $ARGS test --flag 'aeson:fast' --flag 'skylighting:executable' --haddock --no-haddock-deps --ghc-options="$OPTS" --jobs=2
+      stack --no-terminal $ARGS test --flag 'aeson:fast' --flag 'skylighting:executable' --haddock --no-haddock-deps --ghc-options="$OPTS" --jobs=1
       ;;
     cabal)
       cabal configure -v2 -ffast -fbootstrap --ghc-options="$OPTS" && \
@@ -139,6 +139,6 @@ script:
       cd sourcedist && \
       cabal configure --ghc-options="$OPTS" --enable-tests && \
       cabal build -j2 && \
-      cabal test -j2
+      cabal test -j1
       ;;
   esac
