@@ -228,7 +228,7 @@ library
                        Skylighting.Syntax.Zsh
   other-extensions:    CPP, Arrows
   build-depends:       base >= 4.7 && < 5.0,
-                       mtl >= 2.2.1,
+                       mtl,
                        text,
                        binary,
                        bytestring,
