@@ -1,4 +1,11 @@
+{-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveFunctor #-}
 module Skylighting.Tokenizer (
     tokenize
   , TokenizerConfig(..)
@@ -26,18 +33,6 @@ import Skylighting.Regex
 import Skylighting.Types
 import Text.Printf (printf)
 
-info :: String -> TokenizerM ()
-info s = do
-  tr <- asks traceOutput
-  when tr $ trace s (return ())
-
-infoContextStack :: TokenizerM ()
-infoContextStack = do
-  tr <- asks traceOutput
-  when tr $ do
-    ContextStack stack <- gets contextStack
-    info $ "CONTEXT STACK " ++ show (map cName stack)
-
 newtype ContextStack = ContextStack{ unContextStack :: [Context] }
   deriving (Show)
 
@@ -59,8 +54,106 @@ data TokenizerConfig = TokenizerConfig{
   , traceOutput :: Bool       -- ^ Generate trace output for debugging
 } deriving (Show)
 
-type TokenizerM =
-  ExceptT String (ReaderT TokenizerConfig (State TokenizerState))
+data Result e a = Success a
+                | Failure
+                | Error e
+     deriving (Functor)
+
+deriving instance (Show a, Show e) => Show (Result e a)
+
+data TokenizerM a = TM { runTokenizerM :: TokenizerConfig
+                                       -> TokenizerState
+                                       -> (TokenizerState, Result String a) }
+
+mapsnd :: (a -> b) -> (c, a) -> (c, b)
+mapsnd f (x, y) = (x, f y)
+
+instance Functor TokenizerM where
+  fmap f (TM g) = TM (\c s -> mapsnd (fmap f) (g c s))
+
+instance Applicative TokenizerM where
+  pure x = TM (\_ s -> (s, Success x))
+  (TM f) <*> (TM y) = TM (\c s ->
+                           case (f c s) of
+                              (s', Failure   ) -> (s', Failure)
+                              (s', Error e   ) -> (s', Error e)
+                              (s', Success f') ->
+                                  case (y c s') of
+                                    (s'', Failure   ) -> (s'', Failure)
+                                    (s'', Error e'  ) -> (s'', Error e')
+                                    (s'', Success y') -> (s'', Success (f' y')))
+
+
+instance Monad TokenizerM where
+  return = pure
+  (TM x) >>= f = TM (\c s ->
+                       case x c s of
+                            (s', Failure   ) -> (s', Failure)
+                            (s', Error e   ) -> (s', Error e)
+                            (s', Success x') -> g c s'
+                              where TM g = f x')
+
+instance Alternative TokenizerM where
+  empty = TM (\_ s -> (s, Failure))
+  (<|>) (TM x) (TM y) = TM (\c s ->
+                           case x c s of
+                                (_, Failure   )  -> y c s
+                                (s', Error e   ) -> (s', Error e)
+                                (s', Success x') -> (s', Success x'))
+  many (TM x) = TM (\c s ->
+                    case x c s of
+                       (_, Failure   )  -> (s, Success [])
+                       (s', Error e   ) -> (s', Error e)
+                       (s', Success x') -> mapsnd (fmap (x':)) (g c s')
+                         where TM g = many (TM x))
+  some x = (:) <$> x <*> many x
+
+instance MonadPlus TokenizerM where
+  mzero = empty
+  mplus = (<|>)
+
+instance MonadReader TokenizerConfig TokenizerM where
+  ask = TM (\c s -> (s, Success c))
+  local f (TM x) = TM (\c s -> x (f c) s)
+
+instance MonadState TokenizerState TokenizerM where
+  get = TM (\_ s -> (s, Success s))
+  put x = TM (\_ _ -> (x, Success ()))
+
+instance MonadError String TokenizerM where
+  throwError e = TM (\_ s -> (s, Error e))
+  catchError (TM x) f = TM (\c s -> case x c s of
+                                      (_, Error e) -> let TM y = f e in y c s
+                                      z -> z)
+
+-- | Tokenize some text using 'Syntax'.
+tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]
+tokenize config syntax inp =
+  case runTokenizerM action config initState of
+       (_, Success ls) -> Right ls
+       (_, Error e)    -> Left e
+       (_, Failure)    -> Left "Could not tokenize code"
+  where
+    action = mapM tokenizeLine (zip (BS.lines (encodeUtf8 inp)) [1..])
+    initState = startingState{ endline = Text.null inp
+                             , contextStack =
+                                   case lookupContext
+                                         (sStartingContext syntax) syntax of
+                                         Just c  -> ContextStack [c]
+                                         Nothing -> ContextStack [] }
+
+
+info :: String -> TokenizerM ()
+info s = do
+  tr <- asks traceOutput
+  when tr $ trace s (return ())
+
+infoContextStack :: TokenizerM ()
+infoContextStack = do
+  tr <- asks traceOutput
+  when tr $ do
+    ContextStack stack <- gets contextStack
+    info $ "CONTEXT STACK " ++ show (map cName stack)
 
 popContextStack :: TokenizerM ()
 popContextStack = do
@@ -109,20 +202,6 @@ lookupContext name syntax | Text.null name =
      then Nothing
      else lookupContext (sStartingContext syntax) syntax
 lookupContext name syntax = Map.lookup name $ sContexts syntax
-
--- | Tokenize some text using 'Syntax'.
-tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]
-tokenize config syntax inp =
-  evalState
-    (runReaderT
-      (runExceptT (mapM tokenizeLine $
-        zip (BS.lines $ encodeUtf8 inp) [1..])) config)
-    startingState{ input = encodeUtf8 inp
-                 , endline = Text.null inp
-                 , contextStack = case lookupContext
-                                       (sStartingContext syntax) syntax of
-                                       Just c  -> ContextStack [c]
-                                       Nothing -> ContextStack [] }
 
 startingState :: TokenizerState
 startingState =

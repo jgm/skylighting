@@ -163,13 +163,14 @@ main = do
   syntaxMap' <- foldr addSyntaxDefinition defaultSyntaxMap <$>
                     extractDefinitions opts
 
+{-
   case missingIncludes (Map.elems syntaxMap') of
        [] -> return ()
        xs -> err $ "Missing syntax definitions:\n" ++
               unlines (map
                   (\(syn,dep) -> (Text.unpack syn ++ " requires " ++
                     Text.unpack dep ++ " through IncludeRules.")) xs)
-
+-}
   when (List `elem` opts) $ do
      let printSyntaxNames s = putStrLn (printf "%s (%s)"
                                        (Text.unpack (Text.toLower (sShortname s)))
