@@ -2,10 +2,13 @@
 
 ## 0.5.1 -- 2018-01-07
 
-  * Improved error message about undefined contexts.
+  * Fixed tokenizer exceptions (#31).  Previously `throwError`
+    did not actually generate `Left` results in `tokenize`,
+    because of the way the MonadPlus instance worked. Rewrote
+    the TokenizerM monad from scratch so that exceptions would
+    not be skipped.
 
-  * Fixed tokenizer exceptions (#31).  Rewrote the TokenizerM monad
-    from scratch so that exceptions would not be skipped.
+  * Improved error message about undefined contexts.
 
   * Makefile: use cabal for bootstrap target.
 
