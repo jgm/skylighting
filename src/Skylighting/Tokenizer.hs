@@ -400,8 +400,8 @@ includeRules mbattr (syn, con) inp = do
   case Map.lookup syn syntaxes >>= lookupContext con of
        Nothing  -> do
           cur <- currentContext
-          throwError $ Text.unpack (cSyntax cur) ++
-           " tokenizer requires undefined context " ++
+          throwError $ "IncludeRules in " ++ Text.unpack (cSyntax cur) ++
+           " requires undefined context " ++
            Text.unpack con ++ "##" ++ Text.unpack syn
        Just c   -> do
          mbtok <- msum (map (\r -> tryRule r inp) (cRules c))
