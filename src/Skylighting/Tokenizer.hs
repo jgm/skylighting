@@ -399,7 +399,11 @@ includeRules :: Maybe TokenType -> ContextName -> ByteString
 includeRules mbattr (syn, con) inp = do
   syntaxes <- asks syntaxMap
   case Map.lookup syn syntaxes >>= lookupContext con of
-       Nothing  -> throwError $ "Context lookup failed " ++ show (syn, con)
+       Nothing  -> do
+          cur <- currentContext
+          throwError $ Text.unpack (cSyntax cur) ++
+           " tokenizer requires undefined context " ++
+           Text.unpack con ++ "##" ++ Text.unpack syn
        Just c   -> do
          mbtok <- msum (map (\r -> tryRule r inp) (cRules c))
          return $ case (mbtok, mbattr) of
