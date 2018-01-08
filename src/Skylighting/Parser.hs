@@ -6,12 +6,11 @@ module Skylighting.Parser ( parseSyntaxDefinition
 
 import Data.ByteString.UTF8 (fromString)
 import Data.Char (isAlphaNum, toUpper)
-import Data.List (nub)
 import qualified Data.Map as Map
 import Data.Maybe (fromMaybe)
-import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
+import qualified Data.Set as Set
 import Safe
 import Skylighting.Regex
 import Skylighting.Types
@@ -31,12 +30,20 @@ addSyntaxDefinition s = Map.insert (sName s) s
 -- This is intended for sanity checks to avoid run-time
 -- errors.
 missingIncludes :: [Syntax] -> [(Text, Text)]
-missingIncludes syns = nub
+missingIncludes syns = ordNub
   [(sName s, lang)
      | s <- syns
      , c <- Map.elems (sContexts s)
      , IncludeRules (lang, _) <- map rMatcher (cRules c)
-     , lang `notElem` (map sName syns)]
+     , not (lang `Set.member` syntaxNames)]
+   where syntaxNames = Set.fromList $ map sName syns
+
+ordNub :: (Ord a) => [a] -> [a]
+ordNub l = go Set.empty l
+  where
+    go _ [] = []
+    go s (x:xs) = if x `Set.member` s then go s xs
+                                      else x : go (Set.insert x s) xs
 
 standardDelims :: Set.Set Char
 standardDelims = Set.fromList " \n\t.():!+,-<=>%&*/;?[]^{|}~\\"
