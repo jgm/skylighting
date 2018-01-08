@@ -1,5 +1,21 @@
 # Revision history for skylighting
 
+## 0.5.1 -- 2018-01-07
+
+  * Improved error message about undefined contexts.
+
+  * Fixed tokenizer exceptions (#31).  Rewrote the TokenizerM monad
+    from scratch so that exceptions would not be skipped.
+
+  * Makefile: use cabal for bootstrap target.
+
+  * README: remove stack bootstrap instructions.
+    You can no longer bootstrap with stack, because it
+    insists on building ALL the executables the first time,
+    and of course that can't be done with this library.
+
+  * Use quickcheck for fuzz test.
+
 ## 0.5.0.1 -- 2017-12-18
 
   * Small improvements to fuzz tests in test suite.  We now
