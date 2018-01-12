@@ -82,11 +82,11 @@ options =
   ,Option ['C']
           ["color-level"]
           (ReqArg ColorLevel "LEVEL")
-          "ANSI color support level to use (auto|16|256|true)"
+          "ANSI color support level (auto|16|256|true)"
   ,Option ['d']
           ["definition"]
           (ReqArg Definition "PATH")
-          "load xml syntax definition file (may be repeated)"
+          "load xml syntax definition (may be repeated)"
   ,Option ['T']
           ["trace"]
           (NoArg Trace)
