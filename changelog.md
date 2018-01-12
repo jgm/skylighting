@@ -1,5 +1,25 @@
 # Revision history for skylighting
 
+## 0.6 -- 2018-01-18
+
+  * Add ANSI color output (Alexander Ronald Altman, #22).
+
+    + New package dependencies: `ansi-terminal` and `colour`.
+    + New module: `Skylighting.Format.ANSI`, exporting `formatANSI`,
+      (also reexported from the module `Skylighting`).
+    + In `Skylighting.Types`, new types `ANSIColorLevel` and
+      `Xterm256ColorCode`, and a new field `ansiColorLevel` in
+      `FormatOptions`.
+    + Main `skylighting` executable now supports ANSI output (use
+      `ansi` as argument to `--format`), which is now the default output
+      format. A new flag `--color-level` has been added to select
+      the number of colors (with options `16`, `256`, `true`, and
+      the default `auto`).
+
+  * Reword error for missing contexts in IncludeRules.
+
+  * Use ordNub instead of nub for missingIncludes.
+
 ## 0.5.1 -- 2018-01-07
 
   * Fixed tokenizer exceptions (#31).  Previously `throwError`
