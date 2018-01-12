@@ -1,10 +1,10 @@
-import Skylighting
-import qualified Data.Map as Map
 import Criterion.Main
-import Criterion.Types (Config(..))
-import System.FilePath
+import Criterion.Types (Config (..))
+import qualified Data.Map as Map
 import Data.Text (Text)
 import qualified Data.Text as Text
+import Skylighting
+import System.FilePath
 -- import System.Directory
 
 main :: IO ()
@@ -30,7 +30,7 @@ parseBench xmls =
    where addFile f = do
            result <- parseSyntaxDefinition ("xml" </> f)
            case result of
-                Left e -> error e
+                Left e  -> error e
                 Right r -> return r
 
 testBench :: (Text, Text) -> Benchmark

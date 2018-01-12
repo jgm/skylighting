@@ -1,10 +1,10 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE StandaloneDeriving #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE DeriveFunctor         #-}
+{-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE StandaloneDeriving    #-}
+{-# LANGUAGE TypeSynonymInstances  #-}
 module Skylighting.Tokenizer (
     tokenize
   , TokenizerConfig(..)
@@ -14,19 +14,19 @@ import Control.Applicative
 import Control.Monad.Except
 import Control.Monad.Reader
 import Control.Monad.State.Strict
-import qualified Data.ByteString.Char8 as BS
-import qualified Data.Map as Map
+import qualified Data.Attoparsec.ByteString.Char8 as A
 import Data.ByteString.Char8 (ByteString)
+import qualified Data.ByteString.Char8 as BS
+import qualified Data.ByteString.UTF8 as UTF8
 import Data.CaseInsensitive (mk)
-import Data.Char (isAlphaNum, isAscii, isLetter, isSpace, ord, isPrint)
+import Data.Char (isAlphaNum, isAscii, isLetter, isPrint, isSpace, ord)
+import qualified Data.Map as Map
 import Data.Maybe (catMaybes)
 import Data.Monoid
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Text.Encoding (decodeUtf8', encodeUtf8)
-import qualified Data.ByteString.UTF8 as UTF8
-import qualified Data.Attoparsec.ByteString.Char8 as A
 import Debug.Trace
 import Skylighting.Regex
 import Skylighting.Types
@@ -123,7 +123,7 @@ instance MonadError String TokenizerM where
   throwError e = TM (\_ s -> (s, Error e))
   catchError (TM x) f = TM (\c s -> case x c s of
                                       (_, Error e) -> let TM y = f e in y c s
-                                      z -> z)
+                                      z            -> z)
 
 -- | Tokenize some text using 'Syntax'.
 tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]
@@ -407,7 +407,7 @@ includeRules mbattr (syn, con) inp = do
          mbtok <- msum (map (\r -> tryRule r inp) (cRules c))
          return $ case (mbtok, mbattr) of
                     (Just (NormalTok, xs), Just attr) -> Just (attr, xs)
-                    _ -> mbtok
+                    _                                 -> mbtok
 
 checkLineEnd :: Context -> TokenizerM ()
 checkLineEnd c = do
@@ -605,7 +605,7 @@ normalizeHighlighting ((t,x):xs)
 parseCStringChar :: ByteString -> TokenizerM Text
 parseCStringChar inp = do
   case A.parseOnly (A.match pCStringChar) inp of
-       Left _ -> mzero
+       Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
 
 pCStringChar :: A.Parser ()
@@ -621,7 +621,7 @@ pCStringChar = do
 parseCChar :: ByteString -> TokenizerM Text
 parseCChar inp = do
   case A.parseOnly (A.match pCChar) inp of
-       Left _ -> mzero
+       Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
 
 pCChar :: A.Parser ()
@@ -634,7 +634,7 @@ parseInt :: ByteString -> TokenizerM Text
 parseInt inp = do
   wordBoundary inp
   case A.parseOnly (A.match (pHex <|> pOct <|> pDec)) inp of
-       Left _ -> mzero
+       Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
 
 pDec :: A.Parser ()
@@ -647,7 +647,7 @@ parseOct :: ByteString -> TokenizerM Text
 parseOct inp = do
   wordBoundary inp
   case A.parseOnly (A.match pHex) inp of
-       Left _ -> mzero
+       Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
 
 pOct :: A.Parser ()
@@ -662,7 +662,7 @@ parseHex :: ByteString -> TokenizerM Text
 parseHex inp = do
   wordBoundary inp
   case A.parseOnly (A.match pHex) inp of
-       Left _ -> mzero
+       Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
 
 pHex :: A.Parser ()
@@ -677,7 +677,7 @@ guardWordBoundary :: A.Parser ()
 guardWordBoundary = do
   mbw <- A.peekChar
   case mbw of
-       Just c ->  guard $ isWordBoundary '0' c
+       Just c  ->  guard $ isWordBoundary '0' c
        Nothing -> return ()
 
 mbMinus :: A.Parser ()
@@ -690,7 +690,7 @@ parseFloat :: ByteString -> TokenizerM Text
 parseFloat inp = do
   wordBoundary inp
   case A.parseOnly (A.match pFloat) inp of
-       Left _ -> mzero
+       Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r)  -- assumes all ascii
   where pFloat :: A.Parser ()
         pFloat = do
@@ -703,8 +703,8 @@ parseFloat inp = do
                                          mbPlusMinus >> digits)
           mbnext <- A.peekChar
           case mbnext of
-               Nothing   -> return ()
-               Just c    -> guard (not $ A.inClass "." c)
+               Nothing -> return ()
+               Just c  -> guard (not $ A.inClass "." c)
           guard $ (before && not dot && e)     -- 5e2
                || (before && dot && (after || not e)) -- 5.2e2 or 5.2 or 5.
                || (not before && dot && after) -- .23 or .23e2

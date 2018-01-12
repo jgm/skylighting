@@ -1,5 +1,6 @@
 {-# LANGUAGE Arrows #-}
 
+import Data.Binary (encode)
 import Data.Either (partitionEithers)
 import Data.List (intercalate, isInfixOf)
 import qualified Data.Text as Text
@@ -9,7 +10,6 @@ import System.Directory
 import System.Environment (getArgs)
 import System.Exit
 import System.IO (hPutStrLn, stderr)
-import Data.Binary (encode)
 
 main :: IO ()
 main = do

@@ -98,6 +98,7 @@ library
                        Skylighting.Parser
                        Skylighting.Styles
                        Skylighting.Tokenizer
+                       Skylighting.Format.ANSI
                        Skylighting.Format.HTML
                        Skylighting.Format.LaTeX
                        Skylighting.Syntax
@@ -242,7 +243,9 @@ library
                        safe,
                        base64-bytestring,
                        blaze-html >= 0.5,
-                       containers
+                       containers,
+                       ansi-terminal >= 0.7,
+                       colour >= 2.0
   if flag(system-pcre)
     build-depends:     regex-pcre
   else
@@ -282,7 +285,9 @@ executable skylighting-extract
                        aeson >= 1.0,
                        binary,
                        containers,
-                       directory
+                       directory,
+                       ansi-terminal >= 0.7,
+                       colour >= 2.0
   if flag(system-pcre)
     build-depends:     regex-pcre
   else
@@ -374,4 +379,5 @@ benchmark benchmark-skylighting
                    criterion >= 1.0 && < 1.4
   Ghc-Options:   -rtsopts -Wall -fno-warn-unused-do-bind
   Default-Language: Haskell2010
-
+  if flag(bootstrap)
+    buildable:         False

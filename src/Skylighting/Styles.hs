@@ -9,9 +9,9 @@ module Skylighting.Styles (
   , monochrome
   , zenburn) where
 
-import qualified Data.Map as Map
 import Data.Aeson (eitherDecode)
 import Data.ByteString.Lazy (ByteString)
+import qualified Data.Map as Map
 import Skylighting.Types
 
 -- | Parse a KDE theme JSON document into a skylighting Style.
