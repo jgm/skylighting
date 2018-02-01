@@ -1,6 +1,8 @@
 module Skylighting
-  ( module Skylighting.Core
-  , module Skylighting.Syntax
+  ( module Skylighting.Syntax
+
+  -- Re-exports from the skylighting-core package
+  , module Skylighting.Core
   , module Skylighting.Types
   , module Skylighting.Tokenizer
   , module Skylighting.Parser
@@ -14,7 +16,6 @@ module Skylighting
 where
 
 import Skylighting.Core
-import Skylighting.Syntax
 import Skylighting.Types
 import Skylighting.Tokenizer
 import Skylighting.Parser
@@ -23,3 +24,5 @@ import Skylighting.Styles
 import Skylighting.Format.ANSI
 import Skylighting.Format.HTML
 import Skylighting.Format.LaTeX
+
+import Skylighting.Syntax
