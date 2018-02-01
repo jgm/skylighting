@@ -1,4 +1,4 @@
-module Skylighting (
+module Skylighting.Core (
     lookupSyntax
   , syntaxByName
   , syntaxByShortName

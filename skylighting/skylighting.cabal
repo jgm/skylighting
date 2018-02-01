@@ -32,16 +32,17 @@ source-repository head
   location:          https://github.com/jgm/skylighting.git
 
 library
-  exposed-modules:     Skylighting.Syntax
-  reexported-modules:  Skylighting
-                       , Skylighting.Types
-                       , Skylighting.Regex
-                       , Skylighting.Parser
-                       , Skylighting.Styles
-                       , Skylighting.Tokenizer
-                       , Skylighting.Format.ANSI
-                       , Skylighting.Format.HTML
-                       , Skylighting.Format.LaTeX
+  exposed-modules:     Skylighting
+                       Skylighting.Syntax
+  reexported-modules:    skylighting-core:Skylighting.Core
+                       , skylighting-core:Skylighting.Types
+                       , skylighting-core:Skylighting.Regex
+                       , skylighting-core:Skylighting.Parser
+                       , skylighting-core:Skylighting.Styles
+                       , skylighting-core:Skylighting.Tokenizer
+                       , skylighting-core:Skylighting.Format.ANSI
+                       , skylighting-core:Skylighting.Format.HTML
+                       , skylighting-core:Skylighting.Format.LaTeX
   other-modules:
                        Skylighting.Syntax.Abc
                        Skylighting.Syntax.Actionscript
@@ -202,3 +203,31 @@ library
 Flag system-pcre
   Description:   Use regex-pcre instead of regex-pcre-builtin
   Default:       False
+
+Flag executable
+  Description:   Whether to build the skylighting program
+  Default:       False
+
+executable skylighting
+  build-depends:       base >= 4.7 && < 5.0,
+                       filepath,
+                       text,
+                       pretty-show,
+                       containers,
+                       directory,
+                       bytestring,
+                       blaze-html >= 0.5,
+                       skylighting
+  hs-source-dirs:      bin
+  if impl(ghc < 7.10)
+     hs-source-dirs:   prelude
+     other-modules:    Prelude
+  main-is:             main.hs
+  default-language:    Haskell2010
+  other-extensions:    CPP
+  ghc-options:         -Wall
+  if flag(executable)
+    buildable:         True
+  else
+    buildable:         False
+  other-modules:  Paths_skylighting

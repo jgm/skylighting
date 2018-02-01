@@ -98,7 +98,7 @@ source-repository head
   location:          https://github.com/jgm/skylighting.git
 
 library
-  exposed-modules:     Skylighting
+  exposed-modules:     Skylighting.Core
                        Skylighting.Types
                        Skylighting.Regex
                        Skylighting.Parser
@@ -145,30 +145,6 @@ Flag executable
 Flag system-pcre
   Description:   Use regex-pcre instead of regex-pcre-builtin
   Default:       False
-
-executable skylighting
-  build-depends:       base >= 4.7 && < 5.0,
-                       filepath,
-                       text,
-                       pretty-show,
-                       containers,
-                       directory,
-                       bytestring,
-                       blaze-html >= 0.5,
-                       skylighting-core
-  hs-source-dirs:      bin
-  if impl(ghc < 7.10)
-     hs-source-dirs:   prelude
-     other-modules:    Prelude
-  main-is:             main.hs
-  default-language:    Haskell2010
-  other-extensions:    CPP
-  ghc-options:         -Wall
-  if flag(executable)
-    buildable:         True
-  else
-    buildable:         False
-  other-modules:  Paths_skylighting
 
 test-suite test-skylighting
   type:           exitcode-stdio-1.0
