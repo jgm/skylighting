@@ -1,0 +1,236 @@
+name:                skylighting
+version:             0.6
+synopsis:            syntax highlighting library
+description:         Skylighting is a syntax highlighting library with
+                     support for over one hundred languages.  It derives
+                     its tokenizers from XML syntax definitions used
+                     by KDE's KSyntaxHighlighting framework, so any
+                     syntax supported by that framework can be added.
+                     An optional command-line program is provided.
+
+                     Skylighting is intended to be the successor to
+                     highlighting-kate.
+
+                     This package provides generated syntax modules
+                     based on the KDE XML definitions provided by the
+                     @skylighting-core@ package. As a result this
+                     package is licensed under the GPL.
+
+homepage:            https://github.com/jgm/skylighting
+license:             GPL-2
+license-file:        LICENSE
+author:              John MacFarlane
+maintainer:          jgm@berkeley.edu
+copyright:           (C) 2016 John MacFarlane
+category:            Text
+build-type:          Simple
+
+cabal-version:       >=1.10
+
+source-repository head
+  type:              git
+  location:          https://github.com/jgm/skylighting.git
+
+library
+  exposed-modules:     Skylighting.Syntax
+  other-modules:
+                       Skylighting.Syntax.Abc
+                       Skylighting.Syntax.Actionscript
+                       Skylighting.Syntax.Ada
+                       Skylighting.Syntax.Agda
+                       Skylighting.Syntax.Alert
+                       Skylighting.Syntax.AlertIndent
+                       Skylighting.Syntax.Apache
+                       Skylighting.Syntax.Asn1
+                       Skylighting.Syntax.Asp
+                       Skylighting.Syntax.Ats
+                       Skylighting.Syntax.Awk
+                       Skylighting.Syntax.Bash
+                       Skylighting.Syntax.Bibtex
+                       Skylighting.Syntax.Boo
+                       Skylighting.Syntax.C
+                       Skylighting.Syntax.Changelog
+                       Skylighting.Syntax.Clojure
+                       Skylighting.Syntax.Cmake
+                       Skylighting.Syntax.Coffee
+                       Skylighting.Syntax.Coldfusion
+                       Skylighting.Syntax.Commonlisp
+                       Skylighting.Syntax.Cpp
+                       Skylighting.Syntax.Cs
+                       Skylighting.Syntax.Css
+                       Skylighting.Syntax.Curry
+                       Skylighting.Syntax.D
+                       Skylighting.Syntax.Diff
+                       Skylighting.Syntax.Djangotemplate
+                       Skylighting.Syntax.Dockerfile
+                       Skylighting.Syntax.Dot
+                       Skylighting.Syntax.Doxygen
+                       Skylighting.Syntax.Doxygenlua
+                       Skylighting.Syntax.Dtd
+                       Skylighting.Syntax.Eiffel
+                       Skylighting.Syntax.Elixir
+                       Skylighting.Syntax.Email
+                       Skylighting.Syntax.Erlang
+                       Skylighting.Syntax.Fasm
+                       Skylighting.Syntax.Fortran
+                       Skylighting.Syntax.Fsharp
+                       Skylighting.Syntax.Gcc
+                       Skylighting.Syntax.Glsl
+                       Skylighting.Syntax.Gnuassembler
+                       Skylighting.Syntax.Go
+                       Skylighting.Syntax.Hamlet
+                       Skylighting.Syntax.Haskell
+                       Skylighting.Syntax.Haxe
+                       Skylighting.Syntax.Html
+                       Skylighting.Syntax.Idris
+                       Skylighting.Syntax.Ini
+                       Skylighting.Syntax.Isocpp
+                       Skylighting.Syntax.Java
+                       Skylighting.Syntax.Javadoc
+                       Skylighting.Syntax.Javascript
+                       Skylighting.Syntax.Json
+                       Skylighting.Syntax.Jsp
+                       Skylighting.Syntax.Julia
+                       Skylighting.Syntax.Kotlin
+                       Skylighting.Syntax.Latex
+                       Skylighting.Syntax.Lex
+                       Skylighting.Syntax.Lilypond
+                       Skylighting.Syntax.LiterateCurry
+                       Skylighting.Syntax.LiterateHaskell
+                       Skylighting.Syntax.Llvm
+                       Skylighting.Syntax.Lua
+                       Skylighting.Syntax.M4
+                       Skylighting.Syntax.Makefile
+                       Skylighting.Syntax.Mandoc
+                       Skylighting.Syntax.Markdown
+                       Skylighting.Syntax.Mathematica
+                       Skylighting.Syntax.Matlab
+                       Skylighting.Syntax.Maxima
+                       Skylighting.Syntax.Mediawiki
+                       Skylighting.Syntax.Metafont
+                       Skylighting.Syntax.Mips
+                       Skylighting.Syntax.Modelines
+                       Skylighting.Syntax.Modula2
+                       Skylighting.Syntax.Modula3
+                       Skylighting.Syntax.Monobasic
+                       Skylighting.Syntax.Nasm
+                       Skylighting.Syntax.Noweb
+                       Skylighting.Syntax.Objectivec
+                       Skylighting.Syntax.Objectivecpp
+                       Skylighting.Syntax.Ocaml
+                       Skylighting.Syntax.Octave
+                       Skylighting.Syntax.Opencl
+                       Skylighting.Syntax.Pascal
+                       Skylighting.Syntax.Perl
+                       Skylighting.Syntax.Php
+                       Skylighting.Syntax.Pike
+                       Skylighting.Syntax.Postscript
+                       Skylighting.Syntax.Powershell
+                       Skylighting.Syntax.Prolog
+                       Skylighting.Syntax.Pure
+                       Skylighting.Syntax.Purebasic
+                       Skylighting.Syntax.Python
+                       Skylighting.Syntax.R
+                       Skylighting.Syntax.Relaxng
+                       Skylighting.Syntax.Relaxngcompact
+                       Skylighting.Syntax.Rest
+                       Skylighting.Syntax.Rhtml
+                       Skylighting.Syntax.Roff
+                       Skylighting.Syntax.Ruby
+                       Skylighting.Syntax.Rust
+                       Skylighting.Syntax.Scala
+                       Skylighting.Syntax.Scheme
+                       Skylighting.Syntax.Sci
+                       Skylighting.Syntax.Sed
+                       Skylighting.Syntax.Sgml
+                       Skylighting.Syntax.SqlMysql
+                       Skylighting.Syntax.SqlPostgresql
+                       Skylighting.Syntax.Sql
+                       Skylighting.Syntax.Tcl
+                       Skylighting.Syntax.Tcsh
+                       Skylighting.Syntax.Texinfo
+                       Skylighting.Syntax.Verilog
+                       Skylighting.Syntax.Vhdl
+                       Skylighting.Syntax.Xml
+                       Skylighting.Syntax.Xorg
+                       Skylighting.Syntax.Xslt
+                       Skylighting.Syntax.Xul
+                       Skylighting.Syntax.Yacc
+                       Skylighting.Syntax.Yaml
+                       Skylighting.Syntax.Zsh
+  other-extensions:    CPP, Arrows
+  build-depends:       base >= 4.7 && < 5.0,
+                       mtl,
+                       text,
+                       binary,
+                       bytestring,
+                       directory,
+                       filepath,
+                       aeson >= 1.0,
+                       case-insensitive,
+                       attoparsec,
+                       utf8-string,
+                       hxt,
+                       safe,
+                       base64-bytestring,
+                       blaze-html >= 0.5,
+                       containers,
+                       ansi-terminal >= 0.7,
+                       colour >= 2.0
+  if flag(system-pcre)
+    build-depends:     regex-pcre
+  else
+    build-depends:     regex-pcre-builtin
+  hs-source-dirs:      src
+  if impl(ghc < 7.10)
+     hs-source-dirs:   prelude
+     other-modules:    Prelude
+  ghc-prof-options:    -fprof-auto-exported
+  default-language:    Haskell2010
+  ghc-options:         -Wall
+  if flag(bootstrap)
+    buildable:         False
+
+Flag bootstrap
+  Description:   Only build skylighting-extract
+  Default:       False
+
+Flag system-pcre
+  Description:   Use regex-pcre instead of regex-pcre-builtin
+  Default:       False
+
+executable skylighting-extract
+  build-depends:       base >= 4.7 && < 5.0,
+                       filepath,
+                       bytestring,
+                       base64-bytestring,
+                       text,
+                       safe,
+                       hxt,
+                       utf8-string,
+                       case-insensitive,
+                       aeson >= 1.0,
+                       binary,
+                       containers,
+                       directory,
+                       ansi-terminal >= 0.7,
+                       colour >= 2.0
+  if flag(system-pcre)
+    build-depends:     regex-pcre
+  else
+    build-depends:     regex-pcre-builtin
+  hs-source-dirs:      bin, src
+  if impl(ghc < 7.10)
+     hs-source-dirs:   prelude
+     other-modules:    Prelude
+  main-is:             extract.hs
+  default-language:    Haskell2010
+  other-extensions:    CPP
+  ghc-options:         -Wall
+  other-modules:       Skylighting.Types
+                       Skylighting.Regex
+                       Skylighting.Parser
+  if flag(bootstrap)
+    buildable:         True
+  else
+    buildable:         False
