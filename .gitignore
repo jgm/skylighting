@@ -1,3 +1,4 @@
+dist-newstyle
 .stack-work
 src/Skylighting/Syntax.hs
 src/Skylighting/Syntax/*.hs
