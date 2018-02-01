@@ -24,7 +24,9 @@ maintainer:          jgm@berkeley.edu
 copyright:           (C) 2016-2018 John MacFarlane
 category:            Text
 build-type:          Simple
-extra-source-files:  xml/*.xml
+extra-source-files:  README.md
+                     changelog.md
+                     xml/*.xml
                      xml/LICENSE
                      xml/language.dtd
                      test/default.theme
