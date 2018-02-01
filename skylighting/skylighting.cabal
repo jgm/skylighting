@@ -25,7 +25,7 @@ copyright:           (C) 2016 John MacFarlane
 category:            Text
 build-type:          Simple
 
-cabal-version:       >=1.10
+cabal-version:       >=1.22
 
 source-repository head
   type:              git
@@ -33,6 +33,15 @@ source-repository head
 
 library
   exposed-modules:     Skylighting.Syntax
+  reexported-modules:  Skylighting
+                       , Skylighting.Types
+                       , Skylighting.Regex
+                       , Skylighting.Parser
+                       , Skylighting.Styles
+                       , Skylighting.Tokenizer
+                       , Skylighting.Format.ANSI
+                       , Skylighting.Format.HTML
+                       , Skylighting.Format.LaTeX
   other-modules:
                        Skylighting.Syntax.Abc
                        Skylighting.Syntax.Actionscript
@@ -160,6 +169,7 @@ library
                        Skylighting.Syntax.Zsh
   other-extensions:    CPP, Arrows
   build-depends:       base >= 4.7 && < 5.0,
+                       skylighting-core,
                        mtl,
                        text,
                        binary,
@@ -227,9 +237,6 @@ executable skylighting-extract
   default-language:    Haskell2010
   other-extensions:    CPP
   ghc-options:         -Wall
-  other-modules:       Skylighting.Types
-                       Skylighting.Regex
-                       Skylighting.Parser
   if flag(bootstrap)
     buildable:         True
   else
