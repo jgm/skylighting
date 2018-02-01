@@ -25,6 +25,7 @@ copyright:           (C) 2016-2018 John MacFarlane
 category:            Text
 build-type:          Simple
 extra-source-files:  xml/*.xml
+                     xml/LICENSE
                      xml/language.dtd
                      test/default.theme
                      test/cases/abc.ada
