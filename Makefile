@@ -1,6 +1,3 @@
-#XMLS=haskell.xml cmake.xml diff.xml hamlet.xml alert.xml modelines.xml c.xml doxygen.xml
-XMLS=$(wildcard xml/*.xml)
-
 quick:
 	stack install --test --flag "skylighting:executable" --test-arguments '--hide-successes $(TESTARGS)'
 
@@ -27,11 +24,12 @@ skylighting-format:
 	      skylighting/Setup.hs \
 	      skylighting/src/Skylighting.hs
 
+XMLS=$(wildcard skylighting-core/xml/*.xml)
 bootstrap: $(XMLS)
-	-rm -rf src/Skylighting/Syntax src/Skylighting/Syntax.hs
-	stack install --flag "skylighting:bootstrap" --fast --no-test --no-bench
-	skylighting-extract $(XMLS)
-	stack install --flag "skylighting:-bootstrap" --flag "skylighting:executable" --test --test-arguments '--hide-successes $(TESTARGS)' --fast
+	-rm -rf skylighting/src/Skylighting/Syntax skylighting/src/Skylighting/Syntax.hs
+	cd skylighting && skylighting-extract ../skylighting-core/xml/*.xml
+	stack install --flag "skylighting:executable" --test --test-arguments \
+	    '--hide-successes $(TESTARGS)' --fast
 
 syntax-highlighting:
 	git clone https://github.com/KDE/syntax-highlighting
