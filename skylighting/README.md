@@ -16,13 +16,13 @@ This project is divided up into two packages:
  * `skylighting-core`: this provides KDE XML parsing, data types,
    and output formatters. This includes the core functionality of the
    Skylighting project licensed under the BSD3 license, along with the
-   KDE XML files licensed under the GPL3. This package does not provide
+   KDE XML files licensed under the GPL. This package does not provide
    any built-in parsers corresponding to the XML descriptions, however.
    For that, use `skylighting`.
  * `skylighting`: this exposes the `skylighting-core` API but also
    provides bundled Haskell parser modules corresponding to the XML
    descriptions in the `core` package. This package is entirely licensed
-   under the GPL3.
+   under the GPL.
 
 Motivation
 ----------
