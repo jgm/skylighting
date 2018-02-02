@@ -10,11 +10,22 @@ test:
 bench:
 	stack bench --flag 'skylighting:executable'
 
-format:
+format: skylighting-format skylighting-core-format
+
+skylighting-core-format:
 	stylish-haskell -i -c .stylish-haskell \
-	      bin/*.hs test/test-skylighting.hs benchmark/benchmark.hs \
-	      prelude/Prelude.hs Setup.hs \
-	      src/Skylighting/*.hs src/Skylighting/Format/*.hs src/Skylighting.hs
+	      skylighting-core/bin/*.hs \
+	      skylighting-core/test/test-skylighting.hs \
+	      skylighting-core/benchmark/benchmark.hs \
+	      skylighting-core/Setup.hs \
+	      skylighting-core/src/Skylighting/*.hs \
+	      skylighting-core/src/Skylighting/Format/*.hs
+
+skylighting-format:
+	stylish-haskell -i -c .stylish-haskell \
+	      skylighting/bin/*.hs \
+	      skylighting/Setup.hs \
+	      skylighting/src/Skylighting.hs
 
 bootstrap: $(XMLS)
 	-rm -rf src/Skylighting/Syntax src/Skylighting/Syntax.hs
