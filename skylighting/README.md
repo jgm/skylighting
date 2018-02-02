@@ -1,7 +1,6 @@
 skylighting
 ===========
 
-| | | |
 |-|-|-|
 | `skylighting` | [![license](https://img.shields.io/badge/license-GPLv2+-brightgreen.svg)](https://www.gnu.org/licenses/gpl.html) | [![skylighting build status](https://img.shields.io/travis/jgm/skylighting.svg)](https://travis-ci.org/jgm/skylighting) |
 | `skylighting-core` | [![license](https://img.shields.io/badge/license-BSD3-brightgreen.svg)](https://opensource.org/licenses/BSD-3-Clause) | [![skylighting-core build status](https://img.shields.io/travis/jgm/skylighting-core.svg)](https://travis-ci.org/jgm/skylighting-core) |
