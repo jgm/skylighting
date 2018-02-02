@@ -1,5 +1,6 @@
 packages:
-- .
+- skylighting-core
+- skylighting
 extra-deps:
 - ansi-terminal-0.8
 - ansi-wl-pprint-0.6.8.2

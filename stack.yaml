@@ -1,4 +1,5 @@
 packages:
-- .
+- skylighting-core
+- skylighting
 extra-deps: []
 resolver: lts-10.3
