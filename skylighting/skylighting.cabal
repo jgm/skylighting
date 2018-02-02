@@ -24,6 +24,7 @@ maintainer:          jgm@berkeley.edu
 copyright:           (C) 2016 John MacFarlane
 category:            Text
 build-type:          Simple
+extra-doc-files:     README.md
 
 cabal-version:       >=1.22
 
