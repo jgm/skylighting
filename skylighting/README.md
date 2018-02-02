@@ -73,7 +73,7 @@ Using cabal:
 
     cd skylighting-core
     cabal install
-    cd skylighting && skylighting-extract -- xml/*.xml
+    cd skylighting && skylighting-extract -- /path/to/skylighting-core/xml/*.xml
     cabal install
 
 Command-line tool
