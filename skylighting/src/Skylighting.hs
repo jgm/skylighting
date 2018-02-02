@@ -1,8 +1,13 @@
 module Skylighting
-  ( module Skylighting.Syntax
+  ( lookupSyntax
+  , syntaxByName
+  , syntaxByShortName
+  , syntaxesByExtension
+  , syntaxesByFilename
+
+  , module Skylighting.Syntax
 
   -- Re-exports from the skylighting-core package
-  , module Skylighting.Core
   , module Skylighting.Types
   , module Skylighting.Tokenizer
   , module Skylighting.Parser
