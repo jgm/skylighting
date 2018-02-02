@@ -4,3 +4,4 @@ src/Skylighting/Syntax.hs
 src/Skylighting/Syntax/*.hs
 skylighting.cabal.orig
 .*.swp
+syntax-highlighting
