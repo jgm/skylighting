@@ -9,7 +9,7 @@ skylighting
 A Haskell syntax highlighting library with tokenizers derived
 from KDE XML syntax highlighting descriptions.
 
-A command-line highlighter, `skylighting`, is also provided.
+A command-line highlighter program, `skylighting`, is also provided.
 
 This project is divided up into two packages:
 
