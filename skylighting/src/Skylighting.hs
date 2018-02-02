@@ -21,13 +21,13 @@ module Skylighting
 where
 
 import Skylighting.Core
-import Skylighting.Types
-import Skylighting.Tokenizer
-import Skylighting.Parser
-import Skylighting.Regex
-import Skylighting.Styles
 import Skylighting.Format.ANSI
 import Skylighting.Format.HTML
 import Skylighting.Format.LaTeX
+import Skylighting.Parser
+import Skylighting.Regex
+import Skylighting.Styles
+import Skylighting.Tokenizer
+import Skylighting.Types
 
 import Skylighting.Syntax
