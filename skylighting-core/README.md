@@ -13,5 +13,5 @@ the [Skylighting README](https://github.com/jgm/skylighting/blob/master/skylight
 
 The Haskell code and related files in this package are licensed under
 the BSD3 license. This package also includes KDE XML syntax definitions
-which are provided under the GPL3 license; see `xml/LICENSE` for
+which are provided under various licenses; see the XML files for
 details.
