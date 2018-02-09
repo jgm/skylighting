@@ -15,12 +15,12 @@ This project is divided up into two packages:
 
  * `skylighting-core`: this provides KDE XML parsing, data types,
    and output formatters. This includes the core functionality of the
-   Skylighting project licensed under the BSD3 license, along with the
+   skylighting project licensed under the BSD3 license, along with the
    KDE XML files, some of which are licensed under the LGPL or GPL. This
    package does not provide any built-in parsers corresponding to the
    XML descriptions, however. For that, use `skylighting`.
  * `skylighting`: this exposes the `skylighting-core` API but also
-   provides bundled Haskell parser modules corresponding to the XML
+   provides bundled Haskell parser modules derived from the XML
    descriptions in the `core` package. This package is entirely licensed
    under the GPL.
 
@@ -71,10 +71,12 @@ package.
 
 Using cabal:
 
-    cd skylighting-core
-    cabal install
-    cd skylighting && skylighting-extract -- /path/to/skylighting-core/xml/*.xml
-    cabal install
+    cabal install -fexecutable
+    # or stack install --flag skylighting-core:executable
+    cd skylighting
+    skylighting-extract /path/to/skylighting-core/xml/*.xml
+    cabal install -fexecutable
+    # or stack install --flag skylighting:executable
 
 Command-line tool
 -----------------
