@@ -114,7 +114,7 @@ library
                        text,
                        binary,
                        bytestring,
-                       directory,
+                       directory >= 1.2.5,
                        filepath,
                        aeson >= 1.0,
                        case-insensitive,
