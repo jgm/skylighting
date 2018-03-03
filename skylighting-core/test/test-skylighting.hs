@@ -12,7 +12,7 @@ import Data.Monoid ((<>))
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
-import Skylighting
+import Skylighting.Core
 import System.Directory
 import System.Environment (getArgs)
 import System.FilePath
