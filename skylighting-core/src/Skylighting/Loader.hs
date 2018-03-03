@@ -25,8 +25,7 @@ isSyntaxFile = (== syntaxFileExtension) . takeExtension
 -- path must refer to a file containing an XML Kate syntax definition.
 loadSyntaxFromFile :: FilePath -> IO (Either String Syntax)
 loadSyntaxFromFile path = do
-    xml <- readFile path
-    result <- parseSyntaxDefinition xml
+    result <- parseSyntaxDefinition path
     case result of
         Left e -> return $ Left $ "Error parsing file " <> show path <> ": " <> e
         Right s -> return $ Right s
