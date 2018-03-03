@@ -113,7 +113,7 @@ script:
     cabal)
       cd skylighting-core && \
       cabal install --only-dependencies --force-reinstalls -v2 -ffast -fexecutable --disable-optimization --enable-tests && \
-      cabal install -v2 -ffast -fexecutable --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS" && \
+      cabal install -v2 -ffast -fexecutable --force-reinstalls --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS" && \
       cd ../skylighting && \
       skylighting-extract xml/*.xml && \
       cabal configure -v2 -ffast -fexecutable --disable-optimization --enable-tests --ghc-options="$OPTS" && \
