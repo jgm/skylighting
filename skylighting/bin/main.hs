@@ -162,7 +162,8 @@ extractDefinitions (Definition fp : xs) = do
   case res of
        Left e -> err e
        Right s -> do
-         putStrLn $ "Loaded syntax definition for " ++ Text.unpack (sName s)
+         hPutStrLn stderr $
+           "Loaded syntax definition for " ++ Text.unpack (sName s)
          (s:) <$> extractDefinitions xs
 extractDefinitions (_:xs) = extractDefinitions xs
 
