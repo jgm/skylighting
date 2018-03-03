@@ -70,7 +70,7 @@ parseSyntaxDefinition xml = do
   res <- runX (application xml)
   case res of
        [s] -> return $ Right s
-       _   -> return $ Left "Could not parse syntax definition"
+       _   -> return $ Left $ "Could not parse syntax definition " ++ xml
 
 application :: String -> IOSArrow b Syntax
 application fp
