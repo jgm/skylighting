@@ -16,6 +16,7 @@ module Skylighting
   , module Skylighting.Format.ANSI
   , module Skylighting.Format.HTML
   , module Skylighting.Format.LaTeX
+  , module Skylighting.Loader
 
   )
 where
@@ -29,5 +30,6 @@ import Skylighting.Regex
 import Skylighting.Styles
 import Skylighting.Tokenizer
 import Skylighting.Types
+import Skylighting.Loader
 
 import Skylighting.Syntax
