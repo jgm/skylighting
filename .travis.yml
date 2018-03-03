@@ -108,7 +108,7 @@ script:
       cd skylighting && \
       skylighting-extract xml/*.xml && \
       cd .. && \
-      stack test --no-terminal $ARGS install --haddock --no-haddock-deps --fast --flag 'aeson:fast' --flag 'skylighting:executable' --ghc-options="$OPTS"
+      stack test --no-terminal $ARGS --haddock --no-haddock-deps --fast --flag 'aeson:fast' --flag 'skylighting:executable' --ghc-options="$OPTS"
       ;;
     cabal)
       cd skylighting-core && \
