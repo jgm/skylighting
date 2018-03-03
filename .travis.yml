@@ -119,6 +119,6 @@ script:
       cabal configure -v2 -ffast -fexecutable --disable-optimization --enable-tests --ghc-options="$OPTS" && \
       cabal sdist --output-directory=sourcedist && \
       cd sourcedist && \
-      cabal install --force-reinstalls -j1 -v2 -ffast -fexecutable --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS"
+      cabal install --force-reinstalls -v2 -ffast -fexecutable --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS"
       ;;
   esac
