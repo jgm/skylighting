@@ -1,4 +1,4 @@
-module Skylighting (
+module Skylighting.Core (
     lookupSyntax
   , syntaxByName
   , syntaxByShortName
@@ -8,7 +8,6 @@ module Skylighting (
   , module Skylighting.Tokenizer
   , module Skylighting.Parser
   , module Skylighting.Regex
-  , module Skylighting.Syntax
   , module Skylighting.Styles
   , module Skylighting.Format.ANSI
   , module Skylighting.Format.HTML
@@ -26,7 +25,6 @@ import Skylighting.Format.LaTeX
 import Skylighting.Parser
 import Skylighting.Regex
 import Skylighting.Styles
-import Skylighting.Syntax
 import Skylighting.Tokenizer
 import Skylighting.Types
 

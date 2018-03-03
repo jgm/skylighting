@@ -11,6 +11,11 @@ description:         Skylighting is a syntax highlighting library with
                      Skylighting is intended to be the successor to
                      highlighting-kate.
 
+                     This package provides generated syntax modules
+                     based on the KDE XML definitions provided by the
+                     @skylighting-core@ package. As a result this
+                     package is licensed under the GPL.
+
 homepage:            https://github.com/jgm/skylighting
 license:             GPL-2
 license-file:        LICENSE
@@ -19,73 +24,9 @@ maintainer:          jgm@berkeley.edu
 copyright:           (C) 2016 John MacFarlane
 category:            Text
 build-type:          Simple
-extra-source-files:  changelog.md
-                     README.md
-                     xml/*.xml
-                     xml/language.dtd
-                     test/default.theme
-                     test/cases/abc.ada
-                     test/cases/abc.agda
-                     test/cases/abc.c
-                     test/cases/abc.clojure
-                     test/cases/abc.cpp
-                     test/cases/abc.cs
-                     test/cases/abc.d
-                     test/cases/abc.fortran
-                     test/cases/abc.go
-                     test/cases/abc.haskell
-                     test/cases/abc.java
-                     test/cases/abc.javascript
-                     test/cases/abc.julia
-                     test/cases/abc.kotlin
-                     test/cases/abc.lisp
-                     test/cases/abc.matlab
-                     test/cases/abc.ocaml
-                     test/cases/abc.perl
-                     test/cases/abc.php
-                     test/cases/abc.prolog
-                     test/cases/abc.python
-                     test/cases/abc.r
-                     test/cases/abc.ruby
-                     test/cases/abc.scala
-                     test/cases/abc.scheme
-                     test/cases/abc.tcl
-                     test/cases/archive.rhtml
-                     test/cases/life.lua
-                     test/cases/hk91.html
-                     test/cases/if.cmake
-                     test/expected/abc.ada.native
-                     test/expected/abc.agda.native
-                     test/expected/abc.c.native
-                     test/expected/abc.clojure.native
-                     test/expected/abc.cpp.native
-                     test/expected/abc.cs.native
-                     test/expected/abc.d.native
-                     test/expected/abc.fortran.native
-                     test/expected/abc.go.native
-                     test/expected/abc.haskell.native
-                     test/expected/abc.java.native
-                     test/expected/abc.javascript.native
-                     test/expected/abc.julia.native
-                     test/expected/abc.kotlin.native
-                     test/expected/abc.lisp.native
-                     test/expected/abc.matlab.native
-                     test/expected/abc.ocaml.native
-                     test/expected/abc.perl.native
-                     test/expected/abc.php.native
-                     test/expected/abc.prolog.native
-                     test/expected/abc.python.native
-                     test/expected/abc.r.native
-                     test/expected/abc.ruby.native
-                     test/expected/abc.scala.native
-                     test/expected/abc.scheme.native
-                     test/expected/abc.tcl.native
-                     test/expected/archive.rhtml.native
-                     test/expected/life.lua.native
-                     test/expected/hk91.html.native
-                     test/expected/if.cmake.native
+extra-doc-files:     README.md
 
-cabal-version:       >=1.10
+cabal-version:       >=1.22
 
 source-repository head
   type:              git
@@ -93,15 +34,16 @@ source-repository head
 
 library
   exposed-modules:     Skylighting
-                       Skylighting.Types
-                       Skylighting.Regex
-                       Skylighting.Parser
-                       Skylighting.Styles
-                       Skylighting.Tokenizer
-                       Skylighting.Format.ANSI
-                       Skylighting.Format.HTML
-                       Skylighting.Format.LaTeX
                        Skylighting.Syntax
+  reexported-modules:    skylighting-core:Skylighting.Core
+                       , skylighting-core:Skylighting.Types
+                       , skylighting-core:Skylighting.Regex
+                       , skylighting-core:Skylighting.Parser
+                       , skylighting-core:Skylighting.Styles
+                       , skylighting-core:Skylighting.Tokenizer
+                       , skylighting-core:Skylighting.Format.ANSI
+                       , skylighting-core:Skylighting.Format.HTML
+                       , skylighting-core:Skylighting.Format.LaTeX
   other-modules:
                        Skylighting.Syntax.Abc
                        Skylighting.Syntax.Actionscript
@@ -229,6 +171,7 @@ library
                        Skylighting.Syntax.Zsh
   other-extensions:    CPP, Arrows
   build-depends:       base >= 4.7 && < 5.0,
+                       skylighting-core,
                        mtl,
                        text,
                        binary,
@@ -251,62 +194,17 @@ library
   else
     build-depends:     regex-pcre-builtin
   hs-source-dirs:      src
-  if impl(ghc < 7.10)
-     hs-source-dirs:   prelude
-     other-modules:    Prelude
   ghc-prof-options:    -fprof-auto-exported
   default-language:    Haskell2010
   ghc-options:         -Wall
-  if flag(bootstrap)
-    buildable:         False
-
-Flag bootstrap
-  Description:   Only build skylighting-extract
-  Default:       False
-
-Flag executable
-  Description:   Build skylighting CLI tool
-  Default:       False
 
 Flag system-pcre
   Description:   Use regex-pcre instead of regex-pcre-builtin
   Default:       False
 
-executable skylighting-extract
-  build-depends:       base >= 4.7 && < 5.0,
-                       filepath,
-                       bytestring,
-                       base64-bytestring,
-                       text,
-                       safe,
-                       hxt,
-                       utf8-string,
-                       case-insensitive,
-                       aeson >= 1.0,
-                       binary,
-                       containers,
-                       directory,
-                       ansi-terminal >= 0.7,
-                       colour >= 2.0
-  if flag(system-pcre)
-    build-depends:     regex-pcre
-  else
-    build-depends:     regex-pcre-builtin
-  hs-source-dirs:      bin, src
-  if impl(ghc < 7.10)
-     hs-source-dirs:   prelude
-     other-modules:    Prelude
-  main-is:             extract.hs
-  default-language:    Haskell2010
-  other-extensions:    CPP
-  ghc-options:         -Wall
-  other-modules:       Skylighting.Types
-                       Skylighting.Regex
-                       Skylighting.Parser
-  if flag(bootstrap)
-    buildable:         True
-  else
-    buildable:         False
+Flag executable
+  Description:   Whether to build the skylighting program
+  Default:       False
 
 executable skylighting
   build-depends:       base >= 4.7 && < 5.0,
@@ -319,65 +217,12 @@ executable skylighting
                        blaze-html >= 0.5,
                        skylighting
   hs-source-dirs:      bin
-  if impl(ghc < 7.10)
-     hs-source-dirs:   prelude
-     other-modules:    Prelude
   main-is:             main.hs
   default-language:    Haskell2010
   other-extensions:    CPP
   ghc-options:         -Wall
-  if flag(bootstrap)
-    buildable:         False
   if flag(executable)
     buildable:         True
   else
     buildable:         False
   other-modules:  Paths_skylighting
-
-test-suite test-skylighting
-  type:           exitcode-stdio-1.0
-  main-is:        test-skylighting.hs
-  hs-source-dirs: test
-  if impl(ghc < 7.10)
-     hs-source-dirs:   prelude
-     other-modules:    Prelude
-  build-depends:  base >= 4.7 && < 5.0,
-                  HUnit,
-                  tasty,
-                  tasty-golden,
-                  tasty-hunit,
-                  tasty-quickcheck,
-                  QuickCheck,
-                  containers,
-                  random,
-                  Diff,
-                  text,
-                  pretty-show,
-                  aeson >= 1.0,
-                  bytestring,
-                  directory,
-                  filepath,
-                  skylighting
-  default-language: Haskell2010
-  ghc-options:    -Wall
-  if flag(bootstrap)
-    buildable:         False
-
-benchmark benchmark-skylighting
-  Type:            exitcode-stdio-1.0
-  Main-Is:         benchmark.hs
-  Hs-Source-Dirs:  benchmark
-  if impl(ghc < 7.10)
-     Hs-Source-Dirs: prelude
-     Other-Modules:  Prelude
-  Build-Depends:   skylighting,
-                   base >= 4.2 && < 5,
-                   filepath,
-                   text,
-                   containers,
-                   directory,
-                   criterion >= 1.0 && < 1.4
-  Ghc-Options:   -rtsopts -Wall -fno-warn-unused-do-bind
-  Default-Language: Haskell2010
-  if flag(bootstrap)
-    buildable:         False
