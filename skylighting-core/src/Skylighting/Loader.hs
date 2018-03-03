@@ -5,9 +5,10 @@ module Skylighting.Loader ( loadSyntaxFromFile
                           )
                           where
 
-import Control.Monad ((>=>), filterM, foldM)
+import Control.Monad (filterM, foldM)
 import Control.Monad.Except (ExceptT(ExceptT), runExceptT)
 import Control.Monad.IO.Class (liftIO)
+import Data.Monoid ((<>))
 import System.Directory (listDirectory, doesFileExist)
 import System.FilePath ((</>), takeExtension)
 
@@ -23,7 +24,12 @@ isSyntaxFile = (== syntaxFileExtension) . takeExtension
 -- | Loads a syntax definition from the specifed file path. The file
 -- path must refer to a file containing an XML Kate syntax definition.
 loadSyntaxFromFile :: FilePath -> IO (Either String Syntax)
-loadSyntaxFromFile = readFile >=> parseSyntaxDefinition
+loadSyntaxFromFile path = do
+    xml <- readFile path
+    result <- parseSyntaxDefinition xml
+    case result of
+        Left e -> return $ Left $ "Error parsing file " <> show path <> ": " <> e
+        Right s -> return $ Right s
 
 -- | Loads all syntax definitions from the specified directory by
 -- looking for files with an ".xml" extension. This function assumes
