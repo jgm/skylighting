@@ -116,7 +116,7 @@ script:
       cabal install -v2 -ffast -fexecutable --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS" && \
       cd ../skylighting && \
       skylighting-extract xml/*.xml && \
-      cabal configure -v2 -ffast -fexecutable --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS" && \
+      cabal configure -v2 -ffast -fexecutable --disable-optimization --enable-tests --ghc-options="$OPTS" && \
       cabal sdist --output-directory=sourcedist && \
       cd sourcedist && \
       cabal install --force-reinstalls -v2 -ffast -fexecutable --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS"
