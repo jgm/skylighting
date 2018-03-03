@@ -102,6 +102,7 @@ library
                        Skylighting.Regex
                        Skylighting.Parser
                        Skylighting.Styles
+                       Skylighting.Loader
                        Skylighting.Tokenizer
                        Skylighting.Format.ANSI
                        Skylighting.Format.HTML
