@@ -176,7 +176,7 @@ p_no_drop cfg syntax t =
 
 noDropTest :: TokenizerConfig -> [Text] -> Syntax -> TestTree
 noDropTest cfg inps syntax =
-  localOption (mkTimeout 9000000)
+  localOption (mkTimeout 16000000)
   $ testCase (Text.unpack (sName syntax))
   $ mapM_ go inps
     where go inp =
