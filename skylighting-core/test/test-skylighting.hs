@@ -15,6 +15,7 @@ import qualified Data.Text.IO as Text
 import System.Directory
 import System.Environment (getArgs)
 import System.FilePath
+import System.Exit (exitFailure)
 import Test.QuickCheck
 import Test.Tasty
 import Test.Tasty.Golden.Advanced (goldenTest)
@@ -22,23 +23,30 @@ import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck (testProperty)
 import Text.Show.Pretty
 
-import Skylighting.Regex
-import Skylighting.Styles
-import Skylighting.Types
-import Skylighting.Tokenizer
-
-syntaxes :: [Syntax]
-syntaxes = Map.elems defaultSyntaxMap
-
-defConfig :: TokenizerConfig
-defConfig = TokenizerConfig{ traceOutput = False
-                           , syntaxMap = defaultSyntaxMap }
+import Skylighting.Core
+import Skylighting.Loader
 
 tokToText :: Token -> Text
 tokToText (_, s) = s
 
+xmlPath :: FilePath
+xmlPath = "skylighting-core/xml/"
+
 main :: IO ()
 main = do
+  sMap <- do
+      result <- loadSyntaxesFromDir xmlPath
+      case result of
+          Left e -> do
+              putStrLn $ "Error loading syntax definitions from " <> xmlPath <> ": " <> e
+              exitFailure
+          Right m -> return m
+
+  let syntaxes = Map.elems sMap
+      defConfig = TokenizerConfig { traceOutput = False
+                                  , syntaxMap = sMap
+                                  }
+
   inputs <- filter (\fp -> take 1 fp /= ".")
          <$> getDirectoryContents ("test" </> "cases")
   allcases <- mapM (Text.readFile . (("test" </> "cases") </>)) inputs
@@ -47,7 +55,7 @@ main = do
   defaultTheme <- BL.readFile ("test" </> "default.theme")
   defaultMain $ testGroup "skylighting tests" $
     [ testGroup "tokenizer tests" $
-        map (tokenizerTest regen) inputs
+        map (tokenizerTest defConfig sMap regen) inputs
     , testGroup "FromJSON instance tests"
        [ testCase "decode simple color" $
             Just (RGB 0x15 0xff 0xa0) @=? decode "\"#15ffa0\""
@@ -71,18 +79,18 @@ main = do
     , testGroup "Skylighting" $
       [ testCase "syntaxesByFilename" $
             ["Perl"] @=?
-              map sName (syntaxesByFilename defaultSyntaxMap "foo/bar.pl")
+              map sName (syntaxesByFilename sMap "foo/bar.pl")
       ]
     , testGroup "Doesn't hang or drop text on a mixed syntax sample" $
-        map (noDropTest allcases) syntaxes
+        map (noDropTest defConfig allcases) syntaxes
     , testGroup "Doesn't hang or drop text on fuzz" $
-        map (\syn -> testProperty (Text.unpack (sName syn)) (p_no_drop syn))
+        map (\syn -> testProperty (Text.unpack (sName syn)) (p_no_drop defConfig syn))
         syntaxes
     , testGroup "Regression tests" $
       let perl = maybe (error "could not find Perl syntax") id
-                             (lookupSyntax "Perl" defaultSyntaxMap)
+                             (lookupSyntax "Perl" sMap)
           cpp  = maybe (error "could not find CPP syntax") id
-                             (lookupSyntax "cpp" defaultSyntaxMap) in
+                             (lookupSyntax "cpp" sMap) in
       [ testCase "perl NUL case" $ Right
              [[(KeywordTok,"s\NUL")
               ,(OtherTok,"b")
@@ -160,20 +168,20 @@ instance Arbitrary Text where
   arbitrary = Text.pack <$> arbitrary
   shrink xs = Text.pack <$> shrink (Text.unpack xs)
 
-p_no_drop :: Syntax -> Text -> Bool
-p_no_drop syntax t =
-  case tokenize defConfig syntax t of
+p_no_drop :: TokenizerConfig -> Syntax -> Text -> Bool
+p_no_drop cfg syntax t =
+  case tokenize cfg syntax t of
        Right ts -> Text.lines t == map (mconcat . map tokToText) ts
        Left _   -> False
 
-noDropTest :: [Text] -> Syntax -> TestTree
-noDropTest inps syntax =
+noDropTest :: TokenizerConfig -> [Text] -> Syntax -> TestTree
+noDropTest cfg inps syntax =
   localOption (mkTimeout 9000000)
   $ testCase (Text.unpack (sName syntax))
   $ mapM_ go inps
     where go inp =
             E.catch
-              (case tokenize defConfig syntax inp of
+              (case tokenize cfg syntax inp of
                     Right ts -> assertBool ("Text has been dropped:\n" ++ diffs)
                                  (inplines == toklines)
                          where inplines = Text.lines inp
@@ -184,19 +192,19 @@ noDropTest inps syntax =
               (\(e :: RegexException) ->
                 assertFailure (show e ++ "\ninput = " ++ show inp))
 
-tokenizerTest :: Bool -> FilePath -> TestTree
-tokenizerTest regen inpFile = localOption (mkTimeout 9000000) $
+tokenizerTest :: TokenizerConfig -> SyntaxMap -> Bool -> FilePath -> TestTree
+tokenizerTest cfg sMap regen inpFile = localOption (mkTimeout 9000000) $
   goldenTest testname getExpected getActual
       (compareValues referenceFile) updateGolden
   where testname = lang ++ " tokenizing of " ++ inpFile
         getExpected = Text.readFile referenceFile
         getActual = do
           code <- Text.readFile (casesdir </> inpFile)
-          syntax <- case lookupSyntax (Text.pack lang) defaultSyntaxMap of
+          syntax <- case lookupSyntax (Text.pack lang) sMap of
                          Just s  -> return s
                          Nothing -> fail $
                             "Could not find syntax definition for " ++ lang
-          case tokenize defConfig syntax $! code of
+          case tokenize cfg syntax $! code of
                  Left e   -> fail e
                  Right ls -> return $ Text.pack $ ppShow ls ++ "\n"
         updateGolden = if regen
