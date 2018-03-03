@@ -30,7 +30,7 @@ tokToText :: Token -> Text
 tokToText (_, s) = s
 
 xmlPath :: FilePath
-xmlPath = "skylighting-core/xml/"
+xmlPath = "xml/"
 
 main :: IO ()
 main = do
