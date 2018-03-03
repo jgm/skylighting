@@ -12,7 +12,6 @@ import Data.Monoid ((<>))
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
-import Skylighting
 import System.Directory
 import System.Environment (getArgs)
 import System.FilePath
@@ -22,6 +21,11 @@ import Test.Tasty.Golden.Advanced (goldenTest)
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck (testProperty)
 import Text.Show.Pretty
+
+import Skylighting.Regex
+import Skylighting.Styles
+import Skylighting.Types
+import Skylighting.Tokenizer
 
 syntaxes :: [Syntax]
 syntaxes = Map.elems defaultSyntaxMap
