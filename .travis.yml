@@ -99,43 +99,25 @@ before_install:
     curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
   fi
 
-install:
-- echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
-- if [ -f configure.ac ]; then autoreconf -i; fi
-- |
-  case "$BUILD" in
-    stack)
-      ulimit -n 4096
-      stack --no-terminal --install-ghc $ARGS test --flag 'aeson:fast' --flag 'skylighting:executable' --ghc-options="-O0" --only-dependencies
-      ;;
-    cabal)
-      cabal --version
-      travis_retry cabal update
-      cabal install -j2 --only-dependencies -ffast --enable-tests --enable-benchmarks --force-reinstalls --ghc-options="-O0" --reorder-goals --max-backjumps=-1 $CABALARGS
-      ;;
-  esac
-
 script:
 - |
   case "$BUILD" in
     stack)
       ulimit -n 4096
-      stack --no-terminal $ARGS install --flag 'aeson:fast' --flag 'skylighting:bootstrap' --ghc-options="$OPTS" && \
-      stack exec skylighting-extract -- xml/*.xml && \
-      stack sdist && \
-      stack clean && \
-      stack --no-terminal $ARGS test --flag 'aeson:fast' --flag 'skylighting:executable' --haddock --no-haddock-deps --ghc-options="$OPTS" --jobs=1
+      stack --no-terminal $ARGS install --fast --flag 'aeson:fast' --flag 'skylighting-core:executable' --ghc-options="$OPTS" skylighting-core && \
+      cd skylighting && \
+      skylighting-extract xml/*.xml && \
+      cd .. && \
+      stack test --no-terminal $ARGS install --haddock --no-haddock-deps --fast --flag 'aeson:fast' --flag 'skylighting:executable' --ghc-options="$OPTS"
       ;;
     cabal)
-      cabal configure -v2 -ffast -fbootstrap --ghc-options="$OPTS" && \
-      cabal build -j2 && \
-      cabal run skylighting-extract -- xml/*.xml && \
-      cabal clean && \
-      cabal configure --enable-tests --enable-benchmarks -v2 -ffast -f-bootstrap -fexecutable --ghc-options="$OPTS" && \
+      cd skylighting-core && \
+      cabal install -v2 -ffast -fexecutable --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS" && \
+      cd ../skylighting && \
+      skylighting-extract xml/*.xml && \
+      cabal configure -v2 -ffast -fexecutable --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS" && \
       cabal sdist --output-directory=sourcedist && \
       cd sourcedist && \
-      cabal configure --ghc-options="$OPTS" --enable-tests && \
-      cabal build -j2 && \
-      cabal test -j1
+      cabal install -v2 -ffast -fexecutable --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS"
       ;;
   esac
