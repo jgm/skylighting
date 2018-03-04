@@ -49,7 +49,8 @@ main = do
 
   inputs <- filter (\fp -> take 1 fp /= ".")
          <$> getDirectoryContents ("test" </> "cases")
-  allcases <- mapM (Text.readFile . (("test" </> "cases") </>)) inputs
+  allcases <- mapM (fmap (Text.take 240)
+                    . Text.readFile . (("test" </> "cases") </>)) inputs
   args <- getArgs
   let regen = "--accept" `elem` args
   defaultTheme <- BL.readFile ("test" </> "default.theme")
@@ -176,7 +177,7 @@ p_no_drop cfg syntax t =
 
 noDropTest :: TokenizerConfig -> [Text] -> Syntax -> TestTree
 noDropTest cfg inps syntax =
-  localOption (mkTimeout 16000000)
+  localOption (mkTimeout 9000000)
   $ testCase (Text.unpack (sName syntax))
   $ mapM_ go inps
     where go inp =
