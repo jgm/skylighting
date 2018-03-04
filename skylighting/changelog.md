@@ -1,5 +1,9 @@
 # Revision history for skylighting
 
+## 0.7.0.1 -- 2018-03-03
+
+  * Updated changelog.md.
+
 ## 0.7 -- 2018-03-03
 
   * Split skylighting into skylighting-core (BSD3) and skylighting (GPL)
