@@ -1,8 +1,17 @@
-diff --git a/xml/haskell.xml b/xml/haskell.xml
-index 27ca018..8997722 100644
---- a/xml/haskell.xml
-+++ b/xml/haskell.xml
-@@ -476,9 +476,9 @@
+diff --git a/haskell.xml b/haskell.xml
+index a71d649..84f4f85 100644
+--- a/haskell.xml
++++ b/haskell.xml
+@@ -482,7 +482,7 @@
+       <RegExpr    attribute="Octal"   context="#stay" String="0[Oo][0-7]+"/>
+       <RegExpr    attribute="Hex"     context="#stay" String="0[Xx][0-9A-Fa-f]+"/>
+       <Int        attribute="Decimal" context="#stay" />
+-      <DetectChar attribute="Char"    context="char" char="'" />
++      <RegExpr    attribute="Char"    context="#stay" String="'(\\'|\\[^']+|[^\\\n])'" />
+       <DetectChar attribute="String"  context="string" char="&quot;" />
+ 
+       <DetectChar attribute="Function Infix" context="infix" char="`"/>
+@@ -605,9 +605,9 @@
  
      <itemData name="Keyword"          defStyleNum="dsKeyword"  spellChecking="false" />
      <itemData name="Type Prelude"     defStyleNum="dsDataType" spellChecking="false" />
