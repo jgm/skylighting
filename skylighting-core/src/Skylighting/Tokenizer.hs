@@ -272,6 +272,7 @@ takeChars numchars = do
 tryRule :: Rule -> ByteString -> TokenizerM (Maybe Token)
 tryRule _    ""  = mzero
 tryRule rule inp = do
+  info $ "Trying rule " ++ show rule
   case rColumn rule of
        Nothing -> return ()
        Just n  -> gets column >>= guard . (== n)
