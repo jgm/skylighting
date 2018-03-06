@@ -497,7 +497,10 @@ anyChar cs inp = do
 regExpr :: Bool -> RE -> ByteString -> TokenizerM Text
 regExpr dynamic re inp = do
   reStr <- if dynamic
-              then subDynamic (reString re)
+              then do
+                reStr' <- subDynamic (reString re)
+                info $ "Dynamic regex: " ++ show reStr'
+                return reStr'
               else return (reString re)
   when (BS.take 2 reStr == "\\b") $ wordBoundary inp
   regex <- if dynamic
