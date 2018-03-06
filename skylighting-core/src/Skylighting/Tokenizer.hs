@@ -516,7 +516,8 @@ regExpr dynamic re inp = do
                      Just cre -> return cre
   case matchRegex regex inp of
        Just (match:capts) -> do
-         modify $ \st -> st{ captures = capts }
+         unless (null capts) $
+           modify $ \st -> st{ captures = capts }
          takeChars (UTF8.length match)
        _ -> mzero
 
@@ -554,11 +555,13 @@ subDynamic bs =
              case BS.unpack (BS.take 2 z) of
                   ['%',x] | x >= '0' && x <= '9' -> do
                      let capNum = ord x - ord '0'
-                     let escapeRegex = BS.concatMap escapeRegexChar
                      replacement <- getCapture capNum
                      (escapeRegex (encodeUtf8 replacement) <>) <$>
                          subDynamic (BS.drop 2 z)
                   _ -> BS.cons '%' <$> (subDynamic (BS.drop 1 z))
+
+escapeRegex :: BS.ByteString -> BS.ByteString
+escapeRegex = BS.concatMap escapeRegexChar
 
 escapeRegexChar :: Char -> BS.ByteString
 escapeRegexChar '^' = "\\^"
