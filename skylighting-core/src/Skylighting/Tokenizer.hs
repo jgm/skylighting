@@ -575,8 +575,8 @@ subDynamic bs
                subDynamic (BS.drop 2 bs)
         _ -> case BS.break (=='%') bs of
                   (y,z)
-                    | BS.null y -> BS.cons '%' <$> subDynamic z
                     | BS.null z -> return y
+                    | BS.null y -> BS.cons '%' <$> subDynamic (BS.drop 1 z)
                     | otherwise -> (y <>) <$> subDynamic z
 
 getCapture :: Int -> TokenizerM Text
