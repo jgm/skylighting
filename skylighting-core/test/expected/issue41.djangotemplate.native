@@ -1,0 +1,4 @@
+[ [ ( FunctionTok , "{% if var %}" ) ]
+, [ ( NormalTok , "string" ) ]
+, [ ( FunctionTok , "{% endif %}" ) ]
+]

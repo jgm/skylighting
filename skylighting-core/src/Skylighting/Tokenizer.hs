@@ -546,38 +546,37 @@ decodeBS bs = case decodeUtf8' bs of
 -- Substitute out %1, %2, etc. in regex string, escaping
 -- appropriately..
 subDynamic :: ByteString -> TokenizerM ByteString
-subDynamic bs
-  | BS.null bs = return BS.empty
-  | otherwise  =
-    case BS.unpack (BS.take 2 bs) of
-        ['%',x] | x >= '0' && x <= '9' -> do
-           let capNum = ord x - ord '0'
-           let escapeRegexChar :: Char -> BS.ByteString
-               escapeRegexChar '^' = "\\^"
-               escapeRegexChar '$' = "\\$"
-               escapeRegexChar '\\' = "\\\\"
-               escapeRegexChar '[' = "\\["
-               escapeRegexChar ']' = "\\]"
-               escapeRegexChar '(' = "\\("
-               escapeRegexChar ')' = "\\)"
-               escapeRegexChar '{' = "\\{"
-               escapeRegexChar '}' = "\\}"
-               escapeRegexChar '*' = "\\*"
-               escapeRegexChar '+' = "\\+"
-               escapeRegexChar '.' = "\\."
-               escapeRegexChar '?' = "\\?"
-               escapeRegexChar c
-                 | isAscii c && isPrint c = BS.singleton c
-                 | otherwise              = BS.pack $ printf "\\x{%x}" (ord c)
-           let escapeRegex = BS.concatMap escapeRegexChar
-           replacement <- getCapture capNum
-           (escapeRegex (encodeUtf8 replacement) <>) <$>
-               subDynamic (BS.drop 2 bs)
-        _ -> case BS.break (=='%') bs of
-                  (y,z)
-                    | BS.null z -> return y
-                    | BS.null y -> BS.cons '%' <$> subDynamic (BS.drop 1 z)
-                    | otherwise -> (y <>) <$> subDynamic z
+subDynamic bs =
+  case BS.break (=='%') bs of
+       (y,z)
+         | BS.null z -> return y
+         | otherwise -> (y <>) <$>
+             case BS.unpack (BS.take 2 z) of
+                  ['%',x] | x >= '0' && x <= '9' -> do
+                     let capNum = ord x - ord '0'
+                     let escapeRegex = BS.concatMap escapeRegexChar
+                     replacement <- getCapture capNum
+                     (escapeRegex (encodeUtf8 replacement) <>) <$>
+                         subDynamic (BS.drop 2 z)
+                  _ -> BS.cons '%' <$> (subDynamic (BS.drop 1 z))
+
+escapeRegexChar :: Char -> BS.ByteString
+escapeRegexChar '^' = "\\^"
+escapeRegexChar '$' = "\\$"
+escapeRegexChar '\\' = "\\\\"
+escapeRegexChar '[' = "\\["
+escapeRegexChar ']' = "\\]"
+escapeRegexChar '(' = "\\("
+escapeRegexChar ')' = "\\)"
+escapeRegexChar '{' = "\\{"
+escapeRegexChar '}' = "\\}"
+escapeRegexChar '*' = "\\*"
+escapeRegexChar '+' = "\\+"
+escapeRegexChar '.' = "\\."
+escapeRegexChar '?' = "\\?"
+escapeRegexChar c
+  | isAscii c && isPrint c = BS.singleton c
+  | otherwise              = BS.pack $ printf "\\x{%x}" (ord c)
 
 getCapture :: Int -> TokenizerM Text
 getCapture capnum = do
