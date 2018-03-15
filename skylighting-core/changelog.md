@@ -1,5 +1,11 @@
 # Revision history for skylighting-core
 
+## 0.7.1 -- 2018-03-15
+
+  * Fix benchmarks, which previously depended on a module
+    defined in skylighting (#42).
+  * Export Skylighting.Loader from Skylighting.Core.
+
 ## 0.7.0.2 -- 2018-03-06
 
   * Ensure that regex captures are not overwritten by regexes
