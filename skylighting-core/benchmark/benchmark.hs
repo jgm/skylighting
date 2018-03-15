@@ -3,7 +3,7 @@ import Criterion.Types (Config (..))
 import qualified Data.Map as Map
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Skylighting
+import Skylighting.Core
 import System.FilePath
 -- import System.Directory
 
@@ -20,8 +20,9 @@ main = do
   -- xmlfiles <- filter (\x -> takeExtension x == ".xml") <$>
   --                getDirectoryContents "xml"
   let xmlfiles = ["haskell.xml"]
+  Right syntaxmap <- loadSyntaxesFromDir "xml"
   defaultMainWith defaultConfig{ timeLimit = 10.0 }
-    $ parseBench xmlfiles : map testBench cases
+    $ parseBench xmlfiles : map (testBench syntaxmap) cases
 
 parseBench :: [String] -> Benchmark
 parseBench xmls =
@@ -33,13 +34,13 @@ parseBench xmls =
                 Left e  -> error e
                 Right r -> return r
 
-testBench :: (Text, Text) -> Benchmark
-testBench (format, contents) =
+testBench :: SyntaxMap -> (Text, Text) -> Benchmark
+testBench syntaxmap (format, contents) =
   bench (Text.unpack format) $ nf
     (sum . map length . either (error "tokenize failed") id .
      tokenize TokenizerConfig{ traceOutput = False
-                             , syntaxMap = defaultSyntaxMap } syntax) contents
+                             , syntaxMap = syntaxmap } syntax) contents
 
   where syntax = maybe (error "could not find syntax") id
-                       (lookupSyntax format defaultSyntaxMap)
+                       (lookupSyntax format syntaxmap)
 
