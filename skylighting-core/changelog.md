@@ -5,6 +5,7 @@
   * Fix benchmarks, which previously depended on a module
     defined in skylighting (#42).
   * Export Skylighting.Loader from Skylighting.Core.
+  * Bump version bound for criterion.
 
 ## 0.7.0.2 -- 2018-03-06
 
