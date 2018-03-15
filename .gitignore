@@ -1,8 +1,7 @@
+skylighting/src/Skylighting/
 dist-newstyle
 dist
 .stack-work
-src/Skylighting/Syntax.hs
-src/Skylighting/Syntax/*.hs
 skylighting.cabal.orig
 .*.swp
 syntax-highlighting
