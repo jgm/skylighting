@@ -24,7 +24,6 @@ import Test.Tasty.QuickCheck (testProperty)
 import Text.Show.Pretty
 
 import Skylighting.Core
-import Skylighting.Loader
 
 tokToText :: Token -> Text
 tokToText (_, s) = s
