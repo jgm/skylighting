@@ -88,9 +88,10 @@ before_install:
 - OPTS="-O0 -Wall -fno-warn-unused-do-bind -Werror"
 - if [ "x$GHCVER" = "xhead" ]; then CABALARGS=--allow-newer; fi
 
-# Download and unpack the stack executable
-- export PATH=$PATH:/opt/happy/1.19.5/bin:/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$HOME/.local/bin:$HOME/.cabal/bin
+- export PATH=/opt/happy/1.19.5/bin/:/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$HOME/.local/bin:$HOME/.cabal/bin:$PATH
 - mkdir -p ~/.local/bin
+
+# Download and unpack the stack executable
 - |
   if [ `uname` = "Darwin" ]
   then
