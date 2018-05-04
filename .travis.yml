@@ -112,6 +112,7 @@ script:
       stack test --no-terminal $ARGS --haddock --no-haddock-deps --fast --flag 'aeson:fast' --flag 'skylighting:executable' --ghc-options="$OPTS"
       ;;
     cabal)
+      cabal update && \
       cd skylighting-core && \
       cabal install --only-dependencies --force-reinstalls -v2 -ffast -fexecutable --disable-optimization --enable-tests && \
       cabal install -v2 -ffast -fexecutable --force-reinstalls --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS" && \
