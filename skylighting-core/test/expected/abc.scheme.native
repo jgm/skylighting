@@ -1,6 +1,6 @@
 [ [ ( NormalTok , "#lang racket" ) ]
 , [ ( NormalTok , "(" )
-  , ( KeywordTok , "define" )
+  , ( ExtensionTok , "define" )
   , ( FunctionTok , " block-strings" )
   ]
 , [ ( NormalTok , "  (" )
@@ -51,7 +51,7 @@
   , ( NormalTok , "))" )
   ]
 , [ ( NormalTok , "(" )
-  , ( KeywordTok , "define" )
+  , ( ExtensionTok , "define" )
   , ( FunctionTok , " BLOCKS " )
   , ( NormalTok , "(map " )
   , ( KeywordTok , "string->list" )
@@ -59,12 +59,12 @@
   ]
 , []
 , [ ( NormalTok , "(" )
-  , ( KeywordTok , "define" )
+  , ( ExtensionTok , "define" )
   , ( FunctionTok , " " )
   , ( NormalTok , "(can-make-word? w)" )
   ]
 , [ ( NormalTok , "  (" )
-  , ( KeywordTok , "define" )
+  , ( ExtensionTok , "define" )
   , ( FunctionTok , " " )
   , ( NormalTok , "(usable-block blocks word-char)" )
   ]
@@ -76,7 +76,7 @@
   ]
 , [ ( NormalTok , "  " ) ]
 , [ ( NormalTok , "  (" )
-  , ( KeywordTok , "define" )
+  , ( ExtensionTok , "define" )
   , ( FunctionTok , " " )
   , ( NormalTok , "(inner word-chars blocks tried-blocks)" )
   ]
@@ -91,7 +91,7 @@
   , ( KeywordTok , "car" )
   , ( NormalTok , " word-chars))" )
   ]
-, [ ( NormalTok , "       " ) , ( KeywordTok , "=>" ) ]
+, [ ( NormalTok , "       " ) , ( OperatorTok , "=>" ) ]
 , [ ( NormalTok , "       (" )
   , ( KeywordTok , "lambda" )
   , ( NormalTok , " (b)" )
@@ -121,7 +121,7 @@
   ]
 , []
 , [ ( NormalTok , "(" )
-  , ( KeywordTok , "define" )
+  , ( ExtensionTok , "define" )
   , ( FunctionTok , " WORD-LIST " )
   , ( NormalTok , "'(" )
   , ( StringTok , "\"\"" )
@@ -142,7 +142,7 @@
   , ( NormalTok , "))" )
   ]
 , [ ( NormalTok , "(" )
-  , ( KeywordTok , "define" )
+  , ( ExtensionTok , "define" )
   , ( FunctionTok , " " )
   , ( NormalTok , "(report-word w)" )
   ]

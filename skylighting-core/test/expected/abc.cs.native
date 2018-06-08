@@ -105,7 +105,9 @@
 , [ ( NormalTok , "        " ) ]
 , [ ( NormalTok , "        " )
   , ( KeywordTok , "foreach" )
-  , ( NormalTok , "( var word " )
+  , ( NormalTok , "( " )
+  , ( DataTypeTok , "var" )
+  , ( NormalTok , " word " )
   , ( KeywordTok , "in" )
   , ( NormalTok , " words)" )
   ]
@@ -222,7 +224,9 @@
 , [ ( NormalTok , "                _blocks = blocks;" ) ]
 , [ ( NormalTok , "                " )
   , ( KeywordTok , "foreach" )
-  , ( NormalTok , " (var block " )
+  , ( NormalTok , " (" )
+  , ( DataTypeTok , "var" )
+  , ( NormalTok , " block " )
   , ( KeywordTok , "in" )
   , ( NormalTok , " blocks)" )
   ]
@@ -318,7 +322,9 @@
   ]
 , [ ( NormalTok , "                " )
   , ( KeywordTok , "foreach" )
-  , ( NormalTok , " (var block " )
+  , ( NormalTok , " (" )
+  , ( DataTypeTok , "var" )
+  , ( NormalTok , " block " )
   , ( KeywordTok , "in" )
   , ( NormalTok , " blocks)" )
   ]

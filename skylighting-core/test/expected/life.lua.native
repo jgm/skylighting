@@ -1,18 +1,13 @@
-[ [ ( DocumentationTok , "-- life.lua" ) ]
-, [ ( DocumentationTok , "-- original by Dave Bollinger " )
-  , ( KeywordTok , "<DBollinger" )
-  , ( OtherTok , "@compuserve.com" )
-  , ( KeywordTok , ">" )
-  , ( DocumentationTok , " posted to lua-l" )
+[ [ ( CommentTok , "-- life.lua" ) ]
+, [ ( CommentTok , "-- original by Dave Bollinger " )
+  , ( KeywordTok , "<DBollinger@compuserve.com>" )
+  , ( CommentTok , " posted to lua-l" )
   ]
-, [ ( DocumentationTok
+, [ ( CommentTok
     , "-- modified to use ANSI terminal escape sequences"
     )
   ]
-, [ ( DocumentationTok
-    , "-- modified to use for instead of while"
-    )
-  ]
+, [ ( CommentTok , "-- modified to use for instead of while" ) ]
 , []
 , [ ( KeywordTok , "local" )
   , ( NormalTok , " " )
@@ -40,9 +35,9 @@
   , ( NormalTok , " delay" )
   , ( OtherTok , "()" )
   , ( NormalTok , " " )
-  , ( DocumentationTok , "-- " )
+  , ( CommentTok , "-- " )
   , ( AlertTok , "NOTE" )
-  , ( DocumentationTok , ": SYSTEM-DEPENDENT, adjust as necessary" )
+  , ( CommentTok , ": SYSTEM-DEPENDENT, adjust as necessary" )
   ]
 , [ ( NormalTok , "  " )
   , ( KeywordTok , "for" )
@@ -57,7 +52,7 @@
   , ( KeywordTok , "end" )
   ]
 , [ ( NormalTok , "  " )
-  , ( DocumentationTok , "-- local i=os.clock()+1 while(os.clock()" )
+  , ( CommentTok , "-- local i=os.clock()+1 while(os.clock()" )
   , ( KeywordTok , "<i" )
   , ( OtherTok , ") do end" )
   ]
@@ -135,7 +130,7 @@
   , ( OtherTok , "{}" )
   ]
 , []
-, [ ( DocumentationTok
+, [ ( CommentTok
     , "-- give birth to a \"shape\" within the cell array"
     )
   ]
@@ -206,7 +201,7 @@
 , [ ( NormalTok , "  " ) , ( KeywordTok , "end" ) ]
 , [ ( KeywordTok , "end" ) ]
 , []
-, [ ( DocumentationTok
+, [ ( CommentTok
     , "-- run the CA and produce the next generation"
     )
   ]
@@ -440,7 +435,7 @@
 , [ ( NormalTok , "  " ) , ( KeywordTok , "end" ) ]
 , [ ( KeywordTok , "end" ) ]
 , []
-, [ ( DocumentationTok , "-- output the array to screen" ) ]
+, [ ( CommentTok , "-- output the array to screen" ) ]
 , [ ( KeywordTok , "function" )
   , ( NormalTok , " _CELLS:draw" )
   , ( OtherTok , "()" )
@@ -451,7 +446,7 @@
   , ( OtherTok , "=" )
   , ( StringTok , "\"\"" )
   , ( NormalTok , " " )
-  , ( DocumentationTok , "-- accumulate to reduce flicker" )
+  , ( CommentTok , "-- accumulate to reduce flicker" )
   ]
 , [ ( NormalTok , "  " )
   , ( KeywordTok , "for" )
@@ -514,7 +509,7 @@
   ]
 , [ ( KeywordTok , "end" ) ]
 , []
-, [ ( DocumentationTok , "-- constructor" ) ]
+, [ ( CommentTok , "-- constructor" ) ]
 , [ ( KeywordTok , "function" )
   , ( NormalTok , " CELLS" )
   , ( OtherTok , "(" )
@@ -564,12 +559,12 @@
   ]
 , [ ( KeywordTok , "end" ) ]
 , []
-, [ ( DocumentationTok , "--" ) ]
-, [ ( DocumentationTok
+, [ ( CommentTok , "--" ) ]
+, [ ( CommentTok
     , "-- shapes suitable for use with spawn() above"
     )
   ]
-, [ ( DocumentationTok , "--" ) ]
+, [ ( CommentTok , "--" ) ]
 , [ ( NormalTok , "HEART " )
   , ( OtherTok , "=" )
   , ( NormalTok , " " )
@@ -796,7 +791,7 @@
   , ( OtherTok , "}" )
   ]
 , []
-, [ ( DocumentationTok , "-- the main routine" ) ]
+, [ ( CommentTok , "-- the main routine" ) ]
 , [ ( KeywordTok , "function" )
   , ( NormalTok , " LIFE" )
   , ( OtherTok , "(" )
@@ -806,7 +801,7 @@
   , ( OtherTok , ")" )
   ]
 , [ ( NormalTok , "  " )
-  , ( DocumentationTok , "-- create two arrays" )
+  , ( CommentTok , "-- create two arrays" )
   ]
 , [ ( NormalTok , "  " )
   , ( KeywordTok , "local" )
@@ -831,11 +826,9 @@
   , ( OtherTok , ")" )
   ]
 , []
+, [ ( NormalTok , "  " ) , ( CommentTok , "-- create some life" ) ]
 , [ ( NormalTok , "  " )
-  , ( DocumentationTok , "-- create some life" )
-  ]
-, [ ( NormalTok , "  " )
-  , ( DocumentationTok
+  , ( CommentTok
     , "-- about 1000 generations of fun, then a glider steady-state"
     )
   ]
@@ -867,9 +860,7 @@
   , ( OtherTok , ")" )
   ]
 , []
-, [ ( NormalTok , "  " )
-  , ( DocumentationTok , "-- run until break" )
-  ]
+, [ ( NormalTok , "  " ) , ( CommentTok , "-- run until break" ) ]
 , [ ( NormalTok , "  " )
   , ( KeywordTok , "local" )
   , ( NormalTok , " gen" )
@@ -882,7 +873,7 @@
   , ( StringTok , "\"\\027[2J\"" )
   , ( OtherTok , ")" )
   , ( NormalTok , "\t" )
-  , ( DocumentationTok , "-- ANSI clear screen" )
+  , ( CommentTok , "-- ANSI clear screen" )
   ]
 , [ ( NormalTok , "  " )
   , ( KeywordTok , "while" )
@@ -910,7 +901,7 @@
   , ( StringTok , "\"\\027[H\"" )
   , ( OtherTok , ")" )
   , ( NormalTok , "\t" )
-  , ( DocumentationTok , "-- ANSI home cursor" )
+  , ( CommentTok , "-- ANSI home cursor" )
   ]
 , [ ( NormalTok , "    thisgen:draw" ) , ( OtherTok , "()" ) ]
 , [ ( NormalTok , "    " )
@@ -944,7 +935,7 @@
   , ( KeywordTok , "end" )
   ]
 , [ ( NormalTok , "    " )
-  , ( DocumentationTok , "--delay()\t\t-- no delay" )
+  , ( CommentTok , "--delay()\t\t-- no delay" )
   ]
 , [ ( NormalTok , "  " ) , ( KeywordTok , "end" ) ]
 , [ ( KeywordTok , "end" ) ]
