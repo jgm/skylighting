@@ -1,5 +1,9 @@
 # Revision history for skylighting
 
+## 0.7.2 -- 2018-06-08
+
+  * Require skylighting-core >= 0.7.2.
+
 ## 0.7.1 -- 2018-03-15
 
   * Require skylighting-core >= 0.7.1.
