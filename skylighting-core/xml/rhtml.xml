@@ -44,7 +44,7 @@
 -->
 	
 <!-- Hold the "language" opening tag on a single line, as mentioned in "language.dtd". -->
-<language name="Ruby/Rails/RHTML" version="6" kateversion="2.4" section="Markup" extensions="*.rhtml;*.RHTML;*.html.erb" mimetype="" author="Richard Dale rdale@foton.es" license="LGPLv2+">
+<language name="Ruby/Rails/RHTML" version="8" kateversion="5.0" section="Markup" extensions="*.rhtml;*.RHTML;*.html.erb" mimetype="" author="Richard Dale rdale@foton.es" license="LGPLv2+">
 	
 	<highlighting>
 	
@@ -1160,6 +1160,7 @@
 		<itemDatas>
 		<!-- BEGIN Ruby itemData -->
 			<itemData name="Ruby Normal Text" defStyleNum="dsNormal"/>
+			<itemData name="RUBY RAILS ERB Text" defStyleNum="dsExtension"/>
 			
 			<itemData name="Keyword" defStyleNum="dsKeyword"/>
 			<itemData name="Attribute Definition" defStyleNum="dsOthers"/>
@@ -1197,7 +1198,6 @@
 			
 			<itemData name="Ruby Comment" defStyleNum="dsComment"/>
 			<itemData name="Blockcomment" defStyleNum="dsComment"/>
-			<itemData name="Region Marker" defStyleNum="dsNormal" color="#0000ff"/>
 			<itemData name="RDoc Value" defStyleNum="dsOthers"/>
 			
 			<!-- use these to mark errors and alerts things -->
@@ -1205,7 +1205,6 @@
 			<itemData name="Alert" defStyleNum="dsAlert" />
 
 			<itemData name="Delimiter" defStyleNum="dsChar"/>
-			<itemData name="Expression" defStyleNum="dsOthers"/>
 			<itemData name="Operator" defStyleNum="dsChar"/>
 		<!-- END Ruby itemData -->
 			
@@ -1220,7 +1219,6 @@
 			<itemData name="Value" defStyleNum="dsString" />
 			<itemData name="EntityRef" defStyleNum="dsDecVal" />
 			<itemData name="PEntityRef" defStyleNum="dsDecVal" />
-			<itemData name="Error" defStyleNum="dsError" />
 		<!-- END HTML itemData -->
 		
 		</itemDatas>

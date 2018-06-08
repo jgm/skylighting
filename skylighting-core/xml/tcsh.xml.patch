@@ -1,9 +1,11 @@
-diff --git a/tcsh.xml b/tcsh.xml
-index bed4bfe..ddba8fc 100644
---- a/tcsh.xml
-+++ b/tcsh.xml
-@@ -685,3 +685,3 @@
+--- tcsh.xml.orig	2018-06-08 09:32:02.000000000 -0700
++++ tcsh.xml	2018-06-08 09:32:06.000000000 -0700
+@@ -674,7 +674,7 @@
+       <context attribute="Normal Text" lineEndContext="#pop" name="CmdSetEnv" fallthrough="true" fallthroughContext="#pop">
+         <!-- handle command line options -->
          <RegExpr attribute="Variable" context="#pop" String="\b&varname;" />
--        <DetectChar attribute="Variable" context="Assign" char="\s" />
-+        <DetectChar attribute="Variable" context="Assign" char=" " />
+-        <RegExpr attribute="Variable" context="Assign" String="\s" />
++        <RegExpr attribute="Variable" context="Assign" String=" " />
          <IncludeRules context="FindMost" />
+       </context>
+ 
