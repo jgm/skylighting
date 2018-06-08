@@ -1,5 +1,5 @@
 name:                skylighting-core
-version:             0.7.1
+version:             0.7.2
 synopsis:            syntax highlighting library
 description:         Skylighting is a syntax highlighting library.
                      It derives its tokenizers from XML syntax

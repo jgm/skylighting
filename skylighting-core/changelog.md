@@ -1,5 +1,12 @@
 # Revision history for skylighting-core
 
+## 0.7.2 -- 2018-06-08
+
+  * Update syntax definitions from upstream.
+  * Added support for POV-Ray syntax (#46).
+  * Display line numbers without absolute positioning (David
+    Baynard, #32).
+
 ## 0.7.1 -- 2018-03-15
 
   * Fix benchmarks, which previously depended on a module
