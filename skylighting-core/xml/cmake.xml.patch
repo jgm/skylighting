@@ -1,0 +1,13 @@
+--- cmake.xml.orig	2018-06-08 10:09:39.000000000 -0700
++++ cmake.xml	2018-06-08 09:49:50.000000000 -0700
+@@ -3304,6 +3304,10 @@
+       <context attribute="Normal Text" lineEndContext="#stay" name="Detect Builtin Variables">
+         <keyword attribute="Builtin Variable" context="#stay" String="variables" insensitive="false" />
+         <IncludeRules context="Detect More Builtin Variables" />
++        <!-- JGM: next line is needed because we don't really handle
++             \b at the beginning of a regex, and we don't want to
++             capture part of FOO_BAR as an "Internal Name" -->
++        <RegExpr attribute="Normal Text" context="#stay" String="&id_re;\b" />
+         <RegExpr attribute="Internal Name" context="#stay" String="\b_&id_re;\b" />
+       </context>
+ 
