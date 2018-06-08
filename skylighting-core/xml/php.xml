@@ -70,7 +70,7 @@ Changes:
   <!ENTITY types "int|integer|bool|boolean|float|double|real|string|array|object">
 ]>
 
-<language name="PHP/PHP" indenter="cstyle" version="7" kateversion="3.4" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
+<language name="PHP/PHP" indenter="cstyle" version="8" kateversion="3.4" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
   <highlighting>
     <!-- https://secure.php.net/manual/en/reserved.keywords.php -->
     <list name="control structures">
@@ -5692,9 +5692,6 @@ Changes:
       <itemData name="Backslash Code" defStyleNum="dsKeyword" color="#0F0F8F" selColor="#ffffff" bold="1" italic="0" spellChecking="false" />
       <itemData name="Other" defStyleNum="dsOthers" spellChecking="false" />
 
-      <itemData name="HTML Tag" defStyleNum="dsKeyword" color="#0F0000" selColor="#ffffff" bold="1" italic="0" spellChecking="false" />
-      <itemData name="HTML Comment" defStyleNum="dsComment" />
-      <itemData name="Identifier" defStyleNum="dsOthers" spellChecking="false" />
       <itemData name="Types" defStyleNum="dsDataType" spellChecking="false" />
       <itemData name="Error" defStyleNum="dsError" spellChecking="false" />
     </itemDatas>

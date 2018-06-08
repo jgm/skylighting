@@ -2,7 +2,7 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 
 <language name="CoffeeScript"
-          version="2"
+          version="3"
           kateversion="3.4"
           section="Scripts"
           extensions="Cakefile;*.coffee;*.coco"
@@ -171,7 +171,7 @@
         <StringDetect attribute="Comment" context="Multiline Comment" String="###" beginRegion="Comment"/>
         <DetectChar attribute="Comment" context="Comment" char="#"/>
         <!-- Regular expressions. -->
-        <RegExpr attribute="Regex" context="Multiline Regex" String="///" beginRegion="Multiline Regex"/>
+        <StringDetect attribute="Regex" context="Multiline Regex" String="///" beginRegion="Multiline Regex"/>
         <RegExpr attribute="Regex" context="#stay" String="/([^/\\\r\n]|\\.)*/[mig]{0,3}"/>
         <!-- Operators and other non-alphanumeric symbols. -->
         <AnyChar attribute="Symbol" context="#stay" String="():!%&amp;+,-/.*&lt;=&gt;?[]|~^&#59;{}"/>

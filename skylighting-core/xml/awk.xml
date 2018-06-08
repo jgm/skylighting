@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="AWK" version="1" kateversion="5.0" section="Scripts"
+<language name="AWK" version="2" kateversion="5.0" section="Scripts"
   extensions="*.awk" mimetype="text/x-awk" indenter="cstyle"
   license="LGPL">
 <!-- patched by igli#kate@irc:chat.freenode.net -->
@@ -20,38 +20,63 @@
       <item>function</item>
       <item>return</item>
       <item>next</item>
+      <item>nextfile</item>
       <item>exit</item>
+      <item>switch</item>
+      <item>case</item>
+      <item>default</item>
+      <item>@include</item>
+      <item>@load</item>
     </list>
     <list name="builtins">
       <item>ARGC</item>
       <item>ARGV</item>
       <item>CONVFMT</item>
       <item>ENVIRON</item>
+      <item>ERRNO</item>
       <item>FILENAME</item>
       <item>FNR</item>
+      <item>FPAT</item>
       <item>FS</item>
+      <item>FUNCTAB</item>
+      <item>IGNORECASE</item>
       <item>NF</item>
       <item>NR</item>
       <item>OFMT</item>
       <item>OFS</item>
       <item>ORS</item>
+      <item>PROCINFO</item>
       <item>RS</item>
       <item>RSTART</item>
       <item>RLENGTH</item>
       <item>SUBSEP</item>
+      <item>SYMTAB</item>
     </list>
     <list name="functions">
+      <item>asort</item>
+      <item>asorti</item>
       <item>gsub</item>
       <item>gensub</item>
       <item>index</item>
+      <item>isarray</item>
       <item>length</item>
+      <item>lshift</item>
       <item>match</item>
+      <item>mktime</item>
+      <item>patsplit</item>
+      <item>rshift</item>
       <item>split</item>
       <item>sprintf</item>
+      <item>sround</item>
+      <item>strftime</item>
+      <item>strtonum</item>
       <item>sub</item>
       <item>substr</item>
+      <item>systime</item>
       <item>tolower</item>
       <item>toupper</item>
+      <item>typeof</item>
+      <item>xor</item>
       <item>atan2</item>
       <item>cos</item>
       <item>exp</item>
@@ -67,7 +92,9 @@
     </list>
     <list name="special">
       <item>BEGIN</item>
+      <item>BEGINFILE</item>
       <item>END</item>
+      <item>ENDFILE</item>
     </list>
 
 <contexts>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language version="2" kateversion="2.4" name="JSP" section="Markup" extensions="*.jsp;*.JSP" mimetype="text/html" casesensitive="false" author="Rob Martin (rob@gamepimp.com)" license="LGPL">
+<language version="3" kateversion="2.4" name="JSP" section="Markup" extensions="*.jsp;*.JSP" mimetype="text/html" casesensitive="false" author="Rob Martin (rob@gamepimp.com)" license="LGPL">
   <highlighting>
 
     <list name="java-1.4.2-classes">
@@ -3036,7 +3036,6 @@
       <itemData name="Identifier" defStyleNum="dsOthers"/>
       <itemData name="Types" defStyleNum="dsDataType"/>
       <itemData name="String" defStyleNum="dsString"/>
-      <itemData name="Comment" defStyleNum="dsComment"/>
 
       <itemData name="Html Comment" defStyleNum="dsComment"/>
 
@@ -3045,7 +3044,6 @@
       <itemData name="Hex" defStyleNum="dsBaseN"/>
       <itemData name="Float" defStyleNum="dsFloat"/>
       <itemData name="Char" defStyleNum="dsChar"/>
-      <itemData name="String Char" defStyleNum="dsChar"/>
       <itemData name="Symbol" defStyleNum="dsNormal"/>
       <itemData name="Java 1.4.2 Classes" defStyleNum="dsNormal" color="#0095FF" selColor="#FFFFFF" bold="1" italic="0"/>
 

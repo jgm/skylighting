@@ -22,7 +22,7 @@
  * Boston, MA  02110-1301, USA.                                       *
  **********************************************************************
  -->
-<language version="8" kateversion="5.0" name="Clojure" section="Sources" extensions="*.clj;*.cljs;*.cljc" mimetype="" author="Dominik Haumann [lisp] modified for clojure by Caspar Hasenclever" license="LGPLv2+">
+<language version="9" kateversion="5.0" name="Clojure" section="Sources" extensions="*.clj;*.cljs;*.cljc" mimetype="" author="Dominik Haumann [lisp] modified for clojure by Caspar Hasenclever" license="LGPLv2+">
   <highlighting>
     <list name="definitions">
       <item>def</item>
@@ -843,12 +843,10 @@
     <itemDatas>
       <itemData name="Normal" defStyleNum="dsNormal" spellChecking="false"/>
       <itemData name="Keyword" defStyleNum="dsKeyword" spellChecking="false"/>
-      <itemData name="Operator" defStyleNum="dsOperator" spellChecking="false"/>
       <itemData name="Modifier" defStyleNum="dsAttribute" spellChecking="false"/>
       <itemData name="Modifier2" defStyleNum="dsAttribute" spellChecking="false"/>
       <itemData name="Variable" defStyleNum="dsVariable" spellChecking="false"/>
       <itemData name="Definition" defStyleNum="dsBuiltIn" spellChecking="false"/>
-      <itemData name="Data" defStyleNum="dsDataType" spellChecking="false"/>
       <itemData name="Decimal" defStyleNum="dsDecVal" spellChecking="false"/>
       <itemData name="BaseN" defStyleNum="dsBaseN" spellChecking="false"/>
       <itemData name="Float" defStyleNum="dsFloat" spellChecking="false"/>

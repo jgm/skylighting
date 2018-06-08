@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Email" version="3" kateversion="5.0" extensions="*.eml;*.emlx;*.mbox;*.mbx" section="Other" mimetype="message/rfc822" casesensitive="0" author="Volker Krause (vkrause@kde.org)" license="MIT">
+<language name="Email" version="4" kateversion="5.0" extensions="*.eml;*.email;*.emlx;*.mbox;*.mbx" section="Other" mimetype="message/rfc822" casesensitive="0" author="Volker Krause (vkrause@kde.org)" license="MIT">
     <highlighting>
         <list name="header-names">
             <item>Authentication-Results:</item>

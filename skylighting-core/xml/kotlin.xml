@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <!-- kotlin language syntax http://kotlinlang.org -->
-<language name="Kotlin" version="2" kateversion="5.0" section="Sources" extensions="*.kt;*.kts" license="LGPLv2+" author="Sergey Mashkov (sergey.mashkov@jetbrains.com)" style="cstyle" indenter="cstyle">
+<language name="Kotlin" version="4" kateversion="5.0" section="Sources" extensions="*.kt;*.kts" license="LGPLv2+" author="Sergey Mashkov (sergey.mashkov@jetbrains.com)" style="cstyle" indenter="cstyle">
     <highlighting>
         <list name="keywords">
             <item>package</item>
@@ -263,9 +263,6 @@
                 <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment"/>
             </context>
 
-            <context attribute="Symbol" lineEndContext="#stay" name="symbols">
-                <AnyChar attribute="Symbol" context="#stay" String=":!%&amp;+,-/.*&lt;=&gt;?[]|~^&#59;" />
-            </context>
         </contexts>
 
         <itemDatas>
@@ -278,7 +275,6 @@
             <itemData name="Annotation"   defStyleNum="dsAttribute"/>
             <itemData name="Data Type"    defStyleNum="dsDataType" bold="true" />
             <itemData name="Decimal"      defStyleNum="dsDecVal"/>
-            <itemData name="Hex"          defStyleNum="dsBaseN"/>
             <itemData name="Float"        defStyleNum="dsFloat"/>
             <itemData name="Char"         defStyleNum="dsChar"/>
             <itemData name="String"       defStyleNum="dsString"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <language name="C" section="Sources"
-          version="3" kateversion="5.0"
+          version="4" kateversion="5.0"
           indenter="cstyle"
           extensions="*.c;*.C;*.h"
           mimetype="text/x-csrc;text/x-c++src;text/x-chdr"
@@ -242,7 +242,6 @@
       <itemData name="Symbol"       defStyleNum="dsNormal" spellChecking="false"/>
       <itemData name="Preprocessor" defStyleNum="dsPreprocessor" spellChecking="false"/>
       <itemData name="Prep. Lib"    defStyleNum="dsImport" spellChecking="false"/>
-      <itemData name="Alert"        defStyleNum="dsAlert" spellChecking="false"/>
       <itemData name="Region Marker" defStyleNum="dsRegionMarker" spellChecking="false"/>
       <itemData name="Error"        defStyleNum="dsError" spellChecking="false"/>
     </itemDatas>

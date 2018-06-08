@@ -14,7 +14,7 @@
 <!-- v2.07 add support for %prog and co, see bug 142832 -->
 <!-- v2.08 add missing overloaders, new Python 3 statements, builtins, and keywords -->
 <!-- v2.29 recognize escape sequenzes correctly -->
-<language name="Python" version="4" style="python" kateversion="5.0" section="Scripts" extensions="*.py;*.pyw;SConstruct;SConscript" mimetype="application/x-python;text/x-python" casesensitive="1" author="Michael Bueker" license="">
+<language name="Python" version="5" style="python" kateversion="5.0" section="Scripts" extensions="*.py;*.pyw;SConstruct;SConscript" mimetype="application/x-python;text/x-python" casesensitive="1" author="Michael Bueker" license="">
 	<highlighting>
 		<list name="import">
 			<item>import</item>
@@ -349,6 +349,10 @@
 				<Int attribute="Int" context="#stay">
 					<StringDetect attribute="Int" String="L" insensitive="true" context="#stay"/>
 				</Int>
+
+				<RegExpr attribute="Int" String=" ([0-9]+_)+[0-9]+" context="#stay"/>
+				<RegExpr attribute="Float" String=" ([0-9]+_)+[0-9]+\.[0-9]+" context="#stay"/>
+				<RegExpr attribute="Hex" String=" [0-9]x([A-F0-9]+_)+[A-F0-9]+" context="#stay"/>
 
 				<DetectChar attribute="Normal Text" char="{" context="Dictionary" beginRegion="Dictionary"/>
 				<DetectChar attribute="Normal Text" char="[" context="List" beginRegion="List"/>

@@ -6,9 +6,9 @@
 	license: GPL v2
 	Kate   : http://kate.kde.org/
 	R      : http://www.r-project.org/
-	RKWard : http://rkward.sourceforge.net/
+	RKWard : http://rkward.kde.org/
 	-->
-<language version="7" kateversion="5.0" name="R Script" section="Scientific" extensions="*.R;*.r;*.S;*.s;*.q" mimetype="" license="GPLv2">
+<language version="8" kateversion="5.0" name="R Script" section="Scientific" extensions="*.R;*.r;*.S;*.s;*.q" mimetype="" license="GPLv2">
 <highlighting>
 
 	<list name="controls">
@@ -124,13 +124,13 @@
 	</contexts>
 
 	<itemDatas>
-	<!-- KDE default colors: http://accessibility.kde.org/oxygen.php?color=white -->
+		<!-- KDE default colors: http://accessibility.kde.org/oxygen.php?color=white -->
 		<itemData name="Normal Text" defStyleNum="dsNormal"/>
 		<itemData name="Symbol" defStyleNum="dsNormal"/>
 		<itemData name="Keyword" defStyleNum="dsKeyword"/>
 		<itemData name="Identifier" defStyleNum="dsDataType"/>
 		<itemData name="String" defStyleNum="dsString"/>
-		<itemData name="Headline" defStyleNum="dsNormal" color="#b00000" selColor="#b00000" bold="1" italic="0"/> <!-- KDE default color: text 5 -->
+		<itemData name="Headline" defStyleNum="dsComment" color="#b00000" selColor="#b00000" bold="1" italic="0"/> <!-- KDE default color: text 5 -->
 		<itemData name="Comment" defStyleNum="dsComment"/>
 		<itemData name="Assign" defStyleNum="dsNormal" color="#336366" selColor="#ccc099" bold="1" italic="0"/> <!-- KDE default color: text 7 -->
 		<itemData name="Control Structure" defStyleNum="dsControlFlow"/>

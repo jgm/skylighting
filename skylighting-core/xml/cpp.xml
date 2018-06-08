@@ -11,7 +11,7 @@
 <language
     name="C++"
     section="Sources"
-    version="5"
+    version="6"
     kateversion="5.0"
     indenter="cstyle"
     style="C++"
@@ -2005,7 +2005,6 @@
     <context lineEndContext="#pop" name="DetectNSEnd" attribute="Normal Text">
       <DetectIdentifier context="#stay" />
       <AnyChar context="#pop" String="&ns_punctuators;" lookAhead="true" />
-      <AnyChar context="#stay" String="&space;" lookAhead="true" />
     </context>
 
   </contexts>

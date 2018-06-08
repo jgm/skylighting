@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <language name="OpenCL" section="Sources"
-          version="2" kateversion="3.4"
+          version="3" kateversion="3.4"
           indenter="cstyle"
           extensions="*.cl"
           mimetype="text/x-clsrc"
@@ -242,7 +242,6 @@
       <itemData name="Symbol"       defStyleNum="dsNormal" spellChecking="false"/>
       <itemData name="Preprocessor" defStyleNum="dsOthers" spellChecking="false"/>
       <itemData name="Prep. Lib"    defStyleNum="dsOthers" spellChecking="false"/> <!--,Qt::darkYellow,Qt::yellow,false,false)); -->
-      <itemData name="Alert"        defStyleNum="dsAlert" spellChecking="false"/>
       <itemData name="Region Marker" defStyleNum="dsRegionMarker" spellChecking="false"/>
       <itemData name="Error"        defStyleNum="dsError" spellChecking="false"/>
     </itemDatas>

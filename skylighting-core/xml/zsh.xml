@@ -622,8 +622,8 @@
 
       <!-- FindStrings looks for single and double quoted strings, also with $-prefix -->
       <context attribute="Normal Text" lineEndContext="#stay" name="FindStrings">
-        <Detect2Chars attribute="Escape" context="#stay" char="\\" char1="'" />
-        <Detect2Chars attribute="Escape" context="#stay" char="\\" char1="&quot;" />
+        <Detect2Chars attribute="Escape" context="#stay" char="\" char1="'" />
+        <Detect2Chars attribute="Escape" context="#stay" char="\" char1="&quot;" />
         <DetectChar attribute="String SingleQ" context="StringSQ" char="'" />
         <DetectChar attribute="String DoubleQ" context="StringDQ" char="&quot;" />
         <Detect2Chars attribute="String SingleQ" context="StringEsc" char="$" char1="'" />

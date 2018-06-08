@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Modula-2" version="2" kateversion="2.2" section="Sources" extensions="*.mod;*.def;*.mi;*.md" mimetype="text/x-modula-2">
+<language name="Modula-2" version="3" kateversion="2.2" section="Sources" extensions="*.mod;*.def;*.mi;*.md" mimetype="text/x-modula-2">
   <highlighting>
     <list name="directives">
       <item>ASSEMBLER</item>
@@ -163,7 +163,6 @@
       <context attribute="Comment" lineEndContext="#stay" name="Comment2">
         <Detect2Chars attribute="Comment" context="#pop" char="*" char1=")"/>
       </context>
-      <context attribute="Comment" lineEndContext="#pop" name="Comment3" />
       <context attribute="Directive" lineEndContext="#stay" name="Prep1">
         <StringDetect attribute="Directive" context="Prep1" String="$*)"/>
       </context>

@@ -3,7 +3,7 @@
 <!-- Author: Anders Lund <anders@alweb.dk> //-->
 <!-- Minor changes: Joseph Wenninger <jowenn@kde.org> //-->
 <!-- Full JavaScript 1.0 support by Whitehawk Stormchaser //-->
-<language name="JavaScript" version="6" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
+<language name="JavaScript" version="7" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
   <highlighting>
@@ -227,7 +227,6 @@
       <itemData name="ControlFlow"  defStyleNum="dsControlFlow" spellChecking="false" />
       <itemData name="Reserved"     defStyleNum="dsKeyword" italic="true" spellChecking="false" />
       <itemData name="Module"       defStyleNum="dsImport" spellChecking="false" />
-      <itemData name="Function"     defStyleNum="dsFunction" spellChecking="false" />
       <itemData name="Objects"      defStyleNum="dsVariable" spellChecking="false" />
       <itemData name="Object Member" defStyleNum="dsAttribute" spellChecking="false" />
 

@@ -101,7 +101,7 @@
    ========================================================================
 -->
 
-<language name="D" version="2" kateversion="5.0" section="Sources" extensions="*.d;*.D;*.di;*.DI;" mimetype="text/x-dsrc" casesensitive="true" author="Diggory Hardy (diggory.hardy@gmail.com), Aziz Köksal (aziz.koeksal@gmail.com), Jari-Matti Mäkelä (jmjm@iki.fi), Simon J Mackenzie (project.katedxml@smackoz.fastmail.fm)" license="LGPL">
+<language name="D" version="3" kateversion="5.0" section="Sources" extensions="*.d;*.D;*.di;*.DI;" mimetype="text/x-dsrc" casesensitive="true" author="Diggory Hardy (diggory.hardy@gmail.com), Aziz Köksal (aziz.koeksal@gmail.com), Jari-Matti Mäkelä (jmjm@iki.fi), Simon J Mackenzie (project.katedxml@smackoz.fastmail.fm)" license="LGPL">
   <highlighting>
     <!-- User-defined keywords (add identifiers you'd like highlighted here) -->
     <list name="userkeywords">
@@ -402,7 +402,7 @@
         <DetectChar char="." attribute="Normal Text" context="Properties"/>
 
         <!-- Look ahead for a digit and switch to NumberLiteral context if found. -->
-        <RegExpr context="NumberLiteral" String="\d" attribute="" lookAhead="true"/>
+        <RegExpr context="NumberLiteral" String="\d" attribute="Normal Text" lookAhead="true"/>
 
         <!-- #line Integer [Filespec] -->
         <StringDetect attribute="Pragma" context="LinePragma" String="#line"/>
