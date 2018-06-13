@@ -72,6 +72,7 @@ library
                        Skylighting.Syntax.Css
                        Skylighting.Syntax.Curry
                        Skylighting.Syntax.D
+                       Skylighting.Syntax.Default
                        Skylighting.Syntax.Diff
                        Skylighting.Syntax.Djangotemplate
                        Skylighting.Syntax.Dockerfile
