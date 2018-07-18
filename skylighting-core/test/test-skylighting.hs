@@ -3,12 +3,14 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 module Main where
+
+import Control.Applicative ((<$>))
 import qualified Control.Exception as E
 import Data.Aeson (decode, encode)
 import Data.Algorithm.Diff
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Map as Map
-import Data.Monoid ((<>))
+import Data.Monoid ((<>), mconcat)
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text

@@ -12,6 +12,7 @@ module Skylighting.Regex (
               , convertOctalEscapes
               ) where
 
+import Control.Applicative (Applicative ((<*>)), (<$>))
 import qualified Control.Exception as E
 import Data.Aeson
 import Data.Binary (Binary)

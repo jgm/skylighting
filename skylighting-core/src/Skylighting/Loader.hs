@@ -5,10 +5,11 @@ module Skylighting.Loader ( loadSyntaxFromFile
                           )
                           where
 
+import Control.Applicative ((<$>))
 import Control.Monad (filterM, foldM)
 import Control.Monad.Except (ExceptT(ExceptT), runExceptT)
 import Control.Monad.IO.Class (liftIO)
-import Data.Monoid ((<>))
+import Data.Monoid ((<>), mempty)
 import System.Directory (listDirectory, doesFileExist)
 import System.FilePath ((</>), takeExtension)
 
