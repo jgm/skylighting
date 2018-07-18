@@ -52,6 +52,7 @@ import Data.Int
 import Data.List (minimumBy)
 import qualified Data.Map as Map
 import Data.Maybe (fromMaybe)
+import Data.Monoid (Monoid (mempty))
 import Data.Ord (comparing)
 import qualified Data.Set as Set
 import Data.Text (Text)

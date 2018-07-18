@@ -111,7 +111,7 @@ library
                        Skylighting.Format.LaTeX
   other-extensions:    CPP, Arrows
   build-depends:       base >= 4.7 && < 5.0,
-                       mtl,
+                       mtl >= 2.2.1,
                        transformers,
                        text,
                        binary,
