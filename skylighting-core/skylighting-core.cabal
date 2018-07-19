@@ -110,7 +110,7 @@ library
                        Skylighting.Format.HTML
                        Skylighting.Format.LaTeX
   other-extensions:    CPP, Arrows
-  build-depends:       base >= 4.7 && < 5.0,
+  build-depends:       base >= 4.8 && < 5.0,
                        mtl,
                        transformers,
                        text,
@@ -150,7 +150,7 @@ test-suite test-skylighting
   type:           exitcode-stdio-1.0
   main-is:        test-skylighting.hs
   hs-source-dirs: test
-  build-depends:  base >= 4.7 && < 5.0,
+  build-depends:  base >= 4.8 && < 5.0,
                   HUnit,
                   tasty,
                   tasty-golden,
@@ -175,7 +175,7 @@ benchmark benchmark-skylighting
   Main-Is:         benchmark.hs
   Hs-Source-Dirs:  benchmark
   Build-Depends:   skylighting-core,
-                   base >= 4.2 && < 5,
+                   base >= 4.8 && < 5,
                    filepath,
                    text,
                    containers,
@@ -185,7 +185,7 @@ benchmark benchmark-skylighting
   Default-Language: Haskell2010
 
 executable skylighting-extract
-  build-depends:       base >= 4.7 && < 5.0,
+  build-depends:       base >= 4.8 && < 5.0,
                        skylighting-core,
                        filepath,
                        bytestring,

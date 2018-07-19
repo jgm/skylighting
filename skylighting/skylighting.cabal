@@ -173,7 +173,7 @@ library
                        Skylighting.Syntax.Yaml
                        Skylighting.Syntax.Zsh
   other-extensions:    CPP, Arrows
-  build-depends:       base >= 4.7 && < 5.0,
+  build-depends:       base >= 4.8 && < 5.0,
                        skylighting-core >= 0.7.2,
                        mtl,
                        text,
@@ -210,7 +210,7 @@ Flag executable
   Default:       False
 
 executable skylighting
-  build-depends:       base >= 4.7 && < 5.0,
+  build-depends:       base >= 4.8 && < 5.0,
                        filepath,
                        text,
                        pretty-show,
