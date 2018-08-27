@@ -1,5 +1,11 @@
 # Revision history for skylighting
 
+## 0.7.3 -- 2018-08-27
+
+  * Add Sylighting.Syntax.Default and 'default' language. This
+    just highlights everything as normal text.
+  * Require base >= 4.8.  Drop support for ghc 7.8.
+
 ## 0.7.2 -- 2018-06-08
 
   * Require skylighting-core >= 0.7.2.

@@ -1,5 +1,11 @@
 # Revision history for skylighting-core
 
+## 0.7.3 -- 2018-08-27
+
+  * Add 'default.xml' to syntax descriptions.
+  * Raise base lower bounds to 4.8.  Drop support for ghc 7.8.
+  * Use absolute number for cabal version, as now required.
+
 ## 0.7.2 -- 2018-06-08
 
   * Update syntax definitions from upstream.
