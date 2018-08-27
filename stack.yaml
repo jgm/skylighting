@@ -2,4 +2,4 @@ packages:
 - skylighting-core
 - skylighting
 extra-deps: []
-resolver: lts-10.10
+resolver: lts-12.7
