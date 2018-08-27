@@ -40,6 +40,10 @@ matrix:
   - env: BUILD=cabal GHCVER=8.2.2 CABALVER=2.0
     compiler: ": #GHC 8.2.2"
     addons: {apt: {packages: [cabal-install-2.0,ghc-8.2.2,happy-1.19.5], sources: [hvr-ghc]}}
+  - env: BUILD=cabal GHCVER=8.4.3 CABALVER=2.2
+    compiler: ": #GHC 8.4.3"
+    addons: {apt: {packages: [cabal-install-2.2,ghc-8.4.3,happy-1.19.5], sources: [hvr-ghc]}}
+
 
   # Build with the newest GHC and cabal-install. This is an accepted failure,
   # see below.
@@ -85,7 +89,7 @@ before_install:
 
 # We want to always allow newer versions of packages when building on GHC HEAD
 - CABALARGS=""
-- OPTS="-O0 -Wall -fno-warn-unused-do-bind -Werror"
+- OPTS="-O0 -Wall -fno-warn-unused-do-bind -fno-warn-unused-imports -Werror"
 - if [ "x$GHCVER" = "xhead" ]; then CABALARGS=--allow-newer; fi
 
 - export PATH=/opt/happy/1.19.5/bin/:/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$HOME/.local/bin:$HOME/.cabal/bin:$PATH
