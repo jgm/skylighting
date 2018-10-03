@@ -1,13 +1,13 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 <language
   name="PowerShell"
-  version="3"
+  version="4"
   kateversion="5.0"
   extensions="*.ps1;*.ps1m;*.ps1d"
   section="Scripts"
   author="Motoki Kashihara (motoki8791@gmail.com); Michael Lombardi (Michael.T.Lombardi@outlook.com)"
   casesensitive="0"
-  license="LGPLv2+">
+  license="MIT">
   <highlighting>
     <list name="keywords">
       <item>Begin</item>

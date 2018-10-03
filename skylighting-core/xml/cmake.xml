@@ -31,7 +31,7 @@
 
 <language
     name="CMake"
-    version="6"
+    version="8"
     kateversion="2.4"
     section="Other"
     extensions="CMakeLists.txt;*.cmake;*.cmake.in"
@@ -89,6 +89,7 @@
         <item>unset</item>
         <item>variable_watch</item>
         <item>while</item>
+        <item>add_compile_definitions</item>
         <item>add_compile_options</item>
         <item>add_custom_command</item>
         <item>add_custom_target</item>
@@ -269,6 +270,7 @@
     <list name="file_nargs">
       <item>APPEND</item>
       <item>CONDITION</item>
+      <item>CONFIGURE_DEPENDS</item>
       <item>CONTENT</item>
       <item>COPY</item>
       <item>DESTINATION</item>
@@ -336,6 +338,8 @@
       <item>TIMESTAMP</item>
       <item>TLS_CAINFO</item>
       <item>TLS_VERIFY</item>
+      <item>TOUCH</item>
+      <item>TOUCH_NOCREATE</item>
       <item>TO_CMAKE_PATH</item>
       <item>TO_NATIVE_PATH</item>
       <item>UPLOAD</item>
@@ -541,19 +545,30 @@
     </list>
     <list name="list_nargs">
       <item>APPEND</item>
+      <item>AT</item>
       <item>EXCLUDE</item>
       <item>FILTER</item>
       <item>FIND</item>
+      <item>FOR</item>
+      <item>GENEX_STRIP</item>
       <item>GET</item>
       <item>INCLUDE</item>
       <item>INSERT</item>
+      <item>JOIN</item>
       <item>LENGTH</item>
+      <item>OUTPUT_VARIABLE</item>
+      <item>PREPEND</item>
       <item>REGEX</item>
       <item>REMOVE_AT</item>
       <item>REMOVE_DUPLICATES</item>
       <item>REMOVE_ITEM</item>
+      <item>REPLACE</item>
       <item>REVERSE</item>
       <item>SORT</item>
+      <item>STRIP</item>
+      <item>SUBLIST</item>
+      <item>TOLOWER</item>
+      <item>TRANSFORM</item>
     </list>
     <list name="mark_as_advanced_nargs">
       <item>CLEAR</item>
@@ -618,6 +633,7 @@
       <item>GENEX_STRIP</item>
       <item>GREATER</item>
       <item>GREATER_EQUAL</item>
+      <item>JOIN</item>
       <item>LENGTH</item>
       <item>LESS</item>
       <item>LESS_EQUAL</item>
@@ -822,6 +838,7 @@
       <item>INCLUDES</item>
       <item>LIBRARY</item>
       <item>MESSAGE_NEVER</item>
+      <item>NAMELINK_COMPONENT</item>
       <item>NAMELINK_ONLY</item>
       <item>NAMELINK_SKIP</item>
       <item>NAMESPACE</item>
@@ -865,11 +882,14 @@
     </list>
     <list name="project_nargs">
       <item>DESCRIPTION</item>
+      <item>HOMEPAGE_URL</item>
       <item>LANGUAGES</item>
       <item>VERSION</item>
     </list>
     <list name="project_sargs">
+      <item>ASM</item>
       <item>C</item>
+      <item>CUDA</item>
       <item>CXX</item>
       <item>Fortran</item>
       <item>NONE</item>
@@ -957,6 +977,7 @@
       <item>cxx_std_11</item>
       <item>cxx_std_14</item>
       <item>cxx_std_17</item>
+      <item>cxx_std_20</item>
       <item>cxx_std_98</item>
       <item>cxx_strong_enums</item>
       <item>cxx_template_template_parameters</item>
@@ -1213,6 +1234,7 @@
       <item>CMAKE_DEPENDS_IN_PROJECT_ONLY</item>
       <item>CMAKE_DIRECTORY_LABELS</item>
       <item>CMAKE_DL_LIBS</item>
+      <item>CMAKE_DOTNET_TARGET_FRAMEWORK_VERSION</item>
       <item>CMAKE_ECLIPSE_GENERATE_LINKED_RESOURCES</item>
       <item>CMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT</item>
       <item>CMAKE_ECLIPSE_MAKE_ARGUMENTS</item>
@@ -1247,6 +1269,7 @@
       <item>CMAKE_FIND_ROOT_PATH_MODE_LIBRARY</item>
       <item>CMAKE_FIND_ROOT_PATH_MODE_PACKAGE</item>
       <item>CMAKE_FIND_ROOT_PATH_MODE_PROGRAM</item>
+      <item>CMAKE_FOLDER</item>
       <item>CMAKE_FRAMEWORK_PATH</item>
       <item>CMAKE_Fortran_FORMAT</item>
       <item>CMAKE_Fortran_MODDIR_DEFAULT</item>
@@ -1379,7 +1402,13 @@
       <item>CMAKE_PREFIX_PATH</item>
       <item>CMAKE_PROGRAM_PATH</item>
       <item>CMAKE_PROJECT_DESCRIPTION</item>
+      <item>CMAKE_PROJECT_HOMEPAGE_URL</item>
       <item>CMAKE_PROJECT_NAME</item>
+      <item>CMAKE_PROJECT_VERSION</item>
+      <item>CMAKE_PROJECT_VERSION_MAJOR</item>
+      <item>CMAKE_PROJECT_VERSION_MINOR</item>
+      <item>CMAKE_PROJECT_VERSION_PATCH</item>
+      <item>CMAKE_PROJECT_VERSION_TWEAK</item>
       <item>CMAKE_RANLIB</item>
       <item>CMAKE_REQUIRED_DEFINITIONS</item>
       <item>CMAKE_REQUIRED_FLAGS</item>
@@ -1411,6 +1440,7 @@
       <item>CMAKE_SUBLIME_TEXT_2_EXCLUDE_BUILD_TREE</item>
       <item>CMAKE_SUPPRESS_DEVELOPER_ERRORS</item>
       <item>CMAKE_SUPPRESS_DEVELOPER_WARNINGS</item>
+      <item>CMAKE_SUPPRESS_REGENERATION</item>
       <item>CMAKE_SWIG_FLAGS</item>
       <item>CMAKE_SWIG_OUTDIR</item>
       <item>CMAKE_SYSROOT</item>
@@ -1453,6 +1483,13 @@
       <item>CMAKE_VS_PLATFORM_TOOLSET</item>
       <item>CMAKE_VS_PLATFORM_TOOLSET_CUDA</item>
       <item>CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE</item>
+      <item>CMAKE_VS_SDK_EXCLUDE_DIRECTORIES</item>
+      <item>CMAKE_VS_SDK_EXECUTABLE_DIRECTORIES</item>
+      <item>CMAKE_VS_SDK_INCLUDE_DIRECTORIES</item>
+      <item>CMAKE_VS_SDK_LIBRARY_DIRECTORIES</item>
+      <item>CMAKE_VS_SDK_LIBRARY_WINRT_DIRECTORIES</item>
+      <item>CMAKE_VS_SDK_REFERENCE_DIRECTORIES</item>
+      <item>CMAKE_VS_SDK_SOURCE_DIRECTORIES</item>
       <item>CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION</item>
       <item>CMAKE_WARN_DEPRECATED</item>
       <item>CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION</item>
@@ -1593,14 +1630,33 @@
       <item>CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP</item>
       <item>CPACK_NSIS_PACKAGE_NAME</item>
       <item>CPACK_NSIS_URL_INFO_ABOUT</item>
+      <item>CPACK_NUGET_COMPONENT_INSTALL</item>
+      <item>CPACK_NUGET_PACKAGE_AUTHORS</item>
+      <item>CPACK_NUGET_PACKAGE_COPYRIGHT</item>
+      <item>CPACK_NUGET_PACKAGE_DEBUG</item>
+      <item>CPACK_NUGET_PACKAGE_DEPENDENCIES</item>
+      <item>CPACK_NUGET_PACKAGE_DESCRIPTION</item>
+      <item>CPACK_NUGET_PACKAGE_DESCRIPTION_SUMMARY</item>
+      <item>CPACK_NUGET_PACKAGE_HOMEPAGE_URL</item>
+      <item>CPACK_NUGET_PACKAGE_ICONURL</item>
+      <item>CPACK_NUGET_PACKAGE_LICENSEURL</item>
+      <item>CPACK_NUGET_PACKAGE_NAME</item>
+      <item>CPACK_NUGET_PACKAGE_OWNERS</item>
+      <item>CPACK_NUGET_PACKAGE_RELEASE_NOTES</item>
+      <item>CPACK_NUGET_PACKAGE_TAGS</item>
+      <item>CPACK_NUGET_PACKAGE_TITLE</item>
+      <item>CPACK_NUGET_PACKAGE_VERSION</item>
       <item>CPACK_OSX_PACKAGE_VERSION</item>
       <item>CPACK_OUTPUT_CONFIG_FILE</item>
       <item>CPACK_PACKAGE_CHECKSUM</item>
+      <item>CPACK_PACKAGE_CONTACT</item>
+      <item>CPACK_PACKAGE_DESCRIPTION</item>
       <item>CPACK_PACKAGE_DESCRIPTION_FILE</item>
       <item>CPACK_PACKAGE_DESCRIPTION_SUMMARY</item>
       <item>CPACK_PACKAGE_DIRECTORY</item>
       <item>CPACK_PACKAGE_EXECUTABLES</item>
       <item>CPACK_PACKAGE_FILE_NAME</item>
+      <item>CPACK_PACKAGE_HOMEPAGE_URL</item>
       <item>CPACK_PACKAGE_ICON</item>
       <item>CPACK_PACKAGE_INSTALL_DIRECTORY</item>
       <item>CPACK_PACKAGE_INSTALL_REGISTRY_KEY</item>
@@ -1823,6 +1879,7 @@
       <item>MSVC80</item>
       <item>MSVC90</item>
       <item>MSVC_IDE</item>
+      <item>MSVC_TOOLSET_VERSION</item>
       <item>MSVC_VERSION</item>
       <item>PACKAGE_FIND_NAME</item>
       <item>PACKAGE_FIND_VERSION</item>
@@ -1835,8 +1892,12 @@
       <item>PACKAGE_VERSION_COMPATIBLE</item>
       <item>PACKAGE_VERSION_EXACT</item>
       <item>PACKAGE_VERSION_UNSUITABLE</item>
+      <item>PKG_CONFIG_EXECUTABLE</item>
+      <item>PKG_CONFIG_USE_CMAKE_PREFIX_PATH</item>
+      <item>PKG_CONFIG_VERSION_STRING</item>
       <item>PROJECT_BINARY_DIR</item>
       <item>PROJECT_DESCRIPTION</item>
+      <item>PROJECT_HOMEPAGE_URL</item>
       <item>PROJECT_NAME</item>
       <item>PROJECT_SOURCE_DIR</item>
       <item>PROJECT_VERSION</item>
@@ -1919,6 +1980,7 @@
       <item>RULE_LAUNCH_LINK</item>
       <item>SOURCE_DIR</item>
       <item>SUBDIRECTORIES</item>
+      <item>TESTS</item>
       <item>TEST_INCLUDE_FILE</item>
       <item>TEST_INCLUDE_FILES</item>
       <item>VARIABLES</item>
@@ -1961,6 +2023,7 @@
       <item>BUILD_WITH_INSTALL_RPATH</item>
       <item>BUNDLE</item>
       <item>BUNDLE_EXTENSION</item>
+      <item>COMMON_LANGUAGE_RUNTIME</item>
       <item>COMPATIBLE_INTERFACE_BOOL</item>
       <item>COMPATIBLE_INTERFACE_NUMBER_MAX</item>
       <item>COMPATIBLE_INTERFACE_NUMBER_MIN</item>
@@ -1986,10 +2049,12 @@
       <item>C_STANDARD_REQUIRED</item>
       <item>DEFINE_SYMBOL</item>
       <item>DEPLOYMENT_REMOTE_DIRECTORY</item>
+      <item>DOTNET_TARGET_FRAMEWORK_VERSION</item>
       <item>ENABLE_EXPORTS</item>
       <item>EXCLUDE_FROM_ALL</item>
       <item>EXCLUDE_FROM_DEFAULT_BUILD</item>
       <item>EXPORT_NAME</item>
+      <item>EXPORT_PROPERTIES</item>
       <item>EchoString</item>
       <item>FOLDER</item>
       <item>FRAMEWORK</item>
@@ -2001,6 +2066,7 @@
       <item>HAS_CXX</item>
       <item>IMPLICIT_DEPENDS_INCLUDE_TRANSFORM</item>
       <item>IMPORTED</item>
+      <item>IMPORTED_COMMON_LANGUAGE_RUNTIME</item>
       <item>IMPORTED_CONFIGURATIONS</item>
       <item>IMPORTED_GLOBAL</item>
       <item>IMPORTED_IMPLIB</item>
@@ -2079,6 +2145,7 @@
       <item>VERSION</item>
       <item>VISIBILITY_INLINES_HIDDEN</item>
       <item>VS_CONFIGURATION_TYPE</item>
+      <item>VS_DEBUGGER_COMMAND</item>
       <item>VS_DEBUGGER_WORKING_DIRECTORY</item>
       <item>VS_DESKTOP_EXTENSIONS_VERSION</item>
       <item>VS_DOTNET_REFERENCES</item>
@@ -2141,6 +2208,7 @@
       <item>VS_SHADER_ENTRYPOINT</item>
       <item>VS_SHADER_FLAGS</item>
       <item>VS_SHADER_MODEL</item>
+      <item>VS_SHADER_OBJECT_FILE_NAME</item>
       <item>VS_SHADER_OUTPUT_HEADER_FILE</item>
       <item>VS_SHADER_TYPE</item>
       <item>VS_SHADER_VARIABLE_NAME</item>
@@ -2166,6 +2234,7 @@
       <item>MEASUREMENT</item>
       <item>PASS_REGULAR_EXPRESSION</item>
       <item>PROCESSORS</item>
+      <item>PROCESSOR_AFFINITY</item>
       <item>REQUIRED_FILES</item>
       <item>RESOURCE_LOCK</item>
       <item>RUN_SERIAL</item>
@@ -2208,9 +2277,11 @@
       <item>C_COMPILER_ID</item>
       <item>C_COMPILER_VERSION</item>
       <item>EQUAL</item>
+      <item>GENEX_EVAL</item>
       <item>IF</item>
       <item>INSTALL_INTERFACE</item>
       <item>INSTALL_PREFIX</item>
+      <item>IN_LIST</item>
       <item>JOIN</item>
       <item>LINK_ONLY</item>
       <item>LOWER_CASE</item>
@@ -2223,13 +2294,16 @@
       <item>STREQUAL</item>
       <item>TARGET_BUNDLE_CONTENT_DIR</item>
       <item>TARGET_BUNDLE_DIR</item>
+      <item>TARGET_EXISTS</item>
       <item>TARGET_FILE</item>
       <item>TARGET_FILE_DIR</item>
       <item>TARGET_FILE_NAME</item>
+      <item>TARGET_GENEX_EVAL</item>
       <item>TARGET_LINKER_FILE</item>
       <item>TARGET_LINKER_FILE_DIR</item>
       <item>TARGET_LINKER_FILE_NAME</item>
       <item>TARGET_NAME</item>
+      <item>TARGET_NAME_IF_EXISTS</item>
       <item>TARGET_OBJECTS</item>
       <item>TARGET_PDB_FILE</item>
       <item>TARGET_PDB_FILE_DIR</item>
@@ -2297,6 +2371,7 @@
         <WordDetect String="unset" insensitive="true" attribute="Command" context="unset_ctx" />
         <WordDetect String="variable_watch" insensitive="true" attribute="Command" context="variable_watch_ctx" />
         <WordDetect String="while" insensitive="true" attribute="Command" context="while_ctx" />
+        <WordDetect String="add_compile_definitions" insensitive="true" attribute="Command" context="add_compile_definitions_ctx" />
         <WordDetect String="add_compile_options" insensitive="true" attribute="Command" context="add_compile_options_ctx" />
         <WordDetect String="add_custom_command" insensitive="true" attribute="Command" context="add_custom_command_ctx" />
         <WordDetect String="add_custom_target" insensitive="true" attribute="Command" context="add_custom_target_ctx" />
@@ -2354,9 +2429,10 @@
         <WordDetect String="ctest_update" insensitive="true" attribute="Command" context="ctest_update_ctx" />
         <WordDetect String="ctest_upload" insensitive="true" attribute="Command" context="ctest_upload_ctx" />
         <RegExpr attribute="Region Marker" context="RST Documentation" String="^#\[(=*)\[\.rst:" column="0" />
-        <RegExpr attribute="Comment" context="Bracketed Comment" String="^#\[(=*)\[" column="0" />
+        <RegExpr attribute="Comment" context="Bracketed Comment" String="#\[(=*)\[" />
         <DetectChar attribute="Comment" context="Comment" char="#" />
         <DetectIdentifier attribute="User Function/Macro" context="User Function" />
+        <RegExpr attribute="@Variable Substitution" context="@VarSubst" String="@&id_re;@" lookAhead="true" />
         <!-- Include keywords matching for language autocompleter work -->
         <keyword attribute="Command" context="#stay" String="commands" />
       </context>
@@ -2766,6 +2842,13 @@
       <context attribute="Normal Text" lineEndContext="#stay" name="while_ctx_op_nested">
         <IncludeRules context="EndCmdPop" />
         <keyword attribute="Named Args" context="#stay" String="while_nargs" />
+        <IncludeRules context="User Function Args" />
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="add_compile_definitions_ctx">
+        <DetectChar attribute="Normal Text" context="add_compile_definitions_ctx_op" char="(" />
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="add_compile_definitions_ctx_op">
+        <IncludeRules context="EndCmdPop2" />
         <IncludeRules context="User Function Args" />
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="add_compile_options_ctx">
@@ -3319,7 +3402,10 @@
         <RegExpr attribute="Builtin Variable" context="#stay" String="\b&id_re;_VERSION_MINOR\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\b&id_re;_VERSION_PATCH\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\b&id_re;_VERSION_TWEAK\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\b&id_re;_ROOT\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\b&id_re;__TRYRUN_OUTPUT\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\b&id_re;_CONSIDERED_CONFIGS\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\b&id_re;_CONSIDERED_VERSIONS\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\b&id_re;_FIND_COMPONENTS\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\b&id_re;_FIND_QUIETLY\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\b&id_re;_FIND_REQUIRED\b" />
@@ -3446,6 +3532,22 @@
         <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_DEBIAN_&id_re;_PACKAGE_SOURCE\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_DEBIAN_&id_re;_PACKAGE_SUGGESTS\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NSIS_&id_re;_INSTALL_DIRECTORY\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_AUTHORS\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_COPYRIGHT\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_DEPENDENCIES\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_DEPENDENCIES_&id_re;_VERSION\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_DESCRIPTION\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_DESCRIPTION_SUMMARY\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_HOMEPAGE_URL\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_ICONURL\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_LICENSEURL\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_NAME\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_OWNERS\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_RELEASE_NOTES\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_TAGS\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_TITLE\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_&id_re;_PACKAGE_VERSION\b" />
+        <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_NUGET_PACKAGE_DEPENDENCIES_&id_re;_VERSION\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_RPM_&id_re;_DEFAULT_DIR_PERMISSIONS\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_RPM_&id_re;_DEFAULT_FILE_PERMISSIONS\b" />
         <RegExpr attribute="Builtin Variable" context="#stay" String="\bCPACK_RPM_&id_re;_DEFAULT_GROUP\b" />
@@ -3488,6 +3590,7 @@
       <context attribute="Normal Text" lineEndContext="#stay" name="Detect Variable Substitutions">
         <RegExpr attribute="Environment Variable Substitution" context="#stay" String="\$ENV\{\s*[\w-]+\s*\}" />
         <Detect2Chars attribute="Variable Substitution" context="VarSubst" char="$" char1="{" />
+        <RegExpr attribute="@Variable Substitution" context="@VarSubst" String="@&id_re;@" lookAhead="true" />
       </context>
 
       <context attribute="Variable Substitution" lineEndContext="#pop" name="VarSubst">
@@ -3497,12 +3600,23 @@
         <IncludeRules context="Detect Variable Substitutions" />
       </context>
 
+      <context attribute="@Variable Substitution" lineEndContext="#pop" name="@VarSubst">
+        <DetectChar attribute="@Variable Substitution" context="VarSubst@" char="@" />
+      </context>
+
+      <context attribute="@Variable Substitution" lineEndContext="#pop#pop" name="VarSubst@">
+        <IncludeRules context="Detect Builtin Variables" />
+        <DetectIdentifier />
+        <DetectChar attribute="@Variable Substitution" context="#pop#pop" char="@" />
+      </context>
+
       <context attribute="Normal Text" lineEndContext="#stay" name="User Function Args">
         <Detect2Chars attribute="Normal Text" context="#stay" char="\" char1="(" />
         <Detect2Chars attribute="Normal Text" context="#stay" char="\" char1=")" />
         <RegExpr attribute="Escapes" context="#stay" String="\\[&quot;$n\\]" />
         <DetectChar attribute="Strings" context="String" char="&quot;" />
         <RegExpr attribute="Strings" context="Bracketed String" String="\[(=*)\[" />
+        <RegExpr attribute="Comment" context="Bracketed Comment" String="#\[(=*)\[" />
         <DetectChar attribute="Comment" context="Comment" char="#" />
         <IncludeRules context="Detect Builtin Variables" />
         <IncludeRules context="Detect Variable Substitutions" />
@@ -3533,7 +3647,7 @@
       </context>
 
       <context attribute="Comment" lineEndContext="#stay" name="Bracketed Comment" dynamic="true">
-        <RegExpr attribute="Comment" context="#pop" String="^#?\]%1\]" dynamic="true" column="0" />
+        <RegExpr attribute="Comment" context="#pop" String=".*\]%1\]" dynamic="true" />
         <IncludeRules context="##Alerts" />
         <IncludeRules context="##Modelines" />
       </context>
@@ -3578,6 +3692,7 @@
       <itemData name="Escapes" defStyleNum="dsChar" spellChecking="false" />
       <itemData name="Builtin Variable" defStyleNum="dsDecVal" color="#c09050" selColor="#c09050" spellChecking="false" />
       <itemData name="Variable Substitution" defStyleNum="dsDecVal" spellChecking="false" />
+      <itemData name="@Variable Substitution" defStyleNum="dsBaseN" spellChecking="false" />
       <itemData name="Internal Name" defStyleNum="dsDecVal" color="#303030" selColor="#303030" spellChecking="false" />
       <itemData name="Environment Variable Substitution" defStyleNum="dsFloat" spellChecking="false" />
       <itemData name="Generator Expression Keyword" defStyleNum="dsKeyword" color="#b84040" selColor="#b84040" spellChecking="false" />

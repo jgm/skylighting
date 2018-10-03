@@ -105,7 +105,7 @@ to make the rules more expressive. -->
     <!ENTITY bs         "\">
 ]>
 <language name="Prolog" section="Sources"
-	  version="7" kateversion="3.4"
+	  version="9" kateversion="3.4"
 	  mimetype="text/x-prolog"
 	  extensions="*.prolog;*.dcg;*.pro"
 	  author="Torsten Eichstädt (torsten.eichstaedt@web.de)"
@@ -223,7 +223,7 @@ DONE- Parse (m)any (!) conforming Prolog texts w/ correct highlighting (LIMITS)
     - Incl. Sep2012 DRAFT Technical Corrigendum 2: Prolog - Part 1: General Core
     - Incl. honourable Richard O'Keefe's remarks as warnings as "ISO Bogus".
     - Detect 'shebang' shell scripts, see BUGs
-    - Includes alert_indent.xml to highlight alert keywords in comments.
+    - Includes alert.xml to highlight alert keywords in comments.
     - Dot "." may be an _unquoted_ user-defined operator in nested terms (but is
       highlighted as "Warning" 'cause it's more likely a typo than an user-def'd
       op) and is only taken as fullstop and highlighted as "Logic & Control" in
@@ -674,15 +674,15 @@ TODO sorted by priority
 		<IncludeRules context="quoted_last"/>
 	    </context>
 	    <context name="single-quoted" lineEndContext="#stay" attribute="'quo Ted'" >
-		<RegExpr String="'$" context="sq" beginRegion="quoted" attribute="Syntax Error" />
+		<LineContinue char="'" context="sq" beginRegion="quoted" attribute="Syntax Error" />
 		<DetectChar char="'" context="sq" beginRegion="quoted" attribute="'quo Ted'" />
 	    </context>
 	    <context name="double-quoted" lineEndContext="#stay" attribute="&quot;double-quoted&quot;" >
-		<RegExpr String="&quot;$" context="dq" beginRegion="quoted" attribute="Syntax Error" />
+		<LineContinue char="&quot;" context="dq" beginRegion="quoted" attribute="Syntax Error" />
 		<DetectChar char="&quot;" context="dq" beginRegion="quoted" attribute="&quot;double-quoted&quot;" />
 	    </context>
 	    <context name="back-quoted" lineEndContext="#stay" attribute="`back-quoted`" >
-		<RegExpr String="`$" context="bq" beginRegion="quoted" attribute="Syntax Error" />
+		<LineContinue char="`" context="bq" beginRegion="quoted" attribute="Syntax Error" />
 		<DetectChar char="`" context="bq" beginRegion="quoted" attribute="`back-quoted`" />
 	    </context>
 
@@ -777,7 +777,7 @@ TODO sorted by priority
 		<Detect2Chars char="*" char1="/" context="#pop" endRegion="comment"
 			    attribute="% italic predicates: w/ side effects" />
 		<DetectSpaces />
-		<IncludeRules context="##Alerts_indent" />
+		<IncludeRules context="##Alerts" />
 		<DetectIdentifier />
 	    </context>
 
@@ -785,7 +785,7 @@ TODO sorted by priority
 	    <!-- Folding for consecutive 1-line comments: let indentation-based auto-folding work -->
 	    <context name="1-comment" lineEndContext="#pop" attribute="% italic predicates: w/ side effects" >
 		<DetectSpaces />
-		<IncludeRules context="##Alerts_indent" />
+		<IncludeRules context="##Alerts" />
 		<DetectIdentifier />
 	    </context>
 	    <context name="region_marker" lineEndContext="#pop" attribute="%BEGIN folding region" noIndentationBasedFolding="true" >

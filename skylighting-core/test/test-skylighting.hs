@@ -131,19 +131,16 @@ main = do
             ] @=? tokenize defConfig perl
                      "my $foo = q/bar/;\nmy $baz = 'quux';\n"
       , testCase "cpp floats" $ Right
-           [ [ ( FloatTok , "0.1f" ) ]
-           , [ ( FloatTok , "1.0f" ) ]
-           , [ ( FloatTok , "-0.1f" ) ]
-           , [ ( FloatTok , "-1.0F" ) ]
-           , [ ( FloatTok , "-1.0L" ) ]
-           , [ ( FloatTok , "1e3" ) ]
-           , [ ( FloatTok , "-15e+3" ) ]
-           , [ ( FloatTok , "0.f" ) ]
-           , [ ( FloatTok , "1.F" ) ]
-           , [ ( DecValTok , "1" )
-             , ( NormalTok ,".E" )
-             , ( DecValTok , "3" )
-             ]
+           [ [ (FloatTok,"0.1") , (BuiltInTok,"f")]
+           , [ (FloatTok,"1.0") , (BuiltInTok,"f")]
+           , [ (NormalTok,"-") , (FloatTok,"0.1") , (BuiltInTok,"f")]
+           , [ (NormalTok,"-") , (FloatTok,"1.0") , (BuiltInTok,"F")]
+           , [ (NormalTok,"-") , (FloatTok,"1.0") , (BuiltInTok,"L")]
+           , [ (FloatTok,"1e3")]
+           , [ (NormalTok,"-") , (FloatTok,"15e+3")]
+           , [ (FloatTok,"0.") , (BuiltInTok,"f")]
+           , [ (FloatTok,"1.") , (BuiltInTok,"F")]
+           , [ (FloatTok,"1.E3")]
            ] @=? tokenize defConfig cpp
                      "0.1f\n1.0f\n-0.1f\n-1.0F\n-1.0L\n1e3\n-15e+3\n0.f\n1.F\n1.E3"
       ]

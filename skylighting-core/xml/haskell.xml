@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Haskell" version="9" kateversion="3.4" section="Sources" extensions="*.hs;*.chs;*.hs-boot" mimetype="text/x-haskell" author="Nicolas Wu (zenzike@gmail.com)" license="LGPL" indenter="haskell" style="haskell">
+<language name="Haskell" version="10" kateversion="3.4" section="Sources" extensions="*.hs;*.chs;*.hs-boot" mimetype="text/x-haskell" author="Nicolas Wu (zenzike@gmail.com)" license="LGPL" indenter="haskell" style="haskell">
   <highlighting>
   <list name="keywords">
     <item>case</item>
@@ -9,6 +9,8 @@
     <item>deriving</item>
     <item>do</item>
     <item>else</item>
+    <item>family</item>
+    <item>forall</item>
     <item>if</item>
     <item>in</item>
     <item>infixl</item>
@@ -18,14 +20,13 @@
     <item>module</item>
     <item>newtype</item>
     <item>of</item>
+    <item>pattern</item>
     <item>primitive</item>
     <item>then</item>
     <item>type</item>
     <item>where</item>
   </list>
   <list name="prelude function">
-    <item>FilePath</item>
-    <item>IOError</item>
     <item>abs</item>
     <item>acos</item>
     <item>acosh</item>
@@ -477,6 +478,7 @@
       <RegExpr attribute="Function"         context="#stay" String="([A-Z][a-zA-Z0-9_']*\.)*[a-z_][a-zA-Z0-9_']*" />
       <RegExpr attribute="Operator"         context="#stay" String="([A-Z][a-zA-Z0-0_']*\.)*[\-!#\$%&amp;\*\+/&lt;=&gt;\?&#92;@\^\|~\.:]+" />
       <RegExpr attribute="Type"             context="#stay" String="([A-Z][a-zA-Z0-9_']*\.)*[A-Z][a-zA-Z0-9_']*" />
+      <RegExpr attribute="Type"             context="#stay" String="'(?![A-Z]')([A-Z][a-zA-Z0-9_']*\.)*[A-Z][a-zA-Z0-9_']*" />
 
       <RegExpr    attribute="Float"   context="#stay" String ="\d+\.\d+([Ee][+-]?\d+)?|\d+[Ee][+-]?\d+"/>
       <RegExpr    attribute="Octal"   context="#stay" String="0[Oo][0-7]+"/>
@@ -605,7 +607,7 @@
 
     <itemData name="Keyword"          defStyleNum="dsKeyword"  spellChecking="false" />
     <itemData name="Type Prelude"     defStyleNum="dsDataType" spellChecking="false" />
-    <itemData name="Function Prelude" defStyleNum="dsNormal"   spellChecking="false" />
+    <itemData name="Function Prelude" defStyleNum="dsFunction" spellChecking="false" />
     <itemData name="Data Prelude"     defStyleNum="dsDataType" spellChecking="false" />
     <itemData name="Class Prelude"    defStyleNum="dsDataType" spellChecking="false" />
 
