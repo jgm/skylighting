@@ -254,7 +254,11 @@ getToken = do
                                         cs -> cs
           doContextSwitches fallthroughContext
           getToken
-        else (\x -> Just (cAttribute context, x)) <$> normalChunk
+        else do
+          t <- normalChunk
+          let mbtok = Just (cAttribute context, t)
+          info $ "FALLTHROUGH " ++ show mbtok
+          return mbtok
 
 takeChars :: Int -> TokenizerM Text
 takeChars 0 = mzero
