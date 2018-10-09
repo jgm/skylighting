@@ -93,8 +93,7 @@ sourceLineToHtml opts lno cont =
          lineNum = toValue prefixedLineNo
          lineRef = toValue ('#':prefixedLineNo)
          prefixedLineNo = Text.unpack (lineIdPrefix opts) <> show (lineNo lno)
-         dataAttrib = H.dataAttribute (fromString "line-number")
-                          (toValue (show (lineNo lno)))
+         dataAttrib = A.title (toValue (show (lineNo lno)))
 
 tokenToHtml :: FormatOptions -> Token -> Html
 tokenToHtml _ (NormalTok, txt)  = toHtml txt
@@ -155,7 +154,7 @@ styleToCss f = unlines $
             "pre.numberSource a.sourceLine"
           , "  { position: relative; left: -4em; }"
           , "pre.numberSource a.sourceLine::before"
-          , "  { content: attr(data-line-number);"
+          , "  { content: attr(title);"
           , "    position: relative; left: -1em; text-align: right; vertical-align: baseline;"
           , "    border: none; pointer-events: all; display: inline-block;"
           , "    -webkit-touch-callout: none; -webkit-user-select: none;"
