@@ -1,5 +1,18 @@
 # Revision history for skylighting-core
 
+## 0.7.4 -- 2018-10-08
+
+  * HTML output: use title instead of data-line-number.
+    data- attributes are not valid HTML 4, and we would like this to
+    work with HTML 4 (e.g. in epub v2).  See jgm/pandoc#4920.
+  * Print FALLTHROUGH in --trace output.
+  * Updated syntax definitions for actionscript, awk, bash, c, clojure, cmake,
+    coffee, cs, css, dockerfile, email, fortran, gcc, haskell, ini, isocpp,
+    java, javadoc, javascript, jsp, kotlin, latex, lua, mediawiki, modelines,
+    modula-2, objectivec, objectivecpp, opencl, perl, powershell, prolog,
+    python, r, rest, rhtml, ruby, rust, scala, sql-mysql, sql-postgresql, sql,
+    tcl, vhdl, xml, xul, yaml, zsh.
+
 ## 0.7.3 -- 2018-08-27
 
   * Add 'default.xml' to syntax descriptions.

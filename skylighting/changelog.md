@@ -1,5 +1,9 @@
 # Revision history for skylighting
 
+## 0.7.4 -- 2018-10-08
+
+  * Depend on skylighting-core 0.7.4.x.
+
 ## 0.7.3 -- 2018-08-27
 
   * Add Sylighting.Syntax.Default and 'default' language. This
