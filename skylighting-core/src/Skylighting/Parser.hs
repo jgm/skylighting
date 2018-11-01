@@ -73,6 +73,9 @@ parseSyntaxDefinition xml = do
        _   -> return $ Left $ "Could not parse syntax definition " ++ xml
 
 application :: String -> IOSArrow b Syntax
+application fp@(_:':':'\\':_) =
+  -- Windows C:/, so HXT doesn't interpret as a URI scheme.
+  application ("file:///" ++ map (\c -> if c == '\\' then '/' else c) fp)
 application fp
     = readDocument [withValidate no, withInputEncoding utf8] fp
       >>>
