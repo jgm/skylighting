@@ -1,5 +1,10 @@
 # Revision history for skylighting
 
+## 0.7.5 -- 2018-12-01
+
+  * Depend on skylighting-core 0.7.5.x.
+  * Add J, sml, typescript.
+
 ## 0.7.4 -- 2018-10-08
 
   * Depend on skylighting-core 0.7.4.x.

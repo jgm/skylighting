@@ -1,5 +1,18 @@
 # Revision history for skylighting-core
 
+## 0.7.5 -- 2018-12-01
+
+  * Updated definitions for cmake, lua, prolog, rust, yacc,
+    javascript.
+  * Added definition for sml (#53).
+  * Added definition for J (#50).
+  * Added definition for typescript (#57).
+  * Fix comments preceded by multiple spaces in bash.xml (#54).
+  * Add *.txt extension and text/plain mime type to default.xml
+    (#48).
+  * Add file:/// if we have a Windows path with a drive.
+    Otherwise HXT will take it to be a URI.  See jgm/pandoc#4836.
+
 ## 0.7.4 -- 2018-10-08
 
   * HTML output: use title instead of data-line-number.
