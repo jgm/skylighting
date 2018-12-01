@@ -105,7 +105,7 @@ to make the rules more expressive. -->
     <!ENTITY bs         "\">
 ]>
 <language name="Prolog" section="Sources"
-	  version="9" kateversion="3.4"
+	  version="10" kateversion="3.4"
 	  mimetype="text/x-prolog"
 	  extensions="*.prolog;*.dcg;*.pro"
 	  author="Torsten Eichstädt (torsten.eichstaedt@web.de)"
@@ -129,13 +129,12 @@ All bugs except three by the author. !FOLD THIS AWAY if long comments annoy you.
 
 BUG - Nobody's perfect - If I knew about the bug you found, it would have been
       fixed already.
- one- Takes a "shebang" at the start of text on other than the 1st line (Kate).
- two- Indentation-based folding is not reliable (Kate; fixed in KDE 4.9?).
- three- Folding is sometimes broken (Kate?).  See SOLUTIONS below.
-  4 - An optional leading sign is not highlighted as part of the number.
-  5 - A float w/o fractional part and exponent is highlighted as an integer.
-  6 - Detection of whitespace may not be 100% correct, only space/tab/newline.
-  7 - Handling inside arithmetic expressions might not be 100%.  See "AL GUSTO".
+ one- Indentation-based folding is not reliable (Kate; fixed in KDE 4.9?).
+ two- Folding is sometimes broken (Kate?).  See SOLUTIONS below.
+ three- An optional leading sign is not highlighted as part of the number.
+  4 - A float w/o fractional part and exponent is highlighted as an integer.
+  5 - Detection of whitespace may not be 100% correct, only space/tab/newline.
+  6 - Handling inside arithmetic expressions might not be 100%.  See "AL GUSTO".
  inf- see TODOs below.
 
 LIMITS of this parser
@@ -236,6 +235,7 @@ DONE- Parse (m)any (!) conforming Prolog texts w/ correct highlighting (LIMITS)
 	editors may convert them to space and it is easy to use "\t" instead.
     - Preliminary: most names end w/ ISO; prepared to be included in syntax
       files adapted for Prolog dialects.
+    - The Shebang is highlighted only in the first line (with lineEmptyContext).
 
 FIXME	When katepart can supply line numbers, fix the "shebang" rule.
 
@@ -502,7 +502,7 @@ TODO sorted by priority
 	    clause      := layout term_seq fullstop | term_seq fullstop
 	-->
 	    <!-- shebang: ("#!") Detect shebang and fallthrough to clause_seq -->
-	    <context name="shebang" lineEndContext="clause" attribute="Syntax Error" >
+	    <context name="shebang" lineEndContext="clause" lineEmptyContext="clause" attribute="Syntax Error" >
 		<!-- no way: fallthrough="1" fallthroughContext="clause_seq" > -->
 		<Detect2Chars column="0" char="#" char1="!" context="1-comment" attribute="% italic predicates: w/ side effects" />
 		<!-- else fallthrough (workaround broken fallthrough) -->

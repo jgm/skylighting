@@ -43,7 +43,7 @@
     - NOTE, FIXME, TODO alerts added on comments
     - improved highlighting
 -->
-<language name="Lua" version="4" indenter="lua" kateversion="5.0" section="Scripts" extensions="*.lua" mimetype="text/x-lua">
+<language name="Lua" version="5" indenter="lua" kateversion="5.0" section="Scripts" extensions="*.lua" mimetype="text/x-lua">
   <highlighting>
     <list name="keywords">
       <item>and</item>
@@ -434,7 +434,7 @@
     </list>
 
     <contexts>
-      <context name="Shebang"       attribute="Comment" lineEndContext="Normal" fallthrough="true" fallthroughContext="Normal">
+      <context name="Shebang"       attribute="Comment" lineEndContext="Normal" lineEmptyContext="Normal" fallthrough="true" fallthroughContext="Normal">
         <Detect2Chars attribute="Comment" context="Comment" char="#" char1="!" column="0"/>
       </context>
 
