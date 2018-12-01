@@ -158,6 +158,7 @@ library
                        Skylighting.Syntax.Sci
                        Skylighting.Syntax.Sed
                        Skylighting.Syntax.Sgml
+                       Skylighting.Syntax.Sml
                        Skylighting.Syntax.SqlMysql
                        Skylighting.Syntax.SqlPostgresql
                        Skylighting.Syntax.Sql
