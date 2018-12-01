@@ -3,3 +3,5 @@ packages:
 - skylighting
 extra-deps: []
 resolver: lts-12.7
+ghc-options:
+    "$locals": -optP-Wno-nonportable-include-path
