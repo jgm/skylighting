@@ -142,6 +142,7 @@ library
                        Skylighting.Syntax.Povray
                        Skylighting.Syntax.Powershell
                        Skylighting.Syntax.Prolog
+                       Skylighting.Syntax.Protobuf
                        Skylighting.Syntax.Pure
                        Skylighting.Syntax.Purebasic
                        Skylighting.Syntax.Python
