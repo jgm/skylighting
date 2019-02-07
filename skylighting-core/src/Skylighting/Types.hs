@@ -11,7 +11,7 @@ module Skylighting.Types (
               -- * Syntax descriptions
                 ContextName
               , KeywordAttr(..)
-              , WordSet
+              , WordSet(..)
               , makeWordSet
               , inWordSet
               , Matcher(..)
