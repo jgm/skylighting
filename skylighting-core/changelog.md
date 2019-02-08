@@ -1,5 +1,13 @@
 # Revision history for skylighting-core
 
+## 0.7.6 -- 2019-02-08
+
+  * Update xml definitions for C, CPP, D, Haskell, Maxima, PHP,
+    Ruby, Typescript.
+  * Fix regex problem in erlang.xml (#63).
+  * Export WordSet constructors (#62, Chris Martin).
+  * Add support for protobuf (#60).
+
 ## 0.7.5 -- 2018-12-01
 
   * Updated definitions for cmake, lua, prolog, rust, yacc,
