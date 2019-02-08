@@ -36,11 +36,13 @@
     incorporate these keywords (for example: "qml.xml").
 
     Change log:
+     * v2 [2018-12-29]: Don't highlight built-in classes as functions,
+                        fix float-points, improve types detection and other fixes.
      * v1 [2018-11-18]: Initial version
 -->
 
 <language name="TypeScript"
-          version="1"
+          version="2"
           kateversion="5.53"
           section="Scripts"
           extensions="*.ts"
@@ -105,6 +107,8 @@
 		<item>void</item>
 		<item>never</item>
 		<item>unknown</item>
+		<item>undefined</item>
+		<item>null</item>
 	</list>
 
 	<!-- Built-in Classes & Functions -->
@@ -1643,7 +1647,7 @@
 
 		<context name="Normal" attribute="Normal Text" lineEndContext="#stay">
 			<StringDetect context="#stay" attribute="Symbol" String="..." />
-			<IncludeRules context="Numbers" />
+			<IncludeRules context="FindNumbers" />
 			<IncludeRules context="FindStrings" />
 
 			<!-- Abstract -->
@@ -1658,26 +1662,42 @@
 			<keyword context="ControlExport" attribute="Module" String="control_export_types" />
 
 			<!-- Keywords -->
-			<keyword context="NoRegExp" attribute="ControlFlow" String="controlflow" />
+			<keyword context="#stay" attribute="ControlFlow" String="controlflow" />
 			<RegExpr context="#stay" attribute="ControlFlow" String="\bdefault(?=\s*[\?!]?:)" />
 			<RegExpr context="#stay" String="&identifier;(?=\s*[\?!]?:)" />
 
-			<WordDetect context="Annotation" attribute="Reserved" String="type" />
+			<WordDetect context="TypeDeclaration" attribute="Reserved" String="type" />
 			<keyword context="#stay" attribute="Module" String="module" />
-			<keyword context="NoRegExp" attribute="Keyword" String="keywords" />
+			<keyword context="#stay" attribute="Keyword" String="keywords" /> <!-- NoRegExp? -->
 			<keyword context="#stay" attribute="Reserved" String="reserved" />
 			<keyword context="NoRegExp" attribute="Keyword" String="primitives" />
 			<keyword context="#stay" attribute="Keyword" String="object_iden" />
 
+			<!-- Built-in Classes -->
+			<WordDetect context="FindMemberObjectMath" attribute="Built-in Objects" String="Math" />
+			<WordDetect context="FindMemberObjectPromise" attribute="Built-in Objects" String="Promise" />
+			<WordDetect context="FindMemberObjectJSON" attribute="Built-in Objects" String="JSON" />
+			<WordDetect context="FindMemberObjectConsole" attribute="Built-in Objects" String="console" />
+			<WordDetect context="FindMemberObjectProcess" attribute="Built-in Objects" String="process" />
+			<keyword context="#stay" attribute="Built-in Objects" String="class_builtin" />
+			<keyword context="FindMemberObjectDOM" attribute="Built-in Objects" String="class_dom" />
+			<keyword context="FindMemberObjectNode" attribute="Built-in Objects" String="class_node" />
+			<keyword context="FindMemberObjectDOM" attribute="Built-in Objects" String="dom_variable" />
+
 			<IncludeRules context="FindFunctionName" />
-			<IncludeRules context="FindObjects" />
+			<RegExpr context="MemberObject" attribute="Objects" String="&identifier;(?=\s*[\?!]?\.)" />
+			<DetectChar context="MemberObject" char="." />
+
 			<keyword context="#stay" attribute="Function Name" String="functions" />
 
-			<DetectChar context="Annotation" attribute="Symbol" char=":" />
 			<DetectChar context="Object" attribute="Symbol" char="{" beginRegion="Brace" />
 			<DetectChar context="#stay" attribute="Symbol" char="[" beginRegion="List" />
 			<DetectChar context="#stay" attribute="Symbol" char="]" endRegion="List" />
 			<DetectChar context="#stay" attribute="Symbol" char="?" /> <!-- Fix of conditional expression from the JavaScript highlighting -->
+
+			<!-- Highlight types after ":" and between "<" and ">" -->
+			<DetectChar context="Types" attribute="Symbol" char=":" />
+			<RegExpr context="TypesAngleBracket" attribute="Symbol" String="&lt;(?=(&identifier;|[\[\{\(&lt;]).*&gt;)" />
 
 			<IncludeRules context="Normal##JavaScript" />
 		</context>
@@ -1688,16 +1708,17 @@
 			<IncludeRules context="Normal" />
 		</context>
 
-		<context name="Numbers" attribute="Normal Text" lineEndContext="#stay">
-			<RegExpr context="NoRegExp" attribute="Hexadecimal" String="\b(0x[\da-f][\da-f_]*)\b" insensitive="true" />
-			<RegExpr context="NoRegExp" attribute="Binary" String="\b(0b[01][01_]*)\b" insensitive="true" />
-			<RegExpr context="NoRegExp" attribute="Octal" String="\b(0o?[0-7][0-7_]*)\b" insensitive="true" />
-			<RegExpr context="NoRegExp" attribute="Float" String="\b(\.\d[\d_]*|\d[\d_]*\.(\d[\d_]*)?|(\d[\d_]*\.?|(\d[\d_]*)?\.\d[\d_]*)[eE][\+\-]?\d[\d_]*)\b" />
-			<RegExpr context="NoRegExp" attribute="Decimal" String="\b(\d[\d_]*)\b" />
-		</context>
-
 		<context name="NoRegExp" attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop">
 			<IncludeRules context="NoRegExp##JavaScript" />
+		</context>
+
+		<context name="FindNumbers" attribute="Normal Text" lineEndContext="#stay">
+			<RegExpr context="NoRegExp" attribute="Hexadecimal" String="\b(0x[\da-f][\da-f_]*)\b" insensitive="true" />
+			<RegExpr context="NoRegExp" attribute="Binary" String="\b(0b[01][01_]*)\b" insensitive="true" />
+			<RegExpr context="NoRegExp" attribute="Float" String="(\b\d[\d_]*\.?|(\b\d[\d_]*)?\.\d[\d_]*)[eE][\+\-]?\d[\d_]*\b" />
+			<RegExpr context="NoRegExp" attribute="Float" String="(\.\d[\d_]*\b|\b\d[\d_]*\.(\d[\d_]*\b)?)" />
+			<RegExpr context="NoRegExp" attribute="Octal" String="\b(0o?[0-7][0-7_]*)\b" insensitive="true" />
+			<RegExpr context="NoRegExp" attribute="Decimal" String="\b(\d[\d_]*)\b" />
 		</context>
 
 		<context name="FindFunctionName" attribute="Normal Text" lineEndContext="#stay">
@@ -1708,7 +1729,6 @@
 			<DetectChar context="Template" attribute="Template" char="`" />
 			<IncludeRules context="FindStrings##JavaScript" />
 		</context>
-
 		<context name="Template" attribute="Template" lineEndContext="#stay">
 			<IncludeRules context="Escape##JavaScript" />
 			<Detect2Chars context="Substitution" attribute="Substitution" char="$" char1="{" />
@@ -1719,39 +1739,101 @@
 			<IncludeRules context="Normal" />
 		</context>
 
-		<!-- Highlight types after ":" -->
-		<context name="Annotation" attribute="Normal Text" lineEndContext="#pop">
+		<!-- Highlight types after the "type" keyword -->
+		<context name="TypeDeclaration" attribute="Normal Text" lineEndContext="#stay">
 			<DetectSpaces />
-			<AnyChar context="#pop" String=";,{})]" lookAhead="true" />
-			<Detect2Chars context="#pop" char="/" char1="/" lookAhead="true" />
-			<IncludeRules context="DefaultAnnotation" />
-		</context>
-		<context name="DefaultAnnotation" attribute="Normal Text" lineEndContext="#stay">
-			<keyword context="NoRegExp" attribute="Types/Primitives" String="types_primitives" />
-			<DetectChar context="SquareBracket" attribute="Symbol" char="[" beginRegion="List" />
-			<DetectChar context="RoundBracket" char="(" />
-			<DetectChar context="tBracket" attribute="Symbol" char="&lt;" />
+			<IncludeRules context="TypeDeclarationEnd" />
+			<IncludeRules context="TypesFindBrackets" />
+			<IncludeRules context="DefaultTypes" />
 			<IncludeRules context="Normal" />
 		</context>
-		<context name="SquareBracket" attribute="Normal Text" lineEndContext="#stay">
-			<DetectChar context="#pop" attribute="Symbol" char="]" endRegion="List" />
-			<IncludeRules context="DefaultAnnotation" />
-		</context>
-		<context name="RoundBracket" attribute="Normal Text" lineEndContext="#pop">
-			<DetectChar context="#pop" char=")" />
-			<IncludeRules context="DefaultAnnotation" />
-		</context>
-		<context name="tBracket" attribute="Normal Text" lineEndContext="#pop">
-			<DetectChar context="#pop" attribute="Symbol" char="&gt;" />
-			<IncludeRules context="DefaultAnnotation" />
+		<context name="TypeDeclarationEnd" attribute="Normal Text" lineEndContext="#stay">
+			<AnyChar context="#pop" String=";,{})]" lookAhead="true" />
 		</context>
 
+		<!-- Highlight types after ":" -->
+		<context name="Types" attribute="Normal Text" lineEndContext="#pop">
+			<IncludeRules context="FixPopLineEndContext" />
+			<IncludeRules context="TypesCommon" />
+		</context>
+		<context name="TypesCommon" attribute="Normal Text" lineEndContext="#pop">
+			<DetectSpaces />
+			<!-- NOTE: The "TypesEnd" context is used by "typescript-react.xml" -->
+			<IncludeRules context="TypesEnd" />
+			<!-- IMPORTANT: If you modify this rule, do so in "typescript-react.xml"! -->
+			<RegExpr context="#pop!TypesNewLine" attribute="Symbol" String="\|(?=\s*($|//|(/\*.*\*/\s*)+$))" />
+
+			<IncludeRules context="TypesFindBrackets" />
+			<IncludeRules context="DefaultTypes" />
+			<IncludeRules context="Normal" />
+		</context>
+		<context name="TypesEnd" attribute="Normal Text" lineEndContext="#stay">
+			<AnyChar context="#pop" String=";,})]" lookAhead="true" />
+			<RegExpr context="#pop" String="\=(?!&gt;)" lookAhead="true" />
+			<Detect2Chars context="#pop" char="/" char1="/" lookAhead="true" />
+		</context>
+		<context name="TypesNewLine" attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop!TypesCommon">
+			<DetectSpaces />
+			<IncludeRules context="FindComments##JavaScript" />
+		</context>
+
+		<!-- NOTE: The "NoRegExp" context invalidates lineEndContext="#pop",
+		     therefore the following rule is necessary -->
+		<context name="FixPopLineEndContext" attribute="Normal Text" lineEndContext="#stay">
+			<RegExpr context="#pop" String="\S" firstNonSpace="true" lookAhead="true" />
+		</context>
+
+		<context name="DefaultTypes" attribute="Normal Text" lineEndContext="#stay">
+			<keyword context="NoRegExp" attribute="Types/Primitives" String="types_primitives" />
+			<RegExpr context="#stay" attribute="Symbol" String="&lt;\s*&gt;" />
+		</context>
+		<context name="TypesFindBrackets" attribute="Normal Text" lineEndContext="#stay">
+			<DetectChar context="TypesSquareBracket" attribute="Symbol" char="[" beginRegion="List" />
+			<DetectChar context="TypesCurlyBracket" attribute="Symbol" char="{" beginRegion="Brace" />
+			<DetectChar context="TypesRoundBracket" char="(" />
+		</context>
+
+		<context name="TypesSquareBracket" attribute="Normal Text" lineEndContext="#stay">
+			<DetectChar context="#pop" attribute="Symbol" char="]" endRegion="List" />
+			<IncludeRules context="TypesFindBrackets" />
+			<IncludeRules context="DefaultTypes" />
+			<IncludeRules context="Normal" />
+		</context>
+		<context name="TypesCurlyBracket" attribute="Normal Text" lineEndContext="#pop!Object">
+			<DetectChar context="#pop" attribute="Symbol" char="}" endRegion="Brace" />
+			<RegExpr context="#pop!Object" String="\S" firstNonSpace="true" lookAhead="true" /> <!-- FixPopLineEndContext -->
+			<IncludeRules context="TypesFindBrackets" />
+			<IncludeRules context="DefaultTypes" />
+			<IncludeRules context="Object" />
+		</context>
+		<context name="TypesRoundBracket" attribute="Normal Text" lineEndContext="#pop">
+			<DetectChar context="#pop" char=")" />
+			<IncludeRules context="FixPopLineEndContext" />
+			<IncludeRules context="TypesFindBrackets" />
+			<IncludeRules context="DefaultTypes" />
+			<IncludeRules context="Normal" />
+		</context>
+
+		<context name="TypesAngleBracket" attribute="Normal Text" lineEndContext="#pop">
+			<DetectChar context="#pop" attribute="Symbol" char="&gt;" />
+			<IncludeRules context="TypesAngleBracketEnd" />
+			<IncludeRules context="FixPopLineEndContext" />
+			<IncludeRules context="TypesFindBrackets" />
+			<IncludeRules context="DefaultTypes" />
+			<IncludeRules context="Normal" />
+		</context>
+		<context name="TypesAngleBracketEnd" attribute="Normal Text" lineEndContext="#stay">
+			<AnyChar context="#pop" String="})];" lookAhead="true" />
+		</context>
+
+		<!-- new.target -->
 		<context name="NewTarget" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
 			<DetectSpaces />
 			<AnyChar context="#stay" attribute="Symbol" String=".?!" />
 			<WordDetect context="#pop!NoRegExp" attribute="Keyword" String="target" />
 		</context>
 
+		<!-- After keyword list "control_export_types" -->
 		<context name="ControlExport" attribute="Normal Text" lineEndContext="#pop">
 			<AnyChar context="#pop" attribute="Normal Text" String="{;" lookAhead="true" />
 			<IncludeRules context="FindStrings" />
@@ -1759,6 +1841,7 @@
 			<IncludeRules context="FindComments##JavaScript" />
 		</context>
 
+		<!-- "import" keyword -->
 		<context name="Import" attribute="Normal Text" lineEndContext="#pop">
 			<DetectChar context="#pop!ImportRequireKey" attribute="Symbol" char="=" />
 			<WordDetect context="#pop!NoRegExp" attribute="Keyword" String="meta" /> <!-- importmeta_property -->
@@ -1771,25 +1854,11 @@
 		<context name="ImportRequire" attribute="Normal Text" lineEndContext="#stay">
 			<DetectChar context="#pop#pop" attribute="Symbol" char=")" endRegion="import" />
 			<IncludeRules context="FindStrings" />
-			<IncludeRules context="Numbers" />
+			<IncludeRules context="FindNumbers" />
 			<IncludeRules context="FindComments##JavaScript" />
 		</context>
 
-		<context name="FindObjects" attribute="Normal Text" lineEndContext="#stay">
-			<!-- Built-in Classes -->
-			<WordDetect context="FindMemberObjectMath" attribute="Built-in Objects" String="Math" />
-			<WordDetect context="FindMemberObjectPromise" attribute="Built-in Objects" String="Promise" />
-			<WordDetect context="FindMemberObjectJSON" attribute="Built-in Objects" String="JSON" />
-			<WordDetect context="FindMemberObjectConsole" attribute="Built-in Objects" String="console" />
-			<WordDetect context="FindMemberObjectProcess" attribute="Built-in Objects" String="process" />
-			<keyword context="#stay" attribute="Built-in Objects" String="class_builtin" />
-			<keyword context="FindMemberObjectDOM" attribute="Built-in Objects" String="class_dom" />
-			<keyword context="FindMemberObjectNode" attribute="Built-in Objects" String="class_node" />
-			<keyword context="FindMemberObjectDOM" attribute="Built-in Objects" String="dom_variable" />
-
-			<RegExpr context="MemberObject" attribute="Objects" String="&identifier;(?=\s*[\?!]?\.)" />
-			<DetectChar context="MemberObject" char="." />
-		</context>
+		<!-- Member Objects -->
 
 		<context name="MemberObject" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
 			<IncludeRules context="DefaultMemberObject" />
@@ -1819,6 +1888,8 @@
 			<StringDetect context="#pop" attribute="Symbol" String="!..." />
 			<StringDetect context="#pop" attribute="Symbol" String="..." />
 		</context>
+
+		<!-- Built-in Classes -->
 
 		<!-- DOM Classes -->
 		<context name="FindMemberObjectDOM" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop!NoRegExp">
