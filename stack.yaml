@@ -2,6 +2,6 @@ packages:
 - skylighting-core
 - skylighting
 extra-deps: []
-resolver: lts-12.7
+resolver: lts-13.5
 ghc-options:
     "$locals": -optP-Wno-nonportable-include-path
