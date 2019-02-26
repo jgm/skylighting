@@ -65,14 +65,14 @@ vBool defaultVal value = case value of
 
 -- | Parses a file containing a Kate XML syntax definition
 -- into a 'Syntax' description.
-parseSyntaxDefinition :: String -> IO (Either String Syntax)
+parseSyntaxDefinition :: FilePath -> IO (Either String Syntax)
 parseSyntaxDefinition xml = do
   res <- runX (application xml)
   case res of
        [s] -> return $ Right s
        _   -> return $ Left $ "Could not parse syntax definition " ++ xml
 
-application :: String -> IOSArrow b Syntax
+application :: FilePath -> IOSArrow b Syntax
 application fp@(_:':':'\\':_) =
   -- Windows C:/, so HXT doesn't interpret as a URI scheme.
   application ("file:///" ++ map (\c -> if c == '\\' then '/' else c) fp)
