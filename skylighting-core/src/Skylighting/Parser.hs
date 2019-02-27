@@ -89,12 +89,20 @@ parseSyntaxDefinitionFromString fp xml = do
                  _:':':'\\':_ -> "file:///" ++ map
                                  (\c -> if c == '\\' then '/' else c) fp
                  _ -> fp
-  res <- runX (readString [withValidate no, withInputEncoding utf8] xml
+  res <- runX ( readString [withValidate no, withInputEncoding utf8]
+                   (removeLanguageDTD xml)
                 >>>
                 application fp')
   case res of
        [s] -> return $ Right s
        _   -> return $ Left $ "Could not parse syntax definition " ++ fp
+
+removeLanguageDTD :: String -> String
+removeLanguageDTD ('S':'Y':'S':'T':'E':'M':' ':xs) =
+  removeLanguageDTD $ dropWhile (\c -> c /= '[' && c /= '>') xs
+removeLanguageDTD xs@('<':'l':'a':'n':'g':_) = xs
+removeLanguageDTD (x:xs) = x : removeLanguageDTD xs
+removeLanguageDTD [] = []
 
 application :: FilePath -> IOSArrow XmlTree Syntax
 application fp
