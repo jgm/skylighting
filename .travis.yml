@@ -114,7 +114,7 @@ script:
       ulimit -n 4096
       stack --no-terminal $ARGS install --fast --flag 'aeson:fast' --flag 'skylighting-core:executable' --ghc-options="$OPTS" skylighting-core && \
       cd skylighting && \
-      skylighting-extract xml/*.xml && \
+      skylighting-extract ../skylighting-core/xml/*.xml && \
       cd .. && \
       stack test --no-terminal $ARGS --haddock --no-haddock-deps --fast --flag 'aeson:fast' --flag 'skylighting:executable' --ghc-options="$OPTS"
       ;;
@@ -124,7 +124,7 @@ script:
       cabal install --only-dependencies --force-reinstalls -v2 -ffast -fexecutable --disable-optimization --enable-tests && \
       cabal install -v2 -ffast -fexecutable --force-reinstalls --disable-optimization --enable-tests --run-tests --ghc-options="$OPTS" && \
       cd ../skylighting && \
-      skylighting-extract xml/*.xml && \
+      skylighting-extract ../skylighting-core/xml/*.xml && \
       cabal configure -v2 -ffast -fexecutable --disable-optimization --enable-tests --ghc-options="$OPTS" && \
       cabal sdist --output-directory=sourcedist && \
       cd sourcedist && \
