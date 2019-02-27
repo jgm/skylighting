@@ -66,19 +66,22 @@ vBool defaultVal value = case value of
                            _ -> defaultVal
 
 -- | Parses a file containing a Kate XML syntax definition
--- into a 'Syntax' description.
+-- into a 'Syntax' description.  Note that if the DOCTYPE contains
+-- a reference to the now-obsolete language.dtd, we remove it.
 parseSyntaxDefinition :: FilePath -> IO (Either String Syntax)
 parseSyntaxDefinition fp = do
   xml <- toString <$> BS.readFile fp
   parseSyntaxDefinitionFromString fp xml
 
 -- | Parses a string containing a Kate XML syntax definition
--- into a 'Syntax' description.
+-- into a 'Syntax' description.  Note that if the DOCTYPE contains
+-- a reference to the now-obsolete language.dtd, we remove it.
 parseSyntaxDefinitionFromString :: FilePath -- ^ used for short name
                                 -> String
                                 -> IO (Either String Syntax)
 parseSyntaxDefinitionFromString fp xml = do
-  res <- runX ( readString [withValidate no] (removeLanguageDTD . removeBOM $ xml)
+  res <- runX ( readString [withValidate no]
+                  (removeLanguageDTD . removeBOM $ xml)
                 >>>
                 application fp )
   case res of
