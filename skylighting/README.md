@@ -71,12 +71,20 @@ package.
 
 Using cabal:
 
+    cd skylighting-core
     cabal install -fexecutable
-    # or stack install --flag skylighting-core:executable
+    cd ../skylighting
+    skylighting-extract ../skylighting-core/xml/*.xml
+    cabal install -fexecutable
+
+Using stack:
+
+    stack install --flag skylighting-core:executable skylighting-core
     cd skylighting
-    skylighting-extract /path/to/skylighting-core/xml/*.xml
-    cabal install -fexecutable
-    # or stack install --flag skylighting:executable
+    skylighting-extract ../skylighting-core/xml/*.xml
+    cd ..
+    stack install --flag skylighting:executable
+
 
 Command-line tool
 -----------------
