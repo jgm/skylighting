@@ -26,6 +26,7 @@ skylighting-format:
 
 XMLS=$(wildcard skylighting-core/xml/*.xml)
 bootstrap: $(XMLS)
+	stack install --flag "skylighting-core:executable" skylighting-core
 	-rm -rf skylighting/src/Skylighting/Syntax skylighting/src/Skylighting/Syntax.hs
 	cd skylighting && skylighting-extract ../skylighting-core/xml/*.xml
 	stack install --flag "skylighting:executable" --test --test-arguments \
