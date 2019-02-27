@@ -1,5 +1,6 @@
 {-# LANGUAGE Arrows #-}
 module Skylighting.Parser ( parseSyntaxDefinition
+                          , parseSyntaxDefinitionFromString
                           , addSyntaxDefinition
                           , missingIncludes
                           ) where
@@ -66,20 +67,38 @@ vBool defaultVal value = case value of
 -- | Parses a file containing a Kate XML syntax definition
 -- into a 'Syntax' description.
 parseSyntaxDefinition :: FilePath -> IO (Either String Syntax)
-parseSyntaxDefinition xml = do
-  res <- runX (application xml)
+parseSyntaxDefinition fp = do
+  let fp' = case fp of -- Windows C:/, so HXT doesn't interp as URI scheme
+                 _:':':'\\':_ -> "file:///" ++ map
+                                 (\c -> if c == '\\' then '/' else c) fp
+                 _ -> fp
+  res <- runX (readDocument [withValidate no, withInputEncoding utf8] fp'
+                >>>
+                application fp')
   case res of
        [s] -> return $ Right s
-       _   -> return $ Left $ "Could not parse syntax definition " ++ xml
+       _   -> return $ Left $ "Could not parse syntax definition " ++ fp
 
-application :: FilePath -> IOSArrow b Syntax
-application fp@(_:':':'\\':_) =
-  -- Windows C:/, so HXT doesn't interpret as a URI scheme.
-  application ("file:///" ++ map (\c -> if c == '\\' then '/' else c) fp)
+-- | Parses a string containing a Kate XML syntax definition
+-- into a 'Syntax' description.
+parseSyntaxDefinitionFromString :: FilePath -- ^ used for short name
+                                -> String
+                                -> IO (Either String Syntax)
+parseSyntaxDefinitionFromString fp xml = do
+  let fp' = case fp of -- Windows C:/, so HXT doesn't interp as URI scheme
+                 _:':':'\\':_ -> "file:///" ++ map
+                                 (\c -> if c == '\\' then '/' else c) fp
+                 _ -> fp
+  res <- runX (readString [withValidate no, withInputEncoding utf8] xml
+                >>>
+                application fp')
+  case res of
+       [s] -> return $ Right s
+       _   -> return $ Left $ "Could not parse syntax definition " ++ fp
+
+application :: FilePath -> IOSArrow XmlTree Syntax
 application fp
-    = readDocument [withValidate no, withInputEncoding utf8] fp
-      >>>
-      multi (hasName "language")
+    = multi (hasName "language")
       >>>
       extractSyntaxDefinition (takeFileName fp)
 
