@@ -1,5 +1,17 @@
 # Revision history for skylighting-core
 
+## 0.7.7 -- 2019-02-27
+
+  * Add parseSyntaxDefinitionFromString [API change].
+  * Fix parseSyntaxDefinition so that language.dtd no longer needed.
+    We strip out the SYSTEM "language.dtd" part of the doctype
+    if present, leaving any inline entity definitions.
+    This applies to both parseSyntaxDefinition and
+    parseSyntaxDefinitionFromString.
+  * Revised documentation of bootstrap build.
+  * Makefile - fix bootstrap target.
+  * Use FilePath instead of String for path (#64, anchpop).
+
 ## 0.7.6 -- 2019-02-08
 
   * Update xml definitions for C, CPP, D, Haskell, Maxima, PHP,
