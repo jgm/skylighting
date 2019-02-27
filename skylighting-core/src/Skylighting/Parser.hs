@@ -5,7 +5,8 @@ module Skylighting.Parser ( parseSyntaxDefinition
                           , missingIncludes
                           ) where
 
-import Data.ByteString.UTF8 (fromString)
+import Data.ByteString.UTF8 (fromString, toString)
+import qualified Data.ByteString as BS
 import Data.Char (isAlphaNum, toUpper)
 import qualified Data.Map as Map
 import Data.Maybe (fromMaybe)
@@ -68,16 +69,8 @@ vBool defaultVal value = case value of
 -- into a 'Syntax' description.
 parseSyntaxDefinition :: FilePath -> IO (Either String Syntax)
 parseSyntaxDefinition fp = do
-  let fp' = case fp of -- Windows C:/, so HXT doesn't interp as URI scheme
-                 _:':':'\\':_ -> "file:///" ++ map
-                                 (\c -> if c == '\\' then '/' else c) fp
-                 _ -> fp
-  res <- runX (readDocument [withValidate no, withInputEncoding utf8] fp'
-                >>>
-                application fp')
-  case res of
-       [s] -> return $ Right s
-       _   -> return $ Left $ "Could not parse syntax definition " ++ fp
+  xml <- toString <$> BS.readFile fp
+  parseSyntaxDefinitionFromString fp xml
 
 -- | Parses a string containing a Kate XML syntax definition
 -- into a 'Syntax' description.
@@ -85,17 +78,16 @@ parseSyntaxDefinitionFromString :: FilePath -- ^ used for short name
                                 -> String
                                 -> IO (Either String Syntax)
 parseSyntaxDefinitionFromString fp xml = do
-  let fp' = case fp of -- Windows C:/, so HXT doesn't interp as URI scheme
-                 _:':':'\\':_ -> "file:///" ++ map
-                                 (\c -> if c == '\\' then '/' else c) fp
-                 _ -> fp
-  res <- runX ( readString [withValidate no, withInputEncoding utf8]
-                   (removeLanguageDTD xml)
+  res <- runX ( readString [withValidate no] (removeLanguageDTD . removeBOM $ xml)
                 >>>
-                application fp')
+                application fp )
   case res of
        [s] -> return $ Right s
        _   -> return $ Left $ "Could not parse syntax definition " ++ fp
+
+removeBOM :: String -> String
+removeBOM ('\xFEFF':xs) = xs
+removeBOM xs            = xs
 
 removeLanguageDTD :: String -> String
 removeLanguageDTD ('S':'Y':'S':'T':'E':'M':' ':xs) =
