@@ -7,7 +7,6 @@ module Skylighting.Format.HTML (
 import Data.List (intersperse, sort)
 import qualified Data.Map as Map
 import Data.Monoid ((<>))
-import Data.String (fromString)
 import qualified Data.Text as Text
 import Skylighting.Types
 import Text.Blaze.Html
