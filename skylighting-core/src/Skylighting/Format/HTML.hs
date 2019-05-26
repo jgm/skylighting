@@ -147,10 +147,12 @@ styleToCss f = unlines $
                      ++ "; background-color: " ++ fromColor c2 ++ ";"
            ++ " }"]
          numberspec = [
-            "pre.numberSource span.sourceLine"
-          , "  { position: relative; left: -4em; }"
+            "pre.numberSource code"
+          , "  { counter-reset: source-line 0; }"
+          , "pre.numberSource span.sourceLine"
+          , "  { position: relative; left: -4em; counter-increment: source-line; }"
           , "pre.numberSource span.sourceLine > a:first-child::before"
-          , "  { content: attr(title);"
+          , "  { content: counter(source-line);"
           , "    position: relative; left: -1em; text-align: right; vertical-align: baseline;"
           , "    border: none; pointer-events: all; display: inline-block;"
           , "    -webkit-touch-callout: none; -webkit-user-select: none;"
