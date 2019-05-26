@@ -81,13 +81,11 @@ wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
 -- subsequent per-line processing (e.g. adding line numnbers) possible.
 sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
 sourceLineToHtml opts lno cont =
-  H.span ! A.class_ sourceLine
-         ! A.id lineNum
+  H.span ! A.id lineNum
          $ do
            H.a ! A.href lineRef $ mempty
            mapM_ (tokenToHtml opts) cont
-  where  sourceLine = toValue "sourceLine"
-         lineNum = toValue prefixedLineNo
+  where  lineNum = toValue prefixedLineNo
          lineRef = toValue ('#':prefixedLineNo)
          prefixedLineNo = Text.unpack (lineIdPrefix opts) <> show (lineNo lno)
 
@@ -149,9 +147,9 @@ styleToCss f = unlines $
          numberspec = [
             "pre.numberSource code"
           , "  { counter-reset: source-line 0; }"
-          , "pre.numberSource span.sourceLine"
+          , "pre.numberSource code > span"
           , "  { position: relative; left: -4em; counter-increment: source-line; }"
-          , "pre.numberSource span.sourceLine > a:first-child::before"
+          , "pre.numberSource code > span > a:first-child::before"
           , "  { content: counter(source-line);"
           , "    position: relative; left: -1em; text-align: right; vertical-align: baseline;"
           , "    border: none; pointer-events: all; display: inline-block;"
@@ -169,9 +167,9 @@ styleToCss f = unlines $
               " padding-left: 4px; }"
           ]
          divspec = [
-            "span.sourceLine { display: inline-block; line-height: 1.25; }"
-          , "span.sourceLine { color: inherit; text-decoration: inherit; }"
-          , "span.sourceLine:empty { height: 1.2em; }" -- correct empty line height
+            "code.sourceCode > span { display: inline-block; line-height: 1.25; }"
+          , "code.sourceCode > span { color: inherit; text-decoration: inherit; }"
+          , "code.sourceCode > span:empty { height: 1.2em; }" -- correct empty line height
           , ".sourceCode { overflow: visible; }" -- needed for line numbers
           , "code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for relative contents
           , "div.sourceCode { margin: 1em 0; }" -- Collapse neighbours correctly
@@ -181,11 +179,11 @@ styleToCss f = unlines $
           , "}"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
-          , "span.sourceLine { text-indent: -1em; padding-left: 1em; }"
+          , "code.sourceCode > span { text-indent: -1em; padding-left: 1em; }"
           , "}"
           ]
          linkspec = [ "@media screen {"
-          , "span.sourceLine > a:first-child::before { text-decoration: underline; }"
+          , "code.sourceCode > span > a:first-child::before { text-decoration: underline; }"
           , "}"
           ]
 
