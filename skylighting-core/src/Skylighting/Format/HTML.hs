@@ -148,7 +148,7 @@ styleToCss f = unlines $
           , "pre.numberSource code > span > a:first-child::before"
           , "  { content: counter(source-line);"
           , "    position: relative; left: -1em; text-align: right; vertical-align: baseline;"
-          , "    border: none; pointer-events: all; display: inline-block;"
+          , "    border: none; display: inline-block;"
           , "    -webkit-touch-callout: none; -webkit-user-select: none;"
           , "    -khtml-user-select: none; -moz-user-select: none;"
           , "    -ms-user-select: none; user-select: none;"
