@@ -81,14 +81,11 @@ wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
 -- subsequent per-line processing (e.g. adding line numnbers) possible.
 sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
 sourceLineToHtml opts lno cont =
-  (if lineAnchors opts
-      then H.a   ! A.class_ sourceLine
-                 ! A.id lineNum
-                 ! A.href lineRef
-                 ! dataAttrib
-      else H.a   ! A.class_ sourceLine
-                 ! A.id lineNum
-                 ! dataAttrib) $ mapM_ (tokenToHtml opts) cont
+  H.a    ! A.class_ sourceLine
+         ! A.id lineNum
+         !? (lineAnchors opts, A.href lineRef)
+         ! dataAttrib
+         $ mapM_ (tokenToHtml opts) cont
   where  sourceLine = toValue "sourceLine"
          lineNum = toValue prefixedLineNo
          lineRef = toValue ('#':prefixedLineNo)
