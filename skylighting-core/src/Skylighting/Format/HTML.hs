@@ -135,15 +135,12 @@ styleToCss :: Style -> String
 styleToCss f = unlines $
   divspec ++ numberspec ++ colorspec ++ linkspec ++
     sort (map toCss (Map.toList (tokenStyles f)))
-   where colorspec = [
-           "div.sourceCode\n  { "
-           ++ case (defaultColor f, backgroundColor f) of
-                (Nothing, Nothing) -> ""
-                (Just c, Nothing)  -> "color: " ++ fromColor c ++ ";"
-                (Nothing, Just c)  -> "background-color: " ++ fromColor c ++ ";"
-                (Just c1, Just c2) -> "color: " ++ fromColor c1
-                     ++ "; background-color: " ++ fromColor c2 ++ ";"
-           ++ " }"]
+   where colorspec = pure . unwords $ [
+            "div.sourceCode\n  {"
+          , maybe "" (\c -> "color: "            ++ fromColor c ++ ";") (defaultColor f)
+          , maybe "" (\c -> "background-color: " ++ fromColor c ++ ";") (backgroundColor f)
+          , "}"
+          ]
          numberspec = [
             "pre.numberSource code"
           , "  { counter-reset: source-line 0; }"
