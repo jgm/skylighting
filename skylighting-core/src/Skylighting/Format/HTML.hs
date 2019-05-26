@@ -147,9 +147,9 @@ styleToCss f = unlines $
                      ++ "; background-color: " ++ fromColor c2 ++ ";"
            ++ " }"]
          numberspec = [
-            "pre.numberSource a.sourceLine"
+            "pre.numberSource span.sourceLine"
           , "  { position: relative; left: -4em; }"
-          , "pre.numberSource a.sourceLine::before"
+          , "pre.numberSource span.sourceLine > a:first-child::before"
           , "  { content: attr(title);"
           , "    position: relative; left: -1em; text-align: right; vertical-align: baseline;"
           , "    border: none; pointer-events: all; display: inline-block;"
@@ -167,9 +167,9 @@ styleToCss f = unlines $
               " padding-left: 4px; }"
           ]
          divspec = [
-            "a.sourceLine { display: inline-block; line-height: 1.25; }"
-          , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
-          , "a.sourceLine:empty { height: 1.2em; }" -- correct empty line height
+            "span.sourceLine { display: inline-block; line-height: 1.25; }"
+          , "span.sourceLine { color: inherit; text-decoration: inherit; }"
+          , "span.sourceLine:empty { height: 1.2em; }" -- correct empty line height
           , ".sourceCode { overflow: visible; }" -- needed for line numbers
           , "code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for relative contents
           , "div.sourceCode { margin: 1em 0; }" -- Collapse neighbours correctly
@@ -179,11 +179,11 @@ styleToCss f = unlines $
           , "}"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
-          , "a.sourceLine { text-indent: -1em; padding-left: 1em; }"
+          , "span.sourceLine { text-indent: -1em; padding-left: 1em; }"
           , "}"
           ]
          linkspec = [ "@media screen {"
-          , "a.sourceLine::before { text-decoration: underline; }"
+          , "span.sourceLine > a:first-child::before { text-decoration: underline; }"
           , "}"
           ]
 
