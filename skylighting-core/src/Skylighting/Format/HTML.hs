@@ -7,7 +7,6 @@ module Skylighting.Format.HTML (
 import Data.List (intersperse, sort)
 import qualified Data.Map as Map
 import Data.Monoid ((<>))
-import Data.String (fromString)
 import qualified Data.Text as Text
 import Skylighting.Types
 import Text.Blaze.Html
@@ -81,19 +80,13 @@ wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
 -- subsequent per-line processing (e.g. adding line numnbers) possible.
 sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
 sourceLineToHtml opts lno cont =
-  (if lineAnchors opts
-      then H.a   ! A.class_ sourceLine
-                 ! A.id lineNum
-                 ! A.href lineRef
-                 ! dataAttrib
-      else H.a   ! A.class_ sourceLine
-                 ! A.id lineNum
-                 ! dataAttrib) $ mapM_ (tokenToHtml opts) cont
-  where  sourceLine = toValue "sourceLine"
-         lineNum = toValue prefixedLineNo
+  H.span ! A.id lineNum
+         $ do
+           H.a ! A.href lineRef $ mempty
+           mapM_ (tokenToHtml opts) cont
+  where  lineNum = toValue prefixedLineNo
          lineRef = toValue ('#':prefixedLineNo)
          prefixedLineNo = Text.unpack (lineIdPrefix opts) <> show (lineNo lno)
-         dataAttrib = A.title (toValue (show (lineNo lno)))
 
 tokenToHtml :: FormatOptions -> Token -> Html
 tokenToHtml _ (NormalTok, txt)  = toHtml txt
@@ -141,22 +134,21 @@ styleToCss :: Style -> String
 styleToCss f = unlines $
   divspec ++ numberspec ++ colorspec ++ linkspec ++
     sort (map toCss (Map.toList (tokenStyles f)))
-   where colorspec = [
-           "div.sourceCode\n  { "
-           ++ case (defaultColor f, backgroundColor f) of
-                (Nothing, Nothing) -> ""
-                (Just c, Nothing)  -> "color: " ++ fromColor c ++ ";"
-                (Nothing, Just c)  -> "background-color: " ++ fromColor c ++ ";"
-                (Just c1, Just c2) -> "color: " ++ fromColor c1
-                     ++ "; background-color: " ++ fromColor c2 ++ ";"
-           ++ " }"]
+   where colorspec = pure . unwords $ [
+            "div.sourceCode\n  {"
+          , maybe "" (\c -> "color: "            ++ fromColor c ++ ";") (defaultColor f)
+          , maybe "" (\c -> "background-color: " ++ fromColor c ++ ";") (backgroundColor f)
+          , "}"
+          ]
          numberspec = [
-            "pre.numberSource a.sourceLine"
-          , "  { position: relative; left: -4em; }"
-          , "pre.numberSource a.sourceLine::before"
-          , "  { content: attr(title);"
+            "pre.numberSource code"
+          , "  { counter-reset: source-line 0; }"
+          , "pre.numberSource code > span"
+          , "  { position: relative; left: -4em; counter-increment: source-line; }"
+          , "pre.numberSource code > span > a:first-child::before"
+          , "  { content: counter(source-line);"
           , "    position: relative; left: -1em; text-align: right; vertical-align: baseline;"
-          , "    border: none; pointer-events: all; display: inline-block;"
+          , "    border: none; display: inline-block;"
           , "    -webkit-touch-callout: none; -webkit-user-select: none;"
           , "    -khtml-user-select: none; -moz-user-select: none;"
           , "    -ms-user-select: none; user-select: none;"
@@ -171,9 +163,9 @@ styleToCss f = unlines $
               " padding-left: 4px; }"
           ]
          divspec = [
-            "a.sourceLine { display: inline-block; line-height: 1.25; }"
-          , "a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }"
-          , "a.sourceLine:empty { height: 1.2em; }" -- correct empty line height
+            "code.sourceCode > span { display: inline-block; line-height: 1.25; }"
+          , "code.sourceCode > span { color: inherit; text-decoration: inherit; }"
+          , "code.sourceCode > span:empty { height: 1.2em; }" -- correct empty line height
           , ".sourceCode { overflow: visible; }" -- needed for line numbers
           , "code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for relative contents
           , "div.sourceCode { margin: 1em 0; }" -- Collapse neighbours correctly
@@ -183,11 +175,11 @@ styleToCss f = unlines $
           , "}"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
-          , "a.sourceLine { text-indent: -1em; padding-left: 1em; }"
+          , "code.sourceCode > span { text-indent: -5em; padding-left: 5em; }"
           , "}"
           ]
          linkspec = [ "@media screen {"
-          , "a.sourceLine::before { text-decoration: underline; }"
+          , "code.sourceCode > span > a:first-child::before { text-decoration: underline; }"
           , "}"
           ]
 
