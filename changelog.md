@@ -1,5 +1,21 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8 -- 2019-05-27
+
+ *  Wrap html source lines with `<span>`, not `<a>` (David
+    Baynard).  Fixes jgm/pandoc#4386. Also fixes #33 (and
+    therefore fixes jgm/pandoc#4278).
+  * Prevent line-wrap overlap in html by increasing padding
+    (David Baynard).
+  * Remove superfluous 'pointer-events: all' (David Baynard).
+  * Simplify HTML generation code (David Baynard).
+  * Remove sourceLine class from spans (David Baynard).
+  * Display line numbers using css counters (David Baynard).
+  * Add Elm syntax definition (#66, #68, Bonghyun Kim).
+  * Put changelog in base directory, use symlinks to point to it.
+    We have the same changelog for skylighting and skylighting-core,
+    for simplicity.  (Version numbers are kept in sync.)
+
 ## 0.7.7 -- 2019-02-27
 
   * Add parseSyntaxDefinitionFromString [API change].
