@@ -4,6 +4,7 @@ import Control.Monad
 import qualified Data.ByteString.Lazy as BL
 import Data.Char (toLower)
 import qualified Data.Map as Map
+import Data.Maybe (fromMaybe)
 import Data.Monoid
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
@@ -17,6 +18,7 @@ import System.IO (hPutStrLn, stderr)
 import Text.Blaze.Html.Renderer.String
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
+import Text.Read (readMaybe)
 import Text.Printf (printf)
 import Text.Show.Pretty (ppShow)
 
@@ -27,6 +29,7 @@ data Flag = Sty String
           | Fragment
           | List
           | NumberLines
+          | StartNumber String
           | Syn String
           | TitleAttributes
           | ColorLevel String
@@ -71,6 +74,10 @@ options =
           ["number-lines"]
           (NoArg NumberLines)
           "number lines"
+  ,Option ['N']
+          ["number-lines-from"]
+          (ReqArg StartNumber "NUMBER")
+          "number lines from"
   ,Option ['s']
           ["syntax"]
           (ReqArg Syn "SYNTAX")
@@ -105,6 +112,11 @@ syntaxOf smap _ (Syn lang : _) = do
          Just s  -> return s
          Nothing -> err ("Could not find syntax definition for " ++ lang)
 syntaxOf smap fps (_:xs) = syntaxOf smap fps xs
+
+startNumberOf :: [Flag] -> Maybe Int
+startNumberOf []                  = Nothing
+startNumberOf (StartNumber n : _) = readMaybe n
+startNumberOf (_ : xs)            = startNumberOf xs
 
 styleOf :: [Flag] -> IO Style
 styleOf [] = return kate
@@ -207,6 +219,7 @@ main = do
   let highlightOpts = defaultFormatOpts{ titleAttributes = TitleAttributes `elem` opts
                                        , numberLines = NumberLines `elem` opts
                                        , lineAnchors = NumberLines `elem` opts
+                                       , startNumber = 1 `fromMaybe` startNumberOf opts
                                        , ansiColorLevel = actualColorLevel
                                        }
   let fragment = Fragment `elem` opts
