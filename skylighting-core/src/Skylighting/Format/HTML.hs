@@ -74,7 +74,11 @@ formatHtmlBlock opts ls =
 wrapCode :: FormatOptions -> Html -> Html
 wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
                                              $ Text.pack "sourceCode"
-                                               : codeClasses opts) $ h
+                                               : codeClasses opts)
+                         !? (startZero /= 0, A.style (toValue counterOverride))
+                         $ h
+  where  counterOverride = "counter-reset: source-line " <> show startZero <> ";"
+         startZero = startNumber opts - 1
 
 -- | Each line of source is wrapped in an (inline-block) anchor that makes
 -- subsequent per-line processing (e.g. adding line numnbers) possible.
