@@ -187,7 +187,7 @@ styleToCss f = unlines $
           , "  background-size: 0.6em; background-position-y: 1.25em;"
           , "}"
           , "pre.numberSource > code > span { text-indent: -5em; padding-left: 5em;"
-          , "  background-position-x: 3.75em;"
+          , "  background: none;"
           , "}"
           , "}"
           ]
