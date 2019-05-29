@@ -179,7 +179,16 @@ styleToCss f = unlines $
           , "}"
           , "@media print {"
           , "code.sourceCode { white-space: pre-wrap; }"
-          , "code.sourceCode > span { text-indent: -5em; padding-left: 5em; }"
+          , "pre > code > span { text-indent: -1em; padding-left: 1em;"
+          , "  background: linear-gradient(to right, " ++
+              maybe "#ffffff" fromColor (backgroundColor f) ++ " 35%," ++
+              maybe "#a0a0a0" fromColor (lineNumberColor f) ++
+              " 200%) no-repeat;"
+          , "  background-size: 0.6em; background-position-y: 1.25em;"
+          , "}"
+          , "pre.numberSource > code > span { text-indent: -5em; padding-left: 5em;"
+          , "  background-position-x: 3.75em;"
+          , "}"
           , "}"
           ]
          linkspec = [ "@media screen {"
