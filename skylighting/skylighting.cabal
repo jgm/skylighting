@@ -164,6 +164,7 @@ library
                        Skylighting.Syntax.SqlMysql
                        Skylighting.Syntax.SqlPostgresql
                        Skylighting.Syntax.Sql
+                       Skylighting.Syntax.Stata
                        Skylighting.Syntax.Tcl
                        Skylighting.Syntax.Tcsh
                        Skylighting.Syntax.Texinfo
