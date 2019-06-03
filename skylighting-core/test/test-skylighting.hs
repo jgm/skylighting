@@ -143,6 +143,10 @@ main = do
            , [ (FloatTok,"1.E3")]
            ] @=? tokenize defConfig cpp
                      "0.1f\n1.0f\n-0.1f\n-1.0F\n-1.0L\n1e3\n-15e+3\n0.f\n1.F\n1.E3"
+      , testCase "cpp identifier (#76)" $ Right
+           [ [ (NormalTok,"ng_or") ]
+           ] @=? tokenize defConfig cpp
+                     "ng_or"
       ]
     ]
 

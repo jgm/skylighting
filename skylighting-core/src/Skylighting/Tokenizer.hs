@@ -480,8 +480,8 @@ detectIdentifier :: ByteString -> TokenizerM Text
 detectIdentifier inp = do
   case BS.uncons inp of
     Just (c, t) | isLetter c || c == '_' ->
-      takeChars $ 1 + maybe 0 id (BS.findIndex
-                (\d -> not (isAlphaNum d || d == '_')) t)
+      takeChars $ 1 + maybe (BS.length t) id
+                (BS.findIndex (\d -> not (isAlphaNum d || d == '_')) t)
     _ -> mzero
 
 lineContinue :: ByteString -> TokenizerM Text
