@@ -2,6 +2,9 @@
 <!DOCTYPE language SYSTEM "language.dtd"
 [
 	<!ENTITY identifier "([a-zA-Z_$]|[^[:ascii:]])([\w$]|[^[:ascii:]])*">
+	<!ENTITY numSuffix  "(?=n?([^\w]|$))">
+	<!ENTITY objectOp   "[\?!]?">
+	<!ENTITY endLine    "\s*($|//|(/\*.*\*/\s*)+$)">
 ]>
 
 <!--
@@ -9,7 +12,7 @@
 
       This file is part of the KDE's KSyntaxHighlighting framework.
 
-      Copyright 2018 Nibaldo González S. (nibgonz@gmail.com)
+      Copyright 2018-2019 Nibaldo González S. (nibgonz@gmail.com)
 
       This Source Code Form is subject to the terms of the MIT License.
       If a copy of the license was not distributed with this file,
@@ -36,13 +39,16 @@
     incorporate these keywords (for example: "qml.xml").
 
     Change log:
+     * v3 [2019-02-18]: Add support to bigint and the "is" keyword.
+                        Fixes keyword delimiters. Don't highlight regex
+                        after "]" and ")". Multiple fixes and improvements.
      * v2 [2018-12-29]: Don't highlight built-in classes as functions,
                         fix float-points, improve types detection and other fixes.
      * v1 [2018-11-18]: Initial version
 -->
 
 <language name="TypeScript"
-          version="2"
+          version="3"
           kateversion="5.53"
           section="Scripts"
           extensions="*.ts"
@@ -82,7 +88,6 @@
 	</list>
 	<list name="primitives">
 		<include>primitives##JavaScript</include>
-
 		<!-- Types Built-in -->
 		<item>object</item>
 		<!-- Also:
@@ -94,11 +99,13 @@
 		<item>namespace</item>
 		<item>module</item>
 	</list>
-	<list name="object_iden">
+	<list name="types_operator_expression">
 		<item>keyof</item>
 		<item>infer</item>
+		<!-- Also: is, typeof -->
 	</list>
-	<list name="types_primitives">
+	<!-- Datatypes -->
+	<list name="types">
 		<item>string</item>
 		<item>number</item>
 		<item>boolean</item>
@@ -109,6 +116,7 @@
 		<item>unknown</item>
 		<item>undefined</item>
 		<item>null</item>
+		<item>object</item>
 	</list>
 
 	<!-- Built-in Classes & Functions -->
@@ -1653,25 +1661,24 @@
 			<!-- Abstract -->
 			<RegExpr context="#stay" attribute="Reserved" String="\b(abstract)(?=\s+(class|interface)\b)" />
 			<!-- New -->
-			<RegExpr context="NewTarget" attribute="Keyword" String="\bnew(?=\s*[\?!]?\.\s*target\b)" />
-			<RegExpr context="MemberObject" attribute="Objects" String="\bnew(?=[\?!]?\.)" />
+			<RegExpr context="NewTarget" attribute="Keyword" String="\bnew(?=\s*&objectOp;\.\s*target\b)" />
+			<RegExpr context="MemberObject" attribute="Objects" String="\bnew(?=&objectOp;\.)" />
 			<WordDetect context="#stay" attribute="Keyword" String="new" />
-			<!-- Import -->
-			<WordDetect context="Import" attribute="Module" String="import" />
-			<!-- Export types -->
-			<keyword context="ControlExport" attribute="Module" String="control_export_types" />
+
+			<!-- Keywords: control flow -->
+			<keyword context="#stay" attribute="ControlFlow" String="controlflow" />
+			<RegExpr context="#stay" attribute="ControlFlow" String="\bdefault(?=\s*&objectOp;:)" />
+
+			<!-- NOTE & TODO: The identifiers before ":" are highlighted as "dsNormal".
+			     These identifiers should be highlighted in a different way depending on the
+			     context, for example, in the declaration of classes or interfaces, in sets, the
+			     parameters of a function, or after the keywords: "const", "var", "let" & "enum". -->
+			<RegExpr context="#stay" attribute="Parameter" String="&identifier;(?=\s*&objectOp;:)" />
 
 			<!-- Keywords -->
-			<keyword context="#stay" attribute="ControlFlow" String="controlflow" />
-			<RegExpr context="#stay" attribute="ControlFlow" String="\bdefault(?=\s*[\?!]?:)" />
-			<RegExpr context="#stay" String="&identifier;(?=\s*[\?!]?:)" />
-
 			<WordDetect context="TypeDeclaration" attribute="Reserved" String="type" />
-			<keyword context="#stay" attribute="Module" String="module" />
 			<keyword context="#stay" attribute="Keyword" String="keywords" /> <!-- NoRegExp? -->
 			<keyword context="#stay" attribute="Reserved" String="reserved" />
-			<keyword context="NoRegExp" attribute="Keyword" String="primitives" />
-			<keyword context="#stay" attribute="Keyword" String="object_iden" />
 
 			<!-- Built-in Classes -->
 			<WordDetect context="FindMemberObjectMath" attribute="Built-in Objects" String="Math" />
@@ -1683,16 +1690,27 @@
 			<keyword context="FindMemberObjectDOM" attribute="Built-in Objects" String="class_dom" />
 			<keyword context="FindMemberObjectNode" attribute="Built-in Objects" String="class_node" />
 			<keyword context="FindMemberObjectDOM" attribute="Built-in Objects" String="dom_variable" />
-
-			<IncludeRules context="FindFunctionName" />
-			<RegExpr context="MemberObject" attribute="Objects" String="&identifier;(?=\s*[\?!]?\.)" />
+			<!-- Objects -->
+			<RegExpr context="MemberObject" attribute="Objects" String="&identifier;(?=\s*&objectOp;\.)" />
 			<DetectChar context="MemberObject" char="." />
 
+			<!-- Import -->
+			<WordDetect context="Import" attribute="Module" String="import" />
+			<!-- Export types -->
+			<keyword context="ControlExport" attribute="Module" String="control_export_types" />
+			<!-- Keywords -->
+			<keyword context="#stay" attribute="Module" String="module" />
+			<keyword context="NoRegExp" attribute="Keyword" String="primitives" />
+			<keyword context="#stay" attribute="Keyword" String="types_operator_expression" />
+
+			<!-- Functions -->
+			<IncludeRules context="FindFunctionName" />
 			<keyword context="#stay" attribute="Function Name" String="functions" />
 
+			<!-- Symbols & Operators -->
 			<DetectChar context="Object" attribute="Symbol" char="{" beginRegion="Brace" />
 			<DetectChar context="#stay" attribute="Symbol" char="[" beginRegion="List" />
-			<DetectChar context="#stay" attribute="Symbol" char="]" endRegion="List" />
+			<DetectChar context="NoRegExp" attribute="Symbol" char="]" endRegion="List" />
 			<DetectChar context="#stay" attribute="Symbol" char="?" /> <!-- Fix of conditional expression from the JavaScript highlighting -->
 
 			<!-- Highlight types after ":" and between "<" and ">" -->
@@ -1705,23 +1723,32 @@
 		<context name="Object" attribute="Normal Text" lineEndContext="#stay">
 			<DetectChar context="#pop" attribute="Symbol" char="}" endRegion="Brace" />
 			<keyword context="NoRegExp" attribute="Keyword" String="keywords" />
+			<!-- Highlight types in the following line.
+			     NOTE: Using the "NoRegExp" context can cause this to apply to multiple lines. -->
+			<RegExpr context="TypesNewLine" attribute="Symbol" String=":(?=&endLine;)" minimal="true" />
 			<IncludeRules context="Normal" />
 		</context>
 
 		<context name="NoRegExp" attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop">
 			<IncludeRules context="NoRegExp##JavaScript" />
 		</context>
+		<context name="NoRegExpSameLine" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
+			<IncludeRules context="NoRegExp##JavaScript" />
+		</context>
 
 		<context name="FindNumbers" attribute="Normal Text" lineEndContext="#stay">
-			<RegExpr context="NoRegExp" attribute="Hexadecimal" String="\b(0x[\da-f][\da-f_]*)\b" insensitive="true" />
-			<RegExpr context="NoRegExp" attribute="Binary" String="\b(0b[01][01_]*)\b" insensitive="true" />
-			<RegExpr context="NoRegExp" attribute="Float" String="(\b\d[\d_]*\.?|(\b\d[\d_]*)?\.\d[\d_]*)[eE][\+\-]?\d[\d_]*\b" />
-			<RegExpr context="NoRegExp" attribute="Float" String="(\.\d[\d_]*\b|\b\d[\d_]*\.(\d[\d_]*\b)?)" />
-			<RegExpr context="NoRegExp" attribute="Octal" String="\b(0o?[0-7][0-7_]*)\b" insensitive="true" />
-			<RegExpr context="NoRegExp" attribute="Decimal" String="\b(\d[\d_]*)\b" />
+			<RegExpr context="NoRegExp" attribute="Hexadecimal" String="\b0[xX][\da-fA-F][\da-fA-F_]*&numSuffix;" />
+			<RegExpr context="NoRegExp" attribute="Binary" String="\b0[bB][01][01_]*&numSuffix;" />
+			<RegExpr context="NoRegExp" attribute="Float" String="(\b\d[\d_]*\.?|(\b\d[\d_]*)?\.\d[\d_]*)[eE][\+\-]?\d[\d_]*&numSuffix;" />
+			<RegExpr context="NoRegExp" attribute="Float" String="(\.\d[\d_]*|\b\d[\d_]*\.(\d[\d_]*)?)&numSuffix;" />
+			<RegExpr context="NoRegExp" attribute="Octal" String="\b0[oO]?[0-7][0-7_]*&numSuffix;" />
+			<RegExpr context="NoRegExp" attribute="Decimal" String="\b\d[\d_]*&numSuffix;" />
+			<!-- Avoid highlighting numbers of JavaScript -->
+			<RegExpr context="NoRegExp" String="\b([1-9]|0\d)\d*" />
 		</context>
 
 		<context name="FindFunctionName" attribute="Normal Text" lineEndContext="#stay">
+			<!-- function(...) and function<...>(...) -->
 			<RegExpr context="#stay" attribute="Function Name" String="&identifier;(?=\s*(&lt;((\{([^\{\}]|(\{[^\{\}]*\}))*\})|(\(([^\(\)]|(\([^\(\)]*\)))*\))|(\[([^\[\]]|(\[[^\[\]]*\]))*\])|('(\\.|[^'])*')|(&quot;(\\.|[^&quot;])*&quot;)|(`(\\.|[^`])*`)|[^&lt;&gt;]|&lt;.*&gt;)*&gt;)?\()" />
 		</context>
 
@@ -1740,33 +1767,33 @@
 		</context>
 
 		<!-- Highlight types after the "type" keyword -->
+
 		<context name="TypeDeclaration" attribute="Normal Text" lineEndContext="#stay">
 			<DetectSpaces />
-			<IncludeRules context="TypeDeclarationEnd" />
+			<AnyChar context="#pop" String=";,{})]" lookAhead="true" />
 			<IncludeRules context="TypesFindBrackets" />
 			<IncludeRules context="DefaultTypes" />
 			<IncludeRules context="Normal" />
 		</context>
-		<context name="TypeDeclarationEnd" attribute="Normal Text" lineEndContext="#stay">
-			<AnyChar context="#pop" String=";,{})]" lookAhead="true" />
-		</context>
 
 		<!-- Highlight types after ":" -->
+
 		<context name="Types" attribute="Normal Text" lineEndContext="#pop">
 			<IncludeRules context="FixPopLineEndContext" />
 			<IncludeRules context="TypesCommon" />
 		</context>
 		<context name="TypesCommon" attribute="Normal Text" lineEndContext="#pop">
 			<DetectSpaces />
-			<!-- NOTE: The "TypesEnd" context is used by "typescript-react.xml" -->
 			<IncludeRules context="TypesEnd" />
-			<!-- IMPORTANT: If you modify this rule, do so in "typescript-react.xml"! -->
-			<RegExpr context="#pop!TypesNewLine" attribute="Symbol" String="\|(?=\s*($|//|(/\*.*\*/\s*)+$))" />
+			<!-- New line after "|" or "&".
+			     IMPORTANT: If you modify this rule, do so in "typescript-react.xml"! -->
+			<RegExpr context="#pop!TypesNewLine" attribute="Symbol" String="[\|&amp;](?=&endLine;)" minimal="true" />
 
 			<IncludeRules context="TypesFindBrackets" />
 			<IncludeRules context="DefaultTypes" />
 			<IncludeRules context="Normal" />
 		</context>
+		<!-- NOTE: Context used by "typescript-react.xml" -->
 		<context name="TypesEnd" attribute="Normal Text" lineEndContext="#stay">
 			<AnyChar context="#pop" String=";,})]" lookAhead="true" />
 			<RegExpr context="#pop" String="\=(?!&gt;)" lookAhead="true" />
@@ -1784,8 +1811,13 @@
 		</context>
 
 		<context name="DefaultTypes" attribute="Normal Text" lineEndContext="#stay">
-			<keyword context="NoRegExp" attribute="Types/Primitives" String="types_primitives" />
-			<RegExpr context="#stay" attribute="Symbol" String="&lt;\s*&gt;" />
+			<keyword context="NoRegExpSameLine" attribute="Types" String="types" />
+			<!-- Type Guards -->
+			<WordDetect context="NoRegExpSameLine" attribute="Keyword" String="is" />
+
+			<!-- FIXME: For a strange reason, the keywords before "}" are not highlighted.
+			     This rule fixes it provisionally. -->
+			<RegExpr context="#stay" attribute="Types" String="\b(string|number|boolean|symbol|any|void|never|unknown|undefined|null|object)(?=\})" />
 		</context>
 		<context name="TypesFindBrackets" attribute="Normal Text" lineEndContext="#stay">
 			<DetectChar context="TypesSquareBracket" attribute="Symbol" char="[" beginRegion="List" />
@@ -1794,7 +1826,7 @@
 		</context>
 
 		<context name="TypesSquareBracket" attribute="Normal Text" lineEndContext="#stay">
-			<DetectChar context="#pop" attribute="Symbol" char="]" endRegion="List" />
+			<DetectChar context="#pop!NoRegExp" attribute="Symbol" char="]" endRegion="List" />
 			<IncludeRules context="TypesFindBrackets" />
 			<IncludeRules context="DefaultTypes" />
 			<IncludeRules context="Normal" />
@@ -1807,7 +1839,7 @@
 			<IncludeRules context="Object" />
 		</context>
 		<context name="TypesRoundBracket" attribute="Normal Text" lineEndContext="#pop">
-			<DetectChar context="#pop" char=")" />
+			<DetectChar context="#pop!NoRegExp" char=")" />
 			<IncludeRules context="FixPopLineEndContext" />
 			<IncludeRules context="TypesFindBrackets" />
 			<IncludeRules context="DefaultTypes" />
@@ -1822,6 +1854,7 @@
 			<IncludeRules context="DefaultTypes" />
 			<IncludeRules context="Normal" />
 		</context>
+		<!-- NOTE: Context used by "typescript-react.xml" -->
 		<context name="TypesAngleBracketEnd" attribute="Normal Text" lineEndContext="#stay">
 			<AnyChar context="#pop" String="})];" lookAhead="true" />
 		</context>
@@ -1837,7 +1870,7 @@
 		<context name="ControlExport" attribute="Normal Text" lineEndContext="#pop">
 			<AnyChar context="#pop" attribute="Normal Text" String="{;" lookAhead="true" />
 			<IncludeRules context="FindStrings" />
-			<RegExpr context="#stay" attribute="Types/Primitives" String="&identifier;" />
+			<RegExpr context="#stay" attribute="Types" String="&identifier;" />
 			<IncludeRules context="FindComments##JavaScript" />
 		</context>
 
@@ -1873,7 +1906,7 @@
 			<Detect2Chars context="#stay" attribute="Symbol" char="?" char1="." />
 			<Detect2Chars context="#stay" attribute="Symbol" char="!" char1="." />
 
-			<RegExpr context="#stay" attribute="Objects" String="&identifier;(?=\s*[\?!]?\.)" />
+			<RegExpr context="#stay" attribute="Objects" String="&identifier;(?=\s*&objectOp;\.)" />
 			<IncludeRules context="FindFunctionName" /> <!-- #pop -->
 			<RegExpr context="#pop!NoRegExp" attribute="Object Member" String="&identifier;" />
 			<IncludeRules context="NoRegExp" />
@@ -1996,7 +2029,8 @@
 		<itemData name="Object Property (Built-in)" defStyleNum="dsAttribute" italic="1" spellChecking="false" />
 		<itemData name="Object Method (Built-in)" defStyleNum="dsFunction" italic="1" spellChecking="false" />
 		<itemData name="Constant"         defStyleNum="dsConstant" spellChecking="false" />
-		<itemData name="Types/Primitives" defStyleNum="dsDataType" spellChecking="false" />
+		<itemData name="Types"            defStyleNum="dsDataType" spellChecking="false" />
+		<itemData name="Parameter"        defStyleNum="dsNormal" spellChecking="false" />
 
 		<itemData name="Decimal"      defStyleNum="dsDecVal" spellChecking="false" />
 		<itemData name="Octal"        defStyleNum="dsBaseN" spellChecking="false" />
@@ -2017,7 +2051,7 @@
 		<comment name="singleLine" start="//" />
 		<comment name="multiLine" start="/*" end="*/" />
 	</comments>
-	<keywords casesensitive="1" additionalDeliminator="&quot;&apos;`" weakDeliminator="+-$" />
+	<keywords casesensitive="1" additionalDeliminator="&quot;&apos;`" weakDeliminator="$" />
 </general>
 
 </language>

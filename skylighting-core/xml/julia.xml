@@ -29,7 +29,7 @@
 
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Julia" section="Sources" version="5" kateversion="5.0" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
+<language name="Julia" section="Sources" version="6" kateversion="5.0" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
 
   <highlighting>
     <list name="block_begin">
@@ -128,11 +128,11 @@
       <item>Task</item>
       <item>Tuple</item>
       <item>Type</item>
-      <item>Uint</item>
-      <item>Uint8</item>
-      <item>Uint16</item>
-      <item>Uint32</item>
-      <item>Uint64</item>
+      <item>UInt</item>
+      <item>UInt8</item>
+      <item>UInt16</item>
+      <item>UInt32</item>
+      <item>UInt64</item>
       <item>Union</item>
       <item>Unsigned</item>
       <item>UTF8String</item>

@@ -6,7 +6,7 @@
 <!-- Author: Anders Lund <anders@alweb.dk> //-->
 <!-- Minor changes: Joseph Wenninger <jowenn@kde.org> //-->
 <!-- Full JavaScript 1.0 support by Whitehawk Stormchaser //-->
-<language name="JavaScript" version="10" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
+<language name="JavaScript" version="11" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
   <highlighting>
@@ -90,8 +90,6 @@
 
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
         <DetectSpaces/>
-        <StringDetect attribute="Region Marker" context="region_marker" String="//BEGIN" beginRegion="Region1" />
-        <StringDetect attribute="Region Marker" context="region_marker" String="//END" endRegion="Region1" />
 
         <Float attribute="Float" context="NoRegExp" />
         <!-- Invalid Binary, Octal or Hex -->
@@ -123,6 +121,7 @@
         <IncludeRules context="FindComments" />
 
         <!-- E4X extension (=xml inside JavaScript), see bug #373713 -->
+        <RegExpr attribute="Symbol" context="#stay" String="&lt;(?=/\*|//)" />
         <Detect2Chars attribute="Normal Text" context="NoRegExp" char="&lt;" char1="/" />
         <Detect2Chars attribute="Normal Text" context="NoRegExp" char="/" char1="&gt;" />
         <DetectChar attribute="Regular Expression" context="(regex caret first check)" char="/" />
@@ -146,7 +145,7 @@
       <context attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop" name="NoRegExp">
         <Detect2Chars context="#pop" lookAhead="true" char="/" char1="/" />
         <Detect2Chars context="#pop" lookAhead="true" char="/" char1="*" />
-        <DetectChar context="#pop" char="/" />
+        <DetectChar attribute="Symbol" context="#pop" char="/" />
         <DetectSpaces/>
       </context>
 
@@ -209,6 +208,9 @@
       </context>
 
       <context name="FindComments" attribute="Normal Text" lineEndContext="#stay">
+        <StringDetect attribute="Region Marker" context="region_marker" String="//BEGIN" beginRegion="Region1" />
+        <StringDetect attribute="Region Marker" context="region_marker" String="//END" endRegion="Region1" />
+
         <IncludeRules context="##Doxygen" />
         <Detect2Chars attribute="Comment" context="Comment" char="/" char1="/" />
         <Detect2Chars attribute="Comment" context="Multi/inline Comment" char="/" char1="*" beginRegion="Comment" />

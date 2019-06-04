@@ -102,6 +102,7 @@ library
                        Skylighting.Syntax.J
                        Skylighting.Syntax.Java
                        Skylighting.Syntax.Javadoc
+                       Skylighting.Syntax.JavascriptReact
                        Skylighting.Syntax.Javascript
                        Skylighting.Syntax.Json
                        Skylighting.Syntax.Jsp
@@ -128,6 +129,7 @@ library
                        Skylighting.Syntax.Modula2
                        Skylighting.Syntax.Modula3
                        Skylighting.Syntax.Monobasic
+                       Skylighting.Syntax.Mustache
                        Skylighting.Syntax.Nasm
                        Skylighting.Syntax.Noweb
                        Skylighting.Syntax.Objectivec
@@ -147,6 +149,7 @@ library
                        Skylighting.Syntax.Pure
                        Skylighting.Syntax.Purebasic
                        Skylighting.Syntax.Python
+                       Skylighting.Syntax.Qml
                        Skylighting.Syntax.R
                        Skylighting.Syntax.Relaxng
                        Skylighting.Syntax.Relaxngcompact
