@@ -1,5 +1,22 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.1 -- 2019-06-04
+
+  * Added support for stata (#74).
+  * Added support for javascript-react, i.e. jsx (#56).
+  * Added support for qml and mustache (new dependencies for
+    markdown and html).
+  * Update xml syntax definitions from KDE repository:
+    cmake, doxygen, html, ini, javascript, julia, literate-haskell,
+    markdown, octave, perl, tcsh, typescript, yaml.
+  * Fix bug in detectIdentifier (#76).  It behaved wrongly when
+    applied to a string that was an valid identifier but had nothing
+    else after it (as would naturally occur with inline code in pandoc).
+    The bug caused it to match just one character in this case.
+  * Add --number-lines-from option to cli program (David Baynard).
+  * Override start number if nonzero (David Baynard, fixes regression
+    in 0.8).
+
 ## 0.8 -- 2019-05-27
 
  *  Wrap html source lines with `<span>`, not `<a>` (David
