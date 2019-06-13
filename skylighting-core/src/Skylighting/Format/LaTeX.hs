@@ -53,7 +53,7 @@ escapeLaTeX inline = Text.concatMap escapeLaTeXChar
            '-'  -> "{-}" -- prevent ligatures
            '~'  -> "\\textasciitilde{}"
            '^'  -> "\\^{}"
-           c    -> Text.singleton c
+           _    -> Text.singleton c
 
 -- LaTeX
 
