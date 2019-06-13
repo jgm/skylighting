@@ -38,13 +38,22 @@ tokenToLaTeX inline (toktype, txt)   = Text.cons '\\'
 
 escapeLaTeX :: Bool -> Text -> Text
 escapeLaTeX inline = Text.concatMap escapeLaTeXChar
-  where escapeLaTeXChar '\\' = "\\textbackslash{}"
-        escapeLaTeXChar '{'  = "\\{"
-        escapeLaTeXChar '}'  = "\\}"
-        escapeLaTeXChar '|'  = if inline
-                                  then "\\VerbBar{}" -- used in inline verbatim
-                                  else "|"
-        escapeLaTeXChar x    = Text.singleton x
+  where escapeLaTeXChar c =
+         case c of
+           '\\' -> "\\textbackslash{}"
+           '{'  -> "\\{"
+           '}'  -> "\\}"
+           '|' | inline -> "\\VerbBar{}" -- used in inline verbatim
+           '_'  -> "\\_"
+           '&'  -> "\\&"
+           '%'  -> "\\%"
+           '#'  -> "\\#"
+           '`'  -> "\\textasciigrave{}"
+           '\'' -> "\\textquotesingle{}"
+           '-'  -> "{-}" -- prevent ligatures
+           '~'  -> "\\textasciitilde{}"
+           '^'  -> "\\^{}"
+           c    -> Text.singleton c
 
 -- LaTeX
 
