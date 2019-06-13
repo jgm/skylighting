@@ -1,5 +1,9 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.1.1 -- 2019-06-13
+
+  * Improved LaTeX escaping (#78).
+
 ## 0.8.1 -- 2019-06-04
 
   * Added support for stata (#74).
