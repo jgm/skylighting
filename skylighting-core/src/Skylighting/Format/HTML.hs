@@ -167,23 +167,22 @@ styleToCss f = unlines $
               " padding-left: 4px; }"
           ]
          divspec = [
-            "code.sourceCode > span { display: inline-block; line-height: 1.25; }"
+            "pre > code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for relative contents
+          , "pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }"
+          , "pre > code.sourceCode > span:empty { height: 1.2em; }" -- correct empty line height
           , "code.sourceCode > span { color: inherit; text-decoration: inherit; }"
-          , "code.sourceCode > span:empty { height: 1.2em; }" -- correct empty line height
-          , ".sourceCode { overflow: visible; }" -- needed for line numbers
-          , "code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for relative contents
           , "div.sourceCode { margin: 1em 0; }" -- Collapse neighbours correctly
           , "pre.sourceCode { margin: 0; }" -- Collapse neighbours correctly
           , "@media screen {"
           , "div.sourceCode { overflow: auto; }" -- do not overflow on screen
           , "}"
           , "@media print {"
-          , "code.sourceCode { white-space: pre-wrap; }"
-          , "code.sourceCode > span { text-indent: -5em; padding-left: 5em; }"
+          , "pre > code.sourceCode { white-space: pre-wrap; }"
+          , "pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }"
           , "}"
           ]
          linkspec = [ "@media screen {"
-          , "code.sourceCode > span > a:first-child::before { text-decoration: underline; }"
+          , "pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }"
           , "}"
           ]
 
