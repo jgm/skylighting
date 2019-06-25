@@ -508,22 +508,27 @@ regExpr dynamic re inp = do
               else return (reString re)
   when (BS.take 2 reStr == "\\b") $ wordBoundary inp
   regex <- if dynamic
-              then return $ compileRegex (reCaseSensitive re) reStr
+              then case compileRegex (reCaseSensitive re) reStr of
+                Right compiledRegex -> return compiledRegex
+                Left msg -> info msg >> mzero
               else do
                 compiledREs <- gets compiledRegexes
                 case Map.lookup re compiledREs of
                      Nothing -> do
-                       let cre = compileRegex (reCaseSensitive re) reStr
+                       cre <- case compileRegex (reCaseSensitive re) reStr of
+                                Right compiledRegex -> return compiledRegex
+                                Left msg -> info msg >> mzero
                        modify $ \st -> st{ compiledRegexes =
                              Map.insert re cre (compiledRegexes st) }
                        return cre
                      Just cre -> return cre
   case matchRegex regex inp of
-       Just (match:capts) -> do
+       Right (Just (match:capts)) -> do
          unless (null capts) $
            modify $ \st -> st{ captures = capts }
          takeChars (UTF8.length match)
-       _ -> mzero
+       Right _ -> mzero
+       Left msg -> info msg >> mzero
 
 wordBoundary :: ByteString -> TokenizerM ()
 wordBoundary inp = do

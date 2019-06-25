@@ -284,7 +284,10 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
        let column = if tildeRegex
                        then Just (0 :: Int)
                        else readMay column'
-       let re = RegExpr RE{ reString = fromString $ convertOctalEscapes str
+       let re = RegExpr RE{ reString = fromString $
+                                case convertOctalEscapes str of
+                                  Right converted -> converted
+                                  Left _          -> str
                           , reCaseSensitive = not insensitive }
        let (incsyntax, inccontext) =
                case break (=='#') context of

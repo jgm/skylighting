@@ -73,7 +73,7 @@ main = do
        ]
     , testGroup "Skylighting.Regex" $
       [ testCase "convertOctalEscapes" $
-            "a\\700b\\700c\\x{800}" @=?
+            Right "a\\700b\\700c\\x{800}" @=?
               convertOctalEscapes "a\\700b\\0700c\\o{4000}"
       ]
     , testGroup "Skylighting" $
@@ -190,7 +190,7 @@ noDropTest cfg inps syntax =
                                diffs = makeDiff "expected" inplines toklines
                     Left  e  ->
                       assertFailure ("Unexpected error: " ++ e ++ "\ninput = " ++ show inp))
-              (\(e :: RegexException) ->
+              (\(e :: E.SomeException) ->
                 assertFailure (show e ++ "\ninput = " ++ show inp))
 
 tokenizerTest :: TokenizerConfig -> SyntaxMap -> Bool -> FilePath -> TestTree
