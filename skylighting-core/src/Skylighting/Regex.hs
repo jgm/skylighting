@@ -94,8 +94,9 @@ matchRegex :: Regex -> BS.ByteString -> Maybe [BS.ByteString]
 matchRegex r s = case unsafePerformIO (regexec r s) of
                       Right (Just (_, mat, _ , capts)) ->
                                        Just (mat : capts)
-                      Right Nothing -> Nothing
-                      Left (_rc, msg) -> E.throw $ RegexException msg
+                      Right Nothing    -> Nothing
+                      -- treat match error as no match, like Kate: #81
+                      Left (_rc, _msg) -> Nothing
 
 -- functions to marshall bytestrings to text
 

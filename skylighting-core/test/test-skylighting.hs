@@ -152,6 +152,10 @@ main = do
       , testCase "c '\\0' (#82)" $ Right
            [ [ (CharTok,"'\\0'") ]
            ] @=? tokenize defConfig c "'\\0'"
+
+      , testCase "c very long integer (#81)" $ Right
+           [ [ (DecValTok, "1111111111111111111111") ]
+           ] @=? tokenize defConfig c "1111111111111111111111"
       ]
     ]
 
