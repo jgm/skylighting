@@ -1,5 +1,16 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.1.2 -- 2019-07-14
+
+  * Fix HlCChar for one-character octal escapes like '\0' (#82).
+    Due to a bug in pCStringChar, only multi-character octal
+    escapes were being recognized. This affects not just C
+    highlighting, but all of the following highlighters which
+    use HlCChar: fasm eiffel pike objectivec ruby vhdl scala
+    java jsp nasm protobuf pure go objectivecpp gnuassembler povray
+    actionscript c cs opencl boo rhtml elixir.  This fixes a
+    regression introduced in version 0.3.1.
+
 ## 0.8.1.1 -- 2019-06-13
 
   * Improved LaTeX escaping (#78).
