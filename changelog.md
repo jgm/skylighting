@@ -1,5 +1,11 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.2 -- 2019-07-14
+
+  * Change matchRegex so it gives "no match" on a regex error
+    instead of raising an exception. This seems to be how Kate
+    works.  Fixes an error on long integer literals (#81).
+
 ## 0.8.1.2 -- 2019-07-14
 
   * Fix HlCChar for one-character octal escapes like '\0' (#82).
