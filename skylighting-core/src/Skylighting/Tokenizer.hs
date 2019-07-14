@@ -624,7 +624,7 @@ pCStringChar = do
   next <- A.anyChar
   case next of
        c | c == 'x' || c == 'X' -> () <$ A.takeWhile1 (A.inClass "0-9a-fA-F")
-         | c == '0' -> () <$ A.takeWhile1 (A.inClass "0-7")
+         | c == '0' -> () <$ A.takeWhile (A.inClass "0-7")
          | A.inClass "abefnrtv\"'?\\" c -> return ()
          | otherwise -> mzero
 

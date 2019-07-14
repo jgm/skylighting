@@ -90,7 +90,9 @@ main = do
       let perl = maybe (error "could not find Perl syntax") id
                              (lookupSyntax "Perl" sMap)
           cpp  = maybe (error "could not find CPP syntax") id
-                             (lookupSyntax "cpp" sMap) in
+                             (lookupSyntax "cpp" sMap)
+          c    = maybe (error "could not find C syntax") id
+                             (lookupSyntax "c" sMap) in
       [ testCase "perl NUL case" $ Right
              [[(KeywordTok,"s\NUL")
               ,(OtherTok,"b")
@@ -145,8 +147,11 @@ main = do
                      "0.1f\n1.0f\n-0.1f\n-1.0F\n-1.0L\n1e3\n-15e+3\n0.f\n1.F\n1.E3"
       , testCase "cpp identifier (#76)" $ Right
            [ [ (NormalTok,"ng_or") ]
-           ] @=? tokenize defConfig cpp
-                     "ng_or"
+           ] @=? tokenize defConfig cpp "ng_or"
+
+      , testCase "c '\\0' (#82)" $ Right
+           [ [ (CharTok,"'\\0'") ]
+           ] @=? tokenize defConfig c "'\\0'"
       ]
     ]
 
