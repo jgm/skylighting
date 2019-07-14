@@ -16,6 +16,7 @@
     java jsp nasm protobuf pure go objectivecpp gnuassembler povray
     actionscript c cs opencl boo rhtml elixir.  This fixes a
     regression introduced in version 0.3.1.
+  * Ensure line span css only applied to lines (David Baynard).
 
 ## 0.8.1.1 -- 2019-06-13
 
