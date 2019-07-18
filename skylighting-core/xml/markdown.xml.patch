@@ -1,0 +1,16 @@
+diff --git a/skylighting-core/xml/markdown.xml b/skylighting-core/xml/markdown.xml
+index f888487..1cf6b14 100644
+--- a/skylighting-core/xml/markdown.xml
++++ b/skylighting-core/xml/markdown.xml
+@@ -51,8 +51,9 @@
+         <RegExpr attribute="emphasis" String="&emphasisregex;"/>
+         <RegExpr attribute="strongemphasis" String="&strongemphasisregex;"/>
+         <RegExpr attribute="code" String="^([\s]{4,}|\t+).*$"/>
+-        <RegExpr context="bullet" String="^[\*\+\-]\s"/>
+-        <RegExpr context="numlist" String="^[\d]+\.\s"/>
++        <!-- Next 2 lines modified: see https://github.com/jgm/skylighting/issues/84 -->
++        <RegExpr context="bullet" String="^[\*\+\-]\s" lookAhead="true"/>
++        <RegExpr context="numlist" String="^[\d]+\.\s" lookAhead="true"/>
+         <RegExpr attribute="meta" String="^(Title|Author|Date|Copyright|Revision|CSS|LaTeX\ XSLT|Categories|Tags|BaseName|Excerpt):(.*)+$"/>
+         <IncludeRules context="inc"/>
+       </context>

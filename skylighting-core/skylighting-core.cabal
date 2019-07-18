@@ -27,6 +27,7 @@ build-type:          Simple
 extra-source-files:  README.md
                      changelog.md
                      xml/*.xml
+                     xml/*.patch
                      test/default.theme
                      test/cases/abc.ada
                      test/cases/abc.agda
