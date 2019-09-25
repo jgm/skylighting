@@ -1,5 +1,5 @@
 name:                skylighting-core
-version:             0.8.2
+version:             0.8.2.1
 synopsis:            syntax highlighting library
 description:         Skylighting is a syntax highlighting library.
                      It derives its tokenizers from XML syntax
@@ -132,7 +132,10 @@ library
   if flag(system-pcre)
     build-depends:     regex-pcre
   else
-    build-depends:     regex-pcre-builtin
+    build-depends:     regex-pcre-builtin,
+                       regex-base < 0.94
+         -- for the above, see https://github.com/jgm/pandoc/issues/5776
+         -- this can be removed if we have a new regex-pcre-builtin release
   hs-source-dirs:      src
   ghc-prof-options:    -fprof-auto-exported
   default-language:    Haskell2010
