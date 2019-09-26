@@ -1,5 +1,21 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.2.1 -- 2019-09-25
+
+  * Add upper bound for regex-base if regex-pcre-builtin is used.
+    Currently regex-pcre-builtin won't build on ghc 8.4+ with
+    regex-base 0.94.0.0.  When regex-pcre-builtin is updated, we
+    can remove this.
+
+  * Correct cabal wildcard to include .xml.patch files in distribution.
+
+  * Update breezedark style (Kien Dang).
+
+  * Update markdown.xml so first list marker is included in list (#84).
+
+  * skylighting.cabal - removed some build dependencies
+    which are not necessary (they're dependencies of skylighting-core).
+
 ## 0.8.2 -- 2019-07-14
 
   * Change matchRegex so it gives "no match" on a regex error
