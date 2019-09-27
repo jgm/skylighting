@@ -192,10 +192,6 @@ library
   default-language:    Haskell2010
   ghc-options:         -Wall
 
-Flag system-pcre
-  Description:   Use regex-pcre instead of regex-pcre-builtin
-  Default:       False
-
 Flag executable
   Description:   Whether to build the skylighting program
   Default:       False
