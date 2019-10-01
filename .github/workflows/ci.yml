@@ -29,9 +29,9 @@ jobs:
           sudo apt-get install ghc-${{ matrix.versions.ghc }} cabal-install-${{ matrix.versions.cabal }}
     - name: Build and test
       run: |
-          export PATH=/opt/cabal/bin:/opt/ghc/bin:$PATH
+          export PATH=/opt/cabal/${{ matrix.versions.cabal }}/bin:/opt/ghc/${{ matrix.versions.ghc }}/bin:$PATH
           cabal v2-update -v2
-          cabal v2-install -v2 --only-dependencies -ffast -fexecutable --disable-optimization skylighting-core
+          cabal v2-install -v2 --only-dependencies -fexecutable --disable-optimization skylighting-core
           cabal v2-install -v2 -fexecutable --disable-optimization skylighting-core 2>&1 | tee build.log
           # fail if warnings in local build
           ! grep -q "[Ww]arning:" build.log
