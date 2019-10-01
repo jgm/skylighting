@@ -36,7 +36,7 @@ jobs:
           # fail if warnings in local build
           ! grep -q "[Ww]arning:" build.log
           cd skylighting
-          skylighting-extract ../skylighting-core/xml/*.xml
+          $HOME/.cabal/bin/skylighting-extract ../skylighting-core/xml/*.xml
           cd ..
           cabal v2-install -fexecutable --disable-optimization skylighting 2>&1 | tee build.log
           # fail if warnings in local build
@@ -59,7 +59,7 @@ jobs:
           chcp 65001
           stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
-          skylighting-extract ../skylighting-core/xml/*.xml
+          stack exec skylighting-extract -- ../skylighting-core/xml/*.xml
           cd ..
           stack install --test --haddock --no-haddock-deps --fast --flag 'skylighting:executable' --ghc-options=-Werror
 
@@ -77,7 +77,7 @@ jobs:
       run: |
           ./stack install --fast --flag 'skylighting-core:executable' skylighting-core
           cd skylighting
-          $HOME/.local/bin/skylighting-extract ../skylighting-core/xml/*.xml
+          ./stack exec skylighting-extract -- ../skylighting-core/xml/*.xml
           cd ..
           ./stack install --test --haddock --no-haddock-deps --fast --flag 'skylighting:executable' --ghc-options=-Werror
 
