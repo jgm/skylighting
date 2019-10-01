@@ -30,9 +30,9 @@ jobs:
     - name: Build and test
       run: |
           export PATH=/opt/cabal/bin:/opt/ghc/bin:$PATH
-          cabal v2-update
-          cabal v2-install --only-dependencies -ffast -fexecutable --disable-optimization skylighting-core
-          cabal v2-install -fexecutable --disable-optimization skylighting-core 2>&1 | tee build.log
+          cabal v2-update -v2
+          cabal v2-install -v2 --only-dependencies -ffast -fexecutable --disable-optimization skylighting-core
+          cabal v2-install -v2 -fexecutable --disable-optimization skylighting-core 2>&1 | tee build.log
           # fail if warnings in local build
           ! grep -q "[Ww]arning:" build.log
           cd skylighting
