@@ -1,5 +1,15 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.2.2 -- 2019-09-30
+
+  * Remove upper bound on regex-base and require
+    regex-pcre-builtin >= 0.95, to avoid a build conflict
+    with earlier versions of regex-pcre-builtin and
+    regex-base >= 0.94.
+
+  * Remove unused system-pcre flag in skylighting.cabal.
+    This flag only affects skylighting-core.
+
 ## 0.8.2.1 -- 2019-09-25
 
   * Add upper bound for regex-base if regex-pcre-builtin is used.
