@@ -31,8 +31,8 @@ jobs:
       run: |
           export PATH=/opt/cabal/bin:/opt/ghc/bin:$PATH
           cabal v2-update
-          cabal v2-install --only-dependencies --force-reinstalls -ffast -fexecutable --disable-optimization skylighting-core
-          cabal v2-install -fexecutable --force-reinstalls --disable-optimization skylighting-core 2>&1 | tee build.log
+          cabal v2-install --only-dependencies -ffast -fexecutable --disable-optimization skylighting-core
+          cabal v2-install -fexecutable --disable-optimization skylighting-core 2>&1 | tee build.log
           # fail if warnings in local build
           ! grep -q "[Ww]arning:" build.log
           cd skylighting
@@ -41,7 +41,7 @@ jobs:
           cabal v2-install -fexecutable --disable-optimization skylighting 2>&1 | tee build.log
           # fail if warnings in local build
           ! grep -q "[Ww]arning:" build.log
-          cabal v2-test -fexecutable --disable-optimization
+          cabal v2-test -fexecutable --disable-optimization all
 
   windows:
 
@@ -57,7 +57,7 @@ jobs:
       shell: cmd
       run: |
           chcp 65001
-          stack install --fast --flag 'skylighting-core:executable' skylighting-core
+          stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
           skylighting-extract ../skylighting-core/xml/*.xml
           cd ..
