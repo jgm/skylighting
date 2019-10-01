@@ -1,7 +1,8 @@
 packages:
 - skylighting-core
 - skylighting
-extra-deps: []
+extra-deps:
+- regex-pcre-builtin-0.95.0.8.8.35
 resolver: lts-13.5
 ghc-options:
     "$locals": -optP-Wno-nonportable-include-path
