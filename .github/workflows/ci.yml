@@ -77,7 +77,7 @@ jobs:
       run: |
           ./stack install --fast --flag 'skylighting-core:executable' skylighting-core
           cd skylighting
-          ./stack exec skylighting-extract -- ../skylighting-core/xml/*.xml
+          ../stack exec skylighting-extract -- ../skylighting-core/xml/*.xml
           cd ..
           ./stack install --test --haddock --no-haddock-deps --fast --flag 'skylighting:executable' --ghc-options=-Werror
 
