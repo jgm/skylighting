@@ -1,0 +1,83 @@
+name: CI tests
+
+on: [push, pull_request]
+
+jobs:
+  linux:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        versions:
+          - ghc: '8.0.2'
+            cabal: '2.4'
+          - ghc: '8.2.2'
+            cabal: '2.4'
+          - ghc: '8.4.4'
+            cabal: '2.4'
+          - ghc: '8.6.5'
+            cabal: '2.4'
+          - ghc: '8.8.1'
+            cabal: '3.0'
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install recent cabal/ghc
+      run: |
+          sudo add-apt-repository ppa:hvr/ghc
+          sudo apt-get update
+          sudo apt-get install ghc-${{ matrix.versions.ghc }} cabal-install-${{ matrix.versions.cabal }}
+    - name: Build and test
+      run: |
+          export PATH=/opt/cabal/bin:/opt/ghc/bin:$PATH
+          cabal v2-update
+          cabal v2-install --only-dependencies --force-reinstalls -ffast -fexecutable --disable-optimization skylighting-core
+          cabal v2-install -fexecutable --force-reinstalls --disable-optimization skylighting-core 2>&1 | tee build.log
+          # fail if warnings in local build
+          ! grep -q "[Ww]arning:" build.log
+          cd skylighting
+          skylighting-extract ../skylighting-core/xml/*.xml
+          cd ..
+          cabal v2-install -fexecutable --disable-optimization skylighting 2>&1 | tee build.log
+          # fail if warnings in local build
+          ! grep -q "[Ww]arning:" build.log
+          cabal v2-test -fexecutable --disable-optimization
+
+  windows:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install stack
+      shell: cmd
+      run: |
+          choco install haskell-stack
+    - name: Build and test
+      shell: cmd
+      run: |
+          chcp 65001
+          stack install --fast --flag 'skylighting-core:executable' skylighting-core
+          cd skylighting
+          skylighting-extract ../skylighting-core/xml/*.xml
+          cd ..
+          stack install --test --haddock --no-haddock-deps --fast --flag 'skylighting:executable' --ghc-options=-Werror
+
+  macos:
+
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install stack
+      run: |
+          curl -L https://get.haskellstack.org/stable/osx-x86_64.tar.gz -o stack.tar.gz
+          tar xzvf stack.tar.gz --strip-components=1 'stack*/stack'
+    - name: Build and test
+      run: |
+          ./stack install --fast --flag 'skylighting-core:executable' skylighting-core
+          cd skylighting
+          skylighting-extract ../skylighting-core/xml/*.xml
+          cd ..
+          ./stack install --test --haddock --no-haddock-deps --fast --flag 'skylighting:executable' --ghc-options=-Werror
+
