@@ -33,7 +33,8 @@ jobs:
           cd skylighting
           cabal v2-run skylighting-extract -fexecutable --disable-optimization -- ../skylighting-core/xml/*.xml
           cd ..
-          cabal v2-build -j1 -fexecutable --enable-test --enable-benchmark --disable-optimization all 2>&1 | tee build.log
+          cabal v2-build -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all
+          cabal v2-build -j1 -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all 2>&1 | tee build.log
           # fail if warnings in local build
           ! grep -q ": [Ww]arning:" build.log || exit 1
           cabal v2-test -fexecutable --disable-optimization all
