@@ -22,7 +22,7 @@ import Text.Read (readMaybe)
 import Text.Printf (printf)
 import Text.Show.Pretty (ppShow)
 #if !MIN_VERSION_base(4,11,0)
-import Data.Semigroup
+import Data.Semigroup ((<>))
 #endif
 
 data Flag = Sty String
