@@ -2,7 +2,7 @@ skylighting
 ===========
 
 [![license](https://img.shields.io/badge/license-GPLv2+-brightgreen.svg)](https://www.gnu.org/licenses/gpl.html)
-[![CI tests](https://github.com/jgm/commonmark-hs/workflows/CI%20tests/badge.svg)](https://github.com/jgm/skylighting/actions)
+[![CI tests](https://github.com/jgm/skylighting/workflows/CI%20tests/badge.svg)](https://github.com/jgm/skylighting/actions)
 
 A Haskell syntax highlighting library with tokenizers derived
 from KDE XML syntax highlighting descriptions.
