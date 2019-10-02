@@ -25,6 +25,7 @@ import GHC.Generics (Generic)
 import System.IO.Unsafe (unsafePerformIO)
 import Text.Printf
 import Text.Regex.PCRE.ByteString
+import Control.Monad.Fail (MonadFail)
 
 -- | An exception in compiling or executing a regex.
 newtype RegexException = RegexException String
@@ -103,5 +104,5 @@ matchRegex r s = case unsafePerformIO (regexec r s) of
 encodeToText :: BS.ByteString -> Text.Text
 encodeToText = TE.decodeUtf8 . Base64.encode
 
-decodeFromText :: (Monad m) => Text.Text -> m BS.ByteString
+decodeFromText :: (Monad m, MonadFail m) => Text.Text -> m BS.ByteString
 decodeFromText = either fail return . Base64.decode . TE.encodeUtf8
