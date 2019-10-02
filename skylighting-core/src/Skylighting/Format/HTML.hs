@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 module Skylighting.Format.HTML (
       formatHtmlInline
     , formatHtmlBlock
@@ -6,12 +7,14 @@ module Skylighting.Format.HTML (
 
 import Data.List (intersperse, sort)
 import qualified Data.Map as Map
-import Data.Monoid ((<>))
 import qualified Data.Text as Text
 import Skylighting.Types
 import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
+#if !MIN_VERSION_base(4,11,0)
+import Data.Semigroup
+#endif
 
 -- | Format tokens using HTML spans inside @code@ tags. For example,
 -- A @KeywordTok@ is rendered as a span with class @kw@.

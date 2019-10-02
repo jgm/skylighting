@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 -- | This module provides routines to load syntax definitions from disk
 -- files.
 module Skylighting.Loader ( loadSyntaxFromFile
@@ -8,12 +9,13 @@ module Skylighting.Loader ( loadSyntaxFromFile
 import Control.Monad (filterM, foldM)
 import Control.Monad.Except (ExceptT(ExceptT), runExceptT)
 import Control.Monad.IO.Class (liftIO)
-import Data.Monoid ((<>))
 import System.Directory (listDirectory, doesFileExist)
 import System.FilePath ((</>), takeExtension)
-
 import Skylighting.Types (SyntaxMap, Syntax)
 import Skylighting.Parser (addSyntaxDefinition, parseSyntaxDefinition)
+#if !MIN_VERSION_base(4,11,0)
+import Data.Semigroup
+#endif
 
 syntaxFileExtension :: String
 syntaxFileExtension = ".xml"
