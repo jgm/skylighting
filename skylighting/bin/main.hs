@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP               #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 import Control.Monad
@@ -5,7 +6,6 @@ import qualified Data.ByteString.Lazy as BL
 import Data.Char (toLower)
 import qualified Data.Map as Map
 import Data.Maybe (fromMaybe)
-import Data.Monoid
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 import Data.Version (showVersion)
@@ -21,6 +21,9 @@ import qualified Text.Blaze.Html5.Attributes as A
 import Text.Read (readMaybe)
 import Text.Printf (printf)
 import Text.Show.Pretty (ppShow)
+#if !MIN_VERSION_base(4,11,0)
+import Data.Semigroup
+#endif
 
 data Flag = Sty String
           | Theme String

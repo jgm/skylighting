@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP               #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Skylighting.Format.ANSI (
          formatANSI
@@ -5,11 +6,13 @@ module Skylighting.Format.ANSI (
 import Control.Monad (mplus)
 import qualified Data.Map as Map
 import Data.Maybe (fromMaybe, isNothing, maybeToList)
-import Data.Monoid
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Skylighting.Types
 import qualified System.Console.ANSI.Codes as ANSI
+#if !MIN_VERSION_base(4,11,0)
+import Data.Semigroup
+#endif
 
 formatANSI :: FormatOptions -> Style -> [SourceLine] -> Text
 formatANSI opts sty = (beforeText <>)

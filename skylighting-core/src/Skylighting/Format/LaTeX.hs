@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP                 #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 module Skylighting.Format.LaTeX (
@@ -10,11 +11,13 @@ import Control.Monad (mplus)
 import Data.Char (isSpace)
 import Data.List (sort)
 import qualified Data.Map as Map
-import Data.Monoid
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Skylighting.Types
 import Text.Printf
+#if !MIN_VERSION_base(4,11,0)
+import Data.Semigroup
+#endif
 
 formatLaTeX :: Bool -> [SourceLine] -> Text
 formatLaTeX inline = Text.intercalate (Text.singleton '\n')

@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
+{-# LANGUAGE CPP                   #-}
 {-# LANGUAGE DeriveFunctor         #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -22,7 +23,6 @@ import Data.CaseInsensitive (mk)
 import Data.Char (isAlphaNum, isAscii, isLetter, isPrint, isSpace, ord)
 import qualified Data.Map as Map
 import Data.Maybe (catMaybes)
-import Data.Monoid
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -31,6 +31,9 @@ import Debug.Trace
 import Skylighting.Regex
 import Skylighting.Types
 import Text.Printf (printf)
+#if !MIN_VERSION_base(4,11,0)
+import Data.Semigroup
+#endif
 
 newtype ContextStack = ContextStack{ unContextStack :: [Context] }
   deriving (Show)
