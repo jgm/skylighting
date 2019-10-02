@@ -34,13 +34,13 @@ jobs:
           cabal v2-build --only-dependencies -fexecutable --disable-optimization skylighting-core
           cabal v2-build -fexecutable --disable-optimization skylighting-core 2>&1 | tee build.log
           # fail if warnings in local build
-          ! grep -q "[Ww]arning:" build.log || exit 1
+          ! grep -q ": *[Ww]arning:" build.log || exit 1
           cd skylighting
           cabal v2-run skylighting-extract -fexecutable --disable-optimization -- ../skylighting-core/xml/*.xml
           cd ..
           cabal v2-install -j1 -fexecutable --disable-optimization skylighting 2>&1 | tee build.log
           # fail if warnings in local build
-          ! grep -q "[Ww]arning:" build.log || exit 1
+          ! grep -q ": [Ww]arning:" build.log || exit 1
           cabal v2-test -fexecutable --disable-optimization all
 
   windows:
@@ -62,7 +62,7 @@ jobs:
           stack exec skylighting-extract -- ..\skylighting-core\xml\*.xml
           cd ..
           stack build --test --fast --flag skylighting:executable --dependencies-only
-          stack install --test --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
+          stack install --test --jobs=1 --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
 
   macos:
 
@@ -81,5 +81,5 @@ jobs:
           ../stack exec skylighting-extract -- ../skylighting-core/xml/*.xml
           cd ..
           ./stack build --test --fast --flag skylighting:executable --dependencies-only
-          ./stack install --test --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
+          ./stack install --test --jobs=1 --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
 
