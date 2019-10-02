@@ -54,7 +54,7 @@ jobs:
           chcp 65001
           stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
-          skylighting-extract ..\skylighting-core\xml\*.xml
+          %USERPROFILE%\AppData\Roaming\local\bin\skylighting-extract.exe ..\skylighting-core\xml\*.xml
           cd ..
           stack build --test --fast --flag skylighting:executable --dependencies-only
           stack install --test --jobs=1 --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
