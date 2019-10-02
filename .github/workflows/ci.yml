@@ -61,6 +61,7 @@ jobs:
           cd skylighting
           stack exec skylighting-extract -- ..\skylighting-core\xml\*.xml
           cd ..
+          stack build --test --fast --flag skylighting:executable --dependencies-only
           stack install --test --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
 
   macos:
@@ -75,9 +76,10 @@ jobs:
           tar xzvf stack.tar.gz --strip-components=1 'stack*/stack'
     - name: Build and test
       run: |
-          ./stack install --fast --flag 'skylighting-core:executable' skylighting-core
+          ./stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
           ../stack exec skylighting-extract -- ../skylighting-core/xml/*.xml
           cd ..
-          ./stack install --test --haddock --no-haddock-deps --fast --flag 'skylighting:executable' --ghc-options=-Werror
+          ./stack build --test --fast --flag skylighting:executable --dependencies-only
+          ./stack install --test --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
 
