@@ -16,6 +16,7 @@ import System.Directory
 import System.Environment (getArgs)
 import System.FilePath
 import System.Exit (exitFailure)
+import System.IO (hSetEncoding, utf8, openFile, IOMode(..))
 import Test.QuickCheck
 import Test.Tasty
 import Test.Tasty.Golden.Advanced (goldenTest)
@@ -24,6 +25,12 @@ import Test.Tasty.QuickCheck (testProperty)
 import Text.Show.Pretty
 
 import Skylighting.Core
+
+readTextFile :: FilePath -> IO Text
+readTextFile fp = do
+  h <- openFile fp ReadMode
+  hSetEncoding h utf8
+  Text.hGetContents h
 
 tokToText :: Token -> Text
 tokToText (_, s) = s
@@ -49,7 +56,7 @@ main = do
   inputs <- filter (\fp -> take 1 fp /= ".")
          <$> getDirectoryContents ("test" </> "cases")
   allcases <- mapM (fmap (Text.take 240)
-                    . Text.readFile . (("test" </> "cases") </>)) inputs
+                    . readTextFile . (("test" </> "cases") </>)) inputs
   args <- getArgs
   let regen = "--accept" `elem` args
   defaultTheme <- BL.readFile ("test" </> "default.theme")
@@ -207,9 +214,9 @@ tokenizerTest cfg sMap regen inpFile = localOption (mkTimeout 9000000) $
   goldenTest testname getExpected getActual
       (compareValues referenceFile) updateGolden
   where testname = lang ++ " tokenizing of " ++ inpFile
-        getExpected = Text.readFile referenceFile
+        getExpected = readTextFile referenceFile
         getActual = do
-          code <- Text.readFile (casesdir </> inpFile)
+          code <- readTextFile (casesdir </> inpFile)
           syntax <- case lookupSyntax (Text.pack lang) sMap of
                          Just s  -> return s
                          Nothing -> fail $
