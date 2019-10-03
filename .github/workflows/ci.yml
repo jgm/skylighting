@@ -62,7 +62,7 @@ jobs:
       shell: cmd
       run: |
           stack build --test --fast --flag skylighting:executable --dependencies-only
-          stack test --jobs=1 --fast --flag skylighting:executable # --ghc-options=-Werror
+          stack test --jobs=1 --fast --flag skylighting:executable --ghc-options=-Werror
 
 
   macos:
