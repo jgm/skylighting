@@ -54,9 +54,10 @@ jobs:
     - name: Bootstrap
       shell: pwsh
       run: |
+          $env:Path += ";$HOME\AppData\Roaming\local\bin"
           stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
-          $HOME\AppData\Roaming\local\bin\skylighting-extract.exe ..\skylighting-core\xml\*.xml
+          skylighting-extract ..\skylighting-core\xml\*.xml
     - name: Build and test
       shell: cmd
       run: |
