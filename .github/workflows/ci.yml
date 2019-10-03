@@ -57,7 +57,7 @@ jobs:
           $env:Path += ";$HOME\AppData\Roaming\local\bin"
           stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
-          skylighting-extract ..\skylighting-core\xml\*.xml
+          skylighting-extract (get-item ..\skylighting-core\xml\*.xml)
     - name: Build and test
       shell: cmd
       run: |
