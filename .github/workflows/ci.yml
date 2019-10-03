@@ -22,7 +22,7 @@ jobs:
             cabal: '3.0'
     steps:
     - uses: actions/checkout@v1
-    - name: Build and test
+    - name: Bootstrap
       run: |
           export PATH=/opt/cabal/${{ matrix.versions.cabal }}/bin:/opt/ghc/${{ matrix.versions.ghc }}/bin:$PATH
           cabal v2-update
@@ -32,7 +32,9 @@ jobs:
           ! grep -q ": *[Ww]arning:" build.log || exit 1
           cd skylighting
           cabal v2-run skylighting-extract -fexecutable --disable-optimization -- ../skylighting-core/xml/*.xml
-          cd ..
+    - name: Build and test
+      run: |
+          export PATH=/opt/cabal/${{ matrix.versions.cabal }}/bin:/opt/ghc/${{ matrix.versions.ghc }}/bin:$PATH
           cabal v2-build -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all
           cabal v2-build -j1 -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all 2>&1 | tee build.log
           # fail if warnings in local build
@@ -49,16 +51,18 @@ jobs:
       shell: cmd
       run: |
           choco install haskell-stack
-    - name: Build and test
+    - name: Bootstrap
       shell: cmd
       run: |
-          chcp 65001
           stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
           %USERPROFILE%\AppData\Roaming\local\bin\skylighting-extract.exe ..\skylighting-core\xml\*.xml
-          cd ..
+    - name: Build and test
+      shell: cmd
+      run: |
           stack build --test --fast --flag skylighting:executable --dependencies-only
-          stack install --test --jobs=1 --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
+          stack test --jobs=1 --fast --flag skylighting:executable # --ghc-options=-Werror
+
 
   macos:
 
@@ -70,12 +74,13 @@ jobs:
       run: |
           curl -L https://get.haskellstack.org/stable/osx-x86_64.tar.gz -o stack.tar.gz
           tar xzvf stack.tar.gz --strip-components=1 'stack*/stack'
-    - name: Build and test
+    - name: Bootstrap
       run: |
           ./stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
           ../stack exec skylighting-extract -- ../skylighting-core/xml/*.xml
-          cd ..
+    - name: Build and test
+      run: |
           ./stack build --test --fast --flag skylighting:executable --dependencies-only
-          ./stack install --test --jobs=1 --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
+          ./stack build --test --jobs=1 --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
 
