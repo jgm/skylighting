@@ -1,5 +1,15 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.2.3 -- 2019-10-03
+
+  * Tests: ensure we read test files as UTF-8.
+
+  * Fix compiler warnings around Monoid imports.
+
+  * Add MonadFail constraint (allowing compilation with ghc 8.8.x).
+
+  * Add cabal.project and move CI from Travis to GitHub Actions.
+
 ## 0.8.2.2 -- 2019-09-30
 
   * Remove upper bound on regex-base and require
