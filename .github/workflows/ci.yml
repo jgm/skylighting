@@ -52,7 +52,7 @@ jobs:
       run: |
           choco install haskell-stack
     - name: Bootstrap
-      shell: cmd
+      shell: pwsh
       run: |
           stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
