@@ -390,15 +390,15 @@ stringDetect caseSensitive s inp = do
 normalChunk :: TokenizerM Text
 normalChunk = do
   inp <- gets input
-  case BS.uncons inp of
+  case UTF8.uncons inp of
     Nothing -> mzero
     Just (c, _)
       | c == ' ' ->
         let bs = BS.takeWhile (==' ') inp
         in  takeChars (BS.length bs)
       | isAscii c && isAlphaNum c ->
-        let bs = BS.takeWhile isAlphaNum inp
-        in  takeChars (BS.length bs)
+        let (bs, _) = UTF8.span isAlphaNum inp
+        in  takeChars (UTF8.length bs)
       | otherwise -> takeChars 1
 
 includeRules :: Maybe TokenType -> ContextName -> ByteString
