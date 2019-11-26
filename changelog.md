@@ -1,5 +1,17 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.3 -- 2019-11-26
+
+  * Update XML syntax definitions for c, cmake, coffee, cpp, css,
+    diff, djangotemplate, elixir, elm, glsl, haskell, html, isocpp,
+    javascript-react, javascript, json, jsp, julia, latex, lua,
+    markdown, matlab, mediawiki, modelines, mustache, perl, php,
+    powershell, qml, rest, rust, typescript, vhdl.
+
+  * Fix highlighting errors with non-ASCII characters in JSON (#90).
+    This error was due to an optimization that made some incorrect
+    assumptions.
+
 ## 0.8.2.3 -- 2019-10-03
 
   * Tests: ensure we read test files as UTF-8.
