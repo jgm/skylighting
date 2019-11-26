@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <!-- Author: Milian Wolff <mail@milianw.de> -->
-<language name="QML" version="6" kateversion="5.0" section="Scripts" extensions="*.qml;*.qmltypes"
+<language name="QML" version="7" kateversion="5.0" section="Scripts" extensions="*.qml;*.qmltypes"
           mimetype="text/x-qml;application/x-qml" indenter="cstyle"
           author="Milian Wolff (mail@milianw.de)" license="MIT">
   <highlighting>
@@ -83,6 +83,10 @@
       <item>GradientStop</item>
       <item>MouseRegion</item>
     </list>
+    <!-- keywords not part of JavaScript -->
+    <list name="extra-keywords">
+      <item>readonly</item>
+    </list>
     <list name="types">
       <!-- see: http://doc.trolltech.com/4.7-snapshot/qml-extending-types.html -->
       <item>string</item>
@@ -101,6 +105,7 @@
         <DetectSpaces/>
         <WordDetect attribute="Import" context="Import" String="import"/>
         <keyword attribute="Elements" context="#stay" String="elements" />
+        <keyword attribute="Keywords" String="extra-keywords"/>
         <WordDetect attribute="Signal" context="Signal" String="signal" />
         <WordDetect attribute="Keywords" context="Property" String="default property" />
         <WordDetect attribute="Keywords" context="Property" String="property" />

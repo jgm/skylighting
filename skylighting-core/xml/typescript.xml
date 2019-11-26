@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd"
 [
-	<!ENTITY identifier "([a-zA-Z_$]|[^[:ascii:]])([\w$]|[^[:ascii:]])*">
-	<!ENTITY numSuffix  "(?=n?([^\w]|$))">
-	<!ENTITY objectOp   "[\?!]?">
-	<!ENTITY endLine    "\s*($|//|(/\*.*\*/\s*)+$)">
+	<!ENTITY identifier   "(?:[a-zA-Z_$]|[^[:ascii:]])(?:[\w$]|[^[:ascii:]])*">
+	<!ENTITY numSuffix    "(?=n?(?:[^\w]|$))">
+	<!ENTITY objectOp     "[\?!]?">
+	<!ENTITY objectPoint  "\s*&objectOp;\.">
+	<!ENTITY endLine      "\s*(?:$|//|(?:/\*.*\*/\s*)+(?:$|//))">
+	<!ENTITY utilityTypes "\b(?:Partial|Readonly|Record|Pick|Omit|Exclude|Extract|NonNullable|ReturnType|InstanceType|Required|ThisType)(?=\s*&lt;)">
 ]>
 
 <!--
@@ -39,6 +41,10 @@
     incorporate these keywords (for example: "qml.xml").
 
     Change log:
+     * v6 [2019-10-01]: Add "asserts" keyword in type predicates.
+                        Highlight types after the "as" keyword.
+     * v5 [2019-08-30]: Avoid that ?: be used as conditional expressions.
+     * v4 [2019-07-16]: Fixed highlighting of keywords before ":" in conditional expressions.
      * v3 [2019-02-18]: Add support to bigint and the "is" keyword.
                         Fixes keyword delimiters. Don't highlight regex
                         after "]" and ")". Multiple fixes and improvements.
@@ -48,7 +54,7 @@
 -->
 
 <language name="TypeScript"
-          version="3"
+          version="6"
           kateversion="5.53"
           section="Scripts"
           extensions="*.ts"
@@ -73,7 +79,6 @@
 		<include>reserved##JavaScript</include>
 		<item>type</item>
 		<item>arguments</item>
-
 		<!-- Class -->
 		<item>readonly</item>
 		<item>abstract</item>
@@ -1659,9 +1664,9 @@
 			<IncludeRules context="FindStrings" />
 
 			<!-- Abstract -->
-			<RegExpr context="#stay" attribute="Reserved" String="\b(abstract)(?=\s+(class|interface)\b)" />
+			<RegExpr context="#stay" attribute="Reserved" String="\babstract(?=\s+(?:class|interface)\b)" />
 			<!-- New -->
-			<RegExpr context="NewTarget" attribute="Keyword" String="\bnew(?=\s*&objectOp;\.\s*target\b)" />
+			<RegExpr context="NewTarget" attribute="Keyword" String="\bnew(?=&objectPoint;\s*target\b)" />
 			<RegExpr context="MemberObject" attribute="Objects" String="\bnew(?=&objectOp;\.)" />
 			<WordDetect context="#stay" attribute="Keyword" String="new" />
 
@@ -1680,20 +1685,15 @@
 			<keyword context="#stay" attribute="Keyword" String="keywords" /> <!-- NoRegExp? -->
 			<keyword context="#stay" attribute="Reserved" String="reserved" />
 
+			<!-- Utility Types -->
+			<RegExpr context="#stay" attribute="Built-in Objects" String="&utilityTypes;" />
 			<!-- Built-in Classes -->
-			<WordDetect context="FindMemberObjectMath" attribute="Built-in Objects" String="Math" />
-			<WordDetect context="FindMemberObjectPromise" attribute="Built-in Objects" String="Promise" />
-			<WordDetect context="FindMemberObjectJSON" attribute="Built-in Objects" String="JSON" />
-			<WordDetect context="FindMemberObjectConsole" attribute="Built-in Objects" String="console" />
-			<WordDetect context="FindMemberObjectProcess" attribute="Built-in Objects" String="process" />
-			<keyword context="#stay" attribute="Built-in Objects" String="class_builtin" />
-			<keyword context="FindMemberObjectDOM" attribute="Built-in Objects" String="class_dom" />
-			<keyword context="FindMemberObjectNode" attribute="Built-in Objects" String="class_node" />
-			<keyword context="FindMemberObjectDOM" attribute="Built-in Objects" String="dom_variable" />
+			<IncludeRules context="BuiltInClasses" />
 			<!-- Objects -->
-			<RegExpr context="MemberObject" attribute="Objects" String="&identifier;(?=\s*&objectOp;\.)" />
+			<RegExpr context="MemberObject" attribute="Objects" String="&identifier;(?=&objectPoint;)" />
 			<DetectChar context="MemberObject" char="." />
 
+			<RegExpr context="Types" attribute="Module" String="\bas(?=\s)" />
 			<!-- Import -->
 			<WordDetect context="Import" attribute="Module" String="import" />
 			<!-- Export types -->
@@ -1711,13 +1711,55 @@
 			<DetectChar context="Object" attribute="Symbol" char="{" beginRegion="Brace" />
 			<DetectChar context="#stay" attribute="Symbol" char="[" beginRegion="List" />
 			<DetectChar context="NoRegExp" attribute="Symbol" char="]" endRegion="List" />
+			<!-- NOTE: Avoid highlighting identifier?: string, -->
+			<RegExpr context="ConditionalExpression" attribute="Symbol" String="\?(?=.*&identifier;\s*\:)" />
 			<DetectChar context="#stay" attribute="Symbol" char="?" /> <!-- Fix of conditional expression from the JavaScript highlighting -->
 
-			<!-- Highlight types after ":" and between "<" and ">" -->
+			<!-- Type Parameter: Highlight types after ":" and between "<" and ">" -->
 			<DetectChar context="Types" attribute="Symbol" char=":" />
-			<RegExpr context="TypesAngleBracket" attribute="Symbol" String="&lt;(?=(&identifier;|[\[\{\(&lt;]).*&gt;)" />
+			<RegExpr context="TypesAngleBracket" attribute="Symbol" String="&lt;(?=(?:&identifier;|[\[\{\(&lt;]).*&gt;)" />
 
 			<IncludeRules context="Normal##JavaScript" />
+		</context>
+
+		<context name="BuiltInClasses" attribute="Normal Text" lineEndContext="#stay">
+			<WordDetect context="FindMemberObjectMath" attribute="Built-in Objects" String="Math" />
+			<WordDetect context="FindMemberObjectPromise" attribute="Built-in Objects" String="Promise" />
+			<WordDetect context="FindMemberObjectJSON" attribute="Built-in Objects" String="JSON" />
+			<WordDetect context="FindMemberObjectConsole" attribute="Built-in Objects" String="console" />
+			<WordDetect context="FindMemberObjectProcess" attribute="Built-in Objects" String="process" />
+			<keyword context="#stay" attribute="Built-in Objects" String="class_builtin" />
+			<keyword context="FindMemberObjectDOM" attribute="Built-in Objects" String="class_dom" />
+			<keyword context="FindMemberObjectNode" attribute="Built-in Objects" String="class_node" />
+			<keyword context="FindMemberObjectDOM" attribute="Built-in Objects" String="dom_variable" />
+		</context>
+
+		<!-- Highlight keywords before ":" in conditional expressions. -->
+		<context name="ConditionalExpression" attribute="Normal Text" lineEndContext="#pop">
+			<DetectChar context="#pop" attribute="Symbol" char=":" />
+			<DetectChar context="#stay" attribute="Symbol" char="?" />
+
+			<!-- Keywords -->
+			<WordDetect context="#stay" attribute="Reserved" String="type" />
+			<keyword context="#stay" attribute="Keyword" String="keywords" /> <!-- NoRegExp? -->
+			<keyword context="#stay" attribute="Reserved" String="reserved" />
+			<!-- Utility Types -->
+			<RegExpr context="#stay" attribute="Built-in Objects" String="&utilityTypes;" />
+			<!-- Built-in Classes -->
+			<IncludeRules context="BuiltInClasses" />
+			<!-- Import -->
+			<WordDetect context="#stay" attribute="Module" String="import" />
+			<!-- Export types -->
+			<keyword context="#stay" attribute="Module" String="control_export_types" />
+			<!-- Keywords -->
+			<keyword context="#stay" attribute="Module" String="module" />
+			<keyword context="NoRegExp" attribute="Keyword" String="primitives" />
+			<keyword context="#stay" attribute="Keyword" String="types_operator_expression" />
+
+			<!-- NOTE: The identifiers before ":" should be highlighted as "Normal Text".
+			     However, currently, the "Parameter" attribute is equivalent to "Normal Text". -->
+			<!-- <RegExpr context="#stay" attribute="Normal Text" String="&identifier;(?=\s*&objectOp;:)" /> -->
+			<IncludeRules context="Normal" />
 		</context>
 
 		<context name="Object" attribute="Normal Text" lineEndContext="#stay">
@@ -1739,17 +1781,17 @@
 		<context name="FindNumbers" attribute="Normal Text" lineEndContext="#stay">
 			<RegExpr context="NoRegExp" attribute="Hexadecimal" String="\b0[xX][\da-fA-F][\da-fA-F_]*&numSuffix;" />
 			<RegExpr context="NoRegExp" attribute="Binary" String="\b0[bB][01][01_]*&numSuffix;" />
-			<RegExpr context="NoRegExp" attribute="Float" String="(\b\d[\d_]*\.?|(\b\d[\d_]*)?\.\d[\d_]*)[eE][\+\-]?\d[\d_]*&numSuffix;" />
-			<RegExpr context="NoRegExp" attribute="Float" String="(\.\d[\d_]*|\b\d[\d_]*\.(\d[\d_]*)?)&numSuffix;" />
+			<RegExpr context="NoRegExp" attribute="Float" String="(?:\b\d[\d_]*\.?|(?:\b\d[\d_]*)?\.\d[\d_]*)[eE][\+\-]?\d[\d_]*&numSuffix;" />
+			<RegExpr context="NoRegExp" attribute="Float" String="(?:\.\d[\d_]*|\b\d[\d_]*\.(?:\d[\d_]*)?)&numSuffix;" />
 			<RegExpr context="NoRegExp" attribute="Octal" String="\b0[oO]?[0-7][0-7_]*&numSuffix;" />
 			<RegExpr context="NoRegExp" attribute="Decimal" String="\b\d[\d_]*&numSuffix;" />
 			<!-- Avoid highlighting numbers of JavaScript -->
-			<RegExpr context="NoRegExp" String="\b([1-9]|0\d)\d*" />
+			<RegExpr context="NoRegExp" String="\b(?:[1-9]|0\d)\d*" />
 		</context>
 
 		<context name="FindFunctionName" attribute="Normal Text" lineEndContext="#stay">
 			<!-- function(...) and function<...>(...) -->
-			<RegExpr context="#stay" attribute="Function Name" String="&identifier;(?=\s*(&lt;((\{([^\{\}]|(\{[^\{\}]*\}))*\})|(\(([^\(\)]|(\([^\(\)]*\)))*\))|(\[([^\[\]]|(\[[^\[\]]*\]))*\])|('(\\.|[^'])*')|(&quot;(\\.|[^&quot;])*&quot;)|(`(\\.|[^`])*`)|[^&lt;&gt;]|&lt;.*&gt;)*&gt;)?\()" />
+			<RegExpr context="#stay" attribute="Function Name" String="&identifier;(?=\s*(?:&lt;(?:\{(?:[^\{\}]|\{[^\{\}]*\})*\}|\((?:[^\(\)]|\([^\(\)]*\))*\)|\[(?:[^\[\]]|\[[^\[\]]*\])*\]|'(?:\\.|[^'])*'|&quot;(?:\\.|[^&quot;])*&quot;|`(?:\\.|[^`])*`|[^&lt;&gt;]|&lt;.*&gt;)*&gt;)?\()" />
 		</context>
 
 		<context name="FindStrings" attribute="Normal Text" lineEndContext="#stay">
@@ -1766,7 +1808,7 @@
 			<IncludeRules context="Normal" />
 		</context>
 
-		<!-- Highlight types after the "type" keyword -->
+		<!-- Type Declaration: Highlight types after the "type" keyword -->
 
 		<context name="TypeDeclaration" attribute="Normal Text" lineEndContext="#stay">
 			<DetectSpaces />
@@ -1776,7 +1818,7 @@
 			<IncludeRules context="Normal" />
 		</context>
 
-		<!-- Highlight types after ":" -->
+		<!-- Type Parameter: Highlight types after ":" -->
 
 		<context name="Types" attribute="Normal Text" lineEndContext="#pop">
 			<IncludeRules context="FixPopLineEndContext" />
@@ -1810,14 +1852,23 @@
 			<RegExpr context="#pop" String="\S" firstNonSpace="true" lookAhead="true" />
 		</context>
 
+		<!-- Default: Type Parameter, Type Declaration, Angle Brackets -->
+
 		<context name="DefaultTypes" attribute="Normal Text" lineEndContext="#stay">
+			<!-- Types Keywords -->
 			<keyword context="NoRegExpSameLine" attribute="Types" String="types" />
+			<!-- Assertions -->
+			<WordDetect context="NoRegExpSameLine" attribute="Keyword" String="asserts" />
 			<!-- Type Guards -->
 			<WordDetect context="NoRegExpSameLine" attribute="Keyword" String="is" />
 
 			<!-- FIXME: For a strange reason, the keywords before "}" are not highlighted.
 			     This rule fixes it provisionally. -->
-			<RegExpr context="#stay" attribute="Types" String="\b(string|number|boolean|symbol|any|void|never|unknown|undefined|null|object)(?=\})" />
+			<RegExpr context="#stay" attribute="Types" String="\b(?:string|number|boolean|symbol|any|void|never|unknown|undefined|null|object)(?=\})" />
+
+			<!-- Don't start this context again -->
+			<AnyChar context="#stay" attribute="Symbol" String="?:" />
+			<WordDetect context="#stay" attribute="Module" String="as" />
 		</context>
 		<context name="TypesFindBrackets" attribute="Normal Text" lineEndContext="#stay">
 			<DetectChar context="TypesSquareBracket" attribute="Symbol" char="[" beginRegion="List" />
@@ -1881,7 +1932,7 @@
 			<IncludeRules context="Normal" />
 		</context>
 		<context name="ImportRequireKey" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-			<RegExpr context="#stay" attribute="Keyword" String="\s*\b(require)\s*(?=\()" />
+			<RegExpr context="#stay" attribute="Keyword" String="\s*require\s*(?=\()" />
 			<DetectChar context="ImportRequire" attribute="Symbol" char="(" beginRegion="import" />
 		</context>
 		<context name="ImportRequire" attribute="Normal Text" lineEndContext="#stay">
@@ -1906,7 +1957,7 @@
 			<Detect2Chars context="#stay" attribute="Symbol" char="?" char1="." />
 			<Detect2Chars context="#stay" attribute="Symbol" char="!" char1="." />
 
-			<RegExpr context="#stay" attribute="Objects" String="&identifier;(?=\s*&objectOp;\.)" />
+			<RegExpr context="#stay" attribute="Objects" String="&identifier;(?=&objectPoint;)" />
 			<IncludeRules context="FindFunctionName" /> <!-- #pop -->
 			<RegExpr context="#pop!NoRegExp" attribute="Object Member" String="&identifier;" />
 			<IncludeRules context="NoRegExp" />

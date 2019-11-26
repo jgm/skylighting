@@ -58,7 +58,7 @@
   , ( KeywordTok , "<i" )
   , ( OtherTok , ") do end" )
   ]
-, [ ( ControlFlowTok , "end" ) ]
+, [ ( KeywordTok , "end" ) ]
 , []
 , [ ( KeywordTok , "function" )
   , ( NormalTok , " ARRAY2D" )
@@ -124,7 +124,7 @@
   , ( ControlFlowTok , "return" )
   , ( NormalTok , " t" )
   ]
-, [ ( ControlFlowTok , "end" ) ]
+, [ ( KeywordTok , "end" ) ]
 , []
 , [ ( ConstantTok , "_CELLS" )
   , ( NormalTok , " " )
@@ -205,7 +205,7 @@
   ]
 , [ ( NormalTok , "    " ) , ( ControlFlowTok , "end" ) ]
 , [ ( NormalTok , "  " ) , ( ControlFlowTok , "end" ) ]
-, [ ( ControlFlowTok , "end" ) ]
+, [ ( KeywordTok , "end" ) ]
 , []
 , [ ( CommentTok
     , "-- run the CA and produce the next generation"
@@ -442,7 +442,7 @@
   , ( DecValTok , "1" )
   ]
 , [ ( NormalTok , "  " ) , ( ControlFlowTok , "end" ) ]
-, [ ( ControlFlowTok , "end" ) ]
+, [ ( KeywordTok , "end" ) ]
 , []
 , [ ( CommentTok , "-- output the array to screen" ) ]
 , [ ( KeywordTok , "function" )
@@ -521,7 +521,7 @@
   , ( NormalTok , "out" )
   , ( OperatorTok , ")" )
   ]
-, [ ( ControlFlowTok , "end" ) ]
+, [ ( KeywordTok , "end" ) ]
 , []
 , [ ( CommentTok , "-- constructor" ) ]
 , [ ( KeywordTok , "function" )
@@ -574,7 +574,7 @@
   , ( ControlFlowTok , "return" )
   , ( NormalTok , " c" )
   ]
-, [ ( ControlFlowTok , "end" ) ]
+, [ ( KeywordTok , "end" ) ]
 , []
 , [ ( CommentTok , "--" ) ]
 , [ ( CommentTok
@@ -976,7 +976,7 @@
   , ( CommentTok , "--delay()\t\t-- no delay" )
   ]
 , [ ( NormalTok , "  " ) , ( ControlFlowTok , "end" ) ]
-, [ ( ControlFlowTok , "end" ) ]
+, [ ( KeywordTok , "end" ) ]
 , []
 , [ ( NormalTok , "LIFE" )
   , ( OperatorTok , "(" )

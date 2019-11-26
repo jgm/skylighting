@@ -2,11 +2,11 @@
 <!DOCTYPE language SYSTEM "language.dtd"
 [
 	<!ENTITY name          "[A-Za-z_:][\w.:_-]*">
-	<!ENTITY attributeName "(\s|^)[A-Za-z_:\*#\(\[][\)\]\w\.:_-]*">
-	<!ENTITY entref        "&amp;(#[0-9]+|#[xX][0-9A-Fa-f]+|&name;);">
-	<!ENTITY tag           "&lt;\s*(&name;|&gt;)">
+	<!ENTITY attributeName "(?:\s|^)[A-Za-z_:\*#\(\[][\)\]\w\.:_-]*">
+	<!ENTITY entref        "&amp;(?:#[0-9]+|#[xX][0-9A-Fa-f]+|&name;);">
+	<!ENTITY tag           "&lt;\s*(?:&name;|&gt;)">
 	<!-- Handlebars identifier -->
-	<!ENTITY identifier    "([a-zA-Z_$:\?]|[^[:ascii:]])([\w$:\?\-]|[^[:ascii:]])*">
+	<!ENTITY identifier    "(?:[a-zA-Z_$:\?]|[^[:ascii:]])(?:[\w$:\?\-]|[^[:ascii:]])*">
 ]>
 
 <!--
@@ -36,12 +36,13 @@
     (via IncludeRules) in the HTML highlighter.
 
     Change log:
+     * v3 [2019-10-03]: Minor fixes.
      * v2 [2019-02-24]: Also highlight template files (HTML).
                         Improve support for Handlebars.
      * v1 [2019-02-10]: Initial version
 -->
 
-<language name="Mustache/Handlebars (HTML)" version="2" kateversion="5.0"
+<language name="Mustache/Handlebars (HTML)" version="3" kateversion="5.44"
           section="Markup" priority="1" mimetype=""
           extensions="*.mustache;*.handlebars;*.hbs;*.ractive;*.hogan;*.hulk;*.html.mst;*.html.mu;*.html.rac"
           author="Nibaldo González (nibgonz@gmail.com), based on the HTML highlighter by Wilbert Berendsen (wilbert@kde.nl)"
@@ -85,7 +86,7 @@
 			<!-- For helpers (not included because it's redundant):
 			       Start: \{\{~?#?\s*(?=(if|unless|with|link\-to|each(\-in)?)\b)
 			       End:   \{\{~?/\s*(?=(if|unless|with|link\-to|each(\-in)?)\b)  -->
-			<RegExpr context="#pop!MustacheVariableBlock" attribute="Mustache Block" String="\{\{~?\s*else(\s+(if|unless|with|link\-to|each(\-in)?))?\b" />
+			<RegExpr context="#pop!MustacheVariableBlock" attribute="Mustache Block" String="\{\{~?\s*else(?:\s+(?:if|unless|with|link\-to|each(?:\-in)?))?\b" />
 			<RegExpr context="#pop!MustacheVariableBlock" attribute="Mustache Block" String="\{\{~?[#\^][&gt;\*]?\s*&identifier;\b" beginRegion="MustacheBlock" />
 			<RegExpr context="#pop" attribute="Mustache Block" String="\{\{~?/\s*&identifier;\s*\}\}" endRegion="MustacheBlock" />
 			<RegExpr context="#pop!MustacheVariableBlockEndFolding" attribute="Mustache Block" String="\{\{~?/\s*&identifier;\b" />
@@ -98,8 +99,8 @@
 			<StringDetect context="#pop!MustachePartial" attribute="Mustache Variable" String="{{&gt;" />
 			<StringDetect context="#pop!MustacheMarkerSet" attribute="Mustache Variable" String="{{=" />
 			<StringDetect context="#pop!MustacheVariable" attribute="Mustache Variable" String="{{$" />
-			<RegExpr context="#pop!MustacheVariableUnescape" attribute="Mustache Variable Unescape" String="\{\{\{\s*(log|link)\b" />
-			<RegExpr context="#pop!MustacheVariable" attribute="Mustache Variable" String="\{\{\s*(log|link)\b" />
+			<RegExpr context="#pop!MustacheVariableUnescape" attribute="Mustache Variable Unescape" String="\{\{\{\s*(?:log|link)\b" />
+			<RegExpr context="#pop!MustacheVariable" attribute="Mustache Variable" String="\{\{\s*(?:log|link)\b" />
 
 			<StringDetect context="#pop!MustacheVariableUnescape" attribute="Mustache Variable Unescape" String="{{{" />
 			<Detect2Chars context="#pop!MustacheVariable" attribute="Mustache Variable" char="{" char1="{" />
@@ -214,7 +215,7 @@
 			<WordDetect context="ElementTagEnd" attribute="Element Tag" String="&lt;/header" insensitive="true" endRegion="header" />
 			<WordDetect context="ElementTagEnd" attribute="Element Tag" String="&lt;/main" insensitive="true" endRegion="main" />
 			<WordDetect context="ElementTagEnd" attribute="Element Tag" String="&lt;/nav" insensitive="true" endRegion="nav" />
-			<WordDetect context="ElementTagEnd" attribute="Element Tag" String="&lt;/sectiond" insensitive="true" endRegion="section" />
+			<WordDetect context="ElementTagEnd" attribute="Element Tag" String="&lt;/section" insensitive="true" endRegion="section" />
 
 			<RegExpr context="#stay" attribute="Element Tag" String="&lt;/\s*&gt;" />
 			<RegExpr context="ElementTagEnd" attribute="Element Tag" String="&lt;/\s*&name;" />
@@ -271,7 +272,7 @@
 		<context name="Comment" attribute="Comment" lineEndContext="#stay">
 			<DetectSpaces/>
 			<StringDetect context="#pop" attribute="Comment" String="--&gt;" endRegion="Comment" />
-			<RegExpr context="#stay" attribute="Error" String="-(-(?!-&gt;))+" />
+			<RegExpr context="#stay" attribute="Error" String="-(?:-(?!-&gt;))+" />
 			<IncludeRules context="MustacheVariables" />
 			<IncludeRules context="##Alerts" />
 		</context>
@@ -283,7 +284,7 @@
 		</context>
 
 		<context name="FindDTDRules" attribute="Normal Text" lineEndContext="#stay">
-			<RegExpr context="Doctype Markupdecl" attribute="Doctype" String="&lt;!(ELEMENT|ENTITY|ATTLIST|NOTATION)\b" />
+			<RegExpr context="Doctype Markupdecl" attribute="Doctype" String="&lt;!(?:ELEMENT|ENTITY|ATTLIST|NOTATION)\b" />
 		</context>
 		<context name="FindPI" attribute="Normal Text" lineEndContext="#stay">
 			<RegExpr context="PI" attribute="Processing Instruction" String="&lt;\?[\w:-]*" beginRegion="pi" />

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd"
 [
-  <!ENTITY identifier "([a-zA-Z_$]|[^[:ascii:]])([\w$]|[^[:ascii:]])*">
+  <!ENTITY identifier "(?:[a-zA-Z_$]|[^[:ascii:]])(?:[\w$]|[^[:ascii:]])*">
 ]>
 <!-- Author: Anders Lund <anders@alweb.dk> //-->
 <!-- Minor changes: Joseph Wenninger <jowenn@kde.org> //-->
 <!-- Full JavaScript 1.0 support by Whitehawk Stormchaser //-->
-<language name="JavaScript" version="11" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
+<language name="JavaScript" version="13" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
   <highlighting>
@@ -93,7 +93,7 @@
 
         <Float attribute="Float" context="NoRegExp" />
         <!-- Invalid Binary, Octal or Hex -->
-        <RegExpr attribute="Error" context="NoRegExp" String="\b0(b[01]*[2-9a-z]|o[0-7]*[89a-z]|x[0-9a-f]*[g-z])\w*\b" insensitive="true" />
+        <RegExpr attribute="Error" context="NoRegExp" String="\b0(?:b[01]*[2-9a-z]|o[0-7]*[89a-z]|x[0-9a-f]*[g-z])\w*\b" insensitive="true" />
         <HlCHex attribute="Hex" context="NoRegExp" />
         <RegExpr attribute="Octal" context="NoRegExp" String="\b0[oO][0-7]+" />
         <RegExpr attribute="Binary" context="NoRegExp" String="\b0[bB][01]+" />
@@ -127,7 +127,6 @@
         <DetectChar attribute="Regular Expression" context="(regex caret first check)" char="/" />
 
         <DetectChar attribute="Symbol" context="Object" char="{" beginRegion="Brace" />
-        <DetectChar attribute="Symbol" context="Conditional Expression" char="?" />
 
         <Detect2Chars context="#stay" attribute="Special Operators" char="=" char1="&gt;" />
         <AnyChar attribute="Symbol" String=":!%&amp;+,-/.*&lt;=&gt;?|~^&#59;" />
@@ -147,11 +146,6 @@
         <Detect2Chars context="#pop" lookAhead="true" char="/" char1="*" />
         <DetectChar attribute="Symbol" context="#pop" char="/" />
         <DetectSpaces/>
-      </context>
-
-      <context attribute="Normal Text" lineEndContext="#stay" name="Conditional Expression">
-        <DetectChar context="#pop" char=":" />
-        <IncludeRules context="Normal" />
       </context>
 
       <context attribute="Normal Text" lineEndContext="#stay" name="Object">
@@ -180,11 +174,11 @@
         <IncludeRules context="Escape" />
         <DetectChar attribute="String" context="#pop" char="'" />
       </context>
-      
+
       <context attribute="Normal Text" lineEndContext="#stay" name="Escape">
         <LineContinue attribute="Escape" context="#stay" />
         <!-- Hexadecimal, unicode & octal -->
-        <RegExpr attribute="Escape" context="#stay" String="\\(x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|u\{[0-9a-fA-F]+\}|[0-3][0-7]{1,2}|[4-7][0-7]|[1-7])" />
+        <RegExpr attribute="Escape" context="#stay" String="\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|u\{[0-9a-fA-F]+\}|[0-3][0-7]{1,2}|[4-7][0-7]|[1-7])" />
         <Detect2Chars attribute="Error" context="#stay" char="\" char1="x" />
         <Detect2Chars attribute="Error" context="#stay" char="\" char1="u" />
         <DetectChar attribute="Escape" context="Character Escape" char="\" />
