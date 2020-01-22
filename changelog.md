@@ -1,5 +1,11 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.3.1 -- 2020-01-21
+
+ * Escape `<` and `>` in latex to avoid ligatures (#91).
+
+ * Fix and extend Idris keywords (Denis Buzdalov).
+
 ## 0.8.3 -- 2019-11-26
 
   * Update XML syntax definitions for c, cmake, coffee, cpp, css,
