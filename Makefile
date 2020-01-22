@@ -1,3 +1,8 @@
+XMLS=$(wildcard skylighting-core/xml/*.xml)
+ALL=skylighting/src/Skylighting/Syntax.hs quick
+
+all: $(ALL)
+
 quick:
 	stack install --test --flag "skylighting:executable" --test-arguments '--hide-successes $(TESTARGS)'
 
@@ -24,8 +29,9 @@ skylighting-format:
 	      skylighting/Setup.hs \
 	      skylighting/src/Skylighting.hs
 
-XMLS=$(wildcard skylighting-core/xml/*.xml)
-bootstrap: $(XMLS)
+bootstrap: skylighting/src/Skylighting/Syntax.hs
+
+skylighting/src/Skylighting/Syntax.hs: $(XMLS)
 	stack install --flag "skylighting-core:executable" skylighting-core
 	-rm -rf skylighting/src/Skylighting/Syntax skylighting/src/Skylighting/Syntax.hs
 	cd skylighting && skylighting-extract ../skylighting-core/xml/*.xml

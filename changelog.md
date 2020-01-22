@@ -1,5 +1,11 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.3.2 -- 2020-01-21
+
+ * This fixes a packaging error in 0.8.3.1, which didn't include
+   the results of the bootsrap step and hence didn't update the
+   syntax modules.
+
 ## 0.8.3.1 -- 2020-01-21
 
  * Escape `<` and `>` in latex to avoid ligatures (#91).
