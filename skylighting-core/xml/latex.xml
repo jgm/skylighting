@@ -5,7 +5,7 @@
     <!ENTITY envname "[a-zA-Z]+\*?">
     <!ENTITY regionmarker "&#037;\s*(?:BEGIN|END)">
 ]>
-<language name="LaTeX" version="10" section="Markup" kateversion="5.0" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
+<language name="LaTeX" version="11" section="Markup" kateversion="5.0" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
   <highlighting>
     <!-- NOTE: Keywords of kind "\something" do not need a delimiter before "\".
          Using a DetectChar rule with lookAhead to detect "\" at the beginning
@@ -467,6 +467,7 @@
         <DetectChar char="%" attribute="Comment" context="Comment"/>
         <DetectChar char="&bullet;" attribute="Bullet" context="#stay"/>
         <DetectChar char="}" attribute="Normal Text" context="#pop"/>
+        <DetectChar char="{" attribute="Normal Text" context="FancyLabelParameter"/>
       </context>
 
       <context name="FancyLabelOption" attribute="Option Text" lineEndContext="#stay">
@@ -497,6 +498,7 @@
         <DetectChar char="%" attribute="Comment" context="Comment"/>
         <DetectChar char="&bullet;" attribute="Bullet" context="#stay"/>
         <DetectChar char="}" attribute="Normal Text" context="#pop"/>
+        <DetectChar char="{" attribute="Normal Text" context="SpecialCommandParameterOption"/>
       </context>
 
       <!-- end of an environment -->

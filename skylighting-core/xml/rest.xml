@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd"
 [
-        <!ENTITY inlinestart "(^|[-\s&apos;&quot;\(\[{&lt;/:‘“’«¡¿‐‑‒–— ])">
+        <!ENTITY inlinestart "(?:^|(?&lt;=[-\s&apos;&quot;\(\[{&lt;/:‘“’«¡¿‐‑‒–— ]))">
         <!ENTITY inlineend "(?=[-\s’”»‐‑‒–— &apos;&quot;\)\]}&gt;/:\.,;!\?\\]|$)">
         <!ENTITY SimpleReferenceNameChars "\w_\.:\+\-">
+
+        <!-- Keep in sync with Markdown -->
+        <!ENTITY startlink "(?:https?|ftp)\://">
 ]>
 <!--
   This file is part of KDE's kate project.
@@ -11,7 +14,7 @@
   Copyright 2010 Matt Williams (matt@milliams.com)
   Copyright 2014 Matthew Woehlke (mw_triad@users.sourceforge.net)
   -->
-<language name="reStructuredText" extensions="*.rst" section="Markup" mimetype="text/x-rst" version="5" kateversion="2.4" casesensitive="1">
+<language name="reStructuredText" extensions="*.rst" section="Markup" mimetype="text/x-rst" version="6" kateversion="5.0" casesensitive="1">
 
   <highlighting>
 
@@ -30,6 +33,10 @@
         <RegExpr attribute="SubstitutionDefinition" context="#stay" String="^\s*\.\. \|[&SimpleReferenceNameChars; ]+\|\s+[&SimpleReferenceNameChars;]+::\s" minimal="true" column="0"/>
         <RegExpr attribute="Field" String=":(?=([^:]*\\:)*[^:]*:(\s|$))" context="Field" firstNonSpace="true"/>
         <RegExpr attribute="Comment" context="Comment" String="^(\s*)\.\.(\s|$)(?!([\w\-_\.]+)(:[\w\-_\.]+)*::(\s|$))" column="0"/>
+
+        <!-- Keep in sync with Markdown’s implicitlink entity -->
+        <RegExpr attribute="StandaloneHyperlink" context="#stay" String="\b&startlink;[^&quot;&gt;\s`\)]*[^\s!&quot;&apos;`\(\)\*,\.:;&lt;&gt;\?~\]\}\\](?=[[:punct:]]*(?:[\s\)]|$))" />
+
       </context>
 
       <context name="InlineMarkup" attribute="Normal" lineEndContext="#stay">
@@ -97,6 +104,7 @@
       <itemData name="DefaultRole" defStyleNum="dsDecVal" />
       <itemData name="Code" defStyleNum="dsDataType" />
       <itemData name="Comment" defStyleNum="dsComment" />
+      <itemData name="StandaloneHyperlink" defStyleNum="dsOthers" />
     </itemDatas>
 
   </highlighting>
