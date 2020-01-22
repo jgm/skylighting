@@ -324,7 +324,7 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
 
        let contextSwitch = if name == "IncludeRules"
                               then []  -- is this right?
-                              else parseContextSwitch syntaxname context
+                              else parseContextSwitch incsyntax inccontext
        returnA -< Rule{ rMatcher = matcher,
                         rAttribute = fromMaybe NormalTok $
                            if null attribute
