@@ -6,6 +6,15 @@
 
  * Fix and extend Idris keywords (Denis Buzdalov).
 
+ * Update XML syntax definitions for javascript-react, qml,
+   typescript, javascript, cmake, cofee, latex, perl, python,
+   rest.
+
+ * Fixed bug with context shifts using `##` syntax for foreign context.
+   Previously we only handled these in IncludeRules, but
+   starting with the current batches of xml files they can occur
+   elsewhere too.
+
 ## 0.8.3 -- 2019-11-26
 
   * Update XML syntax definitions for c, cmake, coffee, cpp, css,
