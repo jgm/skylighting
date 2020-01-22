@@ -14,9 +14,8 @@
 , [ ( NormalTok , "    " )
   , ( KeywordTok , "function" )
   , ( NormalTok , " " )
-  , ( AttributeTok , "makeHeaders" )
-  , ( NormalTok , "(colnames) " )
-  , ( OperatorTok , "{" )
+  , ( FunctionTok , "makeHeaders" )
+  , ( NormalTok , "(colnames) {" )
   ]
 , [ ( NormalTok , "      " )
   , ( KeywordTok , "var" )
@@ -37,15 +36,13 @@
   , ( OperatorTok , ";" )
   , ( NormalTok , " i " )
   , ( OperatorTok , "<" )
-  , ( NormalTok , " " )
-  , ( VariableTok , "colnames" )
-  , ( NormalTok , "." )
+  , ( NormalTok , " colnames" )
+  , ( OperatorTok , "." )
   , ( AttributeTok , "length" )
   , ( OperatorTok , ";" )
   , ( NormalTok , " i" )
   , ( OperatorTok , "++" )
-  , ( NormalTok , ") " )
-  , ( OperatorTok , "{" )
+  , ( NormalTok , ") {" )
   ]
 , [ ( NormalTok , "        str " )
   , ( OperatorTok , "+=" )
@@ -59,35 +56,31 @@
   , ( StringTok , "\"</th>\"" )
   , ( OperatorTok , ";" )
   ]
-, [ ( NormalTok , "      " ) , ( OperatorTok , "}" ) ]
+, [ ( NormalTok , "      }" ) ]
 , [ ( NormalTok , "      " )
   , ( ControlFlowTok , "return" )
   , ( NormalTok , " (str)" )
   , ( OperatorTok , ";" )
   ]
-, [ ( NormalTok , "    " ) , ( OperatorTok , "}" ) ]
+, [ ( NormalTok , "    }" ) ]
 , [ ( NormalTok , "  " ) , ( KeywordTok , "</script>" ) ]
 , []
 , [ ( NormalTok , "  " ) , ( KeywordTok , "<script>" ) ]
-, [ ( NormalTok , "    " )
-  , ( AttributeTok , "$" )
-  , ( NormalTok , "(document)." )
-  , ( AttributeTok , "ready" )
+, [ ( NormalTok , "    $(" )
+  , ( BuiltInTok , "document" )
+  , ( NormalTok , ")" )
+  , ( OperatorTok , "." )
+  , ( FunctionTok , "ready" )
   , ( NormalTok , "(" )
   , ( KeywordTok , "function" )
-  , ( NormalTok , "() " )
-  , ( OperatorTok , "{" )
+  , ( NormalTok , "() {" )
   ]
 , [ ( NormalTok , "      alert" )
   , ( StringTok , "\"hello\"" )
   , ( NormalTok , ")" )
   , ( OperatorTok , ";" )
   ]
-, [ ( NormalTok , "    " )
-  , ( OperatorTok , "}" )
-  , ( NormalTok , ")" )
-  , ( OperatorTok , ";" )
-  ]
+, [ ( NormalTok , "    })" ) , ( OperatorTok , ";" ) ]
 , [ ( NormalTok , "  " ) , ( KeywordTok , "</script>" ) ]
 , []
 , [ ( KeywordTok , "</head>" ) ]

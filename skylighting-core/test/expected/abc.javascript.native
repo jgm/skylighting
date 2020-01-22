@@ -10,20 +10,19 @@
 , [ ( KeywordTok , "let" )
   , ( NormalTok , " blocks " )
   , ( OperatorTok , "=" )
-  , ( NormalTok , " " )
-  , ( VariableTok , "characters" )
-  , ( NormalTok , "." )
-  , ( AttributeTok , "split" )
+  , ( NormalTok , " characters" )
+  , ( OperatorTok , "." )
+  , ( FunctionTok , "split" )
   , ( NormalTok , "(" )
   , ( StringTok , "\" \"" )
-  , ( NormalTok , ")." )
-  , ( AttributeTok , "map" )
+  , ( NormalTok , ")" )
+  , ( OperatorTok , "." )
+  , ( FunctionTok , "map" )
   , ( NormalTok , "(pair " )
   , ( KeywordTok , "=>" )
-  , ( NormalTok , " " )
-  , ( VariableTok , "pair" )
-  , ( NormalTok , "." )
-  , ( AttributeTok , "split" )
+  , ( NormalTok , " pair" )
+  , ( OperatorTok , "." )
+  , ( FunctionTok , "split" )
   , ( NormalTok , "(" )
   , ( StringTok , "\"\"" )
   , ( NormalTok , "))" )
@@ -32,18 +31,18 @@
 , [ ( NormalTok , " " ) ]
 , [ ( KeywordTok , "function" )
   , ( NormalTok , " " )
-  , ( AttributeTok , "isWordPossible" )
-  , ( NormalTok , "(word) " )
-  , ( OperatorTok , "{" )
+  , ( FunctionTok , "isWordPossible" )
+  , ( NormalTok , "(word) {" )
   ]
 , [ ( NormalTok , "  " )
   , ( KeywordTok , "var" )
   , ( NormalTok , " letters " )
   , ( OperatorTok , "=" )
-  , ( NormalTok , " [..." )
-  , ( VariableTok , "word" )
-  , ( NormalTok , "." )
-  , ( AttributeTok , "toUpperCase" )
+  , ( NormalTok , " [" )
+  , ( OperatorTok , "..." )
+  , ( AttributeTok , "word" )
+  , ( OperatorTok , "." )
+  , ( FunctionTok , "toUpperCase" )
   , ( NormalTok , "()]" )
   , ( OperatorTok , ";" )
   ]
@@ -51,9 +50,8 @@
   , ( KeywordTok , "var" )
   , ( NormalTok , " length " )
   , ( OperatorTok , "=" )
-  , ( NormalTok , " " )
-  , ( VariableTok , "letters" )
-  , ( NormalTok , "." )
+  , ( NormalTok , " letters" )
+  , ( OperatorTok , "." )
   , ( AttributeTok , "length" )
   , ( OperatorTok , ";" )
   ]
@@ -64,7 +62,7 @@
   , ( NormalTok , " " )
   , ( KeywordTok , "new" )
   , ( NormalTok , " " )
-  , ( AttributeTok , "Set" )
+  , ( BuiltInTok , "Set" )
   , ( NormalTok , "(blocks)" )
   , ( OperatorTok , ";" )
   ]
@@ -75,8 +73,7 @@
   , ( KeywordTok , "let" )
   , ( NormalTok , " letter " )
   , ( KeywordTok , "of" )
-  , ( NormalTok , " letters) " )
-  , ( OperatorTok , "{" )
+  , ( NormalTok , " letters) {" )
   ]
 , [ ( NormalTok , "    " )
   , ( ControlFlowTok , "for" )
@@ -84,17 +81,15 @@
   , ( KeywordTok , "let" )
   , ( NormalTok , " block " )
   , ( KeywordTok , "of" )
-  , ( NormalTok , " copy) " )
-  , ( OperatorTok , "{" )
+  , ( NormalTok , " copy) {" )
   ]
 , [ ( NormalTok , "      " )
   , ( KeywordTok , "let" )
   , ( NormalTok , " index " )
   , ( OperatorTok , "=" )
-  , ( NormalTok , " " )
-  , ( VariableTok , "block" )
-  , ( NormalTok , "." )
-  , ( AttributeTok , "indexOf" )
+  , ( NormalTok , " block" )
+  , ( OperatorTok , "." )
+  , ( FunctionTok , "indexOf" )
   , ( NormalTok , "(letter)" )
   , ( OperatorTok , ";" )
   ]
@@ -105,14 +100,12 @@
   , ( OperatorTok , "!==" )
   , ( NormalTok , " " )
   , ( DecValTok , "-1" )
-  , ( NormalTok , ") " )
-  , ( OperatorTok , "{" )
+  , ( NormalTok , ") {" )
   ]
 , [ ( NormalTok , "        length" ) , ( OperatorTok , "--;" ) ]
-, [ ( NormalTok , "        " )
-  , ( VariableTok , "copy" )
-  , ( NormalTok , "." )
-  , ( AttributeTok , "delete" )
+, [ ( NormalTok , "        copy" )
+  , ( OperatorTok , "." )
+  , ( FunctionTok , "delete" )
   , ( NormalTok , "(block)" )
   , ( OperatorTok , ";" )
   ]
@@ -121,10 +114,10 @@
   , ( OperatorTok , ";" )
   , ( NormalTok , "  " )
   ]
-, [ ( NormalTok , "      " ) , ( OperatorTok , "}" ) ]
-, [ ( NormalTok , "    " ) , ( OperatorTok , "}" ) ]
+, [ ( NormalTok , "      }" ) ]
+, [ ( NormalTok , "    }" ) ]
 , []
-, [ ( NormalTok , "  " ) , ( OperatorTok , "}" ) ]
+, [ ( NormalTok , "  }" ) ]
 , [ ( NormalTok , "  " )
   , ( ControlFlowTok , "return" )
   , ( NormalTok , " " )
@@ -132,7 +125,7 @@
   , ( NormalTok , "length" )
   , ( OperatorTok , ";" )
   ]
-, [ ( OperatorTok , "}" ) , ( NormalTok , "    " ) ]
+, [ ( NormalTok , "}    " ) ]
 , [ ( NormalTok , " " ) ]
 , [ ( NormalTok , "[ " ) ]
 , [ ( NormalTok , "  " )
@@ -169,14 +162,15 @@
   , ( StringTok , "\"CONFUSE\"" )
   , ( NormalTok , " " )
   ]
-, [ ( NormalTok , "]." )
-  , ( AttributeTok , "forEach" )
+, [ ( NormalTok , "]" )
+  , ( OperatorTok , "." )
+  , ( FunctionTok , "forEach" )
   , ( NormalTok , "(word " )
   , ( KeywordTok , "=>" )
   , ( NormalTok , " " )
-  , ( VariableTok , "console" )
-  , ( NormalTok , "." )
-  , ( AttributeTok , "log" )
+  , ( BuiltInTok , "console" )
+  , ( OperatorTok , "." )
+  , ( FunctionTok , "log" )
   , ( NormalTok , "(" )
   , ( VerbatimStringTok , "`" )
   , ( SpecialCharTok , "${" )
@@ -184,8 +178,7 @@
   , ( SpecialCharTok , "}" )
   , ( VerbatimStringTok , ": " )
   , ( SpecialCharTok , "${" )
-  , ( AttributeTok , "isWordPossible" )
-  , ( NormalTok , "(word)" )
+  , ( NormalTok , "isWordPossible(word)" )
   , ( SpecialCharTok , "}" )
   , ( VerbatimStringTok , "`" )
   , ( NormalTok , "))" )
