@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd">
+<!DOCTYPE language SYSTEM "language.dtd"
+[
+  <!ENTITY identifier "[a-zA-Z_$][\w$]*">
+]>
 <!-- Author: Milian Wolff <mail@milianw.de> -->
 <language name="QML" version="7" kateversion="5.0" section="Scripts" extensions="*.qml;*.qmltypes"
           mimetype="text/x-qml;application/x-qml" indenter="cstyle"
@@ -111,7 +114,14 @@
         <WordDetect attribute="Keywords" context="Property" String="property" />
         <DetectChar attribute="String" context="String" char="&quot;" />
         <DetectChar attribute="Normal Text" context="Object" char="{" beginRegion="Brace" />
-        <IncludeRules context="Normal##JavaScript" />
+        <!-- Normal##JavaScript -->
+        <IncludeRules context="FindNumbers##JavaScript" />
+        <IncludeRules context="FindKeywords##JavaScript" />
+        <IncludeRules context="FindStrings##JavaScript" />
+        <RegExpr attribute="Objects" context="FindMemberObjectMath##JavaScript" String="\bMath(?=\s*\.)" />
+        <RegExpr attribute="Objects" context="#stay" String="\b[A-Z][\w$]*(?=\s*\.)" />
+        <IncludeRules context="FindObjectMembersAndFunctions##JavaScript" />
+        <IncludeRules context="JSBase##JavaScript" />
       </context>
       <context attribute="ImportValue" lineEndContext="#pop" name="Import">
       </context>
@@ -138,14 +148,20 @@
       </context>
       <!-- QML supports multi-line strings, which are not supported by Javascript -->
       <context attribute="String" lineEndContext="#stay" name="String">
-        <HlCStringChar attribute="Escape" />
-        <RegExpr attribute="Escape" String="\\u[0-9a-fA-F]{4}" />
-        <DetectChar attribute="String" context="#pop" char="&quot;" />
+        <DetectChar attribute="String" context="RegExpAfterString##JavaScript" char="&quot;" />
+        <IncludeRules context="Escape##JavaScript" />
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="Object">
         <!--DetectIdentifier-->
-        <RegExpr attribute="Property Type" String="[a-zA-Z_$][\w$]*\s*(?=:)" />
+        <RegExpr attribute="Property Type" String="&identifier;\s*(?=:)" />
+        <!-- Avoid highlighting Property Type before ":" in conditional expressions. -->
+        <RegExpr attribute="Symbol" context="ConditionalExpression" String="\?(?=[^\}]*&identifier;\s*\:)" />
         <DetectChar attribute="Normal Text" char="}" endRegion="Brace" context="#pop" />
+        <IncludeRules context="Normal" />
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="ConditionalExpression">
+        <AnyChar context="#pop" String=":}" lookAhead="true" />
+        <DetectChar attribute="Symbol" context="#stay" char="?" />
         <IncludeRules context="Normal" />
       </context>
     </contexts>
@@ -158,7 +174,8 @@
       <itemData name="Signal" defStyleNum="dsKeyword" color="#0095ff" selColor="#ffffff" spellChecking="false"/>
       <itemData name="Property Type" defStyleNum="dsDataType" spellChecking="false" />
       <itemData name="String"       defStyleNum="dsString" />
-      <itemData name="Escape"       defStyleNum="dsSpecialChar" spellChecking="false" />
+      <itemData name="Objects"      defStyleNum="dsExtension" bold="0" spellChecking="false" />
+      <itemData name="Symbol"       defStyleNum="dsOperator" spellChecking="false" />
     </itemDatas>
   </highlighting>
   <general>
