@@ -1,5 +1,9 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.3.3
+
+ * Agda keywords updated to 2.6.0 (Andreas Abel).
+
 ## 0.8.3.2 -- 2020-01-21
 
  * This fixes a packaging error in 0.8.3.1, which didn't include
