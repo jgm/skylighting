@@ -190,7 +190,7 @@ styleToCss f = unlines $
           ]
 
 toCss :: (TokenType, TokenStyle) -> String
-toCss (t,tf) = "code span." ++ short t ++ " { "
+toCss (t,tf) = "code span" ++ (if short t == "" then "" else "." ++ short t) ++ " { "
                 ++ colorspec ++ backgroundspec ++ weightspec ++ stylespec
                 ++ decorationspec ++ "} /* " ++ showTokenType t ++ " */"
   where colorspec = maybe "" (\col -> "color: " ++ fromColor col ++ "; ") $ tokenColor tf
