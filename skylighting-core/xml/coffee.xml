@@ -2,7 +2,7 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 
 <language name="CoffeeScript"
-          version="10"
+          version="11"
           kateversion="5.0"
           section="Scripts"
           extensions="Cakefile;*.coffee;*.coco;*.cson"
@@ -155,9 +155,9 @@
         <keyword attribute="Browser Globals" context="#stay" String="browser_globals"/>
         <keyword attribute="Node.js Globals" context="#stay" String="nodejs_globals"/>
         <!-- Member accessors. -->
-        <RegExpr attribute="Accessor" context="#stay" String="(@[_$a-zA-Z][$\w]*|\bthis)\b" insensitive="false"/>
+        <RegExpr attribute="Accessor" context="#stay" String="(?:@[_$a-zA-Z][$\w]*|\bthis)\b" insensitive="false"/>
         <!-- Function definitions. Matches an optional argument list followed by a function arrow (normal or fat). -->
-        <RegExpr attribute="Function" context="#stay" String="(\((\'[^']*'|&quot;[^&quot;]*&quot;|[^()])*\))?\s*(-|=)&gt;" insensitive="true"/>
+        <RegExpr attribute="Function" context="#stay" String="(?:\((?:\'[^']*'|&quot;[^&quot;]*&quot;|[^()])*\))?\s*(?:\-|=)&gt;" insensitive="true"/>
         <!-- Generic identifiers. -->
         <RegExpr attribute="Identifier" context="#stay" String="[_$a-z][$\w]*\b" insensitive="true"/>
         <!-- Strings. -->
@@ -173,7 +173,7 @@
         <DetectChar attribute="Comment" context="Comment" char="#"/>
         <!-- Regular expressions. -->
         <StringDetect attribute="Regex" context="Multiline Regex" String="///" beginRegion="Multiline Regex"/>
-        <RegExpr attribute="Regex" context="#stay" String="/([^/\\\r\n]|\\.)*/[mig]{0,3}"/>
+        <RegExpr attribute="Regex" context="#stay" String="/(?:[^/\\\r\n]|\\.)*/[mig]{0,3}"/>
         <!-- Member objects. -->
         <DetectChar attribute="Symbol" context="Member Object" char="."/>
         <!-- Operators and other non-alphanumeric symbols. -->
@@ -197,10 +197,12 @@
       <!-- Comments. -->
       <context name="Comment" attribute="Comment" lineEndContext="#pop">
         <IncludeRules context="##Alerts"/>
+        <IncludeRules context="##Modelines"/>
       </context>
       <context name="Multiline Comment" attribute="Comment" lineEndContext="#stay" noIndentationBasedFolding="1">
         <StringDetect attribute="Comment" context="#pop" String="###" endRegion="Comment"/>
         <IncludeRules context="##Alerts"/>
+        <IncludeRules context="##Modelines"/>
       </context>
       <!-- Single-line strings. -->
       <context name="String" attribute="String" lineEndContext="#stay">
@@ -225,7 +227,7 @@
       <!-- Escaped characters. -->
       <context name="Escape" attribute="String" lineEndContext="#stay">
         <!-- Hexadecimal, unicode & reserved character escape sequences. -->
-        <RegExpr attribute="Escape" context="#stay" String="\\(x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|u\{[0-9a-fA-F]+\}|[\\0bfnrtv&quot;&apos;])"/>
+        <RegExpr attribute="Escape" context="#stay" String="\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|u\{[0-9a-fA-F]+\}|[\\0bfnrtv&quot;&apos;])"/>
         <!-- Invalid escapes. Octal escape sequences are not allowed. -->
         <RegExpr attribute="Error" context="#stay" String="\\[ux1-7]"/>
         <!-- Make any character literal. -->

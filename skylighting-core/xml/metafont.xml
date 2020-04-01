@@ -6,7 +6,7 @@ We have moved some keywords for consistency
 -->
 
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Metapost/Metafont" section="Markup" version="5" kateversion="5.0"
+<language name="Metapost/Metafont" section="Markup" version="6" kateversion="5.0"
 extensions="*.mp;*.mps;*.mpost;*.mf" mimetype="text/x-metapost" 
 author="Yedvilun (yedvilun@gmail.com)" license="LGPL">
   <highlighting>
@@ -914,7 +914,7 @@ author="Yedvilun (yedvilun@gmail.com)" license="LGPL">
         <RegExpr String="[^a-zA-Z]" attribute="Keyword" context="#pop" />
       </context>
       <context name="Verb" attribute="Verbatim" lineEndContext="#pop#pop" >
-        <RegExpr String="(.)" attribute="Normal Text" dynamic="true" context="VerbEnd" />
+        <RegExpr String="(.)" attribute="Normal Text" context="VerbEnd" />
       </context>
       <context name="VerbEnd" attribute="Verbatim" lineEndContext="#pop#pop#pop" dynamic="true" >
         <StringDetect String="%1" attribute="Normal Text" context="#pop#pop#pop" dynamic="true" />

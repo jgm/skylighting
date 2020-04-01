@@ -15,7 +15,7 @@ sed -E '
 - grep '\\\*' doxygenlua.xml
 -->
 <language name="DoxygenLua"
-          version="6"
+          version="7"
           kateversion="5.0"
           section="Markup"
           extensions=""
@@ -243,7 +243,7 @@ sed -E '
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
         <RegExpr attribute="Region" context="#stay" String="--\s*@\{\s*$" beginRegion="MemberGroup" />
         <RegExpr attribute="Region" context="#stay" String="--\s*@\}\s*$" endRegion="MemberGroup" />
-        <RegExpr attribute="Comment" context="BlockComment" String="--\[(=*)\[" beginRegion="BlockComment" dynamic="true" />
+        <RegExpr attribute="Comment" context="BlockComment" String="--\[(=*)\[" beginRegion="BlockComment" />
         <Detect2Chars attribute="Comment" context="LineComment" char="-" char1="-" />
       </context>
       <context attribute="Comment" lineEndContext="#pop" name="LineComment">

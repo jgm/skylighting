@@ -40,10 +40,12 @@
 <!-- emphasis text -->
 <!ENTITY emphasisregex_ast "\*(?:&contentregex_ast;\*|\*{1,4}&contentregex_ast;\*(?!\*))">
 <!ENTITY emphasisregex_und "\b_(?:&contentregex_und;_+|_{1,4}&contentregex_und;_)\b">
-<!-- links -->
+<!-- links.
+     Keep in sync with reStructuredText (rest) -->
 <!ENTITY startlink "(?:https?|ftp)\://">
 <!ENTITY link "&startlink;[^&quot;&gt;\s]+">
-<!-- link in normal text -->
+<!-- link in normal text.
+     Keep in sync with reStructuredText’s (rest) StandaloneHyperlink attribute -->
 <!ENTITY implicitlink "\b&startlink;[^&quot;&gt;\s`\)]*[^\s!&quot;&apos;`\(\)\*,\.:;&lt;&gt;\?~\]\}\\](?=[[:punct:]]*(?:[\s\)]|$))">
 <!-- references: [name], [name][id], [name][id] "title", [name](https://example.com) -->
 <!ENTITY refchar "(?:\\.|[^\]\\])">

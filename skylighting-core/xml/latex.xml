@@ -5,7 +5,7 @@
     <!ENTITY envname "[a-zA-Z]+\*?">
     <!ENTITY regionmarker "&#037;\s*(?:BEGIN|END)">
 ]>
-<language name="LaTeX" version="11" section="Markup" kateversion="5.0" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
+<language name="LaTeX" version="13" section="Markup" kateversion="5.0" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
   <highlighting>
     <!-- NOTE: Keywords of kind "\something" do not need a delimiter before "\".
          Using a DetectChar rule with lookAhead to detect "\" at the beginning
@@ -402,7 +402,7 @@
 
       <!-- verb command -->
       <context name="Verb" attribute="Verbatim" lineEndContext="#pop#pop" >
-        <RegExpr String="(.)" attribute="Normal Text" dynamic="true" context="VerbEnd" />
+        <RegExpr String="(.)" attribute="Normal Text" context="VerbEnd" />
       </context>
       <context name="VerbEnd" attribute="Verbatim" lineEndContext="#pop#pop#pop" dynamic="true" >
         <StringDetect String="%1" attribute="Normal Text" context="#pop#pop#pop" dynamic="true" />
@@ -415,7 +415,7 @@
         <DetectSpaces/>
         <DetectChar char="[" attribute="Normal Text" context="FancyLabelOption"/>
         <DetectChar char="{" attribute="Normal Text" context="LstinlineParameter"/>
-        <RegExpr String="(.)" attribute="Normal Text" dynamic="true" context="LstinlineEnd" />
+        <RegExpr String="(.)" attribute="Normal Text" context="LstinlineEnd" />
       </context>
       <context name="LstinlineEnd" attribute="Verbatim" lineEndContext="#pop#pop#pop" dynamic="true" >
         <!-- TODO DetectChar segfault -->
@@ -437,7 +437,7 @@
 
       <context name="LabelOption" attribute="Normal Text" lineEndContext="#stay">
         <DetectSpaces/>
-        <DetectChar char="(" attribute="Math" context="MathModeTex" />
+        <Detect2Chars char="\" char1="(" attribute="Math" context="MathModeLatex"/>
         <DetectChar char="\" attribute="Macro" context="ContrSeq"/>
         <DetectChar char="$" attribute="Math" context="MathModeTex" />
         <DetectChar char="%" attribute="Comment" context="Comment"/>
@@ -461,7 +461,7 @@
 
       <context name="FancyLabelParameter" attribute="Environment" lineEndContext="#stay">
         <DetectSpaces/>
-        <DetectChar char="(" attribute="Math" context="MathModeTex" />
+        <Detect2Chars char="\" char1="(" attribute="Math" context="MathModeLatex"/>
         <DetectChar char="\" attribute="Macro" context="ContrSeq"/>
         <DetectChar char="$" attribute="Math" context="MathModeTex" />
         <DetectChar char="%" attribute="Comment" context="Comment"/>
@@ -492,7 +492,7 @@
 
       <context name="SpecialCommandParameterOption" attribute="Option Text" lineEndContext="#stay">
         <DetectSpaces/>
-        <Detect2Chars char="\" char1="(" attribute="Math" context="MathModeTex" />
+        <Detect2Chars char="\" char1="(" attribute="Math" context="MathModeLatex" />
         <DetectChar char="\" attribute="Macro" context="ContrSeq"/>
         <DetectChar char="$" attribute="Math" context="MathModeTex" />
         <DetectChar char="%" attribute="Comment" context="Comment"/>
