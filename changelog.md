@@ -1,29 +1,39 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.3.4
+
+  * Update syntax descriptions for: cmake agda c coffee doxygenlua html
+    isocpp latex lua makefile markdown metafont mustache nasm python rust
+    sql-postgresql typescript vhdl xml yacc yaml.
+
+  * Fix invalid CSS: in some cases, the library produced
+    `code span.` with no class for the NormalTok style (Michał Miszczyszyn).
+    Now it produces a rule for `code span`.
+
 ## 0.8.3.3
 
- * Agda keywords updated to 2.6.0 (Andreas Abel).
+  * Agda keywords updated to 2.6.0 (Andreas Abel).
 
 ## 0.8.3.2 -- 2020-01-21
 
- * This fixes a packaging error in 0.8.3.1, which didn't include
-   the results of the bootsrap step and hence didn't update the
-   syntax modules.
+  * This fixes a packaging error in 0.8.3.1, which didn't include
+    the results of the bootsrap step and hence didn't update the
+    syntax modules.
 
 ## 0.8.3.1 -- 2020-01-21
 
- * Escape `<` and `>` in latex to avoid ligatures (#91).
+  * Escape `<` and `>` in latex to avoid ligatures (#91).
 
- * Fix and extend Idris keywords (Denis Buzdalov).
+  * Fix and extend Idris keywords (Denis Buzdalov).
 
- * Update XML syntax definitions for javascript-react, qml,
-   typescript, javascript, cmake, cofee, latex, perl, python,
-   rest.
+  * Update XML syntax definitions for javascript-react, qml,
+    typescript, javascript, cmake, cofee, latex, perl, python,
+    rest.
 
- * Fixed bug with context shifts using `##` syntax for foreign context.
-   Previously we only handled these in IncludeRules, but
-   starting with the current batches of xml files they can occur
-   elsewhere too.
+  * Fixed bug with context shifts using `##` syntax for foreign context.
+    Previously we only handled these in IncludeRules, but
+    starting with the current batches of xml files they can occur
+    elsewhere too.
 
 ## 0.8.3 -- 2019-11-26
 
