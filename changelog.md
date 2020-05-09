@@ -1,5 +1,13 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.4
+
+  * HTML output: use aria-hidden="true" on empty a elements
+    unless numberLines is specified (in which case the element
+    is still empty but will have content added by CSS).
+    This is to avoid excess noise when the code blocks are
+    read by screen readers.  See jgm/pandoc#6352.
+
 ## 0.8.3.4
 
   * Update syntax descriptions for: cmake agda c coffee doxygenlua html
