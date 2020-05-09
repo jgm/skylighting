@@ -12,6 +12,7 @@ import Skylighting.Types
 import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
+import Data.String (fromString)
 #if !MIN_VERSION_base(4,11,0)
 import Data.Semigroup
 #endif
@@ -89,7 +90,12 @@ sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
 sourceLineToHtml opts lno cont =
   H.span ! A.id lineNum
          $ do
-           H.a ! A.href lineRef $ mempty
+           H.a ! A.href lineRef
+               ! (if numberLines opts
+                     then mempty
+                     else customAttribute (fromString "aria-hidden")
+                           (fromString "true")) -- see jgm/pandoc#6352
+               $ mempty
            mapM_ (tokenToHtml opts) cont
   where  lineNum = toValue prefixedLineNo
          lineRef = toValue ('#':prefixedLineNo)
