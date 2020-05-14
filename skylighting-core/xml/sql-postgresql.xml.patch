@@ -1,0 +1,10 @@
+diff --git a/skylighting-core/xml/sql-postgresql.xml b/skylighting-core/xml/sql-postgresql.xml
+@@ -1007,7 +1007,7 @@
+         <Float attribute="Float" context="#stay"/>
+         <Int attribute="Decimal" context="#stay"/>
+         <DetectChar attribute="String" context="String" char="'"/>
+-        <DetectChar attribute="Comment" context="Identifier" char="&quot;"/>
++        <DetectChar attribute="Identifier" context="Identifier" char="&quot;"/>
+         <AnyChar attribute="Symbol" context="#stay" String=":&#38;"/>
+         <RegExpr attribute="Preprocessor" context="Preprocessor" String="@@?[^@ \t\r\n]" column="0"/>
+         <RegExpr attribute="Operator" context="MultiLineString" String="\$([^\$\n\r]*)\$"/>
