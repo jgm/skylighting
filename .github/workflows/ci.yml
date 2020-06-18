@@ -18,10 +18,25 @@ jobs:
             cabal: '2.4'
           - ghc: '8.6.5'
             cabal: '2.4'
-          - ghc: '8.8.1'
+          - ghc: '8.8.3'
             cabal: '3.0'
     steps:
     - uses: actions/checkout@v1
+
+    # need to install older cabal/ghc versions from ppa repository
+    - name: Install recent cabal/ghc
+      run: |
+         if [ ! -d /opt/ghc/${{ matrix.versions.ghc }} ] || \
+            [ ! -d /opt/cabal/${{ matrix.versions.cabal }} ]
+         then
+           sudo add-apt-repository ppa:hvr/ghc
+           sudo apt-get update
+         fi
+         [ -d /opt/ghc/${{ matrix.versions.ghc }} ] ||
+           sudo apt-get install ghc-${{ matrix.versions.ghc }}
+         [ -d /opt/cabal/${{ matrix.versions.cabal }} ] ||
+           sudo apt-get install cabal-install-${{ matrix.versions.cabal }}
+
     - name: Bootstrap
       run: |
           export PATH=/opt/cabal/${{ matrix.versions.cabal }}/bin:/opt/ghc/${{ matrix.versions.ghc }}/bin:$PATH
