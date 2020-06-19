@@ -1,5 +1,17 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.8.5
+
+  * Respect dynamic flag on StringDetect elements (#99, Albert
+    Krewinkel).
+
+  * Increase test timeout to avoid failures with qemu-emulated
+    environments, such as qemu and riscv64 in Ubuntu builders
+    (William Grant).
+
+  * Fix attribute for opening double quote in sql-postgresql.xml
+    (Benjamin Wuethrich).
+
 ## 0.8.4
 
   * HTML output: use aria-hidden="true" on empty a elements
