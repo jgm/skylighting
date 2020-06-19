@@ -12,6 +12,9 @@
   * Fix attribute for opening double quote in sql-postgresql.xml
     (Benjamin Wuethrich).
 
+  * Update syntax descriptions for javascript, bash, coffee,
+    javascript-react, javascript, latex, sql-postgresql, typescript.
+
 ## 0.8.4
 
   * HTML output: use aria-hidden="true" on empty a elements
