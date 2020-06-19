@@ -20,7 +20,7 @@ import Data.ByteString.Char8 (ByteString)
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.CaseInsensitive (mk)
-import Data.Char (isAlphaNum, isAscii, isLetter, isPrint, isSpace, ord)
+import Data.Char (isAlphaNum, isAscii, isDigit, isLetter, isPrint, isSpace, ord)
 import qualified Data.Map as Map
 import Data.Maybe (catMaybes)
 import qualified Data.Set as Set
@@ -309,7 +309,8 @@ tryRule rule inp = do
                 Float -> withAttr attr $ parseFloat inp
                 Keyword kwattr kws -> withAttr attr $ keyword kwattr kws inp
                 StringDetect s -> withAttr attr $
-                                    stringDetect (rCaseSensitive rule) s inp
+                                    stringDetect (rDynamic rule) (rCaseSensitive rule)
+                                                 s inp
                 WordDetect s -> withAttr attr $
                                     wordDetect (rCaseSensitive rule) s inp
                 LineContinue -> withAttr attr $ lineContinue inp
@@ -372,15 +373,31 @@ wordDetect caseSensitive s inp = do
   guard $ isWordBoundary c d
   takeChars (Text.length t)
 
-stringDetect :: Bool -> Text -> ByteString -> TokenizerM Text
-stringDetect caseSensitive s inp = do
-  t <- decodeBS $ UTF8.take (Text.length s) inp
+stringDetect :: Bool -> Bool -> Text -> ByteString -> TokenizerM Text
+stringDetect dynamic caseSensitive s inp = do
+  s' <- if dynamic
+        then do
+          dynStr <- subDynamicText s
+          info $ "Dynamic string: " ++ show dynStr
+          return dynStr
+        else return s
+  t <- decodeBS $ UTF8.take (Text.length s') inp
   -- we assume here that the case fold will not change length,
   -- which is safe for ASCII keywords and the like...
   guard $ if caseSensitive
-             then s == t
-             else mk s == mk t
-  takeChars (Text.length s)
+             then s' == t
+             else mk s' == mk t
+  takeChars (Text.length s')
+
+subDynamicText :: Text -> TokenizerM Text
+subDynamicText t = do
+  let substitute x = case Text.uncons x of
+        Just (c, rest) | isDigit c -> let capNum = ord c - ord '0'
+                                      in (<> rest) <$> getCapture capNum
+        _ -> return $ Text.cons '%' x
+  case Text.split (== '%') t of
+    []     -> return Text.empty
+    x:rest -> (x <>) . Text.concat <$> mapM substitute rest
 
 -- This assumes that nothing significant will happen
 -- in the middle of a string of spaces or a string
