@@ -40,7 +40,7 @@
   , ( OperatorTok , "=" )
   , ( NormalTok , " [" )
   , ( OperatorTok , "..." )
-  , ( AttributeTok , "word" )
+  , ( NormalTok , "word" )
   , ( OperatorTok , "." )
   , ( FunctionTok , "toUpperCase" )
   , ( NormalTok , "()]" )

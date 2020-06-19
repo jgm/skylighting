@@ -42,6 +42,8 @@
       Attributes: path, types, no-default-lib, name
 
     Change log:
+     * v11 [2020-06-03]: Improve tagged template literals.
+     * v10 [2020-04-13]: Add the 'awaited' type operator.
      * v9 [2020-02-23]: Add private-named instance fields and type-only imports/exports.
                         Improve conditional expressions.
      * v8 [2019-12-12]: Add "bigint" primitive type.
@@ -59,7 +61,7 @@
 -->
 
 <language name="TypeScript"
-          version="9"
+          version="11"
           kateversion="5.53"
           section="Scripts"
           extensions="*.ts"
@@ -112,7 +114,8 @@
 	<list name="types_operator_expression">
 		<item>keyof</item>
 		<item>infer</item>
-		<!-- Also: is, typeof -->
+		<item>awaited</item>
+		<!-- Also: typeof, readonly -->
 	</list>
 	<!-- Datatypes & Primitive Types -->
 	<list name="types">
@@ -283,6 +286,8 @@
 
 			<!-- Functions: function(...) and function<...>(...) -->
 			<RegExpr context="Function" attribute="Function Name" String="(&identifier;)&functionSuffix;" lookAhead="true" />
+			<!-- Tagged Template Literals -->
+			<RegExpr context="#stay" attribute="Function Name" String="&identifier;(?=\s*`)" />
 
 			<!-- Symbols & Operators -->
 			<!-- NOTE: - The brackets {}()[] are highlighted as Normal Text.
@@ -391,13 +396,13 @@
 
 		<!-- Strings -->
 		<context name="FindStrings" attribute="Normal Text" lineEndContext="#stay">
-			<DetectChar context="Template" attribute="Template" char="`" />
+			<DetectChar context="Template" attribute="Template" char="`" beginRegion="Template" />
 			<IncludeRules context="FindStrings##JavaScript" />
 		</context>
 		<context name="Template" attribute="Template" lineEndContext="#stay">
 			<IncludeRules context="Escape##JavaScript" />
 			<Detect2Chars context="Substitution" attribute="Substitution" char="$" char1="{" />
-			<DetectChar context="RegExpAfterString##JavaScript" attribute="Template" char="`" />
+			<DetectChar context="RegExpAfterString##JavaScript" attribute="Template" char="`" endRegion="Template" />
 		</context>
 		<context name="Substitution" attribute="Normal Text" lineEndContext="#stay">
 			<DetectChar context="#pop" attribute="Substitution" char="}" />
@@ -564,6 +569,8 @@
 			<!-- The order of these rules is important: 1) Functions. 2) Constants & Properties. 3) Obj. Members. -->
 			<!-- function(...) and function<...>(...) -->
 			<RegExpr context="#pop" attribute="Function Name" String="&identifier;&functionSuffix;" />
+			<!-- Tagged Template Literals -->
+			<RegExpr context="#pop" String="&identifier;\s*`" lookAhead="true" />
 			<!-- Generic constants and properties -->
 			<keyword context="#pop!NoRegExp" attribute="Object Property (Built-in)" String="variable_property" />
 			<keyword context="#pop!NoRegExp" attribute="Constant" String="dom_constant" />
