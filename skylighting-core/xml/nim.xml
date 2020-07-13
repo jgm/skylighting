@@ -23,7 +23,9 @@ Improvements:
 	kateversion="2.4"
 	section="Sources"
 	extensions="*.nim"
-	mimetype="text/x-nim">
+	mimetype="text/x-nim"
+	author="github.com/juancarlospaco"
+	license="WTFPL">
 
 	<highlighting>
 		<list name="keywords">
