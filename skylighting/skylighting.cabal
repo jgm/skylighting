@@ -92,6 +92,7 @@ library
                        Skylighting.Syntax.Glsl
                        Skylighting.Syntax.Gnuassembler
                        Skylighting.Syntax.Go
+                       Skylighting.Syntax.Graphql
                        Skylighting.Syntax.Hamlet
                        Skylighting.Syntax.Haskell
                        Skylighting.Syntax.Haxe
@@ -131,6 +132,7 @@ library
                        Skylighting.Syntax.Monobasic
                        Skylighting.Syntax.Mustache
                        Skylighting.Syntax.Nasm
+                       Skylighting.Syntax.Nim
                        Skylighting.Syntax.Noweb
                        Skylighting.Syntax.Objectivec
                        Skylighting.Syntax.Objectivecpp
