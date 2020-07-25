@@ -109,6 +109,10 @@ library
                        Skylighting.Format.ANSI
                        Skylighting.Format.HTML
                        Skylighting.Format.LaTeX
+  other-modules:       Regex.KDE
+                       Regex.KDE.Regex
+                       Regex.KDE.Compile
+                       Regex.KDE.Match
   other-extensions:    CPP, Arrows
   build-depends:       base >= 4.8 && < 5.0,
                        mtl,
@@ -126,13 +130,10 @@ library
                        safe,
                        base64-bytestring,
                        blaze-html >= 0.5,
-                       containers,
+                       containers >= 0.5.8.2,
+                       utf8-string,
                        ansi-terminal >= 0.7,
                        colour >= 2.0
-  if flag(system-pcre)
-    build-depends:     regex-pcre
-  else
-    build-depends:     regex-pcre-builtin >= 0.95
   hs-source-dirs:      src
   ghc-prof-options:    -fprof-auto-exported
   default-language:    Haskell2010
@@ -140,10 +141,6 @@ library
 
 Flag executable
   Description:   Build skylighting-extract tool
-  Default:       False
-
-Flag system-pcre
-  Description:   Use regex-pcre instead of regex-pcre-builtin
   Default:       False
 
 test-suite test-skylighting
@@ -161,6 +158,7 @@ test-suite test-skylighting
                   random,
                   Diff,
                   text,
+                  utf8-string,
                   pretty-show,
                   aeson >= 1.0,
                   bytestring,
@@ -201,10 +199,6 @@ executable skylighting-extract
                        directory,
                        ansi-terminal >= 0.7,
                        colour >= 2.0
-  if flag(system-pcre)
-    build-depends:     regex-pcre
-  else
-    build-depends:     regex-pcre-builtin
   if flag(executable)
     buildable:         True
   else

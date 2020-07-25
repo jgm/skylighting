@@ -76,6 +76,7 @@ jobs:
     - name: Build and test
       shell: cmd
       run: |
+          chcp 65001
           stack build --test --fast --flag skylighting:executable --dependencies-only
           stack test --jobs=1 --fast --flag skylighting:executable --ghc-options=-Werror
 

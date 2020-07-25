@@ -22,6 +22,7 @@ import qualified Data.ByteString.UTF8 as UTF8
 import Data.CaseInsensitive (mk)
 import Data.Char (isAlphaNum, isAscii, isDigit, isLetter, isPrint, isSpace, ord)
 import qualified Data.Map as Map
+import qualified Data.IntMap as IntMap
 import Data.Maybe (catMaybes)
 import qualified Data.Set as Set
 import Data.Text (Text)
@@ -43,7 +44,7 @@ data TokenizerState = TokenizerState{
   , endline             :: Bool
   , prevChar            :: Char
   , contextStack        :: ContextStack
-  , captures            :: [ByteString]
+  , captures            :: IntMap.IntMap ByteString
   , column              :: Int
   , lineContinuation    :: Bool
   , firstNonspaceColumn :: Maybe Int
@@ -211,7 +212,7 @@ startingState =
                 , endline = True
                 , prevChar = '\n'
                 , contextStack = ContextStack []
-                , captures = []
+                , captures = mempty
                 , column = 0
                 , lineContinuation = False
                 , firstNonspaceColumn = Nothing
@@ -512,10 +513,10 @@ lineContinue inp = do
        takeChars 1
      else mzero
 
-anyChar :: [Char] -> ByteString -> TokenizerM Text
+anyChar :: Set.Set Char -> ByteString -> TokenizerM Text
 anyChar cs inp = do
   case UTF8.uncons inp of
-     Just (x, _) | x `elem` cs -> takeChars 1
+     Just (x, _) | x `Set.member` cs -> takeChars 1
      _           -> mzero
 
 regExpr :: Bool -> RE -> ByteString -> TokenizerM Text
@@ -526,24 +527,37 @@ regExpr dynamic re inp = do
                 info $ "Dynamic regex: " ++ show reStr'
                 return reStr'
               else return (reString re)
+  -- return $! traceShowId $! (reStr, inp)
   when (BS.take 2 reStr == "\\b") $ wordBoundary inp
   regex <- if dynamic
-              then return $ compileRegex (reCaseSensitive re) reStr
+              then
+                case compileRegex (reCaseSensitive re) reStr of
+                  Right r  -> return r
+                  Left e   -> throwError $ "Error compiling regex " ++
+                                UTF8.toString reStr ++ ": " ++ e
               else do
                 compiledREs <- gets compiledRegexes
                 case Map.lookup re compiledREs of
                      Nothing -> do
-                       let cre = compileRegex (reCaseSensitive re) reStr
+                       cre <- case compileRegex (reCaseSensitive re) reStr of
+                                Right r  -> return r
+                                Left e   -> throwError $
+                                  "Error compiling regex " ++
+                                   UTF8.toString reStr ++ ": " ++ e
                        modify $ \st -> st{ compiledRegexes =
                              Map.insert re cre (compiledRegexes st) }
                        return cre
                      Just cre -> return cre
   case matchRegex regex inp of
-       Just (match:capts) -> do
-         unless (null capts) $
-           modify $ \st -> st{ captures = capts }
-         takeChars (UTF8.length match)
-       _ -> mzero
+        Just (matchedBytes, capts) -> do
+          unless (null capts) $
+             modify $ \st -> st{ captures =
+                                  IntMap.map (toSlice matchedBytes) capts }
+          takeChars (UTF8.length matchedBytes)
+        _ -> mzero
+
+toSlice :: ByteString -> (Int, Int) -> ByteString
+toSlice bs (off, len) = BS.take len $ BS.drop off bs
 
 wordBoundary :: ByteString -> TokenizerM ()
 wordBoundary inp = do
@@ -603,14 +617,14 @@ escapeRegexChar '.' = "\\."
 escapeRegexChar '?' = "\\?"
 escapeRegexChar c
   | isAscii c && isPrint c = BS.singleton c
-  | otherwise              = BS.pack $ printf "\\x{%x}" (ord c)
+  | otherwise              = BS.pack $ printf "\\z%04x" (ord c)
 
 getCapture :: Int -> TokenizerM Text
 getCapture capnum = do
   capts <- gets captures
-  if length capts < capnum
-     then mzero
-     else decodeBS $ capts !! (capnum - 1)
+  case IntMap.lookup capnum capts of
+     Nothing -> mzero
+     Just x  -> decodeBS x
 
 keyword :: KeywordAttr -> WordSet Text -> ByteString -> TokenizerM Text
 keyword kwattr kws inp = do

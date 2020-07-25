@@ -23,7 +23,7 @@ import Test.Tasty.Golden.Advanced (goldenTest)
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck (testProperty)
 import Text.Show.Pretty
-
+import GHC.IO.Encoding (setLocaleEncoding)
 import Skylighting.Core
 
 readTextFile :: FilePath -> IO Text
@@ -40,6 +40,7 @@ xmlPath = "xml/"
 
 main :: IO ()
 main = do
+  setLocaleEncoding utf8
   sMap <- do
       result <- loadSyntaxesFromDir xmlPath
       case result of
@@ -78,11 +79,6 @@ main = do
        , testCase "round trip style -> theme -> style" $
             Just kate @=? decode (encode kate)
        ]
-    , testGroup "Skylighting.Regex" $
-      [ testCase "convertOctalEscapes" $
-            "a\\700b\\700c\\x{800}" @=?
-              convertOctalEscapes "a\\700b\\0700c\\o{4000}"
-      ]
     , testGroup "Skylighting" $
       [ testCase "syntaxesByFilename" $
             ["Perl"] @=?
@@ -93,6 +89,7 @@ main = do
     , testGroup "Doesn't hang or drop text on fuzz" $
         map (\syn -> testProperty (Text.unpack (sName syn)) (p_no_drop defConfig syn))
         syntaxes
+    , testGroup "Regex module" $ map regexTest regexTests
     , testGroup "Regression tests" $
       let perl = maybe (error "could not find Perl syntax") id
                              (lookupSyntax "Perl" sMap)
@@ -231,6 +228,55 @@ tokenizerTest cfg sMap regen inpFile = localOption (mkTimeout 15000000) $
         casesdir = "test" </> "cases"
         referenceFile = expecteddir </> inpFile <.> "native"
         lang = drop 1 $ takeExtension inpFile
+
+regexTest :: (String, String, Maybe (String, [(Int,String)])) -> TestTree
+regexTest (re, inp, expected) =
+  testCase ("/" ++ re ++ "/ " ++ inp) $
+    expected @=? testRegex True re inp
+
+regexTests :: [(String, String, Maybe (String, [(Int,String)]))]
+regexTests =
+  [ (".", "aab", Just ("a", []))
+  , ("ab", "aab", Nothing)
+  , ("ab", "abb", Just ("ab", []))
+  , ("a(b)", "abb", Just ("ab", [(1,"b")]))
+  , ("a(b.)*", "abbbcb", Just ("abbbc", [(1,"bc")]))
+  , ("a(?:b.)*", "abbbcb", Just ("abbbc", []))
+  , ("a(?=b)", "abb", Just ("a", []))
+  , ("a(?=b)", "acb", Nothing)
+  , ("a(?!b)", "abb", Nothing)
+  , ("a(?!b)", "acb", Just ("a", []))
+  , ("a?b+", "bbb", Just ("bbb", []))
+  , ("a?b+", "abbb", Just ("abbb", []))
+  , ("a?b+", "ac", Nothing)
+  , ("a*", "bbb", Just ("", []))
+  , ("abc|ab$", "ab", Just ("ab", []))
+  , ("abc|ab$", "abcd", Just ("abc", []))
+  , ("abc|ab$", "abd", Nothing)
+  , ("(?:ab)*|a.*", "abababa", Just ("abababa", []))
+  , ("a[b-e]*", "abcdefg", Just ("abcde", []))
+  , ("a[b-e\\n-]*", "abcde\nb-bcfg", Just ("abcde\nb-bc", []))
+  , ("^\\s+\\S+\\s+$", "   abc  ", Just ("   abc  ", []))
+  , ("\\$", "$$", Just ("$", []))
+  , ("[\\z12bb]", "\x12bb", Just ("\x12bb", []))
+  , ("\\bhello\\b|hell", "hello there", Just ("hello", []))
+  , ("\\bhello\\b|hell", "hellothere", Just ("hell", []))
+  , ("[[:space:]]{2,4}.", "  abc", Just ("  a", []))
+  , ("[[:space:]]{2,4}.", " abc", Nothing)
+  , ("[[:space:]]{2,4}.", "     abc", Just ("     ", []))
+  , ("((..)\\+\\2)", "aa+aabb+bbbc+cb",
+          Just ("aa+aa", [(1,"aa+aa"), (2,"aa")]))
+  , ("(\\d+)/(\\d+) == \\{1}", "22/2 == 22",
+         Just ("22/2 == 22", [(1,"22"), (2,"2")]))
+  , ("([a-z]+){2}", "htabc", Just ("htabc", [(1,"c")]))
+  , ("((.+)(.+)(.+))*", (replicate 400 'a'),
+          Just (replicate 400 'a',
+                 [(1, replicate 400 'a')
+                 ,(2,replicate 398 'a')
+                 ,(3,"a")
+                 ,(4,"a")]))
+  ]
+
 
 vividize :: Diff Text -> Text
 vividize (Both s _) = "  " <> s

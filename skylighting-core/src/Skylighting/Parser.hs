@@ -284,7 +284,7 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
        let column = if tildeRegex
                        then Just (0 :: Int)
                        else readMay column'
-       let re = RegExpr RE{ reString = fromString $ convertOctalEscapes str
+       let re = RegExpr RE{ reString = fromString str
                           , reCaseSensitive = not insensitive }
        let (incsyntax, inccontext) =
                case break (=='#') context of
@@ -293,7 +293,7 @@ getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
        let mbmatcher = case name of
                          "DetectChar" -> Just $ DetectChar char0
                          "Detect2Chars" -> Just $ Detect2Chars char0 char1
-                         "AnyChar" -> Just $ AnyChar str
+                         "AnyChar" -> Just $ AnyChar $ Set.fromList str
                          "RangeDetect" -> Just $ RangeDetect char0 char1
                          "StringDetect" -> Just $ StringDetect $ Text.pack str
                          "WordDetect" -> Just $ WordDetect $ Text.pack str
