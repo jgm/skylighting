@@ -10,6 +10,7 @@ module Skylighting.Regex (
               , compileRegex
               , matchRegex
               , testRegex
+              , isWordChar
               ) where
 
 import Data.Aeson

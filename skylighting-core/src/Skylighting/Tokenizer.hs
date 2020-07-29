@@ -567,14 +567,8 @@ wordBoundary inp = do
          c <- gets prevChar
          guard $ isWordBoundary c d
 
--- TODO is this right?
 isWordBoundary :: Char -> Char -> Bool
-isWordBoundary c d =
-  (isAlphaNum c && not (isAlphaNum d))
-  || (isAlphaNum d && not (isAlphaNum c))
-  || (isSpace d && not (isSpace c))
-  || (isSpace c && not (isSpace d))
-
+isWordBoundary c d = isWordChar c /= isWordChar d
 
 decodeBS :: ByteString -> TokenizerM Text
 decodeBS bs = case decodeUtf8' bs of
