@@ -251,18 +251,14 @@ getToken = do
   gets endline >>= guard . not
   context <- currentContext
   msum (map (\r -> tryRule r inp) (cRules context)) <|>
-     if cFallthrough context
-        then do
-          let fallthroughContext = case cFallthroughContext context of
-                                        [] -> [Pop]
-                                        cs -> cs
-          doContextSwitches fallthroughContext
-          getToken
-        else do
-          t <- normalChunk
-          let mbtok = Just (cAttribute context, t)
-          info $ "FALLTHROUGH " ++ show mbtok
-          return mbtok
+     case cFallthroughContext context of
+           [] | cFallthrough context -> Nothing <$ doContextSwitches [Pop]
+              | otherwise -> do
+                  t <- normalChunk
+                  let mbtok = Just (cAttribute context, t)
+                  info $ "FALLTHROUGH " ++ show mbtok
+                  return mbtok
+           cs -> Nothing <$ doContextSwitches cs
 
 takeChars :: Int -> TokenizerM Text
 takeChars 0 = mzero
