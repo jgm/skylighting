@@ -10,8 +10,7 @@
 , [ ( CommentTok , "-- modified to use for instead of while" ) ]
 , []
 , [ ( KeywordTok , "local" )
-  , ( NormalTok , " " )
-  , ( FunctionTok , "write" )
+  , ( NormalTok , " write" )
   , ( OperatorTok , "=" )
   , ( FunctionTok , "io.write" )
   ]

@@ -48,7 +48,7 @@
     - NOTE, FIXME, TODO alerts added on comments
     - improved highlighting
 -->
-<language name="Lua" version="9" indenter="lua" kateversion="5.0" section="Scripts" extensions="*.lua" mimetype="text/x-lua">
+<language name="Lua" version="10" indenter="lua" kateversion="5.0" section="Scripts" extensions="*.lua" mimetype="text/x-lua">
   <highlighting>
     <list name="keywords">
       <item>and</item>
@@ -149,7 +149,7 @@
       <item>coroutine.create</item>
       <item>coroutine.isyieldable</item>
       <item>coroutine.resume</item>
-      <item>coroutine.kill</item>
+      <item>coroutine.close</item>
       <item>coroutine.running</item>
       <item>coroutine.status</item>
       <item>coroutine.wrap</item>
@@ -423,6 +423,8 @@
       <item>__call</item>
 
       <item>__tostring</item>
+      <item>__name</item>
+      <item>__close</item>
       <item>__pairs</item>
       <!-- setmetatable -->
       <item>__metatable</item>
@@ -477,6 +479,7 @@
         <keyword      attribute="BVar"     context="#stay"         String="basevar"/>
 
         <WordDetect   attribute="Keyword"  context="Function" beginRegion="chunk" String="function" />
+        <WordDetect   attribute="Keyword"  context="Local" String="local" />
         <keyword      attribute="Keyword"  context="#stay" String="keywords" />
         <keyword      attribute="Control"  context="StartControl" beginRegion="chunk" String="startcontrol" />
         <keyword      attribute="Control"  context="#stay" String="control" />
@@ -484,11 +487,11 @@
         <DetectChar   attribute="Symbols"  context="#stay" beginRegion="table" char="{" />
         <DetectChar   attribute="Symbols"  context="#stay" endRegion="table"   char="}" />
 
-        <RegExpr      attribute="Numbers"  context="#stay" String="(?:0[xX](?:\.&HEX;+|&HEX;+\.?&HEX;*)(?:[pP][-+]?\d*)?|(?:\.\d+|\d+\.?\d*)(?:[eE][-+]?\d*)?)"/>
+        <RegExpr      attribute="Normal Text" context="#stay" String="[a-zA-Z_][a-zA-Z0-9_]*(?=\s*([({'&quot;]|\[\[|\[=))" />
+        <RegExpr      attribute="Constant" context="#stay" String="[A-Z_][A-Z0-9_]*\b" />
+        <DetectIdentifier attribute="Variable" context="#stay" />
 
-        <RegExpr      attribute="Normal Text" context="#stay" String="\b[a-zA-Z_][a-zA-Z0-9_]*(?=\s*([({'&quot;]|\[\[|\[=))" />
-        <RegExpr      attribute="Constant" context="#stay" String="\b[A-Z_][A-Z0-9_]*\b" />
-        <RegExpr      attribute="Variable" context="#stay" String="\b[a-zA-Z_][a-zA-Z0-9_]*\b" />
+        <RegExpr      attribute="Numbers"  context="NumberSuffix" String="(?:0[xX](?:\.&HEX;+|&HEX;+\.?&HEX;*)(?:[pP][-+]?\d*)?|(?:\.\d+|\d+\.?\d*)(?:[eE][-+]?\d*)?)"/>
 
         <Detect2Chars attribute="Error"    context="#stay" char="!" char1="="/>
         <Detect2Chars attribute="Error"    context="#stay" char="-" char1="="/>
@@ -502,6 +505,30 @@
         <keyword      attribute="Control"  context="#stay" endRegion="chunk"   beginRegion="chunk" String="elsecontrol" />
         <keyword      attribute="Control"  context="#pop"  endRegion="chunk"   String="endcontrol" />
         <IncludeRules context="Normal" />
+      </context>
+
+      <context name="NumberSuffix" attribute="Normal Text"  lineEndContext="#pop" fallthroughContext="#pop">
+        <!-- some syntax like a=32print(a) are valid, but ugly -->
+        <DetectIdentifier attribute="Error" context="#pop" />
+      </context>
+
+      <context name="Local" attribute="Normal Text"  lineEndContext="#pop" fallthroughContext="#pop">
+        <DetectSpaces />
+        <IncludeRules context="##DoxygenLua" />
+        <RegExpr          attribute="Constant" context="LocalVariable" String="\b[A-Z_][A-Z0-9_]*\b" />
+        <DetectIdentifier attribute="Variable" context="LocalVariable" />
+      </context>
+
+      <context name="LocalVariable" attribute="Normal Text"  lineEndContext="#pop#pop" fallthroughContext="#pop#pop">
+        <DetectSpaces />
+        <IncludeRules context="##DoxygenLua" />
+        <DetectChar   attribute="Symbols"   context="#pop" char="," />
+        <DetectChar   attribute="Attribute" context="Attribute" char="&lt;" lookAhead="true" />
+      </context>
+
+      <context name="Attribute" attribute="Attribute"  lineEndContext="#pop">
+        <RegExpr      attribute="Attribute" context="#pop" String="&lt;\s*(?:close|const)\s*>" />
+        <RegExpr      attribute="Error"     context="#pop" String="&lt;\s*\w*\s*>?" />
       </context>
 
       <context name="Function" attribute="Normal Text"      lineEndContext="#stay">
@@ -556,6 +583,7 @@
       <itemData name="RawStrings"      defStyleNum="dsVerbatimString"/>
       <itemData name="Symbols"         defStyleNum="dsOperator" spellChecking="false"/>
       <itemData name="Variable"        defStyleNum="dsNormal" /> <!-- JGM -->
+      <itemData name="Attribute"       defStyleNum="dsAttribute" spellChecking="false"/>
     </itemDatas>
   </highlighting>
   <general>

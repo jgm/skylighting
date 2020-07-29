@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Scala" version="6" kateversion="2.3" section="Sources"
+<language name="Scala" version="7" kateversion="2.3" section="Sources"
           extensions="*.scala;*.sbt" mimetype="text/x-scala" license="LGPL"
           author="Stephane Micheloud (stephane.micheloud@epfl.ch)">
 <!--
@@ -3425,8 +3425,8 @@ adapted from "java.xml" by Alfredo Luiz Foltran Fialho (alfoltran@ig.com.br)
         <RegExpr attribute="Keyword" context="Imports" String="\b(package|import)\b" />
 -->
         <RegExpr attribute="Function" context="#stay" String="\b[_\w][_\w\d]*(?=[\s]*(/\*\s*\d+\s*\*/\s*)?[(])" />
-        <RegExpr attribute="Symbol" context="Member" String="[.]{1,1}" />
-        <AnyChar attribute="Symbol" context="#stay" String=":!%&amp;()+,-/.*&lt;=&gt;?[]|~^&#59;"/>
+        <DetectChar attribute="Symbol" context="Member" char="." />
+        <AnyChar attribute="Symbol" context="#stay" String=":!%&amp;()+,-/*&lt;=&gt;?[]|~^&#59;"/>
       </context>
       <context name="Float Suffixes" attribute="Float" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
           <AnyChar String="fF" attribute="Float" context="#pop"/>

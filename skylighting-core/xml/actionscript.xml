@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="ActionScript 2.0" version="3" kateversion="5.0" section="Sources" extensions="*.as" mimetype="text/x-actionscript" license="LGPL" author="Aaron Miller (armantic101@gmail.com)">
+<language name="ActionScript 2.0" version="4" kateversion="5.0" section="Sources" extensions="*.as" mimetype="text/x-actionscript" license="LGPL" author="Aaron Miller (armantic101@gmail.com)">
   <highlighting>
     
     <list name="properties">
@@ -269,8 +269,8 @@
         <RegExpr attribute="Keyword" context="StaticImports" String="\b(import\s+static)\b" />
         <RegExpr attribute="Keyword" context="Imports" String="\b(package|import)\b" /> 
         <RegExpr attribute="Function" context="#stay" String="\b[_\w][_\w\d]*(?=[\s]*(/\*\s*\d+\s*\*/\s*)?[(])" />
-        <RegExpr attribute="Symbol" context="Member" String="[.]{1,1}" /> 
-        <AnyChar attribute="Symbol" context="#stay" String=":!%&amp;()+,-/.*&lt;=&gt;?[]|~^&#59;"/>
+        <DetectChar attribute="Symbol" context="Member" char="." />
+        <AnyChar attribute="Symbol" context="#stay" String=":!%&amp;()+,-/*&lt;=&gt;?[]|~^&#59;"/>
       </context>
       <context name="Float Suffixes" attribute="Float" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
           <AnyChar String="fF" attribute="Float" context="#pop"/>

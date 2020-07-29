@@ -99,7 +99,8 @@
   , ( NormalTok , " (index " )
   , ( OperatorTok , "!==" )
   , ( NormalTok , " " )
-  , ( DecValTok , "-1" )
+  , ( OperatorTok , "-" )
+  , ( DecValTok , "1" )
   , ( NormalTok , ") {" )
   ]
 , [ ( NormalTok , "        length" ) , ( OperatorTok , "--;" ) ]

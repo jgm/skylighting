@@ -38,7 +38,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 -->
-<language name="GNU M4" version="2" section="Sources" kateversion="3.0" extensions="*.m4;" author="Jaak Ristioja" license="New BSD License">
+<language name="GNU M4" version="3" section="Sources" kateversion="3.0" extensions="*.m4;" author="Jaak Ristioja" license="New BSD License">
   <highlighting>
     <list name="optbuiltins">
       <item>__gnu__</item>
@@ -165,7 +165,7 @@
         <DetectChar attribute="Commas" char="," context="#stay"/>
         <DetectChar attribute="Operators" char="(" context="inparenthesis" beginRegion="parenthesis"/>
         <DetectChar attribute="Operators" char=")" context="#pop" endRegion="parenthesis"/>
-        <RegExpr attribute="Operators" String="[+*/%\|=\!&lt;&gt;!^&amp;~-]" context="#stay"/>
+        <AnyChar attribute="Operators" String="+*/%|=!&lt;&gt;^&amp;~-" context="#stay"/>
       </context>
       <context name="inparenthesis" attribute="Normal Text" lineEndContext="#stay" noIndentationBasedFolding="true">
         <IncludeRules context="Normal Text" />
