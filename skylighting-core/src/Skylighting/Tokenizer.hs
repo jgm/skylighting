@@ -591,7 +591,8 @@ subDynamic bs =
          | BS.null z -> return y
          | otherwise -> (y <>) <$>
              case BS.unpack (BS.take 2 z) of
-                  ['%',x] | x >= '0' && x <= '9' -> do
+                  ['%',x] | x >= '0' && x <= '9' &&
+                            not ("\\" `BS.isSuffixOf` y) -> do
                      let capNum = ord x - ord '0'
                      replacement <- getCapture capNum
                      (escapeRegex (encodeUtf8 replacement) <>) <$>
