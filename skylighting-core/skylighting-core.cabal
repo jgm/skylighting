@@ -138,6 +138,8 @@ library
   ghc-prof-options:    -fprof-auto-exported
   default-language:    Haskell2010
   ghc-options:         -Wall
+  if impl(ghc >= 8.4)
+    ghc-options:       -fhide-source-paths
 
 Flag executable
   Description:   Build skylighting-extract tool
@@ -180,6 +182,8 @@ benchmark benchmark-skylighting
                    directory,
                    criterion >= 1.0 && < 1.6
   Ghc-Options:   -rtsopts -Wall -fno-warn-unused-do-bind
+  if impl(ghc >= 8.4)
+    ghc-options:       -fhide-source-paths
   Default-Language: Haskell2010
 
 executable skylighting-extract
@@ -208,3 +212,5 @@ executable skylighting-extract
   default-language:    Haskell2010
   other-extensions:    CPP
   ghc-options:         -Wall
+  if impl(ghc >= 8.4)
+    ghc-options:       -fhide-source-paths
