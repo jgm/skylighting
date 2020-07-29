@@ -1,1 +1,3 @@
 packages: skylighting*/*.cabal
+package skylighting
+  flags: +executable
