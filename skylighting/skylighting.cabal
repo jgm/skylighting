@@ -173,6 +173,7 @@ library
                        Skylighting.Syntax.Tcl
                        Skylighting.Syntax.Tcsh
                        Skylighting.Syntax.Texinfo
+                       Skylighting.Syntax.Toml
                        Skylighting.Syntax.Typescript
                        Skylighting.Syntax.Verilog
                        Skylighting.Syntax.Vhdl
