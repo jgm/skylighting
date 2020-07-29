@@ -3,7 +3,6 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 module Main where
-import qualified Control.Exception as E
 import Data.Aeson (decode, encode)
 import Data.Algorithm.Diff
 import qualified Data.ByteString.Lazy as BL
@@ -194,17 +193,14 @@ noDropTest cfg inps syntax =
   $ testCase (Text.unpack (sName syntax))
   $ mapM_ go inps
     where go inp =
-            E.catch
-              (case tokenize cfg syntax inp of
+              case tokenize cfg syntax inp of
                     Right ts -> assertBool ("Text has been dropped:\n" ++ diffs)
                                  (inplines == toklines)
                          where inplines = Text.lines inp
                                toklines = map (mconcat . map tokToText) ts
                                diffs = makeDiff "expected" inplines toklines
                     Left  e  ->
-                      assertFailure ("Unexpected error: " ++ e ++ "\ninput = " ++ show inp))
-              (\(e :: RegexException) ->
-                assertFailure (show e ++ "\ninput = " ++ show inp))
+                      assertFailure ("Unexpected error: " ++ e ++ "\ninput = " ++ show inp)
 
 tokenizerTest :: TokenizerConfig -> SyntaxMap -> Bool -> FilePath -> TestTree
 tokenizerTest cfg sMap regen inpFile = localOption (mkTimeout 15000000) $

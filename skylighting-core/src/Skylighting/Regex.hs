@@ -6,14 +6,12 @@
 
 module Skylighting.Regex (
                 Regex
-              , RegexException(..)
               , RE(..)
               , compileRegex
               , matchRegex
               , testRegex
               ) where
 
-import qualified Control.Exception as E
 import Data.Aeson
 import Data.Binary (Binary)
 import qualified Data.ByteString.Base64 as Base64
@@ -26,12 +24,6 @@ import GHC.Generics (Generic)
 import Control.Monad.Fail (MonadFail)
 #endif
 import Regex.KDE
-
--- | An exception in compiling or executing a regex.
-newtype RegexException = RegexException String
-      deriving (Show, Typeable, Generic)
-
-instance E.Exception RegexException
 
 -- | A representation of a regular expression.
 data RE = RE{
