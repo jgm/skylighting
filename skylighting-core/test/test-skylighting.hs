@@ -189,7 +189,7 @@ p_no_drop cfg syntax t =
 
 noDropTest :: TokenizerConfig -> [Text] -> Syntax -> TestTree
 noDropTest cfg inps syntax =
-  localOption (mkTimeout 15000000)
+  localOption (mkTimeout 25000000)
   $ testCase (Text.unpack (sName syntax))
   $ mapM_ go inps
     where go inp =
@@ -203,7 +203,7 @@ noDropTest cfg inps syntax =
                       assertFailure ("Unexpected error: " ++ e ++ "\ninput = " ++ show inp)
 
 tokenizerTest :: TokenizerConfig -> SyntaxMap -> Bool -> FilePath -> TestTree
-tokenizerTest cfg sMap regen inpFile = localOption (mkTimeout 15000000) $
+tokenizerTest cfg sMap regen inpFile = localOption (mkTimeout 25000000) $
   goldenTest testname getExpected getActual
       (compareValues referenceFile) updateGolden
   where testname = lang ++ " tokenizing of " ++ inpFile
