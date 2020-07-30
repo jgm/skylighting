@@ -183,7 +183,7 @@ pEscaped c =
 
 pRegexCharClass :: Parser Regex
 pRegexCharClass = do
-  negated <- option False $ True <$ satisfy (== 94) -- ^
+  negated <- option False $ True <$ satisfy (== 94) -- '^'
   let getEscapedClass = do
         _ <- satisfy (== 92) -- backslash
         (isDigit <$ char 'd')
@@ -194,7 +194,7 @@ pRegexCharClass = do
          <|> (not . isWordChar <$ char 'W')
   let getPosixClass = do
         _ <- string "[:"
-        localNegated <- option False $ True <$ satisfy (== 94) -- ^
+        localNegated <- option False $ True <$ satisfy (== 94) -- '^'
         res <- (isAlphaNum <$ string "alnum")
              <|> (isAlpha <$ string "alpha")
              <|> (isAscii <$ string "ascii")
