@@ -48,6 +48,9 @@ prune ms = if Set.size ms > sizeLimit
 
 exec :: Direction -> Regex -> Set Match -> Set Match
 exec _ MatchNull = id
+exec dir (MatchDynamic n) = -- if this hasn't been replaced, match literal
+  exec dir (MatchChar (== '%') <>
+            mconcat (map (\c -> MatchChar (== c)) (show n)))
 exec _ AssertEnd = Set.filter (\m -> matchOffset m == B.length (matchBytes m))
 exec _ AssertBeginning = Set.filter (\m -> matchOffset m == 0)
 exec _ (AssertPositive dir regex) =

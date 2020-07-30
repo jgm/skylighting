@@ -5,7 +5,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module Skylighting.Regex (
-                Regex
+                Regex(..)
               , RE(..)
               , compileRegex
               , matchRegex

@@ -100,6 +100,12 @@ pRegexChar caseSensitive = do
   w <- satisfy $ const True
   case w of
     46  -> return MatchAnyChar
+    37 -> (do -- dynamic %1 %2
+              ds <- A.takeWhile1 (\x -> x >= 48 && x <= 57)
+              case readMay (U.toString ds) of
+                Just !n -> return $ MatchDynamic n
+                Nothing -> fail "not a number")
+            <|> return (MatchChar (== '%'))
     92  -> pRegexEscapedChar
     36  -> return AssertEnd
     94  -> return AssertBeginning
@@ -230,6 +236,7 @@ isSpecial 123 = True -- '{'
 isSpecial 125 = True -- '}'
 isSpecial 91 = True -- '['
 isSpecial 93 = True -- ']'
+isSpecial 37 = True -- '%'
 isSpecial 40 = True -- '('
 isSpecial 41 = True -- ')'
 isSpecial 124 = True -- '|'

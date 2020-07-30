@@ -16,6 +16,7 @@ data Direction = Forward | Backward
 
 data Regex =
   MatchAnyChar |
+  MatchDynamic !Int |
   MatchChar (Char -> Bool) |
   MatchSome !Regex |
   MatchAlt !Regex !Regex |
@@ -31,6 +32,7 @@ data Regex =
 
 instance Show Regex where
   show MatchAnyChar = "MatchAnyChar"
+  show (MatchDynamic i) = "MatchDynamic " <> show i
   show (MatchChar _) = "(MatchChar <fn>)"
   show (MatchSome re) = "(MatchSome " <> show re <> ")"
   show (MatchAlt r1 r2) = "(MatchAlt " <> show r1 <> " " <> show r2 <> ")"

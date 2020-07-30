@@ -20,7 +20,7 @@ import Data.ByteString.Char8 (ByteString)
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.CaseInsensitive (mk)
-import Data.Char (isAlphaNum, isAscii, isDigit, isLetter, isPrint, isSpace, ord)
+import Data.Char (isAlphaNum, isAscii, isDigit, isLetter, isSpace, ord)
 import qualified Data.Map as Map
 import qualified Data.IntMap as IntMap
 import Data.Maybe (catMaybes)
@@ -31,7 +31,6 @@ import Data.Text.Encoding (decodeUtf8', encodeUtf8)
 import Debug.Trace
 import Skylighting.Regex
 import Skylighting.Types
-import Text.Printf (printf)
 #if !MIN_VERSION_base(4,11,0)
 import Data.Semigroup
 #endif
@@ -517,23 +516,11 @@ anyChar cs inp = do
 
 regExpr :: Bool -> RE -> ByteString -> TokenizerM Text
 regExpr dynamic re inp = do
-  reStr <- if dynamic
-              then do
-                reStr' <- subDynamic (reString re)
-                info $ "Dynamic regex: " ++ show reStr'
-                return reStr'
-              else return (reString re)
   -- return $! traceShowId $! (reStr, inp)
+  let reStr = reString re
   when (BS.take 2 reStr == "\\b") $ wordBoundary inp
-  regex <- if dynamic
-              then
-                case compileRegex (reCaseSensitive re) reStr of
-                  Right r  -> return r
-                  Left e   -> throwError $ "Error compiling regex " ++
-                                UTF8.toString reStr ++ ": " ++ e
-              else do
-                compiledREs <- gets compiledRegexes
-                case Map.lookup re compiledREs of
+  regex <- do compiledREs <- gets compiledRegexes
+              case Map.lookup re compiledREs of
                      Nothing -> do
                        cre <- case compileRegex (reCaseSensitive re) reStr of
                                 Right r  -> return r
@@ -542,8 +529,12 @@ regExpr dynamic re inp = do
                                    UTF8.toString reStr ++ ": " ++ e
                        modify $ \st -> st{ compiledRegexes =
                              Map.insert re cre (compiledRegexes st) }
-                       return cre
-                     Just cre -> return cre
+                       if dynamic
+                          then subDynamic cre
+                          else return cre
+                     Just cre -> if dynamic
+                                    then subDynamic cre
+                                    else return cre
   case matchRegex regex inp of
         Just (matchedBytes, capts) -> do
           unless (null capts) $
@@ -574,41 +565,23 @@ decodeBS bs = case decodeUtf8' bs of
 
 -- Substitute out %1, %2, etc. in regex string, escaping
 -- appropriately..
-subDynamic :: ByteString -> TokenizerM ByteString
-subDynamic bs =
-  case BS.break (=='%') bs of
-       (y,z)
-         | BS.null z -> return y
-         | otherwise -> (y <>) <$>
-             case BS.unpack (BS.take 2 z) of
-                  ['%',x] | x >= '0' && x <= '9' &&
-                            not ("\\" `BS.isSuffixOf` y) -> do
-                     let capNum = ord x - ord '0'
-                     replacement <- getCapture capNum
-                     (escapeRegex (encodeUtf8 replacement) <>) <$>
-                         subDynamic (BS.drop 2 z)
-                  _ -> BS.cons '%' <$> (subDynamic (BS.drop 1 z))
-
-escapeRegex :: BS.ByteString -> BS.ByteString
-escapeRegex = BS.concatMap escapeRegexChar
-
-escapeRegexChar :: Char -> BS.ByteString
-escapeRegexChar '^' = "\\^"
-escapeRegexChar '$' = "\\$"
-escapeRegexChar '\\' = "\\\\"
-escapeRegexChar '[' = "\\["
-escapeRegexChar ']' = "\\]"
-escapeRegexChar '(' = "\\("
-escapeRegexChar ')' = "\\)"
-escapeRegexChar '{' = "\\{"
-escapeRegexChar '}' = "\\}"
-escapeRegexChar '*' = "\\*"
-escapeRegexChar '+' = "\\+"
-escapeRegexChar '.' = "\\."
-escapeRegexChar '?' = "\\?"
-escapeRegexChar c
-  | isAscii c && isPrint c = BS.singleton c
-  | otherwise              = BS.pack $ printf "\\z%04x" (ord c)
+subDynamic :: Regex -> TokenizerM Regex
+subDynamic (MatchDynamic capNum) = do
+  replacement <- getCapture capNum
+  return $ mconcat $ map (MatchChar . (==)) $ Text.unpack replacement
+subDynamic (MatchAlt r1 r2) =
+  MatchAlt <$> subDynamic r1 <*> subDynamic r2
+subDynamic (MatchConcat r1 r2) =
+  MatchConcat <$> subDynamic r1 <*> subDynamic r2
+subDynamic (MatchSome r) =
+  MatchSome <$> subDynamic r
+subDynamic (MatchCapture i r) =
+  MatchCapture i <$> subDynamic r
+subDynamic (AssertPositive dir r) =
+  AssertPositive dir <$> subDynamic r
+subDynamic (AssertNegative dir r) =
+  AssertNegative dir <$> subDynamic r
+subDynamic x = return x
 
 getCapture :: Int -> TokenizerM Text
 getCapture capnum = do
