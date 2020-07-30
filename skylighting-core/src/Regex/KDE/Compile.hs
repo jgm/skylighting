@@ -22,68 +22,73 @@ import Data.Semigroup ((<>))
 -- | Compile a UTF-8 encoded ByteString as a Regex.  If the first
 -- parameter is True, then the Regex will be case sensitive.
 compileRegex :: Bool -> ByteString -> Either String Regex
-compileRegex caseSensitive bs = fst <$> parseOnly (runStateT parser 0) bs
+compileRegex caseSensitive bs =
+  let !res = parseOnly (evalStateT parser 0) bs
+   in res
  where
    parser = do
-     re <- pRegex caseSensitive
-     rest <- lift $ A.takeWhile (const True)
-     if B.null rest
-       then return $! re
-       else fail $ "parse error at byte position " ++
-                    show (B.length bs - B.length rest)
+     !re <- pRegex caseSensitive
+     (re <$ lift A.endOfInput) <|>
+       do rest <- lift A.takeByteString
+          fail $ "parse error at byte position " ++
+                 show (B.length bs - B.length rest)
 
 type RParser = StateT Int Parser
 
 pRegex :: Bool -> RParser Regex
-pRegex caseSensitive = do
-  xs <- many (pRegexPart caseSensitive)
-  let x = case xs of
-            [y] -> y
-            _   -> mconcat xs
-  MatchAlt x <$> (lift (char '|') *> pRegex caseSensitive) <|> return x
+pRegex caseSensitive =
+  foldr MatchAlt
+    <$> (pAltPart caseSensitive)
+    <*> (many $ lift (char '|') *> (pAltPart caseSensitive <|> pure mempty))
+
+pAltPart :: Bool -> RParser Regex
+pAltPart caseSensitive = mconcat <$> many1 (pRegexPart caseSensitive)
 
 char :: Char -> Parser Char
 char c =
   c <$ satisfy (== fromIntegral (ord c))
 
 pRegexPart :: Bool -> RParser Regex
-pRegexPart caseSensitive = do
-  core <- lift (pRegexChar caseSensitive) <|>
-              (lift (char '(') *>
-                   withGroupModifiers (pRegex caseSensitive)
-                   <* lift (char ')'))
-  pSuffix core
+pRegexPart caseSensitive =
+  (lift (pRegexChar caseSensitive) <|> pParenthesized caseSensitive) >>=
+     lift . pSuffix
 
-withGroupModifiers :: RParser Regex -> RParser Regex
-withGroupModifiers p = do
-  (lift (char '?') *>
-    (AssertPositive Forward <$> (lift (char '=') *> p)
-      <|> AssertNegative Forward <$> (lift (char '!') *> p)
-      <|> AssertPositive Backward <$> (lift (string "<=") *> p)
-      <|> AssertNegative Backward <$> (lift (string "<!") *> p)
-      <|> (lift (char ':') *> p)))
-  <|> (modify (+ 1) *> (MatchCapture <$> get <*> p))
+pParenthesized :: Bool -> RParser Regex
+pParenthesized caseSensitive = do
+  _ <- lift (satisfy (== 40))
+  modifier <- lift (satisfy (== 63) *> pGroupModifiers)
+                <|> (MatchCapture <$> (modify (+ 1) *> get))
+  contents <- pRegex caseSensitive
+  _ <- lift (satisfy (== 41))
+  return $ modifier contents
 
-pSuffix :: Regex -> RParser Regex
-pSuffix re = (lift
-  ((MatchAlt (MatchSome re) MatchNull <$ char '*')
-    <|>
-    (MatchSome re <$ char '+')
-    <|>
-    (MatchAlt re MatchNull <$ char '?')
-    <|> do _ <- char '{'
-           let isDig x = x >= 48 && x < 58
-           minn <- option Nothing $ readMay . U.toString <$> A.takeWhile isDig
-           maxn <- option Nothing $ char ',' *>
-                            (readMay . U.toString <$> A.takeWhile isDig)
-           _ <- char '}'
-           return $!
-             case (minn, maxn) of
-               (Nothing, Nothing) -> atleast 0 re
-               (Just n, Nothing)  -> atleast n re
-               (Nothing, Just n)  -> atmost n re
-               (Just m, Just n)   -> between m n re) >>= pSuffix)
-      <|> return re
+pGroupModifiers :: Parser (Regex -> Regex)
+pGroupModifiers =
+  (id <$ char ':')
+   <|>
+     do dir <- option Forward $ Backward <$ char '<'
+        (AssertPositive dir <$ char '=') <|> (AssertNegative dir <$ char '!')
+
+pSuffix :: Regex -> Parser Regex
+pSuffix re = option re $ do
+  w <- satisfy (\x -> x == 42 || x == 43 || x == 63 || x == 123)
+  (case w of
+    42  -> return $ MatchAlt (MatchSome re) MatchNull
+    43  -> return $ MatchSome re
+    63  -> return $ MatchAlt re MatchNull
+    123 -> do
+      let isDig x = x >= 48 && x < 58
+      minn <- option Nothing $ readMay . U.toString <$> A.takeWhile isDig
+      maxn <- option Nothing $ char ',' *>
+                       (readMay . U.toString <$> A.takeWhile isDig)
+      _ <- char '}'
+      return $!
+        case (minn, maxn) of
+          (Nothing, Nothing) -> atleast 0 re
+          (Just n, Nothing)  -> atleast n re
+          (Nothing, Just n)  -> atmost n re
+          (Just m, Just n)   -> between m n re
+    _   -> fail "pSuffix encountered impossible byte") >>= pSuffix
  where
    atmost 0 _ = MatchNull
    atmost n r = MatchAlt (mconcat (replicate n r)) (atmost (n-1) r)
@@ -92,8 +97,6 @@ pSuffix re = (lift
    between m n r = mconcat (replicate m r) <> atmost (n - m) r
 
    atleast n r = mconcat (replicate n r) <> MatchAlt (MatchSome r) MatchNull
-
-
 
 pRegexChar :: Bool -> Parser Regex
 pRegexChar caseSensitive = do
@@ -180,9 +183,9 @@ pEscaped c =
 
 pRegexCharClass :: Parser Regex
 pRegexCharClass = do
-  negated <- option False $ True <$ char '^'
+  negated <- option False $ True <$ satisfy (== 94) -- ^
   let getEscapedClass = do
-        _ <- char '\\'
+        _ <- satisfy (== 92) -- backslash
         (isDigit <$ char 'd')
          <|> (not . isDigit <$ char 'D')
          <|> (isSpace <$ char 's')
@@ -191,7 +194,7 @@ pRegexCharClass = do
          <|> (not . isWordChar <$ char 'W')
   let getPosixClass = do
         _ <- string "[:"
-        localNegated <- option False $ True <$ char '^'
+        localNegated <- option False $ True <$ satisfy (== 94) -- ^
         res <- (isAlphaNum <$ string "alnum")
              <|> (isAlpha <$ string "alpha")
              <|> (isAscii <$ string "ascii")
@@ -210,22 +213,22 @@ pRegexCharClass = do
              <|> (isHexDigit <$ string "xdigit")
         _ <- string ":]"
         return $! if localNegated then not . res else res
-  let getC = (char '\\' *> anyChar >>= pEscaped) <|>
-       (chr . fromIntegral <$> satisfy (\x -> x /= 0x5d && x /= 0x5c)) -- \,]
-  let maybeWithRange p = do
-        c <- p
+  let getC = (satisfy (== 92) *> anyChar >>= pEscaped) <|>
+       (chr . fromIntegral <$> satisfy (\x -> x /= 92 && x /= 93)) -- \ ]
+  let getCRange = do
+        c <- getC
         (\d -> (\x -> x >= c && x <= d)) <$> (char '-' *> getC) <|>
           return (== c)
   brack <- option [] $ [(==']')] <$ char ']'
-  fs <- many (getEscapedClass <|> getPosixClass <|> maybeWithRange getC)
-  _ <- char ']'
+  fs <- many (getEscapedClass <|> getPosixClass <|> getCRange)
+  _ <- satisfy (== 93) -- ]
   let f c = any ($ c) $ brack ++ fs
   return $! MatchChar (if negated then (not . f) else f)
 
 anyChar :: Parser Char
-anyChar = chr . fromIntegral <$> satisfy (const True)
-
-
+anyChar = do
+  w <- satisfy (const True)
+  return $! chr $ fromIntegral w
 
 isSpecial :: Word8 -> Bool
 isSpecial 92 = True -- '\\'

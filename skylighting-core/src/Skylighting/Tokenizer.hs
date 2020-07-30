@@ -519,23 +519,22 @@ regExpr dynamic re inp = do
   -- return $! traceShowId $! (reStr, inp)
   let reStr = reString re
   when (BS.take 2 reStr == "\\b") $ wordBoundary inp
-  regex <- do compiledREs <- gets compiledRegexes
-              case Map.lookup re compiledREs of
-                     Nothing -> do
-                       cre <- case compileRegex (reCaseSensitive re) reStr of
-                                Right r  -> return r
-                                Left e   -> throwError $
-                                  "Error compiling regex " ++
-                                   UTF8.toString reStr ++ ": " ++ e
-                       modify $ \st -> st{ compiledRegexes =
-                             Map.insert re cre (compiledRegexes st) }
-                       if dynamic
-                          then subDynamic cre
-                          else return cre
-                     Just cre -> if dynamic
-                                    then subDynamic cre
-                                    else return cre
-  case matchRegex regex inp of
+  compiledREs <- gets compiledRegexes
+  regex <- case Map.lookup re compiledREs of
+              Nothing -> do
+                cre <- case compileRegex (reCaseSensitive re) reStr of
+                         Right r  -> return r
+                         Left e   -> throwError $
+                           "Error compiling regex " ++
+                            UTF8.toString reStr ++ ": " ++ e
+                modify $ \st -> st{ compiledRegexes =
+                      Map.insert re cre (compiledRegexes st) }
+                return cre
+              Just cre -> return cre
+  regex' <- if dynamic
+               then subDynamic regex
+               else return regex
+  case matchRegex regex' inp of
         Just (matchedBytes, capts) -> do
           unless (null capts) $
              modify $ \st -> st{ captures =
