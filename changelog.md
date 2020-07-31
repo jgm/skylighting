@@ -1,5 +1,45 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.9
+
+  * Use a pure Haskell regex implementation (in unexported module
+    Text.Regex.KDE) instead of pcre.  The implementation is not
+    as efficient as pcre, but it seems good enough for this
+    application, and it is desirable to avoid depending on a C
+    library.  (Available Haskell libraries weren't up to the
+    task, because they don't do back-references, captures,
+    lookahead/behind.) Some benchmarks (old/new):
+    haskell (4.6/7.9) java (13.4/23.3) c (2.8/3.7) rhtml
+    (4.7/6.1) lua (10.6/13.2) javascript (4.2/6.6).
+    Though this is a significant slowdown, the tradeoff seems
+    worth it to have a pure Haskell implementation.
+
+  * More efficient treatment of dynamic regexes.
+    We put something in the Regex itself to represent the `%1`,
+    and modify it later.  This allows us to cache dynamic
+    regexes in a way we couldn't before.
+
+  * Add support for TOML (#105, Shiming Wang),
+    GraphQL, and Nim syntax (#102, Daniel Pozo Escalona).
+
+  * Update xml definitions for actionscript, bash, boo, c,
+    cmake, elm, erlang, glsl, isocpp, java, lua, m4, mediawiki,
+    perl, powershell, scala, tcsh, xul, zsh.
+
+  * Fix fallthrough behavior (don't always consume a token).
+
+  * Fix word boundary detection.
+
+  * Remove RegexException. (API change)
+
+  * Skylighting.Regex now exports `isWordChar` and `testRegex`,
+    as well as the constructors underlying the new `Regex` type.
+
+  * Remove some obsolete xml definition patches.
+
+  * Fix escaped % in dynamic regex.
+
+
 ## 0.8.5
 
   * Respect dynamic flag on StringDetect elements (#99, Albert
