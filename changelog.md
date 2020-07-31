@@ -14,6 +14,8 @@
     Though this is a significant slowdown, the tradeoff seems
     worth it to have a pure Haskell implementation.
 
+  * Removed old `system-pcre` flag.
+
   * More efficient treatment of dynamic regexes.
     We put something in the Regex itself to represent the `%1`,
     and modify it later.  This allows us to cache dynamic
