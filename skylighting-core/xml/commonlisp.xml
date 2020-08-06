@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language version="6" kateversion="5.0" name="Common Lisp" section="Sources" extensions="*.lisp;*.cl;*.lsp" mimetype="" author="Dominik Haumann (dhaumann@kde.org)" license="MIT">
+<language version="6" kateversion="5.0" name="Common Lisp" section="Sources" extensions="*.lisp;*.cl;*.lsp;*.el" mimetype="" author="Dominik Haumann (dhaumann@kde.org)" license="MIT">
   <highlighting>
     <list name="symbols">
       <item>&lt;</item>
