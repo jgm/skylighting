@@ -3,6 +3,7 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 module Main where
+import Data.Maybe
 import Data.Aeson (decode, encode)
 import Data.Algorithm.Diff
 import qualified Data.ByteString.Lazy as BL
@@ -11,6 +12,7 @@ import Data.Monoid ((<>))
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
+import qualified Data.Text.Encoding as TE
 import System.Directory
 import System.Environment (getArgs)
 import System.FilePath
@@ -52,7 +54,10 @@ main = do
       defConfig = TokenizerConfig { traceOutput = False
                                   , syntaxMap = sMap
                                   }
-
+  let getMatchers = map rMatcher .  concatMap cRules . sContexts
+  let getRegexFromMatcher (RegExpr re) = Just $ reString re
+      getRegexFromMatcher _ = Nothing
+  let getRegexesFromSyntax = mapMaybe getRegexFromMatcher . getMatchers
   inputs <- filter (\fp -> take 1 fp /= ".")
          <$> getDirectoryContents ("test" </> "cases")
   allcases <- mapM (fmap (Text.take 240)
@@ -87,6 +92,19 @@ main = do
         map (noDropTest defConfig allcases) syntaxes
     , testGroup "Doesn't hang or drop text on fuzz" $
         map (\syn -> testProperty (Text.unpack (sName syn)) (p_no_drop defConfig syn))
+        syntaxes
+    , testGroup "All regexes compile" $
+        map
+           (\syn -> testGroup ("syntax " <> sFilename syn)
+            (map
+              (\regex ->
+                testCase ("regex " <>
+                           (Text.unpack $ TE.decodeUtf8 regex) <> " in "
+                           <> sFilename syn)
+             $ assertBool "regex does not compile"
+               $ case compileRegex True regex of
+                         Right _ -> True
+                         Left _  -> False) $ getRegexesFromSyntax syn))
         syntaxes
     , testGroup "Regex module" $ map regexTest regexTests
     , testGroup "Regression tests" $
