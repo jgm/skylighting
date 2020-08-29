@@ -128,6 +128,9 @@ GPL-licensed. However, the `skylighting-core` package, which provides
 the core types and functions of this project is licensed under the BSD3
 license and bundles the GPL-licensed XML files separately.
 
+The KDE project now recommends that new syntax highlighting
+files be MIT licensed.
+
 References
 ----------
 
