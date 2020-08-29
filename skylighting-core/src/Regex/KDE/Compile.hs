@@ -37,6 +37,7 @@ type RParser = StateT Int Parser
 
 pRegex :: Bool -> RParser Regex
 pRegex caseSensitive =
+  option MatchNull $
   foldr MatchAlt
     <$> (pAltPart caseSensitive)
     <*> (many $ lift (char '|') *> (pAltPart caseSensitive <|> pure mempty))
