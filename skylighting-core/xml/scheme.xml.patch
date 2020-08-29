@@ -1,0 +1,13 @@
+diff --git a/skylighting-core/xml/scheme.xml b/skylighting-core/xml/scheme.xml
+index 3f3ab9d..59d9184 100644
+--- a/skylighting-core/xml/scheme.xml
++++ b/skylighting-core/xml/scheme.xml
+@@ -3,7 +3,7 @@
+ [
+   <!ENTITY xmlattrs "\s+([^&quot;/>]++|&quot;[^&quot;]*+&quot;)*+">
+   <!ENTITY tab      "&#009;">
+-  <!ENTITY regex    "(?:[^\\(\[/]++|\\.|\[\^?\]?([^\\\[\]]++|\\.|\[(:[^:]+:\])?)++\]|\((?R)\))+">
++  <!ENTITY regex    "(?:[^\\(\[/]++|\\.|\[\^?\]?([^\\\[\]]++|\\.|\[(:[^:]+:\])?)++\]|\((\?R)\))+">
+ 
+   <!ENTITY initial_ascii_set "a-zA-Z!$&#37;&amp;*/:&lt;=&gt;?~_^">
+   <!ENTITY initial_unicode_set "\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Mn}\p{Nl}\p{No}\p{Pd}\p{Pc}\p{Po}\p{Sc}\p{Sm}\p{Sk}\p{So}\p{Co}">
