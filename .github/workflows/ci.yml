@@ -54,7 +54,7 @@ jobs:
           cabal v2-build -j1 -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all 2>&1 | tee build.log
           # fail if warnings in local build
           ! grep -q ": [Ww]arning:" build.log || exit 1
-          cabal v2-test -fexecutable --disable-optimization --test-option=--hide-successes all
+          cabal v2-test -fexecutable --disable-optimization --test-options="--hide-successes" all
 
   windows:
 
