@@ -2,7 +2,7 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 
 <language name="CoffeeScript"
-          version="12"
+          version="13"
           kateversion="5.0"
           section="Scripts"
           extensions="Cakefile;*.coffee;*.coco;*.cson"
@@ -348,7 +348,7 @@
   <general>
     <folding indentationsensitive="1"/>
     <comments>
-      <comment name="singleLine" start="#"/>
+      <comment name="singleLine" start="#" position="afterwhitespace"/>
       <comment name="multiLine" start="###" end="###" region="Comment"/>
     </comments>
     <keywords casesensitive="1" additionalDeliminator="#'`"/>
@@ -357,3 +357,4 @@
     </emptyLines>
   </general>
 </language>
+<!-- kate: replace-tabs on; tab-width 2; indent-width 2; -->

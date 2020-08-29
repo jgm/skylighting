@@ -17,7 +17,7 @@
    * QML
    * CoffeeScript (embedded)
 -->
-<language name="JavaScript" version="15" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
+<language name="JavaScript" version="16" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
 
@@ -1852,12 +1852,16 @@
 
       <!-- Comments -->
       <context attribute="Normal Text" lineEndContext="#stay" name="FindComments">
-        <StringDetect attribute="Region Marker" context="region_marker" String="//BEGIN" beginRegion="Region1" />
-        <StringDetect attribute="Region Marker" context="region_marker" String="//END" endRegion="Region1" />
+        <Detect2Chars attribute="Comment" context="MatchComment" char="/" char1="/" lookAhead="true"/>
+        <Detect2Chars attribute="Comment" context="MatchComment" char="/" char1="*" lookAhead="true" />
+      </context>
+      <context name="MatchComment" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
+        <StringDetect attribute="Region Marker" context="#pop!region_marker" String="//BEGIN" beginRegion="Region1" />
+        <StringDetect attribute="Region Marker" context="#pop!region_marker" String="//END" endRegion="Region1" />
 
         <IncludeRules context="##Doxygen" />
-        <Detect2Chars attribute="Comment" context="Comment" char="/" char1="/" />
-        <Detect2Chars attribute="Comment" context="Multi/inline Comment" char="/" char1="*" beginRegion="Comment" />
+        <Detect2Chars attribute="Comment" context="#pop!Comment" char="/" char1="/" />
+        <Detect2Chars attribute="Comment" context="#pop!Multi/inline Comment" char="/" char1="*" beginRegion="Comment" />
       </context>
       <context attribute="Comment" lineEndContext="#pop" name="Comment">
         <DetectSpaces />

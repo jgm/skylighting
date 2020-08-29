@@ -3,7 +3,7 @@
   <!ENTITY charsdelim "_;.&#34;(){}@">
   <!ENTITY wordsep "(?=[&charsdelim;]|\s|$)">
 ]>
-<language name="Agda" version="6" kateversion="5.0" section="Sources" extensions="*.agda" mimetype="text/x-agda" author="Matthias C. M. Troffaes" license="LGPL">
+<language name="Agda" version="7" kateversion="5.0" section="Sources" extensions="*.agda" mimetype="text/x-agda" author="Matthias C. M. Troffaes" license="LGPL">
   <highlighting>
     <list name="reserved keywords">
       <item>abstract</item>
@@ -75,11 +75,13 @@
       </context>
       <context attribute="Comment" lineEndContext="#pop" name="comment">
         <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Modelines" />
       </context>
       <context attribute="Comment" lineEndContext="#stay" name="comments" noIndentationBasedFolding="1">
         <Detect2Chars attribute="Comment" context="comments" char="{" char1="-" beginRegion="CommentBlock" /> <!-- for nested comments -->
         <Detect2Chars attribute="Comment" context="#pop" char="-" char1="}" endRegion="CommentBlock" />
         <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Modelines" />
       </context>
       <context attribute="Hole" lineEndContext="#stay" name="hole">
         <Detect2Chars attribute="Hole" context="#pop" char="!" char1="}" />
@@ -110,7 +112,7 @@
   <general>
     <folding indentationsensitive="1"/>
     <comments>
-      <comment name="singleLine" start="--" />
+      <comment name="singleLine" start="--" position="afterwhitespace" />
       <comment name="multiLine" start="{-" end="-}" region="CommentBlock" />
     </comments>
     <keywords casesensitive="1"
@@ -118,3 +120,4 @@
               additionalDeliminator="&charsdelim;" />
   </general>
 </language>
+<!-- kate: replace-tabs on; tab-width 2; indent-width 2; -->

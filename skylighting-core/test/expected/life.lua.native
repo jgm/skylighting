@@ -1,7 +1,7 @@
 [ [ ( CommentTok , "-- life.lua" ) ]
-, [ ( CommentTok , "-- original by Dave Bollinger " )
-  , ( KeywordTok , "<DBollinger@compuserve.com>" )
-  , ( CommentTok , " posted to lua-l" )
+, [ ( CommentTok
+    , "-- original by Dave Bollinger <DBollinger@compuserve.com> posted to lua-l"
+    )
   ]
 , [ ( CommentTok
     , "-- modified to use ANSI terminal escape sequences"
@@ -53,9 +53,9 @@
   , ( ControlFlowTok , "end" )
   ]
 , [ ( NormalTok , "  " )
-  , ( CommentTok , "-- local i=os.clock()+1 while(os.clock()" )
-  , ( KeywordTok , "<i" )
-  , ( OtherTok , ") do end" )
+  , ( CommentTok
+    , "-- local i=os.clock()+1 while(os.clock()<i) do end"
+    )
   ]
 , [ ( KeywordTok , "end" ) ]
 , []

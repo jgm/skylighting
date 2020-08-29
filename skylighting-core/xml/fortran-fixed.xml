@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Fortran" version="3" kateversion="5.0" section="Sources" extensions="*.f;*.F;*.for;*.FOR;*.f90;*.F90;*.fpp;*.FPP;*.f95;*.F95;" mimetype="text/x-fortran-src" casesensitive="0" author="Franchin Matteo (fnch@libero.it)" license="LGPL" priority="9">
+<language name="Fortran (Fixed Format)" version="7" kateversion="5.44" section="Sources" extensions="*.f;*.F;*.for;*.FOR;*.fpp;*.FPP;" mimetype="text/x-fortran-src" casesensitive="0" author="Franchin Matteo (fnch@libero.it)" license="MIT" priority="9">
 <!-- by Franchin Matteo, fnch@libero.it -->
+<!-- NOTE: Keep in sync with the "Fortran (Free Format)" highlighter! (fortran-free.xml) -->
   <highlighting>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
@@ -11,19 +12,13 @@
       <item>allocate</item>
       <item>break</item>
       <item>call</item>
-      <item>case</item>
       <item>common</item>
-      <!--item> contains </item-->
       <item>continue</item>
       <item>cycle</item>
       <item>deallocate</item>
-      <item>default</item>
-      <!--item> do </item-->
       <item>forall</item>
       <item>where</item>
       <item>elsewhere</item>
-      <!--item> elseif </item-->
-      <!--item> else </item-->
       <item>equivalence</item>
       <item>exit</item>
       <item>external</item>
@@ -48,15 +43,15 @@
       <item>recursive</item>
       <item>result</item>
       <item>return</item>
-      <item>select</item>
-      <item>selectcase</item>
       <item>stop</item>
-      <!--item> then </item-->
       <item>to</item>
       <item>use</item>
       <item>only</item>
       <item>entry</item>
       <item>while</item>
+      <!-- Others keywords:
+           case, default, select, selectcase,
+           contains, do, elseif, else, then -->
     </list>
     <list name="io_functions">
       <item>access</item>
@@ -128,8 +123,6 @@
       <item>pad</item>
     </list>
     <list name="types">
-      <item>double</item>
-      <item>precision</item>
       <item>parameter</item>
       <item>save</item>
       <item>pointer</item>
@@ -139,6 +132,7 @@
       <item>allocatable</item>
       <item>optional</item>
       <item>sequence</item>
+      <!-- Others types: double, precision -->
     </list>
 
 <!-- There are 4 types of intrinsic procedures in Fortran 90:
@@ -371,14 +365,15 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="default" >
+        <IncludeRules context="find_preprocessor" />
+        <IncludeRules context="find_comments" />
         <IncludeRules context="find_strings" />
         <IncludeRules context="find_decls" />
         <IncludeRules context="find_intrinsics" />
         <IncludeRules context="find_io_stmnts" />
         <IncludeRules context="find_op_and_log" />
         <IncludeRules context="find_numbers" />
-        <IncludeRules context="find_preprocessor" />
-        <IncludeRules context="find_comments" />
+        <IncludeRules context="find_continue" />
         <IncludeRules context="find_symbols" />
         <IncludeRules context="find_begin_stmnts" />
         <IncludeRules context="find_end_stmnts" />
@@ -387,27 +382,38 @@
 <!--************************END OF THE MAIN CONTEXT*************************-->
 
 
+<!-- IMPORTANT: If you modify something, do it also in "fortran-free.xml"! -->
 
 <!-- This context highlights preprocessor lines -->
       <context attribute="Normal Text" lineEndContext="#stay" name="find_preprocessor">
-        <RegExpr attribute="Preprocessor" context="#stay" String="(#|cDEC\$|CDEC\$).*$" column="0"/>
+        <DetectChar attribute="Preprocessor" context="preprocessor" char="#" column="0"/>
+        <StringDetect attribute="Preprocessor" context="preprocessor" String="cDEC$" column="0"/>
+        <StringDetect attribute="Preprocessor" context="preprocessor" String="CDEC$" column="0"/>
       </context>
+      <context attribute="Preprocessor" lineEndContext="#pop" name="preprocessor" />
 
 <!-- This context highlights operators and the logical values .true. .false. -->
       <context attribute="Normal Text" lineEndContext="#stay" name="find_op_and_log">
-        <RegExpr attribute="Logical" context="#stay" String="\.(true|false)\." insensitive="true"/>
+        <StringDetect attribute="Logical" context="#stay" String=".true." insensitive="true"/>
+        <StringDetect attribute="Logical" context="#stay" String=".false." insensitive="true"/>
         <RegExpr attribute="Operator" context="#stay" String="\.[A-Za-z]+\."/>
-        <RegExpr attribute="Operator" context="#stay" String="(==|/=|&lt;|&lt;=|&gt;|&gt;=)"/>
+        <Detect2Chars attribute="Operator" context="#stay" char="=" char1="="/>
+        <Detect2Chars attribute="Operator" context="#stay" char="/" char1="="/>
+        <Detect2Chars attribute="Operator" context="#stay" char="&lt;" char1="="/>
+        <Detect2Chars attribute="Operator" context="#stay" char="&gt;" char1="="/>
+        <AnyChar attribute="Operator" context="#stay" String="&lt;&gt;"/>
       </context>
 
 <!-- This context highlights comments -->
       <context attribute="Normal Text" lineEndContext="#stay" name="find_comments">
         <AnyChar attribute="Comment" context="comment" String="cC*" column="0"/>
         <DetectChar attribute="Comment" context="comment" char="!"/>
+        <RegExpr attribute="Comment" context="comment" String="." column="72" />
       </context>
 
       <context attribute="Comment" lineEndContext="#pop" name="comment">
         <IncludeRules context="##Alerts"/>
+        <IncludeRules context="##Modelines"/>
       </context>
 
 <!-- This context highlights symbols -->
@@ -417,6 +423,11 @@
         <Detect2Chars attribute="Keyword" context="#stay" char="/" char1=")"/>
         <AnyChar attribute="Keyword" context="#stay" String="&amp;+-*/=?[]^{|}~"/>
         <AnyChar attribute="Symbol" context="#stay" String="(),"/>
+      </context>
+
+<!-- This context highlights the continuation character -->
+      <context attribute="Normal Text" lineEndContext="#stay" name="find_continue">
+        <RegExpr attribute="Continuation character" context="#stay" String="^     [^0-9\s]" column="0"/>
       </context>
 
 <!-- This context highlights items inside the parentesis of a function -->
@@ -430,9 +441,7 @@
 
 <!-- The following two contexts match input/output statements -->
       <context attribute="Normal Text" lineEndContext="#stay" name="find_io_stmnts">
-        <RegExpr attribute="IO Function" context="find_io_paren" String="\b(read|write|backspace|rewind|end\s*file|close)\s*[(]" insensitive="true"/>
-        <RegExpr attribute="IO Function" context="find_io_paren" String="\bopen\s*[(]" insensitive="true"/>
-        <RegExpr attribute="IO Function" context="find_io_paren" String="\binquire\s*[(]" insensitive="true"/>
+        <RegExpr attribute="IO Function" context="find_io_paren" String="\b(?:read|write|backspace|rewind|end\s*file|close|open|inquire)\s*[(]" insensitive="true"/>
         <RegExpr attribute="IO Function" context="format_stmnt" String="\bformat\s*[(]" insensitive="true"/>
         <RegExpr attribute="IO Function" context="#stay" String="\bend\s*file\b" insensitive="true"/>
         <keyword attribute="IO Function" context="#stay" String="io_functions"/>
@@ -455,7 +464,7 @@
         <DetectChar attribute="IO Function" context="format_stmnt" char="("/>
         <DetectChar attribute="IO Function" context="#pop" char=")"/>
         <RegExpr attribute="IO Function" context="#stay" String="[0-9]*/" insensitive="true"/>
-        <AnyChar attribute="IO Function" context="#stay" String=":"/>
+        <DetectChar attribute="IO Function" context="#stay" char=":"/>
         <IncludeRules context="find_strings" />
         <IncludeRules context="find_symbols" />
       </context>
@@ -463,38 +472,35 @@
 <!-- The following context matches the begin of program units -->
       <context attribute="Normal Text" lineEndContext="#stay" name="find_begin_stmnts">
         <RegExpr attribute="Keyword" context="#stay" String="\bmodule\s+procedure\b" insensitive="true"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\b(subroutine|function|block\s*data)\b" insensitive="true" beginRegion="Routine"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\b(program|module|block\s*data)\b" insensitive="true" beginRegion="Routine"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\b(then|do)\b" insensitive="true" beginRegion="Block"/>
+        <RegExpr attribute="Keyword" context="#stay" String="\b(?:subroutine|function|block\s*data|program|module)\b" insensitive="true" beginRegion="Routine"/>
+        <RegExpr attribute="Keyword" context="#stay" String="\b(?:then|do|select\s+case)\b" insensitive="true" beginRegion="Block"/>
       </context>
 <!-- The following context matches the end of program units -->
       <context attribute="Normal Text" lineEndContext="#stay" name="find_end_stmnts">
-        <RegExpr attribute="Keyword" context="#stay" String="\bend\s*(subroutine|function|block\s*data)\b" insensitive="true" endRegion="Routine"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\bend\s*(program|module)\b" insensitive="true" endRegion="Routine"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\bend\s*(do|if)\b" insensitive="true" endRegion="Block"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\bend\s*(select|where|forall|interface)\b" insensitive="true"/>
+        <RegExpr attribute="Keyword" context="#stay" String="\bend\s*(?:subroutine|function|block\s*data|program|module)\b" insensitive="true" endRegion="Routine"/>
+        <RegExpr attribute="Keyword" context="#stay" String="\bend\s*(?:do|if)\b" insensitive="true" endRegion="Block"/>
+        <RegExpr attribute="Keyword" context="#stay" String="\bend\s*(?:select|where|forall|interface)\b" insensitive="true"/>
         <RegExpr attribute="Keyword" context="#stay" String="\belse\s*if\b" insensitive="true" endRegion="Block"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\bend\b" insensitive="true" endRegion="Routine"/>
+        <WordDetect attribute="Keyword" context="#stay" String="end" insensitive="true" endRegion="Routine"/>
       </context>
 <!-- The following context matches the mid of program units -->
       <context attribute="Normal Text" lineEndContext="#stay" name="find_mid_stmnts">
-        <RegExpr attribute="Keyword" context="#stay" String="\belse\b" insensitive="true" endRegion="Block" beginRegion="Block"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\bcontains\b" insensitive="true" endRegion="Routine" beginRegion="Routine"/>
+        <WordDetect attribute="Keyword" context="#stay" String="else" insensitive="true" endRegion="Block" beginRegion="Block"/>
+        <RegExpr attribute="Keyword" context="#stay" String="\bcase(?:\s+default)?\b" insensitive="true" endRegion="Block" beginRegion="Block"/>
+        <WordDetect attribute="Keyword" context="#stay" String="contains" insensitive="true" endRegion="Routine" beginRegion="Routine"/>
       </context>
 
 <!-- The following two contexts match declarations -->
       <context attribute="Normal Text" lineEndContext="#stay" name="find_decls">
-        <RegExpr attribute="Data Type" context="#stay" String="\binteger[\*]\d{1,2}" insensitive="true"/>
-        <RegExpr attribute="Data Type" context="#stay" String="\breal[\*]\d{1,2}" insensitive="true"/>
-        <RegExpr attribute="Data Type" context="#stay" String="\bcomplex[\*]\d{1,2}" insensitive="true"/>
+        <RegExpr attribute="Data Type" context="#stay" String="\b(?:integer|real|complex)[\*]\d{1,2}" insensitive="true"/>
         <RegExpr attribute="Data Type" context="#stay" String="\bend\s*type\b" insensitive="true"/>
         <keyword attribute="Data Type" context="#stay" String="types"/>
-        <RegExpr attribute="Data Type" context="#stay" String="^\s*data\b" insensitive="true"/>
-        <RegExpr attribute="Data Type" context="find_paren" String="^\s*real\s*[(]" insensitive="true"/>
-        <RegExpr attribute="Data Type" context="#stay" String="^\s*real(?![\w\*])" insensitive="true"/>
+        <WordDetect attribute="Data Type" context="#stay" String="data" firstNonSpace="true" insensitive="true"/>
+        <!--<RegExpr attribute="Data Type" context="find_paren" String="real\s*[(]" firstNonSpace="true" insensitive="true"/>
+        <RegExpr attribute="Data Type" context="#stay" String="real(?![\w\*])" firstNonSpace="true" insensitive="true"/>-->
         <RegExpr attribute="Data Type" context="#stay" String="\bcharacter[*][0-9]+\b" insensitive="true"/>
-        <RegExpr attribute="Data Type" context="find_paren" String="\b(type|integer|complex|character|logical|intent|dimension)\b\s*[(]" insensitive="true"/>
-        <RegExpr attribute="Data Type" context="#stay" String="\b(type|integer|complex|character|logical|intent|dimension)\b" insensitive="true"/>
+        <RegExpr attribute="Data Type" context="find_paren" String="\b(?:type|integer|real|complex|character|logical|intent|dimension)\s*[(]" insensitive="true"/>
+        <RegExpr attribute="Data Type" context="#stay" String="\b(?:type|integer|real|complex|character|logical|double\s*precision|intent|dimension)\b" insensitive="true"/>
         <Detect2Chars attribute="Data Type" context="#stay" char=":" char1=":"/>
       </context>
 <!-- This context matches parenthesis in data type declarations, such as in 'real(...)'-->
@@ -516,13 +522,13 @@
 <!-- The following context matches integer and real numbers -->
       <context attribute="Normal Text" lineEndContext="#stay" name="find_numbers">
         <!-- Floating-point numbers with optional kind -->
-        <RegExpr attribute="Float" context="#stay" String="[0-9]*\.[0-9]+([de][+-]?[0-9]+)?([_]([0-9]+|[a-z][\w_]*))?" insensitive="true"/>
-        <RegExpr attribute="Float" context="#stay" String="\b[0-9]+\.[0-9]*([de][+-]?[0-9]+)?([_]([0-9]+|[a-z][\w_]*))?(?![a-z])" insensitive="true"/>
-        <RegExpr attribute="Float" context="#stay" String="\b[0-9]+[de][+-]?[0-9]+([_]([0-9]+|[a-z][\w_]*))?" insensitive="true"/>
+        <RegExpr attribute="Float" context="#stay" String="[0-9]*\.[0-9]+(?:[de][+-]?[0-9]+)?(?:[_](?:[0-9]+|[a-z][\w_]*))?" insensitive="true"/>
+        <RegExpr attribute="Float" context="#stay" String="\b[0-9]+\.[0-9]*(?:[de][+-]?[0-9]+)?(?:[_](?:[0-9]+|[a-z][\w_]*))?(?![a-z])" insensitive="true"/>
+        <RegExpr attribute="Float" context="#stay" String="\b[0-9]+[de][+-]?[0-9]+(?:[_](?:[0-9]+|[a-z][\w_]*))?" insensitive="true"/>
         <!-- Integers with optional kind specifier -->
-        <RegExpr attribute="Decimal" context="#stay" String="\b[0-9]+([_]([0-9]+|[a-zA-Z][\w_]*))?"/>
+        <RegExpr attribute="Decimal" context="#stay" String="\b[0-9]+(?:[_](?:[0-9]+|[a-zA-Z][\w_]*))?"/>
         <!-- Integers in binary, octal and hexadecimal notations -->
-        <RegExpr attribute="Decimal" context="#stay" String="\b[bozx]([&apos;][0-9a-f]+[&apos;]|[&quot;][0-9a-f]+[&quot;])" insensitive="true"/>
+        <RegExpr attribute="Decimal" context="#stay" String="\b[bozx](?:[&apos;][0-9a-f]+[&apos;]|[&quot;][0-9a-f]+[&quot;])" insensitive="true"/>
       </context>
 
 <!-- The following four contexts implement the complex string multi-line declarations -->
@@ -548,7 +554,8 @@
         <DetectSpaces />
         <RegExpr attribute="Keyword" context="#stay" String="&amp;\s*$"/>
         <DetectChar attribute="Keyword" context="#pop" char="&amp;" firstNonSpace="true"/>
-        <RegExpr attribute="Comment" context="#stay" String="(!.*)?$" firstNonSpace="true"/>
+        <AnyChar attribute="Comment" context="comment" String="cC*" column="0"/>
+        <DetectChar attribute="Comment" context="comment" char="!" firstNonSpace="true"/>
       </context>
     </contexts>
 
@@ -569,6 +576,7 @@
       <itemData name="Logical" defStyleNum="dsConstant" bold="1" italic="0"/>
       <itemData name="IO Function" defStyleNum="dsFunction" bold="0" italic="0"/>
       <itemData name="Elemental Procedure" defStyleNum="dsBuiltIn" bold="1" italic="0"/>
+      <itemData name="Continuation character" defStyleNum="dsBuiltIn" bold="1" italic="0"/>
       <itemData name="Inquiry Function" defStyleNum="dsFunction" bold="1" italic="1"/>
       <itemData name="Transformational Function" defStyleNum="dsFunction" bold="1" italic="0"/>
       <itemData name="Non elemental subroutine" defStyleNum="dsFunction" bold="1" italic="0"/>
@@ -577,8 +585,8 @@
   <general>
     <comments>
       <comment name="singleLine" start="c"/>
-      <comment name="singleLine" start="!"/>
     </comments>
     <keywords casesensitive="0"/>
   </general>
 </language>
+<!-- kate: replace-tabs on; tab-width 2; indent-width 2; -->

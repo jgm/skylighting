@@ -59,6 +59,8 @@ lookupSyntax :: Text -> SyntaxMap -> Maybe Syntax
 lookupSyntax lang syntaxmap
   -- special cases:
   | lang == Text.pack "csharp" = lookupSyntax (Text.pack "cs") syntaxmap
+  | lang == Text.pack "fortran" = lookupSyntax (Text.pack "for")
+              syntaxmap
   | otherwise =
     syntaxByName syntaxmap lang `mplus`
     syntaxByShortName syntaxmap lang `mplus`

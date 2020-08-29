@@ -24,7 +24,7 @@
 <language
     name="ISO C++"
     section="Sources"
-    version="19"
+    version="20"
     kateversion="5.0"
     indenter="cstyle"
     style="C++"
@@ -687,8 +687,7 @@
 
         <IncludeRules context="InPreprocessor" />
         <Detect2Chars attribute="Error" context="#pop!LineError" char="/" char1="/" />
-        <IncludeRules context="##Doxygen" />
-        <Detect2Chars attribute="Comment" context="Comment 2" char="/" char1="*" beginRegion="Comment" />
+        <Detect2Chars attribute="Comment" context="MatchComment" char="/" char1="*" lookAhead="true" />
         <IncludeRules context="GNUMacros##GCCExtensions" />
         <DetectIdentifier attribute="Preprocessor" context="#pop!In Define"/>
       </context>

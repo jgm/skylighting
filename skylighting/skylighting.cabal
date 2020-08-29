@@ -51,7 +51,6 @@ library
                        Skylighting.Syntax.Ada
                        Skylighting.Syntax.Agda
                        Skylighting.Syntax.Alert
-                       Skylighting.Syntax.AlertIndent
                        Skylighting.Syntax.Apache
                        Skylighting.Syntax.Asn1
                        Skylighting.Syntax.Asp
@@ -86,7 +85,8 @@ library
                        Skylighting.Syntax.Email
                        Skylighting.Syntax.Erlang
                        Skylighting.Syntax.Fasm
-                       Skylighting.Syntax.Fortran
+                       Skylighting.Syntax.FortranFixed
+                       Skylighting.Syntax.FortranFree
                        Skylighting.Syntax.Fsharp
                        Skylighting.Syntax.Gcc
                        Skylighting.Syntax.Glsl

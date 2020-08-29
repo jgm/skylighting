@@ -48,7 +48,7 @@
     - NOTE, FIXME, TODO alerts added on comments
     - improved highlighting
 -->
-<language name="Lua" version="10" indenter="lua" kateversion="5.0" section="Scripts" extensions="*.lua" mimetype="text/x-lua">
+<language name="Lua" version="12" indenter="lua" kateversion="5.0" section="Scripts" extensions="*.lua" mimetype="text/x-lua">
   <highlighting>
     <list name="keywords">
       <item>and</item>
@@ -460,16 +460,15 @@
 
     <contexts>
       <context name="Shebang"       attribute="Comment" lineEndContext="Normal" lineEmptyContext="Normal" fallthrough="true" fallthroughContext="Normal">
-        <Detect2Chars attribute="Comment" context="Comment" char="#" char1="!" column="0"/>
+        <Detect2Chars attribute="Comment" context="ShebangLine" char="#" char1="!" column="0"/>
       </context>
 
-      <context name="Comment"       attribute="Comment"     lineEndContext="#pop">
-      </context>
+      <context name="ShebangLine"   attribute="Comment"     lineEndContext="#pop!Normal" />
 
       <context name="Normal"        attribute="Normal Text" lineEndContext="#stay">
         <DetectSpaces />
         <keyword      attribute="Deprecated" context="#stay"       String="deprecated" />
-        <IncludeRules context="##DoxygenLua" />
+        <Detect2Chars attribute="Comment" context="MatchComment" char="-" char1="-" lookAhead="true"/>
 
         <RegExpr      attribute="RawStrings" context="String_block"  String="\[(=*)\[" />
         <DetectChar   attribute="Strings"  context="String_single" char="'"/>
@@ -501,6 +500,25 @@
         <AnyChar      attribute="Symbols"  context="#stay" String=":[]().,=~+-*/%&amp;|^&gt;&lt;#;" />
       </context>
 
+      <context name="MatchComment" attribute="Normal Text" lineEndContext="#pop" fallthroughContext="#pop">
+        <IncludeRules context="##DoxygenLua" />
+        <RegExpr attribute="Comment" context="#pop!BlockComment" String="--\[(=*)\[" beginRegion="BlockComment" />
+        <Detect2Chars attribute="Comment" context="#pop!Comment" char="-" char1="-" />
+      </context>
+
+      <context name="BlockComment" attribute="Comment" lineEndContext="#stay" dynamic="true">
+        <RegExpr attribute="Comment" context="#stay" String="[^\]]*" />
+        <StringDetect attribute="Comment" context="#pop" String="]%1]" dynamic="true" endRegion="BlockComment" />
+        <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Modelines" />
+      </context>
+
+      <context name="Comment"       attribute="Comment"     lineEndContext="#pop">
+        <DetectSpaces />
+        <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Modelines" />
+      </context>
+
       <context name="StartControl" attribute="Normal Text"  lineEndContext="#stay">
         <keyword      attribute="Control"  context="#stay" endRegion="chunk"   beginRegion="chunk" String="elsecontrol" />
         <keyword      attribute="Control"  context="#pop"  endRegion="chunk"   String="endcontrol" />
@@ -514,14 +532,14 @@
 
       <context name="Local" attribute="Normal Text"  lineEndContext="#pop" fallthroughContext="#pop">
         <DetectSpaces />
-        <IncludeRules context="##DoxygenLua" />
+        <Detect2Chars attribute="Comment" context="MatchComment" char="-" char1="-" lookAhead="true"/>
         <RegExpr          attribute="Constant" context="LocalVariable" String="\b[A-Z_][A-Z0-9_]*\b" />
         <DetectIdentifier attribute="Variable" context="LocalVariable" />
       </context>
 
       <context name="LocalVariable" attribute="Normal Text"  lineEndContext="#pop#pop" fallthroughContext="#pop#pop">
         <DetectSpaces />
-        <IncludeRules context="##DoxygenLua" />
+        <Detect2Chars attribute="Comment" context="MatchComment" char="-" char1="-" lookAhead="true"/>
         <DetectChar   attribute="Symbols"   context="#pop" char="," />
         <DetectChar   attribute="Attribute" context="Attribute" char="&lt;" lookAhead="true" />
       </context>
@@ -589,7 +607,7 @@
   <general>
     <comments>
       <comment name="singleLine" start="--" />
-      <comment name="multiLine" start="--[[" end="]]" />
+      <comment name="multiLine" start="--[[" end="]]" region="BlockComment" />
     </comments>
     <keywords casesensitive="1" weakDeliminator="." additionalDeliminator="'&quot;#"/>
   </general>

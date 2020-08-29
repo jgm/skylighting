@@ -33,7 +33,7 @@
 	<!ENTITY commonEscape "(?:[trn0&apos;&quot;\\]|x[0-9a-fA-F]{2})">
 	<!ENTITY unicodeEscape "u\{(?:[0-9a-fA-F]_*){1,6}\}">
 ]>
-<language name="Rust" version="8" kateversion="5.0" section="Sources" extensions="*.rs" mimetype="text/rust" priority="15" license="MIT" author="The Rust Project Developers">
+<language name="Rust" version="9" kateversion="5.0" section="Sources" extensions="*.rs" mimetype="text/rust" priority="15" license="MIT" author="The Rust Project Developers">
 <highlighting>
 	<list name="fn">
 		<item>fn</item>
@@ -451,6 +451,7 @@
 			<Detect2Chars char="/" char1="*" attribute="Comment" context="Commentar 2" beginRegion="Comment"/>
 		</context>
 		<context attribute="Comment" lineEndContext="#pop" name="Commentar 1">
+			<DetectSpaces/>
 			<IncludeRules context="##Alerts" />
 			<IncludeRules context="##Modelines" />
 		</context>

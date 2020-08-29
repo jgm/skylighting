@@ -5,13 +5,13 @@
 	<!ENTITY int  "[+-]?(0|[1-9]\d*)&more;">
 	<!ENTITY frac "\.\d+&more;">
 	<!ENTITY exp  "[eE][+-]?\d+&more;">
-
+	
 	<!ENTITY offset   "[+-]\d\d:\d\d">
 	<!ENTITY time     "\d\d:\d\d:\d\d(\.\d+)?(&offset;|Z)?">
 	<!ENTITY datetime "\d\d\d\d-\d\d-\d\d(T&time;)?">
 ]>
 <!-- https://github.com/toml-lang/toml -->
-<language name="TOML" section="Configuration" extensions="*.toml" mimetype="text/x-toml" version="5" kateversion="5.0" author="flying-sheep@web.de" license="LGPLv2+">
+<language name="TOML" section="Configuration" extensions="*.toml" mimetype="text/x-toml" version="6" kateversion="5.0" author="flying-sheep@web.de" license="LGPLv2+">
 <highlighting>
 	<list name="bools">
 		<item>true</item>
@@ -60,6 +60,7 @@
 		<context attribute="Comment" lineEndContext="#pop" name="Comment">
 			<DetectSpaces/>
 			<IncludeRules context="##Alerts" />
+			<IncludeRules context="##Modelines" />
 			<DetectIdentifier/>
 		</context>
 		<!-- Quoted keys and Strings -->
@@ -111,7 +112,7 @@
 		<itemData name="TableHeader" defStyleNum="dsKeyword"/>
 		<itemData name="Assignment"  defStyleNum="dsOperator"/>
 		<itemData name="Comment"     defStyleNum="dsComment"/>
-
+		
 		<itemData name="Date"        defStyleNum="dsBaseN"/>
 		<itemData name="Float"       defStyleNum="dsFloat"/>
 		<itemData name="Int"         defStyleNum="dsDecVal"/>
@@ -122,14 +123,15 @@
 		<itemData name="Array"       defStyleNum="dsOperator"/>
 		<itemData name="InlineTable" defStyleNum="dsOperator"/>
 		<itemData name="NextEntry"   defStyleNum="dsOperator"/>
-
+		
 		<itemData name="Whitespace"  defStyleNum="dsNormal"/>
 		<itemData name="Error"       defStyleNum="dsError"/>
 	</itemDatas>
 </highlighting>
 <general>
 	<comments>
-		<comment name="singleLine" start="#" />
+		<comment name="singleLine" start="#" position="afterwhitespace" />
 	</comments>
 </general>
 </language>
+<!-- kate: replace-tabs off; -->

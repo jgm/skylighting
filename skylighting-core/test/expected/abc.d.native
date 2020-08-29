@@ -1,10 +1,11 @@
-[ [ ( KeywordTok , "import" )
-  , ( NormalTok
-    , " std.stdio, std.ascii, std.algorithm, std.array, std.range;"
+[ [ ( PreprocessorTok , "import" )
+  , ( ImportTok
+    , " std.stdio, std.ascii, std.algorithm, std.array, std.range"
     )
+  , ( NormalTok , ";" )
   ]
 , []
-, [ ( KeywordTok , "alias" )
+, [ ( WarningTok , "alias" )
   , ( NormalTok , " Block = " )
   , ( DataTypeTok , "char" )
   , ( NormalTok , "[" )
@@ -14,23 +15,23 @@
 , []
 , [ ( DataTypeTok , "bool" )
   , ( NormalTok , " canMakeWord(" )
-  , ( KeywordTok , "immutable" )
+  , ( FunctionTok , "immutable" )
   , ( NormalTok , " Block[] blocks, " )
-  , ( KeywordTok , "in" )
+  , ( AttributeTok , "in" )
   , ( NormalTok , " " )
   , ( BuiltInTok , "string" )
   , ( NormalTok , " word) " )
-  , ( KeywordTok , "pure" )
+  , ( FunctionTok , "pure" )
   , ( NormalTok , " " )
-  , ( KeywordTok , "nothrow" )
+  , ( FunctionTok , "nothrow" )
   ]
 , [ ( KeywordTok , "in " ) , ( NormalTok , "{" ) ]
 , [ ( NormalTok , "    " )
-  , ( KeywordTok , "assert" )
+  , ( AttributeTok , "assert" )
   , ( NormalTok , "(blocks.all!(w => w[].all!isAlpha));" )
   ]
 , [ ( NormalTok , "    " )
-  , ( KeywordTok , "assert" )
+  , ( AttributeTok , "assert" )
   , ( NormalTok , "(word.all!isAlpha);" )
   ]
 , [ ( NormalTok , "} " )
@@ -42,13 +43,13 @@
   , ( NormalTok , " inner(" )
   , ( BuiltInTok , "size_t" )
   , ( NormalTok , "[] indexes, " )
-  , ( KeywordTok , "in" )
+  , ( AttributeTok , "in" )
   , ( NormalTok , " " )
   , ( BuiltInTok , "string" )
   , ( NormalTok , " w) " )
-  , ( KeywordTok , "pure" )
+  , ( FunctionTok , "pure" )
   , ( NormalTok , " " )
-  , ( KeywordTok , "nothrow" )
+  , ( FunctionTok , "nothrow" )
   , ( NormalTok , " {" )
   ]
 , [ ( NormalTok , "        " )
@@ -58,12 +59,12 @@
 , [ ( NormalTok , "            " )
   , ( KeywordTok , "return" )
   , ( NormalTok , " " )
-  , ( KeywordTok , "true" )
+  , ( AttributeTok , "true" )
   , ( NormalTok , ";" )
   ]
 , []
 , [ ( NormalTok , "        " )
-  , ( KeywordTok , "immutable" )
+  , ( FunctionTok , "immutable" )
   , ( NormalTok , " c = w[" )
   , ( DecValTok , "0" )
   , ( NormalTok , "].toUpper;" )
@@ -71,7 +72,7 @@
 , [ ( NormalTok , "        " )
   , ( KeywordTok , "foreach" )
   , ( NormalTok , " (" )
-  , ( KeywordTok , "ref" )
+  , ( FunctionTok , "ref" )
   , ( NormalTok , " idx; indexes) {" )
   ]
 , [ ( NormalTok , "            " )
@@ -103,7 +104,7 @@
 , [ ( NormalTok , "                " )
   , ( KeywordTok , "return" )
   , ( NormalTok , " " )
-  , ( KeywordTok , "true" )
+  , ( AttributeTok , "true" )
   , ( NormalTok , ";" )
   ]
 , [ ( NormalTok , "            indexes[" )
@@ -115,7 +116,7 @@
 , [ ( NormalTok , "        " )
   , ( KeywordTok , "return" )
   , ( NormalTok , " " )
-  , ( KeywordTok , "false" )
+  , ( AttributeTok , "false" )
   , ( NormalTok , ";" )
   ]
 , [ ( NormalTok , "    }" ) ]
@@ -130,7 +131,7 @@
 , []
 , [ ( DataTypeTok , "void" ) , ( NormalTok , " main() {" ) ]
 , [ ( NormalTok , "    " )
-  , ( KeywordTok , "enum" )
+  , ( WarningTok , "enum" )
   , ( NormalTok , " Block[] blocks = " )
   , ( StringTok , "\"BO XK DQ CP NA GT RE TG QD FS" )
   ]
@@ -155,7 +156,7 @@
 , []
 , [ ( NormalTok , "    " ) , ( CommentTok , "// Extra test." ) ]
 , [ ( NormalTok , "    " )
-  , ( KeywordTok , "immutable" )
+  , ( FunctionTok , "immutable" )
   , ( NormalTok , " Block[] blocks2 = [" )
   , ( StringTok , "\"AB\"" )
   , ( NormalTok , ", " )
@@ -167,7 +168,7 @@
   , ( NormalTok , "];" )
   ]
 , [ ( NormalTok , "    " )
-  , ( KeywordTok , "immutable" )
+  , ( FunctionTok , "immutable" )
   , ( NormalTok , " word = " )
   , ( StringTok , "\"abba\"" )
   , ( NormalTok , ";" )

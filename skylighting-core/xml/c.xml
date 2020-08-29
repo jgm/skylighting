@@ -10,7 +10,7 @@
     <!ENTITY pphash "&ispphash;\s*">
 ]>
 <language name="C" section="Sources"
-          version="9" kateversion="5.0"
+          version="11" kateversion="5.0"
           indenter="cstyle"
           extensions="*.c;*.C;*.h"
           mimetype="text/x-csrc;text/x-c++src;text/x-chdr"
@@ -119,10 +119,8 @@
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
         <DetectSpaces />
-	<RegExpr attribute="Preprocessor" context="Outscoped" String="&pphash;if\s+0\s*$" beginRegion="PP" firstNonSpace="true" />
+        <RegExpr attribute="Preprocessor" context="Outscoped" String="&pphash;if\s+0\s*$" beginRegion="PP" firstNonSpace="true" />
         <RegExpr context="AfterHash" String="&ispphash;" firstNonSpace="true" lookAhead="true" />
-        <StringDetect attribute="Region Marker" context="Region Marker" String="//BEGIN" beginRegion="Region1" firstNonSpace="true" />
-        <StringDetect attribute="Region Marker" context="Region Marker" String="//END" endRegion="Region1" firstNonSpace="true" />
         <keyword attribute="Control Flow" context="#stay" String="controlflow"/>
         <keyword attribute="Keyword" context="#stay" String="keywords"/>
         <keyword attribute="Data Type" context="#stay" String="types"/>
@@ -137,9 +135,7 @@
 
         <HlCChar attribute="Char" context="#stay"/>
         <DetectChar attribute="String" context="String" char="&quot;"/>
-        <IncludeRules context="##Doxygen" />
-        <Detect2Chars attribute="Comment" context="Commentar 1" char="/" char1="/"/>
-        <Detect2Chars attribute="Comment" context="Commentar 2" char="/" char1="*" beginRegion="Comment"/>
+        <IncludeRules context="FindComments" />
         <AnyChar attribute="Symbol" context="#stay" String=":!%&amp;()+,-/.*&lt;=&gt;?[]|~^&#59;"/>
       </context>
 
@@ -149,17 +145,32 @@
         <DetectChar attribute="String" context="#pop" char="&quot;"/>
       </context>
 
+      <context name="FindComments" attribute="Normal Text" lineEndContext="#pop">
+        <Detect2Chars attribute="Comment" context="MatchComment" char="/" char1="/" lookAhead="true" />
+        <Detect2Chars attribute="Comment" context="MatchComment" char="/" char1="*" lookAhead="true" />
+      </context>
+
+      <context name="MatchComment" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
+        <StringDetect attribute="Region Marker" context="#pop!Region Marker" String="//BEGIN" beginRegion="Region1" firstNonSpace="true" />
+        <StringDetect attribute="Region Marker" context="#pop!Region Marker" String="//END" endRegion="Region1" firstNonSpace="true" />
+        <IncludeRules context="##Doxygen" />
+        <Detect2Chars attribute="Comment" context="#pop!Commentar 1" char="/" char1="/" />
+        <Detect2Chars attribute="Comment" context="#pop!Commentar 2" char="/" char1="*" beginRegion="Comment" />
+      </context>
+
       <context attribute="Region Marker" lineEndContext="#pop" name="Region Marker">
       </context>
 
       <context attribute="Comment" lineEndContext="#pop" name="Commentar 1">
         <LineContinue attribute="Comment" context="#stay"/>
         <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Modelines" />
       </context>
 
       <context attribute="Comment" lineEndContext="#stay" name="Commentar 2">
         <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment"/>
         <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Modelines" />
       </context>
 
       <context attribute="Error" lineEndContext="#pop" name="AfterHash">
@@ -187,17 +198,11 @@
 
       <context attribute="Preprocessor" lineEndContext="#pop" name="Preprocessor">
         <LineContinue attribute="Preprocessor" context="#stay"/>
-        <IncludeRules context="##Doxygen" />
-        <Detect2Chars attribute="Comment" context="Commentar/Preprocessor" char="/" char1="*" beginRegion="Comment2" />
-        <Detect2Chars attribute="Comment" context="Commentar 1" char="/" char1="/" />
+        <IncludeRules context="FindComments" />
       </context>
 
       <context attribute="Preprocessor" lineEndContext="#pop" name="Define">
         <LineContinue attribute="Preprocessor" context="#stay"/>
-      </context>
-
-      <context attribute="Comment" lineEndContext="#stay" name="Commentar/Preprocessor">
-        <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment2" />
       </context>
 
       <context attribute="Comment" lineEndContext="#stay" name="Outscoped" >
@@ -205,9 +210,7 @@
         <IncludeRules context="##Alerts" />
         <DetectIdentifier />
         <DetectChar attribute="String" context="String" char="&quot;"/>
-        <IncludeRules context="##Doxygen" />
-        <Detect2Chars attribute="Comment" context="Commentar 1" char="/" char1="/"/>
-        <Detect2Chars attribute="Comment" context="Commentar 2" char="/" char1="*" beginRegion="Comment"/>
+        <IncludeRules context="FindComments" />
         <RegExpr attribute="Comment" context="Outscoped intern" String="&pphash;if" beginRegion="PP" firstNonSpace="true" />
         <RegExpr attribute="Preprocessor" context="#pop" String="&pphash;el(?:se|if)" firstNonSpace="true" />
         <RegExpr attribute="Preprocessor" context="#pop" String="&pphash;endif" endRegion="PP" firstNonSpace="true" />
@@ -218,9 +221,7 @@
         <IncludeRules context="##Alerts" />
         <DetectIdentifier />
         <DetectChar attribute="String" context="String" char="&quot;"/>
-        <IncludeRules context="##Doxygen" />
-        <Detect2Chars attribute="Comment" context="Commentar 1" char="/" char1="/"/>
-        <Detect2Chars attribute="Comment" context="Commentar 2" char="/" char1="*" beginRegion="Comment"/>
+        <IncludeRules context="FindComments" />
         <RegExpr attribute="Comment" context="Outscoped intern" String="&pphash;if" beginRegion="PP" firstNonSpace="true" />
         <RegExpr attribute="Comment" context="#pop" String="&pphash;endif" endRegion="PP" firstNonSpace="true" />
       </context>
@@ -280,8 +281,9 @@
   <general>
     <comments>
       <comment name="singleLine" start="//" />
-      <comment name="multiLine" start="/*" end="*/" />
+      <comment name="multiLine" start="/*" end="*/" region="Comment" />
     </comments>
     <keywords casesensitive="1" additionalDeliminator="'&quot;" />
   </general>
 </language>
+<!-- kate: replace-tabs on; tab-width 2; indent-width 2; -->

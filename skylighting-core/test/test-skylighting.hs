@@ -97,43 +97,36 @@ main = do
           c    = maybe (error "could not find C syntax") id
                              (lookupSyntax "c" sMap) in
       [ testCase "perl NUL case" $ Right
-             [[(KeywordTok,"s\NUL")
-              ,(OtherTok,"b")
-              ,(KeywordTok,"\NUL")
+             [[(OtherTok,"s\NULb\NUL")
               ,(StringTok,"c")
-              ,(KeywordTok,"\NUL")]]
+              ,(OtherTok,"\NUL")]]
              @=? tokenize defConfig perl "s\0b\0c\0"
       , testCase "perl backslash case 1" $ Right
-          [ [ ( KeywordTok , "m\\" )
-            , ( OtherTok , "'" ) ]
-          ] @=? tokenize defConfig perl
+          [[(OtherTok,"m\\'")]]
+            @=? tokenize defConfig perl
                      "m\\'"
       , testCase "perl backslash case 2" $ Right
-          [ [ ( KeywordTok , "m\\" )
-            , ( OtherTok , "a" )
-            , ( KeywordTok , "\\" ) ]
-          ] @=? tokenize defConfig perl
+          [[(OtherTok,"m\\a\\")]]
+            @=? tokenize defConfig perl
                      "m\\a\\"
       , testCase "perl quoting case" $ Right
-           [ [ ( KeywordTok , "my" )
-              , ( NormalTok , " " )
-              , ( DataTypeTok , "$foo" )
-              , ( NormalTok , " = " )
-              , ( KeywordTok , "q/" )
-              , ( StringTok , "bar" )
-              , ( KeywordTok , "/" )
-              , ( NormalTok , ";" )
-              ]
-            , [ ( KeywordTok , "my" )
-              , ( NormalTok , " " )
-              , ( DataTypeTok , "$baz" )
-              , ( NormalTok , " = " )
-              , ( KeywordTok , "'" )
-              , ( StringTok , "quux" )
-              , ( KeywordTok , "'" )
-              , ( NormalTok , ";" )
-              ]
-            ] @=? tokenize defConfig perl
+          [[(KeywordTok,"my")
+           ,(NormalTok," ")
+           ,(DataTypeTok,"$foo")
+           ,(NormalTok," = ")
+           ,(OtherTok,"q/")
+           ,(SpecialStringTok,"bar")
+           ,(OtherTok,"/")
+           ,(NormalTok,";")]
+          ,[(KeywordTok,"my")
+           ,(NormalTok," ")
+           ,(DataTypeTok,"$baz")
+           ,(NormalTok," = ")
+           ,(OtherTok,"'")
+           ,(SpecialStringTok,"quux")
+           ,(OtherTok,"'")
+           ,(NormalTok,";")]]
+             @=? tokenize defConfig perl
                      "my $foo = q/bar/;\nmy $baz = 'quux';\n"
       , testCase "cpp floats" $ Right
            [ [ (FloatTok,"0.1") , (BuiltInTok,"f")]

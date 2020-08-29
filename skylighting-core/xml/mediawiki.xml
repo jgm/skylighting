@@ -6,7 +6,7 @@
   <!ENTITY wikiLinkWithDescription "\[\[[^]|]*\|[^]]*\]\]">
   <!ENTITY wikiLinkWithoutDescription "\[\[[^]|]*\]\]">
 ]>
-<language name="MediaWiki" section="Markup" version="7" kateversion="5.0" extensions="*.mediawiki" mimetype="" license="FDL" >
+<language name="MediaWiki" section="Markup" version="8" kateversion="5.0" extensions="*.mediawiki" mimetype="" license="FDL" >
   <highlighting>
     <contexts>
       <context attribute="Normal" lineEndContext="#stay" name="normal" >
@@ -37,7 +37,7 @@
         <IncludeRules context="FindHtmlStartTagAttributes" />
       </context>
       <context name="TableContent" attribute="Normal" lineEndContext="#stay">
-        <StringDetect String="&lt;!--" context="comment" attribute="Comment" />
+        <StringDetect String="&lt;!--" context="comment" attribute="Comment" beginRegion="comment" />
         <RegExpr String="[=]{5,5}(?!=)" context="Section5" attribute="Section" column="0" />
         <RegExpr String="[=]{4,4}(?!=)" context="Section4" attribute="Section" column="0" />
         <RegExpr String="[=]{3,3}(?!=)" context="Section3" attribute="Section" column="0" />
@@ -143,6 +143,9 @@
       </context>
       <context attribute="Comment" lineEndContext="#stay" name="comment" >
         <StringDetect String="--&gt;" context="#pop" attribute="Comment" endRegion="comment" />
+        <DetectSpaces />
+        <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Modelines" />
       </context>
       <context attribute="Link" lineEndContext="#stay" name="DelimitedURL" >
         <DetectChar char="]" context="#pop" attribute="WikiTag" />
@@ -623,8 +626,9 @@
   </highlighting>
   <general>
     <comments>
-      <comment end="//-->" start="&lt;!--" name="multiLine" />
+      <comment name="multiLine" start="&lt;!--" end="--&gt;" region="comment" />
     </comments>
     <keywords casesensitive="0" />
   </general>
 </language>
+<!-- kate: replace-tabs on; tab-width 2; indent-width 2; -->
