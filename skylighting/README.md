@@ -105,6 +105,20 @@ prefer this approach, you can use the `skylighting-core` package
 directly which provides the XML files without the generated code
 produced by the bootstrap process described above.
 
+If the syntax definition you are adding is not already in the
+[KDE repository], please submit it upstream so it can be
+included there.  You can do that here, providing the file (or
+changes) and a test:
+<https://invent.kde.org/frameworks/syntax-highlighting/-/merge_requests>.
+Here is a sample merge request:
+<https://invent.kde.org/frameworks/syntax-highlighting/-/merge_requests/20/diffs>.
+If creating a proper merge request is too much work, at least
+submit an issue to
+<https://invent.kde.org/frameworks/syntax-highlighting/-/issues>
+alerting the KDE developers of the availability of a new or
+changed syntax definition; they can then decide whether to
+integrate it.
+
 License
 -------
 
@@ -120,7 +134,8 @@ References
 Kate syntax highlighting documentation:
 <https://docs.kde.org/stable5/en/applications/katepart/highlight.html>
 
-Kate highlighting definitions:
-<https://github.com/KDE/syntax-highlighting/tree/master/data/syntax>
+Kate highlighting definitions: [KDE repository]
+
+[KDE repository]: <https://github.com/KDE/syntax-highlighting/tree/master/data/syntax>
 
 [highlighting-kate]: https://github.com/jgm/highlighting-kate
