@@ -95,6 +95,10 @@ sourceLineToHtml opts lno cont =
                      then mempty
                      else customAttribute (fromString "aria-hidden")
                            (fromString "true")) -- see jgm/pandoc#6352
+               ! (if numberLines opts
+                     then mempty
+                     else customAttribute (fromString "tabindex")
+                           (fromString "-1"))
                $ mempty
            mapM_ (tokenToHtml opts) cont
   where  lineNum = toValue prefixedLineNo
