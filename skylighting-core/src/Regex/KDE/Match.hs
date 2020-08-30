@@ -48,6 +48,12 @@ prune ms = if Set.size ms > sizeLimit
 
 exec :: Direction -> Regex -> Set Match -> Set Match
 exec _ MatchNull = id
+exec dir (Possessive re) =
+  foldr
+    (\elt s -> case Set.lookupMin (exec dir re (Set.singleton elt)) of
+                 Nothing -> s
+                 Just m  -> Set.insert m s)
+    mempty
 exec dir (MatchDynamic n) = -- if this hasn't been replaced, match literal
   exec dir (MatchChar (== '%') <>
             mconcat (map (\c -> MatchChar (== c)) (show n)))

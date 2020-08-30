@@ -89,7 +89,7 @@ pSuffix re = option re $ do
           (Just n, Nothing)  -> atleast n re
           (Nothing, Just n)  -> atmost n re
           (Just m, Just n)   -> between m n re
-    _   -> fail "pSuffix encountered impossible byte") >>= pSuffix
+    _   -> fail "pSuffix encountered impossible byte") >>= pQuantifierModifier
  where
    atmost 0 _ = MatchNull
    atmost n r = MatchAlt (mconcat (replicate n r)) (atmost (n-1) r)
@@ -98,6 +98,13 @@ pSuffix re = option re $ do
    between m n r = mconcat (replicate m r) <> atmost (n - m) r
 
    atleast n r = mconcat (replicate n r) <> MatchAlt (MatchSome r) MatchNull
+
+pQuantifierModifier :: Regex -> Parser Regex
+pQuantifierModifier re = option re $ do
+  w <- satisfy (\n -> n == 43 || n == 63)  -- + or ?
+  case w of
+    43 -> return $ Possessive re
+    _  -> return re  -- TODO lazy ? not yet implemented
 
 pRegexChar :: Bool -> Parser Regex
 pRegexChar caseSensitive = do

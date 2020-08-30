@@ -282,6 +282,7 @@ regexTests =
                  ,(2,replicate 398 'a')
                  ,(3,"a")
                  ,(4,"a")]))
+  , ("a++a", "aaaaa", Nothing)
   ]
 
 
