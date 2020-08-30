@@ -283,6 +283,9 @@ regexTests =
                  ,(3,"a")
                  ,(4,"a")]))
   , ("a++a", "aaaaa", Nothing)
+  , ("\\w+e", "aaaeeee", Just ("aaaeeee", []))
+  -- , ("\\w+?e", "aaaeeee", Just ("aaae", []))
+  -- , ("a+b??", "aaab", Just ("aaa", []))
   ]
 
 

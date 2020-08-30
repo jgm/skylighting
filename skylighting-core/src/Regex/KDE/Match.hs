@@ -25,18 +25,20 @@ data Match =
    Match { matchBytes    :: !ByteString
          , matchOffset   :: !Int
          , matchCaptures :: !(M.IntMap (Int, Int))
-                       -- starting offset, length in bytes
+                                  -- starting offset, length in bytes
          } deriving (Show, Eq)
 
--- longer matches are <=
+-- preferred matches are <=
 instance Ord Match where
-  m1 <= m2 = matchOffset m1 >= matchOffset m2 &&
-             matchCaptures m1 >= matchCaptures m2
+  m1 <= m2
+    | matchOffset m1 > matchOffset m2 = True
+    | matchOffset m1 < matchOffset m2 = False
+    | otherwise = matchCaptures m1 >= matchCaptures m2
 
 mapMatching :: (Match -> Match) -> Set Match -> Set Match
 mapMatching f = Set.filter ((>= 0) . matchOffset) . Set.map f
 
--- we take the n longest matches to avoid pathological slowdown
+-- we take the n best matches to avoid pathological slowdown
 sizeLimit :: Int
 sizeLimit = 2000
 
@@ -48,6 +50,8 @@ prune ms = if Set.size ms > sizeLimit
 
 exec :: Direction -> Regex -> Set Match -> Set Match
 exec _ MatchNull = id
+exec dir (Lazy re) = -- TODO unimplemented
+  exec dir re
 exec dir (Possessive re) =
   foldr
     (\elt s -> case Set.lookupMin (exec dir re (Set.singleton elt)) of

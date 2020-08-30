@@ -100,11 +100,9 @@ pSuffix re = option re $ do
    atleast n r = mconcat (replicate n r) <> MatchAlt (MatchSome r) MatchNull
 
 pQuantifierModifier :: Regex -> Parser Regex
-pQuantifierModifier re = option re $ do
-  w <- satisfy (\n -> n == 43 || n == 63)  -- + or ?
-  case w of
-    43 -> return $ Possessive re
-    _  -> return re  -- TODO lazy ? not yet implemented
+pQuantifierModifier re = option re $
+  (Possessive re <$ satisfy (== 43)) <|>
+  (Lazy re <$ satisfy (==63))
 
 pRegexChar :: Bool -> Parser Regex
 pRegexChar caseSensitive = do

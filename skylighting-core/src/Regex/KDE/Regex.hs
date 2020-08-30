@@ -29,6 +29,7 @@ data Regex =
   AssertPositive !Direction !Regex |
   AssertNegative !Direction !Regex |
   Possessive !Regex |
+  Lazy !Regex |
   MatchNull
 
 instance Show Regex where
@@ -50,6 +51,7 @@ instance Show Regex where
   show (AssertNegative dir re) = "(AssertNegativeLookahead " <>
                   show dir <> " " <> show re <> ")"
   show (Possessive re) = "(Possessive " <> show re <> ")"
+  show (Lazy re) = "(Lazy " <> show re <> ")"
   show MatchNull = "MatchNull"
 
 instance Semigroup Regex where
