@@ -1,6 +1,8 @@
---- lua.xml.orig	2020-07-29 11:31:42.000000000 -0700
-+++ lua.xml	2020-07-29 11:31:57.000000000 -0700
-@@ -582,7 +582,7 @@
+diff --git a/skylighting-core/xml/lua.xml b/skylighting-core/xml/lua.xml
+index 3021ba8..89e5a31 100644
+--- a/skylighting-core/xml/lua.xml
++++ b/skylighting-core/xml/lua.xml
+@@ -600,7 +600,7 @@
        <itemData name="Strings"         defStyleNum="dsString"/>
        <itemData name="RawStrings"      defStyleNum="dsVerbatimString"/>
        <itemData name="Symbols"         defStyleNum="dsOperator" spellChecking="false"/>
