@@ -55,13 +55,14 @@ pRegexPart caseSensitive =
      lift . pSuffix
 
 pParenthesized :: Bool -> RParser Regex
-pParenthesized caseSensitive = do
+pParenthesized caseSensitive = (do
   _ <- lift (satisfy (== 40))
   modifier <- lift (satisfy (== 63) *> pGroupModifiers)
                 <|> (MatchCapture <$> (modify (+ 1) *> get))
   contents <- pRegex caseSensitive
   _ <- lift (satisfy (== 41))
-  return $ modifier contents
+  return $ modifier contents)
+  <|> Recurse <$ (lift (string "(?R)" <|> string "(?0)"))
 
 pGroupModifiers :: Parser (Regex -> Regex)
 pGroupModifiers =

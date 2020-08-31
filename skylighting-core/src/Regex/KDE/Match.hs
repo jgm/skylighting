@@ -48,68 +48,74 @@ prune ms = if Set.size ms > sizeLimit
               then Set.take sizeLimit ms
               else ms
 
-exec :: Direction -> Regex -> Set Match -> Set Match
-exec _ MatchNull = id
-exec dir (Lazy re) = -- TODO unimplemented
-  exec dir re
-exec dir (Possessive re) =
+-- first argument is the "top-level" regex, needed for Recurse.
+exec :: Regex -> Direction -> Regex -> Set Match -> Set Match
+exec _ _ MatchNull = id
+exec top dir (Lazy re) = -- TODO unimplemented
+  exec top dir re
+exec top dir (Possessive re) =
   foldr
-    (\elt s -> case Set.lookupMin (exec dir re (Set.singleton elt)) of
+    (\elt s -> case Set.lookupMin (exec top dir re (Set.singleton elt)) of
                  Nothing -> s
                  Just m  -> Set.insert m s)
     mempty
-exec dir (MatchDynamic n) = -- if this hasn't been replaced, match literal
-  exec dir (MatchChar (== '%') <>
+exec top dir (MatchDynamic n) = -- if this hasn't been replaced, match literal
+  exec top dir (MatchChar (== '%') <>
             mconcat (map (\c -> MatchChar (== c)) (show n)))
-exec _ AssertEnd = Set.filter (\m -> matchOffset m == B.length (matchBytes m))
-exec _ AssertBeginning = Set.filter (\m -> matchOffset m == 0)
-exec _ (AssertPositive dir regex) =
-  Set.filter (\m -> not (null (exec dir regex (Set.singleton m))))
-exec _ (AssertNegative dir regex) =
-  Set.filter (\m -> null (exec dir regex (Set.singleton m)))
-exec _ AssertWordBoundary = Set.filter atWordBoundary
-exec Forward MatchAnyChar = mapMatching $ \m ->
+exec _ _ AssertEnd = Set.filter (\m -> matchOffset m == B.length (matchBytes m))
+exec _ _ AssertBeginning = Set.filter (\m -> matchOffset m == 0)
+exec top _ (AssertPositive dir regex) =
+  Set.filter (\m -> not (null (exec top dir regex (Set.singleton m))))
+exec top _ (AssertNegative dir regex) =
+  Set.filter (\m -> null (exec top dir regex (Set.singleton m)))
+exec _ _ AssertWordBoundary = Set.filter atWordBoundary
+exec _ Forward MatchAnyChar = mapMatching $ \m ->
   case U.decode (B.drop (matchOffset m) (matchBytes m)) of
     Nothing -> m{ matchOffset = - 1}
     Just (_,n) -> m{ matchOffset = matchOffset m + n }
-exec Backward MatchAnyChar = mapMatching $ \m ->
+exec _ Backward MatchAnyChar = mapMatching $ \m ->
   case lastCharOffset (matchBytes m) (matchOffset m) of
     Nothing  -> m{ matchOffset = -1 }
     Just off -> m{ matchOffset = off }
-exec Forward (MatchChar f) = mapMatching $ \m ->
+exec _ Forward (MatchChar f) = mapMatching $ \m ->
   case U.decode (B.drop (matchOffset m) (matchBytes m)) of
     Just (c,n) | f c -> m{ matchOffset = matchOffset m + n }
     _ -> m{ matchOffset = -1 }
-exec Backward (MatchChar f) = mapMatching $ \m ->
+exec _ Backward (MatchChar f) = mapMatching $ \m ->
   case lastCharOffset (matchBytes m) (matchOffset m) of
     Nothing  -> m{ matchOffset = -1 }
     Just off ->
       case U.decode (B.drop off (matchBytes m)) of
         Just (c,_) | f c -> m{ matchOffset = off }
         _                -> m{ matchOffset = -1 }
-exec dir (MatchConcat (MatchConcat r1 r2) r3) =
-  exec dir (MatchConcat r1 (MatchConcat r2 r3))
-exec Forward (MatchConcat r1 r2) = -- TODO longest match first
-  exec Forward r2 . prune . exec Forward r1
-exec Backward (MatchConcat r1 r2) = exec Backward r1 . exec Backward r2
-exec dir (MatchAlt r1 r2) = \ms -> exec dir r1 ms <> exec dir r2 ms
-exec dir (MatchSome re) = go
+exec top dir (MatchConcat (MatchConcat r1 r2) r3) =
+  exec top dir (MatchConcat r1 (MatchConcat r2 r3))
+exec top Forward (MatchConcat r1 r2) = -- TODO longest match first
+  \ms ->
+    let ms1 = exec top Forward r1 ms
+     in if Set.null ms1
+           then ms1
+           else exec top Forward r2 (prune ms1)
+exec top Backward (MatchConcat r1 r2) =
+  exec top Backward r1 . exec top Backward r2
+exec top dir (MatchAlt r1 r2) = \ms -> exec top dir r1 ms <> exec top dir r2 ms
+exec top dir (MatchSome re) = go
  where
-  go ms = case exec dir re ms of
+  go ms = case exec top dir re ms of
             ms' | Set.null ms' -> Set.empty
                 | ms' == ms    -> ms
                 | otherwise    -> let ms'' = prune ms'
                                    in ms'' <> go ms''
-exec dir (MatchCapture i re) =
+exec top dir (MatchCapture i re) =
   Set.foldr Set.union Set.empty .
    Set.map (\m ->
-     Set.map (captureDifference m) (exec dir re (Set.singleton m)))
+     Set.map (captureDifference m) (exec top dir re (Set.singleton m)))
  where
     captureDifference m m' =
       let len = matchOffset m' - matchOffset m
       in  m'{ matchCaptures = M.insert i (matchOffset m, len)
                                   (matchCaptures m') }
-exec dir (MatchCaptured n) = mapMatching matchCaptured
+exec _ dir (MatchCaptured n) = mapMatching matchCaptured
  where
    matchCaptured m =
      case M.lookup n (matchCaptures m) of
@@ -124,7 +130,9 @@ exec dir (MatchCaptured n) = mapMatching matchCaptured
                         -> m{ matchOffset = matchOffset m - B.length capture }
                      _  -> m{ matchOffset = -1 }
        Nothing -> m{ matchOffset = -1 }
-
+exec top dir Recurse = \ms -> if Set.null ms
+                                 then ms
+                                 else exec top dir top ms
 
 atWordBoundary :: Match -> Bool
 atWordBoundary m =
@@ -164,7 +172,7 @@ matchRegex :: Regex
            -> Maybe (ByteString, M.IntMap (Int, Int))
 matchRegex re bs =
   toResult <$> Set.lookupMin
-               (exec Forward re (Set.singleton (Match bs 0 M.empty)))
+               (exec re Forward re (Set.singleton (Match bs 0 M.empty)))
  where
    toResult m = (B.take (matchOffset m) (matchBytes m), (matchCaptures m))
 
