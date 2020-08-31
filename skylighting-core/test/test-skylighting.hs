@@ -284,8 +284,8 @@ regexTests =
                  ,(4,"a")]))
   , ("a++a", "aaaaa", Nothing)
   , ("\\w+e", "aaaeeee", Just ("aaaeeee", []))
-  -- , ("\\w+?e", "aaaeeee", Just ("aaae", []))
-  -- , ("a+b??", "aaab", Just ("aaa", []))
+  , ("\\w+?e", "aaaeeee", Just ("aaae", []))
+  , ("a+b??", "aaab", Just ("aaa", []))
   , ("\\([a-z]+(?R)*\\)", "(aa(b(c)(d)))", Just ("(aa(b(c)(d)))", []))
   ]
 

@@ -51,8 +51,8 @@ prune ms = if Set.size ms > sizeLimit
 -- first argument is the "top-level" regex, needed for Recurse.
 exec :: Regex -> Direction -> Regex -> Set Match -> Set Match
 exec _ _ MatchNull = id
-exec top dir (Lazy re) = -- TODO unimplemented
-  exec top dir re
+exec top dir (Lazy re) = -- note: the action is below under Concat
+  exec top dir (MatchConcat (Lazy re) MatchNull)
 exec top dir (Possessive re) =
   foldr
     (\elt s -> case Set.lookupMin (exec top dir re (Set.singleton elt)) of
@@ -90,6 +90,21 @@ exec _ Backward (MatchChar f) = mapMatching $ \m ->
         _                -> m{ matchOffset = -1 }
 exec top dir (MatchConcat (MatchConcat r1 r2) r3) =
   exec top dir (MatchConcat r1 (MatchConcat r2 r3))
+exec top Forward (MatchConcat (Lazy r1) r2) =
+  Set.unions . Set.map
+    (\m ->
+      let ms1 = exec top Forward r1 (Set.singleton m)
+       in if Set.null ms1
+             then ms1
+             else go ms1)
+ where
+  go ms = case Set.lookupMax ms of   -- find shortest match
+            Nothing -> Set.empty
+            Just m' ->
+              let s' = exec top Forward r2 (Set.singleton m')
+               in if Set.null s'
+                     then go (Set.delete m' ms)
+                     else s'
 exec top Forward (MatchConcat r1 r2) = -- TODO longest match first
   \ms ->
     let ms1 = exec top Forward r1 ms
