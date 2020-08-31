@@ -36,7 +36,7 @@ skylighting/src/Skylighting/Syntax.hs: $(XMLS)
 	-rm -rf skylighting/src/Skylighting/Syntax skylighting/src/Skylighting/Syntax.hs
 	cd skylighting && skylighting-extract ../skylighting-core/xml/*.xml
 	stack install --flag "skylighting:executable" --test --test-arguments \
-	    '--hide-successes $(TESTARGS)' --fast
+	    '--hide-successes $(TESTARGS)'
 
 syntax-highlighting:
 	git clone https://github.com/KDE/syntax-highlighting
