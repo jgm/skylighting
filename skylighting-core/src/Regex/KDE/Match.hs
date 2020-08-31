@@ -91,7 +91,7 @@ exec _ Backward (MatchChar f) = mapMatching $ \m ->
 exec top dir (MatchConcat (MatchConcat r1 r2) r3) =
   exec top dir (MatchConcat r1 (MatchConcat r2 r3))
 exec top Forward (MatchConcat (Lazy r1) r2) =
-  Set.unions . Set.map
+  Set.foldl Set.union mempty . Set.map
     (\m ->
       let ms1 = exec top Forward r1 (Set.singleton m)
        in if Set.null ms1
