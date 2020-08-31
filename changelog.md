@@ -1,5 +1,28 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10
+
+  * Add instructions for submitting patches upstream to KDE (#106).
+
+  * Synced syntax definitions from KDE repo.  Note that fortran
+    has split into two: `fortran-fixed` and `fortran-free`.
+
+  * Add test to ensure that all regexes in rules compile.
+
+  * Regex: allow unescaped `}`.
+
+  * Regex: allow empty regexes and groups.
+
+  * Regex: support lazy and possessive quantifiers (#109).
+
+  * Regex: support recursive regexes `(?R)` (#108).
+
+  * Hide invisible line numbers from keyboard focus (#107, d10n).
+    This fixes tabbing through elements on a page.
+
+  * Remove some obsolete patches for xml definitions.
+
+
 ## 0.9
 
   * Use a pure Haskell regex implementation (in unexported module
