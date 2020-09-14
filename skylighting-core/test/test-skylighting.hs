@@ -110,6 +110,8 @@ main = do
     , testGroup "Regression tests" $
       let perl = maybe (error "could not find Perl syntax") id
                              (lookupSyntax "Perl" sMap)
+          html = maybe (error "could not find HTML syntax") id
+                             (lookupSyntax "html" sMap)
           cpp  = maybe (error "could not find CPP syntax") id
                              (lookupSyntax "cpp" sMap)
           c    = maybe (error "could not find C syntax") id
@@ -170,6 +172,11 @@ main = do
       , testCase "c very long integer (#81)" $ Right
            [ [ (DecValTok, "1111111111111111111111") ]
            ] @=? tokenize defConfig c "1111111111111111111111"
+
+      , testCase "Chinese characters in HTML (#110)" $ Right
+          [ [ ( NormalTok , "\35797\65306" ) , ( KeywordTok , "<a>" ) ]
+          ] @=? tokenize defConfig html "试：<a>"
+
       ]
     ]
 
