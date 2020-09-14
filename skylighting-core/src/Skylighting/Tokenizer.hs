@@ -497,7 +497,7 @@ detectIdentifier inp = do
   case BS.uncons inp of
     Just (c, t) | (isAscii c && isLetter c) || c == '_' ->
       takeChars $ 1 + maybe (BS.length t) id
-                (BS.findIndex (\d -> isAscii d &&
+                (BS.findIndex (\d -> not (isAscii d) ||
                                      not (isAlphaNum d || d == '_')) t)
     _ -> mzero
 
