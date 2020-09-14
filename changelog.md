@@ -1,5 +1,9 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.0.1
+
+  * Fix identifier detection in non-ASCII context (#110).
+
 ## 0.10
 
   * Add instructions for submitting patches upstream to KDE (#106).
