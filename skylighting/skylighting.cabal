@@ -93,6 +93,7 @@ library
                        Skylighting.Syntax.Gnuassembler
                        Skylighting.Syntax.Go
                        Skylighting.Syntax.Graphql
+                       Skylighting.Syntax.Groovy
                        Skylighting.Syntax.Hamlet
                        Skylighting.Syntax.Haskell
                        Skylighting.Syntax.Haxe
