@@ -1,5 +1,10 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.0.2
+
+  * Improve DetectIdentifier to ensure that identifiers can't
+    include non-ASCII characters.
+
 ## 0.10.0.1
 
   * Fix identifier detection in non-ASCII context (#110).
