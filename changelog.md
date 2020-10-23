@@ -1,5 +1,9 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.0.3
+
+  * Add groovy syntax.
+
 ## 0.10.0.2
 
   * Improve DetectIdentifier to ensure that identifiers can't
