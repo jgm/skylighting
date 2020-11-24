@@ -8,7 +8,7 @@
 	R      : http://www.r-project.org/
 	RKWard : http://rkward.kde.org/
 	-->
-<language version="9" kateversion="5.0" name="R Script" section="Scientific" extensions="*.R;*.r;*.S;*.s;*.q" mimetype="" license="GPLv2">
+<language version="10" kateversion="5.0" name="R Script" section="Scientific" extensions="*.R;*.r;*.S;*.s;*.q" mimetype="" license="GPLv2">
 <highlighting>
 
 	<list name="controls">
@@ -92,13 +92,11 @@
 		</context>
 		<context attribute="Headline" lineEndContext="#pop" name="Headline">
 			<DetectSpaces />
-			<IncludeRules context="##Alerts" />
-			<IncludeRules context="##Modelines" />
+			<IncludeRules context="##Comments" />
 		</context>
 		<context attribute="Comment" lineEndContext="#pop" name="Comment">
 			<DetectSpaces />
-			<IncludeRules context="##Alerts" />
-			<IncludeRules context="##Modelines" />
+			<IncludeRules context="##Comments" />
 		</context>
 
 		<!-- This context is not really used, but contains the common rules -->

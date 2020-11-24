@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="ActionScript 2.0" version="6" kateversion="5.0" section="Sources" extensions="*.as" mimetype="text/x-actionscript" license="LGPL" author="Aaron Miller (armantic101@gmail.com)">
+<language name="ActionScript 2.0" version="7" kateversion="5.0" section="Sources" extensions="*.as" mimetype="text/x-actionscript" license="LGPL" author="Aaron Miller (armantic101@gmail.com)">
   <highlighting>
     
     <list name="properties">
@@ -300,13 +300,11 @@
       <context attribute="StaticImports" lineEndContext="#pop" name="StaticImports"/>
       <context attribute="Imports" lineEndContext="#pop" name="Imports"/>
       <context attribute="Comment" lineEndContext="#pop" name="Commentar 1">
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
       <context attribute="Comment" lineEndContext="#stay" name="Commentar 2">
         <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment"/>
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
     </contexts>
     <itemDatas>

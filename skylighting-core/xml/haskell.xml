@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Haskell" version="14" kateversion="5.0" section="Sources" extensions="*.hs;*.chs;*.hs-boot" mimetype="text/x-haskell" author="Nicolas Wu (zenzike@gmail.com)" license="LGPL" indenter="haskell" style="haskell">
+<language name="Haskell" version="16" kateversion="5.0" section="Sources" extensions="*.hs;*.chs;*.hs-boot" mimetype="text/x-haskell" author="Nicolas Wu (zenzike@gmail.com)" license="LGPL" indenter="haskell" style="haskell">
   <highlighting>
   <list name="keywords">
     <item>case</item>
@@ -492,7 +492,7 @@
       <AnyChar      attribute="EnumFromTo" context="#stay" String="‥" />
 
       <RegExpr attribute="Normal" context="Hamlet" String="\[[wxs]?hamlet\|" />
-      <RegExpr attribute="Normal" context="Julius" String="\[julius\|" />
+      <StringDetect attribute="Normal" context="Julius" String="[julius|" />
       <RegExpr attribute="Normal" context="QuasiQuote" String="\[[a-zA-Z_'](\w|[_'])*\|" />
     </context>
     <context attribute="Normal" lineEndContext="#stay" name="QuasiQuote">
@@ -512,15 +512,13 @@
     </context>
     <context attribute="Comment" lineEndContext="#pop" name="comment">
       <IncludeRules context="Haddock" />
-      <IncludeRules context="##Alerts" />
-      <IncludeRules context="##Modelines" />
+      <IncludeRules context="##Comments" />
     </context>
     <context attribute="Comment" lineEndContext="#stay" name="comments">
       <Detect2Chars attribute="Comment" context="comments" char="{" char1="-" beginRegion="BlockComment" />
       <Detect2Chars attribute="Comment" context="#pop" char="-" char1="}" endRegion="BlockComment" />
       <IncludeRules context="Haddock" />
-      <IncludeRules context="##Alerts" />
-      <IncludeRules context="##Modelines" />
+      <IncludeRules context="##Comments" />
     </context>
     <context attribute="Char" lineEndContext="#pop" name="char">
       <RegExpr attribute="Char" context="#stay" String="\\." />
@@ -575,14 +573,14 @@
     <context attribute="C2HS Directive" lineEndContext="#stay" name="c2hs directive">
       <Detect2Chars attribute="C2HS Directive" context="#pop" char="#" char1="}" />
       <keyword attribute="Keyword" context="#stay"          String="c2hs_keywords" />
-      <RegExpr attribute="Keyword" context="#stay"          String="context" />
-      <RegExpr attribute="Keyword" context="#stay"          String="call" />
-      <RegExpr attribute="Keyword" context="#stay"          String="sizeof" />
-      <RegExpr attribute="Keyword" context="#stay"          String="alignof" />
-      <RegExpr attribute="Keyword" context="c2hs fun"       String="fun" />
-      <RegExpr attribute="Keyword" context="c2hs pointer"   String="pointer" />
-      <RegExpr attribute="Keyword" context="c2hs enum"      String="enum" />
-      <RegExpr attribute="Keyword" context="c2hs import"    String="import" />
+      <StringDetect attribute="Keyword" context="#stay"          String="context" />
+      <StringDetect attribute="Keyword" context="#stay"          String="call" />
+      <StringDetect attribute="Keyword" context="#stay"          String="sizeof" />
+      <StringDetect attribute="Keyword" context="#stay"          String="alignof" />
+      <StringDetect attribute="Keyword" context="c2hs fun"       String="fun" />
+      <StringDetect attribute="Keyword" context="c2hs pointer"   String="pointer" />
+      <StringDetect attribute="Keyword" context="c2hs enum"      String="enum" />
+      <StringDetect attribute="Keyword" context="c2hs import"    String="import" />
     </context>
     <context attribute="C2HS Directive" lineEndContext="#stay" name="c2hs import">
       <RegExpr attribute="Type"    context="#stay" String="([A-Z][a-zA-Z0-9_']*\.)*[A-Z][a-zA-Z0-9_']*" />
@@ -590,7 +588,7 @@
     </context>
     <context attribute="C2HS Directive" lineEndContext="#stay" name="c2hs pointer">
       <keyword attribute="Keyword" context="#stay" String="c2hs_keywords" />
-      <RegExpr attribute="Keyword" context="#stay" String="newtype" />
+      <StringDetect attribute="Keyword" context="#stay" String="newtype" />
       <RegExpr attribute="Type"    context="#stay" String="([A-Z][a-zA-Z0-9_']*\.)*[A-Z][a-zA-Z0-9_']*" />
       <Detect2Chars attribute="C2HS Directive" context="#pop#pop" char="#" char1="}" />
     </context>

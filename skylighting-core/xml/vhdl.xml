@@ -8,7 +8,7 @@
   <!ENTITY label     "((&varname;)\s*:\s*)?">
 
 ]>
-<language name="VHDL" version="10" kateversion="5.0" section="Hardware" extensions="*.vhdl;*.vhd" mimetype="text/x-vhdl" author="Rocky Scaletta (rocky@purdue.edu), Stefan Endrullis (stefan@endrullis.de), Florent Ouchet (outchy@users.sourceforge.net), Chris Higgs (chiggs.99@gmail.com), Jan Michel (jan@mueschelsoft.de), Luigi Calligaris (luigi.calligaris@stfc.ac.uk)">
+<language name="VHDL" version="11" kateversion="5.0" section="Hardware" extensions="*.vhdl;*.vhd" mimetype="text/x-vhdl" author="Rocky Scaletta (rocky@purdue.edu), Stefan Endrullis (stefan@endrullis.de), Florent Ouchet (outchy@users.sourceforge.net), Chris Higgs (chiggs.99@gmail.com), Jan Michel (jan@mueschelsoft.de), Luigi Calligaris (luigi.calligaris@stfc.ac.uk)">
   <highlighting>
     <list name="keywordsToplevel">
       <item>file</item>
@@ -600,8 +600,7 @@
 <!-- other environments -->
       <context name="comment" attribute="Comment" lineEndContext="#pop">
         <DetectSpaces />
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
       <context name="string" attribute="Vector" lineEndContext="#stay">

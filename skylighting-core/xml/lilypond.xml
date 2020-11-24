@@ -56,7 +56,7 @@
 ]>
 <language name="LilyPond" section="Other"
           style="lilypond" indenter="lilypond"
-          version="7" kateversion="3.3"
+          version="8" kateversion="3.3"
           extensions="*.ly;*.LY;*.ily;*.ILY;*.lyi;*.LYI"
           mimetype="text/x-lilypond"
           author="Wilbert Berendsen (info@wilbertberendsen.nl)" license="LGPL">
@@ -104,7 +104,7 @@
     Changes:
     - better recognition of being inside lyrics, drums, notes, chords and markup sections
     - detect block comments %{  %}
-    - links to ##Alerts in comments (e.g. TODO, FIXME)
+    - links to ##Comments in comments (e.g. TODO, FIXME)
     - detect lilypond inside scheme #{ #}
     - detect \score inside \markup, etc.
     - helps with some often made errors like forgetting spaces around lyric extenders and hyphens
@@ -821,15 +821,13 @@
 
       <context name="commentline" attribute="Comment" lineEndContext="#pop">
         <DetectSpaces />
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
       <context name="commentblock" attribute="Comment" lineEndContext="#stay">
         <Detect2Chars char="%" char1="}" attribute="Comment" context="#pop" endRegion="comment"/>
         <DetectSpaces />
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
       <context name="string" attribute="Quoted Text" lineEndContext="#stay">
@@ -896,13 +894,13 @@
 
       <context name="schemecommentline" attribute="Scheme Comment" lineEndContext="#pop">
         <DetectSpaces />
-        <IncludeRules context="##Alerts"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
       <context name="schemecommentblock" attribute="Scheme Comment" lineEndContext="#stay">
         <Detect2Chars char="!" char1="#" attribute="Scheme Comment" context="#pop" endRegion="schemecomment"/>
         <DetectSpaces />
-        <IncludeRules context="##Alerts"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
       <context name="schemesub" attribute="Scheme Subst" lineEndContext="#pop"

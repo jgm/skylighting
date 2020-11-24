@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <!-- kotlin language syntax http://kotlinlang.org -->
-<language name="Kotlin" version="6" kateversion="5.0" section="Sources" extensions="*.kt;*.kts" license="LGPLv2+" author="Sergey Mashkov (sergey.mashkov@jetbrains.com)" style="cstyle" indenter="cstyle">
+<language name="Kotlin" version="8" kateversion="5.0" section="Sources" extensions="*.kt;*.kts" license="LGPLv2+" author="Sergey Mashkov (sergey.mashkov@jetbrains.com)" style="cstyle" indenter="cstyle">
     <highlighting>
         <list name="keywords">
             <item>package</item>
@@ -134,7 +134,7 @@
 
             <context attribute="Normal Text" lineEndContext="#pop" name="Imports">
                 <DetectChar attribute="Symbol" context="#pop" char=";" />
-                <StringDetect attribute="Keyword" context="TypeName" String="as" />
+                <Detect2Chars attribute="Keyword" context="TypeName" char="a" char1="s" />
 
                 <RegExpr attribute="Imports" context="#stay" String="\b[_\w][_\w\d]*(\.[_\w][_\w\d]*)*(\.\*)?"/>
             </context>
@@ -198,15 +198,15 @@
             <context name="TypeName" lineEndContext="#stay" attribute="Normal Text">
                 <DetectChar attribute="Symbol" context="#pop" char="*" />
                 <DetectChar attribute="Symbol" context="FunctionType" char="(" />
-                <StringDetect attribute="Symbol" context="#stay" String="-&gt;" />
+                <Detect2Chars attribute="Symbol" context="#stay" char="-" char1="&gt;" />
                 <RegExpr attribute="Data Type" context="#pop" String="[_\w][_\w\d]*[?]?" />
             </context>
 
             <context name="FunctionType" lineEndContext="#stay" attribute="Normal Text">
                 <DetectChar attribute="Symbol" context="#pop" char=")" />
                 <RegExpr attribute="Data Type" context="#stay" String="[_\w][_\w\d]*[?]?" />
-                <StringDetect attribute="Symbol" context="#stay" String="-&gt;" />
-                <StringDetect attribute="Symbol" context="#stay" String="," />
+                <Detect2Chars attribute="Symbol" context="#stay" char="-" char1="&gt;" />
+                <DetectChar attribute="Symbol" context="#stay" char="," />
             </context>
 
             <context name="Expression" lineEndContext="#stay" attribute="Normal Text">
@@ -261,14 +261,12 @@
 
             <context attribute="Comment" lineEndContext="#pop" name="CommentSingleLine">
                 <DetectSpaces />
-                <IncludeRules context="##Alerts"/>
-                <IncludeRules context="##Modelines"/>
+                <IncludeRules context="##Comments"/>
             </context>
             <context attribute="Comment" lineEndContext="#stay" name="CommentMultiline">
                 <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment"/>
                 <DetectSpaces />
-                <IncludeRules context="##Alerts"/>
-                <IncludeRules context="##Modelines"/>
+                <IncludeRules context="##Comments"/>
             </context>
 
         </contexts>

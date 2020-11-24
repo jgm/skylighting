@@ -44,7 +44,7 @@
 -->
 	
 <!-- Hold the "language" opening tag on a single line, as mentioned in "language.dtd". -->
-<language name="Ruby/Rails/RHTML" version="11" kateversion="5.63" section="Markup" extensions="*.rhtml;*.RHTML;*.html.erb" mimetype="" author="Richard Dale rdale@foton.es" license="LGPLv2+">
+<language name="Ruby/Rails/RHTML" version="13" kateversion="5.63" section="Markup" extensions="*.rhtml;*.RHTML;*.html.erb" mimetype="" author="Richard Dale rdale@foton.es" license="LGPLv2+">
 	
 	<highlighting>
 	
@@ -372,8 +372,7 @@
 			<context name="Comment" attribute="Comment" lineEndContext="#stay">
 				<DetectSpaces/>
 				<StringDetect attribute="Comment" context="#pop" String="--&gt;" endRegion="comment" />
-				<IncludeRules context="##Alerts" />
-				<IncludeRules context="##Modelines" />
+				<IncludeRules context="##Comments" />
 				<DetectIdentifier/>
 				<RegExpr attribute="Error" context="#stay" String="-(-(?!-&gt;))+" />
 			</context>
@@ -487,7 +486,7 @@
 			
 			<context name="JS comment close" attribute="Comment" lineEndContext="#pop">
 				<RegExpr attribute="Element" context="El Close 3" String="&lt;/script\b" insensitive="true" endRegion="script" />
-				<IncludeRules context="##Alerts" />
+				<IncludeRules context="##Comments" />
 			</context>
 			
 			<context name="Value" attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="Value NQ">
@@ -738,14 +737,12 @@
 				<StringDetect context="#pop" String="-%&gt;" lookAhead="true" />
 				<Detect2Chars context="#pop" char="%" char1="&gt;" lookAhead="true" />
 				<RegExpr attribute="Ruby Comment" String="\w\:\:\s" context="RDoc Label"/>
-				<IncludeRules context="##Alerts"/>
-				<IncludeRules context="##Modelines"/>
+				<IncludeRules context="##Comments"/>
 			</context>
 			
 			<context name="General Comment" attribute="Ruby Comment" lineEndContext="#pop">
 				<DetectSpaces/>
-				<IncludeRules context="##Alerts"/>
-				<IncludeRules context="##Modelines"/>
+				<IncludeRules context="##Comments"/>
 			</context>
 			
 			<context name="RDoc Label" attribute="RDoc Value" lineEndContext="#pop"/>
@@ -968,7 +965,7 @@
 			
 			<!-- rules to be included in all token_array contexts -->
 			<context name="token_array_rules" attribute="String" lineEndContext="#stay" >
-				<StringDetect attribute="String" String="\\" context="#stay"/>
+				<Detect2Chars attribute="String" char="\" char1="\" context="#stay"/>
 			</context>
 			
 			<!-- apostrophed string specific contexts -->

@@ -33,7 +33,7 @@
   <!ENTITY hex "[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?">
 ]>
 
-<language name="Julia" section="Sources" version="8" kateversion="5.0" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
+<language name="Julia" section="Sources" version="9" kateversion="5.0" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
 
   <highlighting>
     <list name="block_begin">
@@ -654,15 +654,13 @@
       <!-- 1-line comment: #pop@EOL  -->
       <context name="1-comment" lineEndContext="#pop" attribute="Comment">
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
 
       <context name="block-comment" lineEndContext="#stay" attribute="Comment">
         <DetectSpaces />
         <Detect2Chars char="=" char1="#" context="#pop" attribute="Comment" endRegion="block-comment"/>
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
 
     </contexts>

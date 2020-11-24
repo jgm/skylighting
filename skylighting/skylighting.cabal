@@ -65,6 +65,7 @@ library
                        Skylighting.Syntax.Cmake
                        Skylighting.Syntax.Coffee
                        Skylighting.Syntax.Coldfusion
+                       Skylighting.Syntax.Comments
                        Skylighting.Syntax.Commonlisp
                        Skylighting.Syntax.Cpp
                        Skylighting.Syntax.Cs
@@ -167,6 +168,7 @@ library
                        Skylighting.Syntax.Sed
                        Skylighting.Syntax.Sgml
                        Skylighting.Syntax.Sml
+                       Skylighting.Syntax.SpdxComments
                        Skylighting.Syntax.SqlMysql
                        Skylighting.Syntax.SqlPostgresql
                        Skylighting.Syntax.Sql

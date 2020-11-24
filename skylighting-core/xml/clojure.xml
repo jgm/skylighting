@@ -22,7 +22,7 @@
  * Boston, MA  02110-1301, USA.                                       *
  **********************************************************************
  -->
-<language version="12" kateversion="5.0" name="Clojure" section="Sources" extensions="*.clj;*.cljs;*.cljc" mimetype="" author="Dominik Haumann [lisp] modified for clojure by Caspar Hasenclever" license="LGPLv2+">
+<language version="14" kateversion="5.0" name="Clojure" section="Sources" extensions="*.clj;*.cljs;*.cljc" mimetype="" author="Dominik Haumann [lisp] modified for clojure by Caspar Hasenclever" license="LGPLv2+">
   <highlighting>
     <list name="definitions">
       <item>def</item>
@@ -741,14 +741,13 @@
         <DetectChar attribute="Brackets1" context="Level1" char="("/>
       </context>
       <context name="Float Suffixes" attribute="Float" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-        <StringDetect attribute="Float" context="#pop" String="M" insensitive="false"/>
+        <DetectChar attribute="Float" context="#pop" char="M"/>
       </context>
       <context name="Int Suffixes" attribute="Decimal" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-        <StringDetect attribute="Decimal" context="#pop" String="N" insensitive="false"/>
+        <DetectChar attribute="Decimal" context="#pop" char="N"/>
       </context>
       <context name="Comment" attribute="Comment" lineEndContext="#pop">
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
       <context name="function_decl_documentable" attribute="Function" lineEndContext="#stay">
         <RegExpr attribute="Function" context="#pop!DocumentationPossible" String="\s*[A-Za-z0-9-+\&lt;\&gt;//\*!\?']*\s*"/>

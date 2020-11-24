@@ -3,7 +3,7 @@
   <!ENTITY charsdelim "_;.&#34;(){}@">
   <!ENTITY wordsep "(?=[&charsdelim;]|\s|$)">
 ]>
-<language name="Agda" version="7" kateversion="5.0" section="Sources" extensions="*.agda" mimetype="text/x-agda" author="Matthias C. M. Troffaes" license="LGPL">
+<language name="Agda" version="8" kateversion="5.0" section="Sources" extensions="*.agda" mimetype="text/x-agda" author="Matthias C. M. Troffaes" license="LGPL">
   <highlighting>
     <list name="reserved keywords">
       <item>abstract</item>
@@ -74,14 +74,12 @@
         <RegExpr attribute="Normal" context="#stay" String="[^&charsdelim;\s]+" />
       </context>
       <context attribute="Comment" lineEndContext="#pop" name="comment">
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
       <context attribute="Comment" lineEndContext="#stay" name="comments" noIndentationBasedFolding="1">
         <Detect2Chars attribute="Comment" context="comments" char="{" char1="-" beginRegion="CommentBlock" /> <!-- for nested comments -->
         <Detect2Chars attribute="Comment" context="#pop" char="-" char1="}" endRegion="CommentBlock" />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
       <context attribute="Hole" lineEndContext="#stay" name="hole">
         <Detect2Chars attribute="Hole" context="#pop" char="!" char1="}" />

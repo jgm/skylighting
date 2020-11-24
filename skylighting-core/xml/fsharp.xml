@@ -9,7 +9,7 @@
 <!ENTITY ESC    "(\\[ntbr'&quot;\\]|\\[0-9]{3}|\\x[0-9A-Fa-f]{2})"> <!-- OCaml character code escapes. -->
 <!ENTITY DEC    "[0-9][0-9_]*">                                     <!-- Decimal digits with underscores. -->
 ]>
-<language name="FSharp" version="6" kateversion="5.0" section="Sources" extensions="*.fs;*.fsi;*.fsx" mimetype="" priority="10" author="Bas Bossink (bas.bossink@gmail.com)" license="LGPL">
+<language name="FSharp" version="8" kateversion="5.0" section="Sources" extensions="*.fs;*.fsi;*.fsx" mimetype="" priority="10" author="Bas Bossink (bas.bossink@gmail.com)" license="LGPL">
 
   <highlighting>
     <list name="keywords">
@@ -192,16 +192,14 @@
 
       <context attribute="Comment" lineEndContext="#pop" name="Singleline Comment">
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
       <context attribute="Comment" lineEndContext="#stay" name="Multiline Comment">
         <!-- Support for nested comments -->
         <Detect2Chars attribute="Comment" context="#pop" char="*" char1=")" endRegion="comment" />
         <Detect2Chars attribute="Comment" context="Multiline Comment" char="(" char1="*" beginRegion="comment" />
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
 
       <context attribute="String" lineEndContext="#stay" name="String Constant">
@@ -241,7 +239,7 @@
       <context attribute="Normal Text" lineEndContext="#stay" name="ModuleEnv2">
         <RegExpr attribute="Module" context="#stay" String="&MIDENT;"/>
         <DetectSpaces attribute="Normal Text" context="#stay"/>
-        <StringDetect attribute="Keyword" context="#pop" String="."/>
+        <DetectChar attribute="Keyword" context="#pop" char="."/>
       </context>
 
       <!-- Camlp4 Quotations. These are source code literals used by the Campl4 preprocessor.           -->

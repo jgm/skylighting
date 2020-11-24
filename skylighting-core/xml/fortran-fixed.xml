@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Fortran (Fixed Format)" version="7" kateversion="5.44" section="Sources" extensions="*.f;*.F;*.for;*.FOR;*.fpp;*.FPP;" mimetype="text/x-fortran-src" casesensitive="0" author="Franchin Matteo (fnch@libero.it)" license="MIT" priority="9">
+<language name="Fortran (Fixed Format)" version="8" kateversion="5.44" section="Sources" extensions="*.f;*.F;*.for;*.FOR;*.fpp;*.FPP;" mimetype="text/x-fortran-src" casesensitive="0" author="Franchin Matteo (fnch@libero.it)" license="MIT" priority="9">
 <!-- by Franchin Matteo, fnch@libero.it -->
 <!-- NOTE: Keep in sync with the "Fortran (Free Format)" highlighter! (fortran-free.xml) -->
   <highlighting>
@@ -412,8 +412,7 @@
       </context>
 
       <context attribute="Comment" lineEndContext="#pop" name="comment">
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
 <!-- This context highlights symbols -->

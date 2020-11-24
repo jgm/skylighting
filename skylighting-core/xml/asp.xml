@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE  language SYSTEM "language.dtd">
-<language name="ASP" version="6" kateversion="5.44" section="Markup" extensions="*.asp;" mimetype="text/x-asp-src;text/x-asp-src" author="Antonio Salazar (savedfastcool@gmail.com)" license="LGPL">
+<language name="ASP" version="7" kateversion="5.44" section="Markup" extensions="*.asp;" mimetype="text/x-asp-src;text/x-asp-src" author="Antonio Salazar (savedfastcool@gmail.com)" license="LGPL">
     <highlighting>
         <list name="control structures">
             <item>select</item>
@@ -293,8 +293,7 @@
             <context name="asp_onelinecomment" attribute="Comment" lineEndContext="#pop">
                 <DetectSpaces />
                 <Detect2Chars context="#pop" char="%" char1="&gt;" lookAhead="true" />
-                <IncludeRules context="##Alerts" />
-                <IncludeRules context="##Modelines" />
+                <IncludeRules context="##Comments" />
             </context>
             <context name="doublequotestring" attribute="String" lineEndContext="#stay">
                 <DetectSpaces />
@@ -319,8 +318,7 @@
                 <IncludeRules context="find-aspsource" />
                 <StringDetect attribute="HTML Comment" context="#pop" String="--&gt;" endRegion="HTMLComment" />
                 <DetectChar attribute="Normal Text" context="identifiers" char="="/>
-                <IncludeRules context="##Alerts" />
-                <IncludeRules context="##Modelines" />
+                <IncludeRules context="##Comments" />
             </context>
             <context name="identifiers" attribute="Identifier" lineEndContext="#stay">
                 <DetectSpaces />
@@ -361,12 +359,12 @@
             <context name="scripts_onelinecomment" attribute="Comment" lineEndContext="#pop">
                 <DetectSpaces />
                 <RegExpr attribute="HTML Tag" context="#pop#pop" String="&lt;\s*\/\s*script\s*&gt;" insensitive="true" />
-                <IncludeRules context="##Alerts" />
+                <IncludeRules context="##Comments" />
             </context>
             <context name="twolinecomment" attribute="Comment" lineEndContext="#stay">
                 <DetectSpaces />
                 <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="ScriptComment" />
-                <IncludeRules context="##Alerts" />
+                <IncludeRules context="##Comments" />
             </context>
 
         </contexts>

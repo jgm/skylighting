@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Fortran (Free Format)" version="3" kateversion="5.53" section="Sources" extensions="*.f90;*.F90;*.f95;*.F95;*.f03;*.F03;*.f08;*.F08;" mimetype="text/x-fortran-src" casesensitive="0" author="Franchin Matteo (fnch@libero.it), Janus Weil" license="MIT" priority="10">
+<language name="Fortran (Free Format)" version="4" kateversion="5.53" section="Sources" extensions="*.f90;*.F90;*.f95;*.F95;*.f03;*.F03;*.f08;*.F08;" mimetype="text/x-fortran-src" casesensitive="0" author="Franchin Matteo (fnch@libero.it), Janus Weil" license="MIT" priority="10">
 <!-- Original author: Franchin Matteo (fnch@libero.it).
      Adaptation to free & fixed format: Janus Weil.
 -->
@@ -148,8 +148,7 @@
         <DetectChar attribute="Comment" context="comment" char="!"/>
       </context>
       <context attribute="Comment" lineEndContext="#pop" name="comment">
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
 <!-- This context highlights items inside the parentesis of a function -->

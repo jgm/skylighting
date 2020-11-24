@@ -73,7 +73,7 @@ Changes:
   <!ENTITY types "int|integer|bool|boolean|float|double|real|string|array|object">
 ]>
 
-<language name="PHP/PHP" indenter="cstyle" version="12" kateversion="5.0" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
+<language name="PHP/PHP" indenter="cstyle" version="17" kateversion="5.0" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
   <highlighting>
     <!-- https://secure.php.net/manual/en/reserved.keywords.php -->
     <list name="control structures">
@@ -5656,6 +5656,7 @@ Changes:
       <item>com_load_typelib</item>
       <item>com_message_pump</item>
       <item>com_print_typeinfo</item>
+      <item>compact</item>
       <item>connection_aborted</item>
       <item>connection_status</item>
       <item>constant</item>
@@ -10833,11 +10834,11 @@ Changes:
       <!-- JGM:  Added fallthrough so it will handle snippets that don't begin with <?php -->
       <context name="start" lineEndContext="#stay" attribute="Normal Text" fallthrough="true" fallthroughContext="phpsource">
         <RegExpr context="phpsource" attribute="Keyword" String="&lt;\?(?:=|php)?" insensitive="true" />
-        <StringDetect attribute="Keyword" context="#pop" String="?&gt;" />
+        <Detect2Chars attribute="Keyword" context="#pop" char="?" char1="&gt;" />
       </context>
       <context name="phpsource" attribute="PHP Text" lineEndContext="#stay">
         <DetectSpaces />
-        <StringDetect attribute="Keyword" context="#pop" String="?&gt;" lookAhead="true" />
+        <Detect2Chars attribute="Keyword" context="#pop" char="?" char1="&gt;" lookAhead="true" />
 
         <!-- Alternate PHP Block Syntax
           -  http://www.php.net/manual/en/control-structures.alternative-syntax.php
@@ -10859,7 +10860,7 @@ Changes:
         <RegExpr attribute="Keyword" context="case"  String="(case|default)(\s|:|$)" />
         <Detect2Chars attribute="Normal Text" context="#stay" char=":" char1=":" />
         <DetectChar attribute="Normal Text" context="#stay" char=":" beginRegion="Alternate Block" />
-        <RegExpr attribute="Control Structures" context="#stay" String="endif|endwhile|endfor|endforeach|endswitch" endRegion="Alternate Block" />
+        <RegExpr attribute="Control Structures" context="#stay" String="(endif|endwhile|endfor|endforeach|endswitch)\b" endRegion="Alternate Block" />
         <!--/ Alternate PHP Block Syntax -->
 
         <DetectChar attribute="Comment" context="onelinecomment" char="#" />
@@ -10929,13 +10930,13 @@ Changes:
 
       <context name="onelinecomment" attribute="Comment" lineEndContext="#pop">
         <DetectSpaces />
-        <StringDetect attribute="Keyword" context="#pop" lookAhead="true" String="?&gt;" />
-        <IncludeRules context="##Alerts" />
+        <Detect2Chars attribute="Keyword" context="#pop" lookAhead="true" char="?" char1="&gt;" />
+        <IncludeRules context="##Comments" />
       </context>
       <context name="twolinecomment" attribute="Comment" lineEndContext="#stay">
         <DetectSpaces />
         <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment" />
-        <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Comments" />
       </context>
       <context name="doublebackquotestringcommon" attribute="String" lineEndContext="#stay">
         <!-- Common rules for double quoted strings and backticks (execution operator) URL:

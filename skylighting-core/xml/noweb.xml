@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="noweb" version="3" kateversion="2.4" section="Sources" extensions="*.w;*.nw" author="Scott Collins (scc@scottcollins.net)">
+<language name="noweb" version="4" kateversion="2.4" section="Sources" extensions="*.w;*.nw" author="Scott Collins (scc@scottcollins.net)">
 <!-- 
 #########################################################################
 # First version added to repository was 0.4, added as 1.0 .
@@ -37,7 +37,7 @@
         <IncludeRules context="##C++" includeAttrib="true" />
       </context>
       <context name="SectionNames" attribute="Prose" lineEndContext="#stay">
-        <RegExpr String="@&lt;&lt;" context="#stay" />
+        <StringDetect String="@&lt;&lt;" context="#stay" />
         <RegExpr String="&lt;&lt;.*[^@]&gt;&gt;(?!=)" minimal="true" attribute="SectionName" />
       </context>
     </contexts>

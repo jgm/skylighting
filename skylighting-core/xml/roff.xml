@@ -7,7 +7,7 @@
   <!ENTITY argsep1 "([^\\]|\\[&#37; |\^{}'`\-!?@)/,&amp;:~0E_acdeprtu])">
   <!ENTITY argsep2 "([^\\0-9]|\\[&#37;:{}'`\-_!@/cep])">
 ]>
-<language name="Roff" section="Markup" version="4" kateversion="2.4" extensions="" author="Matthew Woehlke (mw_triad@users.sourceforge.net)" license="GPL">
+<language name="Roff" section="Markup" version="6" kateversion="2.4" extensions="" author="Matthew Woehlke (mw_triad@users.sourceforge.net)" license="GPL">
 
   <highlighting>
 
@@ -80,8 +80,7 @@
       <!-- comment -->
       <context name="Comment" attribute="Comment" lineEndContext="#pop">
         <DetectSpaces />
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
       <!-- error -->
@@ -111,18 +110,18 @@
 
       <!-- escape argument -->
       <context name="Argument" attribute="String" lineEndContext="Error" dynamic="true">
-        <RegExpr attribute="Escape" context="#pop#pop" String="%1" dynamic="true"/>
+        <StringDetect attribute="Escape" context="#pop#pop" String="%1" dynamic="true"/>
         <IncludeRules context="DetectOthers"/>
       </context>
 
       <!-- glyph escape argument -->
       <context name="GlyphArgument" attribute="Glyph" lineEndContext="Error" dynamic="true">
-        <RegExpr attribute="Glyph" context="#pop#pop" String="%1" dynamic="true"/>
+        <StringDetect attribute="Glyph" context="#pop#pop" String="%1" dynamic="true"/>
       </context>
 
       <!-- measurement (or expression) escape argument -->
       <context name="Measurement" attribute="Error" lineEndContext="Error" dynamic="true">
-        <RegExpr attribute="Escape" context="#pop#pop" String="%1" dynamic="true"/>
+        <StringDetect attribute="Escape" context="#pop#pop" String="%1" dynamic="true"/>
         <!-- TODO -->
       </context>
 

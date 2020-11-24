@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="GLSL" section="3D" extensions="*.glsl;*.vert;*.vs;*.frag;*.fs;*.geom;*.gs;*.tcs;*.tes" mimetype="text/x-glslsrc" version="6" kateversion="5.0" author="Oliver Richers (o.richers@tu-bs.de)" license="LGPL">
+<language name="GLSL" section="3D" extensions="*.glsl;*.vert;*.vs;*.frag;*.fs;*.geom;*.gs;*.tcs;*.tes" mimetype="text/x-glslsrc" version="7" kateversion="5.0" author="Oliver Richers (o.richers@tu-bs.de)" license="LGPL">
 	<highlighting>
 		<list name="keywords">
 			<item>break</item>
@@ -1176,14 +1176,12 @@
 			</context>
 			<context name="Commentar 1" attribute="Comment" lineEndContext="#pop">
 				<DetectSpaces />
-				<IncludeRules context="##Alerts" />
-				<IncludeRules context="##Modelines" />
+				<IncludeRules context="##Comments" />
 			</context>
 			<context name="Commentar 2" attribute="Comment" lineEndContext="#stay">
 				<Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment"/>
 				<DetectSpaces />
-				<IncludeRules context="##Alerts" />
-				<IncludeRules context="##Modelines" />
+				<IncludeRules context="##Comments" />
 			</context>
 			<context name="Preprocessor" attribute="Preprocessor" lineEndContext="#pop">
 			</context>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="sed" section="Scripts" version="3" kateversion="2.4" extensions="*.sed" mimetype="text/x-sed" author="Bart Sas (bart.sas@gmail.com)" license="GPL">
+<language name="sed" section="Scripts" version="5" kateversion="2.4" extensions="*.sed" mimetype="text/x-sed" author="Bart Sas (bart.sas@gmail.com)" license="GPL">
         <highlighting>
                 <contexts>
                         <context name="BeginningOfLine" attribute="Normal" lineEndContext="#stay">
@@ -19,8 +19,8 @@
 
                         <context name="FirstAddressRegex" attribute="Regex" lineEndContext="Error" dynamic="true">
                                 <DetectSpaces/>
-                                <RegExpr String="\\%1" attribute="Regex Escape" context="#stay"             dynamic="true"/>
-                                <RegExpr String="%1"   attribute="Separator"    context="AfterFirstAddress" dynamic="true"/>
+                                <StringDetect String="\%1" attribute="Regex Escape" context="#stay"             dynamic="true"/>
+                                <StringDetect String="%1"   attribute="Separator"    context="AfterFirstAddress" dynamic="true"/>
                                 <IncludeRules                                   context="Regex"/>
                         </context>
 
@@ -50,8 +50,8 @@
 
                         <context name="SecondAddressRegex" attribute="Regex" lineEndContext="Error" dynamic="true">
                                 <DetectSpaces/>
-                                <RegExpr String="\\%1" attribute="Regex Escape" context="#stay"              dynamic="true"/>
-                                <RegExpr String="%1"   attribute="Separator"    context="AfterSecondAddress" dynamic="true"/>
+                                <StringDetect String="\%1" attribute="Regex Escape" context="#stay"              dynamic="true"/>
+                                <StringDetect String="%1"   attribute="Separator"    context="AfterSecondAddress" dynamic="true"/>
                                 <IncludeRules                                   context="Regex"/>
                         </context>
 
@@ -89,15 +89,15 @@
 
                         <context name="SRegex" attribute="Regex" lineEndContext="Error" dynamic="true">
                                 <DetectSpaces/>
-                                <RegExpr String="\\%1" attribute="Regex Escape" context="#stay"        dynamic="true"/>
+                                <StringDetect String="\%1" attribute="Regex Escape" context="#stay"        dynamic="true"/>
                                 <RegExpr String="(%1)" attribute="Separator"    context="SReplacement" dynamic="true"/>
                                 <IncludeRules                                   context="Regex"/>
                         </context>
 
                         <context name="SReplacement" attribute="Replacement" lineEndContext="Error" dynamic="true">
                                 <DetectSpaces/>
-                                <RegExpr String="\\%1"                attribute="Repl Escape" context="#stay"  dynamic="true"/>
-                                <RegExpr String="%1"                  attribute="Separator"   context="SFlags" dynamic="true"/>
+                                <StringDetect String="\%1"                attribute="Repl Escape" context="#stay"  dynamic="true"/>
+                                <StringDetect String="%1"                  attribute="Separator"   context="SFlags" dynamic="true"/>
                                 <RegExpr String="\\[0-9LlUuE\\&amp;]" attribute="Repl Escape" context="#stay"/>
                                 <DetectChar char="&amp;"              attribute="Repl Escape" context="#stay"/>
                         </context>
@@ -122,7 +122,7 @@
 
                         <context name="YSourceList" attribute="Char List" lineEndContext="Error" dynamic="true">
                                 <DetectSpaces/>
-                                <RegExpr String="\\%1"           attribute="Char List Escape" context="#stay"     dynamic="true"/>
+                                <StringDetect String="\%1"           attribute="Char List Escape" context="#stay"     dynamic="true"/>
                                 <RegExpr String="(%1)"           attribute="Separator"        context="YDestList" dynamic="true"/>
                                 <Detect2Chars char="\" char1="n" attribute="Char List Escape" context="#stay"/>
                                 <Detect2Chars char="\" char1="\" attribute="Char List Escape" context="#stay"/>
@@ -130,8 +130,8 @@
 
                         <context name="YDestList" attribute="Char List" lineEndContext="Error" dynamic="true">
                                 <DetectSpaces/>
-                                <RegExpr String="\\%1"           attribute="Char List Escape" context="#stay"        dynamic="true"/>
-                                <RegExpr String="%1"             attribute="Separator"        context="AfterCommand" dynamic="true"/>
+                                <StringDetect String="\%1"           attribute="Char List Escape" context="#stay"        dynamic="true"/>
+                                <StringDetect String="%1"             attribute="Separator"        context="AfterCommand" dynamic="true"/>
                                 <Detect2Chars char="\" char1="n" attribute="Char List Escape" context="#stay"/>
                                 <Detect2Chars char="\" char1="\" attribute="Char List Escape" context="#stay"/>
                         </context>
@@ -222,8 +222,7 @@
 
                         <context name="Comment" attribute="Comment" lineEndContext="#pop">
                                 <DetectSpaces />
-                                <IncludeRules context="##Alerts"/>
-                                <IncludeRules context="##Modelines"/>
+                                <IncludeRules context="##Comments"/>
                         </context>
                         <context name="Error"   attribute="Error"   lineEndContext="BeginningOfLine"/>
                 </contexts>

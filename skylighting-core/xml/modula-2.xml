@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Modula-2" mimetype="text/x-modula2" version="6"
+<language name="Modula-2" mimetype="text/x-modula2" version="7"
   kateversion="2.2" section="Sources" priority="5" extensions="*.mod;*.def"
   casesensitive="1"  author="B. Kowarsch (trijezdci@github)"  license="MIT">
 <!--
@@ -1112,8 +1112,7 @@
       <!-- Line Comment Body -->
       <context name="LineComment" attribute="Comment" lineEndContext="#pop">
         <DetectSpaces />
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
       <!-- Block Comment Body -->
@@ -1126,8 +1125,7 @@
           char="*" char1=")" endRegion="FoldableComment"/>
 
         <DetectSpaces />
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
     </contexts>
 

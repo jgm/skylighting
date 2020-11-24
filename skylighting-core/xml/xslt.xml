@@ -52,7 +52,7 @@
 
 -->
 
-<language version="6" kateversion="5.0" name="xslt" section="Markup" extensions="*.xsl;*.xslt" license="LGPL" author="Peter Lammich (views@gmx.de)">
+<language version="8" kateversion="5.0" name="xslt" section="Markup" extensions="*.xsl;*.xslt" license="LGPL" author="Peter Lammich (views@gmx.de)">
   <highlighting>
     <list name="keytags">
       <item>xsl:value-of</item>
@@ -313,7 +313,7 @@
        <context name="tagname" attribute="Tag" lineEndContext="#stay">
          <keyword attribute="XSLT Tag" context="xattributes" String="keytags" />
          <keyword attribute="XSLT 2.0 Tag" context="xattributes" String="keytags_2.0" />
-         <RegExpr attribute="Attribute" context="attributes" String="\s*" />
+         <DetectSpaces attribute="Attribute" context="attributes" />
          <DetectChar attribute="Tag" context="#pop" char="&gt;" />
        </context>
        
@@ -362,8 +362,7 @@
        <context name="comment" attribute="Comment" lineEndContext="#stay">
          <StringDetect attribute="Comment" context="#pop" String="--&gt;" endRegion="comment" />
          <RegExpr attribute="Invalid" context="#stay" String="-(-(?!-&gt;))+" />
-         <IncludeRules context="##Alerts" />
-         <IncludeRules context="##Modelines" />
+         <IncludeRules context="##Comments" />
        </context>
 
        <context name="xpath" attribute="XPath" lineEndContext="#stay">

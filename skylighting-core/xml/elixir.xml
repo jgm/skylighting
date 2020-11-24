@@ -24,13 +24,13 @@
 <language author="Rubén Caro (ruben.caro.estevez@gmail.com), Boris Egorov (egorov@linux.com)"
           extensions="*.ex;*.exs;*.eex;*.xml.eex;*.js.eex"
           indenter="elixir"
-          kateversion="5.53"
+          kateversion="5.62"
           license="LGPLv2+"
           mimetype="text/x-elixir"
           name="Elixir"
           section="Sources"
           style="elixir"
-          version="6">
+          version="9">
   <highlighting>
     <list name="control-flow">
       <item>catch</item>
@@ -127,7 +127,7 @@
         <!-- regexp hack -->
         <RegExpr String="\s!" attribute="Operator" context="#stay"/>
         <RegExpr String="/=\s" attribute="Operator" context="#stay" insensitive="0"/>
-        <StringDetect String="%=" attribute="Operator" context="#stay" insensitive="0"/>
+        <Detect2Chars char="%" char1="=" attribute="Operator" context="#stay"/>
         <RegExpr String=":(@{1,2}|\$)?[a-zA-Z_][a-zA-Z0-9_]*[=?!]?" attribute="Symbol" context="#stay"/>
         <RegExpr String="\b(@{1,2}|\$)?[a-zA-Z_][a-zA-Z0-9_]*[=?!]?:" attribute="Symbol" context="#stay"/>
         <RegExpr String=":\[\]=?" attribute="Symbol" context="#stay"/>
@@ -135,7 +135,7 @@
         <StringDetect String="&quot;&quot;&quot;" attribute="String" context="Triple Quoted String"/>
         <DetectChar attribute="String" char="&quot;" context="Quoted String"/>
         <DetectChar attribute="Raw String" char="'" context="Apostrophed String"/>
-        <StringDetect String="?#" attribute="Normal Text" context="#stay"/>
+        <Detect2Chars char="?" char1="#" attribute="Normal Text" context="#stay"/>
         <DetectChar attribute="Comment" char="#" context="General Comment"/>
         <DetectChar attribute="Delimiter" char="[" context="#stay"/>
         <DetectChar attribute="Delimiter" char="]" context="#stay"/>
@@ -157,15 +157,15 @@
         <StringDetect String="&quot;&quot;&quot;" attribute="String" context="#pop"/>
       </context>
       <context attribute="String" lineEndContext="#stay" name="Quoted String">
-        <StringDetect String="\\" attribute="String" context="#stay"/>
-        <RegExpr String="\\\&quot;" attribute="String" context="#stay"/>
+        <Detect2Chars char="\" char1="\" attribute="String" context="#stay"/>
+        <Detect2Chars char="\" char1="&quot;" attribute="String" context="#stay"/>
         <RegExpr String="#@{1,2}" attribute="Substitution" context="Short Subst"/>
         <Detect2Chars attribute="Substitution" char="#" char1="{" context="Subst"/>
         <DetectChar attribute="String" char="&quot;" context="#pop"/>
       </context>
       <context attribute="Raw String" lineEndContext="#stay" name="Apostrophed String">
-        <StringDetect String="\\" attribute="String" context="#stay"/>
-        <RegExpr String="\\\'" attribute="String" context="#stay"/>
+        <Detect2Chars char="\" char1="\" attribute="String" context="#stay"/>
+        <Detect2Chars char="\" char1="'" attribute="String" context="#stay"/>
         <DetectChar attribute="Raw String" char="'" context="#pop"/>
       </context>
       <!-- Substitutions can be nested -->
@@ -181,8 +181,7 @@
       </context>
       <context attribute="Comment" lineEndContext="#pop" name="General Comment">
         <DetectSpaces />
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
       <context attribute="MarkdownCode" lineEndContext="#stay" name="Markdown Code">
         <RegExpr String="^\s*\`\`\`\s*$" attribute="MarkdownCode" context="#pop"/>

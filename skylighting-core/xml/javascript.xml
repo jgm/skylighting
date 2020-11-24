@@ -17,7 +17,7 @@
    * QML
    * CoffeeScript (embedded)
 -->
-<language name="JavaScript" version="16" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
+<language name="JavaScript" version="17" kateversion="5.0" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
 
@@ -1865,14 +1865,12 @@
       </context>
       <context attribute="Comment" lineEndContext="#pop" name="Comment">
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
       <context attribute="Comment" lineEndContext="#stay" name="Multi/inline Comment">
         <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment" />
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
       <context attribute="Region Marker" lineEndContext="#pop" name="region_marker" />
 

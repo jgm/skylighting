@@ -105,7 +105,7 @@ to make the rules more expressive. -->
     <!ENTITY bs         "\">
 ]>
 <language name="Prolog" section="Sources"
-	  version="11" kateversion="3.4"
+	  version="13" kateversion="5.62"
 	  mimetype="text/x-prolog"
 	  extensions="*.prolog;*.dcg;*.pro"
 	  author="Torsten Eichstädt (torsten.eichstaedt@web.de)"
@@ -502,11 +502,10 @@ TODO sorted by priority
 	    clause      := layout term_seq fullstop | term_seq fullstop
 	-->
 	    <!-- shebang: ("#!") Detect shebang and fallthrough to clause_seq -->
-	    <context name="shebang" lineEndContext="clause" lineEmptyContext="clause" attribute="Syntax Error" >
+	    <context name="shebang" lineEndContext="clause" lineEmptyContext="clause" attribute="Syntax Error" fallthroughContext="clause">
 		<!-- no way: fallthrough="1" fallthroughContext="clause_seq" > -->
 		<Detect2Chars column="0" char="#" char1="!" context="1-comment" attribute="% italic predicates: w/ side effects" />
 		<!-- else fallthrough (workaround broken fallthrough) -->
-		<RegExpr String="&any;" lookAhead="true" context="clause" attribute="Syntax Error" />
 	    </context>
 
 	    <!-- syntax error (Test & Debug Aid, too): it's enough to highlight next token -->
@@ -777,8 +776,7 @@ TODO sorted by priority
 		<Detect2Chars char="*" char1="/" context="#pop" endRegion="comment"
 			    attribute="% italic predicates: w/ side effects" />
 		<DetectSpaces />
-		<IncludeRules context="##Alerts" />
-		<IncludeRules context="##Modelines" />
+		<IncludeRules context="##Comments" />
 		<DetectIdentifier />
 	    </context>
 
@@ -786,8 +784,7 @@ TODO sorted by priority
 	    <!-- Folding for consecutive 1-line comments: let indentation-based auto-folding work -->
 	    <context name="1-comment" lineEndContext="#pop" attribute="% italic predicates: w/ side effects" >
 		<DetectSpaces />
-		<IncludeRules context="##Alerts" />
-		<IncludeRules context="##Modelines" />
+		<IncludeRules context="##Comments" />
 		<DetectIdentifier />
 	    </context>
 	    <context name="region_marker" lineEndContext="#pop" attribute="%BEGIN folding region" noIndentationBasedFolding="true" >

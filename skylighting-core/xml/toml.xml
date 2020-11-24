@@ -11,7 +11,7 @@
 	<!ENTITY datetime "\d\d\d\d-\d\d-\d\d(T&time;)?">
 ]>
 <!-- https://github.com/toml-lang/toml -->
-<language name="TOML" section="Configuration" extensions="*.toml" mimetype="text/x-toml" version="6" kateversion="5.0" author="flying-sheep@web.de" license="LGPLv2+">
+<language name="TOML" section="Configuration" extensions="*.toml" mimetype="text/x-toml" version="7" kateversion="5.0" author="flying-sheep@web.de" license="LGPLv2+">
 <highlighting>
 	<list name="bools">
 		<item>true</item>
@@ -59,8 +59,7 @@
 		</context>
 		<context attribute="Comment" lineEndContext="#pop" name="Comment">
 			<DetectSpaces/>
-			<IncludeRules context="##Alerts" />
-			<IncludeRules context="##Modelines" />
+			<IncludeRules context="##Comments" />
 			<DetectIdentifier/>
 		</context>
 		<!-- Quoted keys and Strings -->

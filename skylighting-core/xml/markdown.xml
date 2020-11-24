@@ -90,7 +90,7 @@
 <!ENTITY checkbox "\[[ x]\](?=\s)">
 ]>
 
-<language name="Markdown" version="13" kateversion="5.53" section="Markup" extensions="*.md;*.mmd;*.markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
+<language name="Markdown" version="15" kateversion="5.62" section="Markup" extensions="*.md;*.mmd;*.markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
   <highlighting>
     <contexts>
       <!-- Start of the Markdown document: find metadata or code block -->
@@ -293,8 +293,7 @@
       <!-- Comments -->
       <context name="comment" attribute="Comment" lineEndContext="#stay">
         <StringDetect attribute="Comment" context="#pop" String="&endcomment;" endRegion="comment"/>
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
       <!-- Fenced Code Blocks -->
@@ -336,7 +335,7 @@
       <context name="code" attribute="Code" lineEndContext="#stay"> <!-- Unknown language -->
         <RegExpr attribute="Fenced Code" context="#pop" String="%1[~`]*(?=&end;)" firstNonSpace="true" dynamic="true" endRegion="code-block"/>
       </context>
-      <context attribute="Normal Text" lineEndContext="#stay" name="bash-code">
+      <context attribute="Normal Text" lineEndContext="#stay" name="bash-code" fallthroughContext="Command##Bash">
         <IncludeRules context="code"/>
         <IncludeRules context="##Bash" includeAttrib="true"/>
       </context>

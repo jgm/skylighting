@@ -19,7 +19,7 @@
 <!-- v2.07 add support for %prog and co, see bug 142832 -->
 <!-- v2.08 add missing overloaders, new Python 3 statements, builtins, and keywords -->
 <!-- v2.29 recognize escape sequenzes correctly -->
-<language name="Python" version="12" style="python" indenter="python" kateversion="5.0" section="Scripts" extensions="*.py;*.pyw;SConstruct;SConscript;*.FCMacro" mimetype="application/x-python;text/x-python;text/x-python3" casesensitive="1" author="Michael Bueker" license="">
+<language name="Python" version="13" style="python" indenter="python" kateversion="5.0" section="Scripts" extensions="*.py;*.pyw;SConstruct;SConscript;*.FCMacro" mimetype="application/x-python;text/x-python;text/x-python3" casesensitive="1" author="Michael Bueker" license="">
 	<highlighting>
 		<list name="import">
 			<item>import</item>
@@ -448,32 +448,31 @@
 
 			<context name="Hash comment" attribute="Comment" lineEndContext="#pop">
 				<DetectSpaces />
-				<IncludeRules context="##Alerts" />
-				<IncludeRules context="##Modelines" />
+				<IncludeRules context="##Comments" />
 			</context>
 
 			<context name="Triple A-comment" attribute="Comment" lineEndContext="#stay" noIndentationBasedFolding="true">
 				<IncludeRules context="stringescape"/>
 				<StringDetect attribute="Comment" String="'''" context="#pop" endRegion="Triple A-region"/>
-				<IncludeRules context="##Alerts" />
+				<IncludeRules context="##Comments" />
 			</context>
 
 			<context name="Triple Q-comment" attribute="Comment" lineEndContext="#stay" noIndentationBasedFolding="true">
 				<IncludeRules context="stringescape"/>
 				<StringDetect attribute="Comment" String="&quot;&quot;&quot;" context="#pop" endRegion="Triple Q-region"/>
-				<IncludeRules context="##Alerts" />
+				<IncludeRules context="##Comments" />
 			</context>
 
 			<context name="Single A-comment" attribute="Comment" lineEndContext="#stay">
 				<IncludeRules context="stringescape"/>
 				<DetectChar attribute="Comment" char="'" context="#pop"/>
-				<IncludeRules context="##Alerts" />
+				<IncludeRules context="##Comments" />
 			</context>
 
 			<context name="Single Q-comment" attribute="Comment" lineEndContext="#stay">
 				<IncludeRules context="stringescape"/>
 				<DetectChar attribute="Comment" char="&quot;" context="#pop"/>
-				<IncludeRules context="##Alerts" />
+				<IncludeRules context="##Comments" />
 			</context>
 
 			<!-- Strings -->

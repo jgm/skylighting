@@ -99,7 +99,7 @@
    ========================================================================
 -->
 
-<language name="D" version="7" kateversion="5.0" section="Sources" extensions="*.d;*.D;*.di;*.DI;" mimetype="text/x-dsrc" casesensitive="true" author="Diggory Hardy (diggory.hardy@gmail.com), Aziz Köksal (aziz.koeksal@gmail.com), Jari-Matti Mäkelä (jmjm@iki.fi), Simon J Mackenzie (project.katedxml@smackoz.fastmail.fm)" license="LGPL">
+<language name="D" version="9" kateversion="5.0" section="Sources" extensions="*.d;*.D;*.di;*.DI;" mimetype="text/x-dsrc" casesensitive="true" author="Diggory Hardy (diggory.hardy@gmail.com), Aziz Köksal (aziz.koeksal@gmail.com), Jari-Matti Mäkelä (jmjm@iki.fi), Simon J Mackenzie (project.katedxml@smackoz.fastmail.fm)" license="LGPL">
   <highlighting>
     <!-- User-defined keywords (add identifiers you'd like highlighted here) -->
     <list name="userkeywords">
@@ -720,8 +720,8 @@
       </context>
       <!-- q"*...*" -->
       <context name="DelimStrSimple" attribute="Delimited String Content" lineEndContext="#stay">
-        <RegExpr attribute="Delimited String Delimiter" context="#pop" String="%1&quot;" dynamic="true" />
-        <RegExpr attribute="Error" context="#pop" String="%1" dynamic="true" />
+        <StringDetect attribute="Delimited String Delimiter" context="#pop" String="%1&quot;" dynamic="true" />
+        <StringDetect attribute="Error" context="#pop" String="%1" dynamic="true" />
       </context>
 
       <!-- Comments -->
@@ -736,21 +736,18 @@
       </context>
       <context name="CommentLine" attribute="Comment" lineEndContext="#pop">
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
       <context name="CommentBlock" attribute="Comment" lineEndContext="#stay">
         <DetectSpaces />
         <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="CommentBlock"/>
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
       <context name="CommentNested" attribute="Comment" lineEndContext="#stay">
         <DetectSpaces />
         <Detect2Chars attribute="Comment" context="CommentNested" char="/" char1="+" beginRegion="CommentNested"/>
         <Detect2Chars attribute="Comment" context="#pop" char="+" char1="/" endRegion="CommentNested"/>
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
       
       
@@ -766,7 +763,7 @@
         <DetectIdentifier attribute="Ddoc"/>
         <Detect2Chars attribute="Macros" context="DdocMacro" char="$" char1="(" />
         <RegExpr attribute="DdocSection" context="#stay" String="[\w_]+:($|\s)" />
-        <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Comments" />
       </context>
       
       <context name="DdocBlock" attribute="Ddoc" lineEndContext="#stay">
@@ -777,7 +774,7 @@
         
         <Detect2Chars attribute="Macros" context="DdocMacro" char="$" char1="(" />
         <RegExpr attribute="DdocSection" context="#stay" String="[\w_]+:($|\s)" />
-        <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Comments" />
         
         <!-- Avoid matching this; do it this way since (^|\s)-* always matches .- and \s-* never
              matches .- (spaces have already been matched); however -*($|\s) matches just fine.
@@ -796,7 +793,7 @@
         
         <Detect2Chars attribute="Macros" context="DdocMacro" char="$" char1="(" />
         <RegExpr attribute="DdocSection" context="#stay" String="[\w_]+:($|\s)" />
-        <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Comments" />
         
         <!-- As above. -->
         <RegExpr attribute="Ddoc" context="#stay" String="[^-]-{3,}" />

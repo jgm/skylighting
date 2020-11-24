@@ -6,7 +6,7 @@
 	<!ENTITY name    "(?![0-9])[\w_:][\w.:_-]*">
 	<!ENTITY entref  "&amp;(?:#[0-9]+|#[xX][0-9A-Fa-f]+|&name;);">
 ]>
-<language name="XML" version="10" kateversion="3.4" section="Markup" extensions="*.docbook;*.xml;*.rc;*.daml;*.rdf;*.rss;*.xspf;*.xsd;*.svg;*.ui;*.kcfg;*.qrc;*.wsdl;*.scxml;*.xbel;*.dae;*.sch;*.brd" mimetype="text/xml;text/book;text/daml;text/rdf;application/rss+xml;application/xspf+xml;image/svg+xml;application/x-designer;application/x-xbel;application/xml;application/scxml+xml" casesensitive="1" indenter="xml" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL">
+<language name="XML" version="11" kateversion="3.4" section="Markup" extensions="*.docbook;*.xml;*.rc;*.daml;*.rdf;*.rss;*.xspf;*.xsd;*.svg;*.ui;*.kcfg;*.qrc;*.wsdl;*.scxml;*.xbel;*.dae;*.sch;*.brd" mimetype="text/xml;text/book;text/daml;text/rdf;application/rss+xml;application/xspf+xml;image/svg+xml;application/x-designer;application/x-xbel;application/xml;application/scxml+xml" casesensitive="1" indenter="xml" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL">
 
 <highlighting>
 <contexts>
@@ -41,8 +41,7 @@
     <DetectSpaces />
     <StringDetect attribute="Comment" context="#pop" String="--&gt;" endRegion="comment" />
     <RegExpr attribute="Error" context="#stay" String="-(?:\-(?!-&gt;))+" />
-    <IncludeRules context="##Alerts" />
-    <IncludeRules context="##Modelines" />
+    <IncludeRules context="##Comments" />
     <DetectIdentifier />
   </context>
 

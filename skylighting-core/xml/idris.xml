@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <!-- Based on haskell.xml and idris.vim (https://github.com/idris-hackers/idris-vim/blob/6bdb44b85406b75e3b3a4fa265deab1dbe8c6ff1/syntax/idris.vim) -->
-<language name="Idris" version="3" kateversion="3.4" section="Sources" extensions="*.idr" author="Alexander Shabalin" license="LGPL">
+<language name="Idris" version="5" kateversion="3.4" section="Sources" extensions="*.idr" author="Alexander Shabalin" license="LGPL">
   <highlighting>
   <list name="keywords">
     <item>abstract</item>
@@ -137,19 +137,17 @@
      </context>
      <context attribute="String" lineEndContext="#stay" name="string">
         <RegExpr attribute="String" context="#stay" String="\\." />
-        <RegExpr attribute="String" context="#pop" String="&quot;" />
+        <DetectChar attribute="String" context="#pop" char="&quot;" />
      </context>
      <context attribute="Comment" lineEndContext="#pop" name="line comment">
          <DetectSpaces />
-         <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+         <IncludeRules context="##Comments" />
      </context>
      <context attribute="Comment" lineEndContext="#stay" name="block comment">
         <Detect2Chars attribute="Comment" context="#pop" char="-" char1="}" endRegion="BlockComment" />
         <Detect2Chars attribute="Comment" context="block comment" char="{" char1="-" beginRegion="BlockComment" />
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
      </context>
   </contexts>
   <itemDatas>

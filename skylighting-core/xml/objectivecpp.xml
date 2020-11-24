@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Objective-C++" version="7" kateversion="5.0" section="Sources" extensions="*.mm;*.M;*.h" mimetype="text/x-objcpp-src;text/x-c-hdr" author="Gennady Telegin (gepo@lvk.cs.msu.su">
+<language name="Objective-C++" version="8" kateversion="5.0" section="Sources" extensions="*.mm;*.M;*.h" mimetype="text/x-objcpp-src;text/x-c-hdr" author="Gennady Telegin (gepo@lvk.cs.msu.su">
   <highlighting>
     <list name="keywords">
       <item>break</item>
@@ -222,14 +222,12 @@
       </context>
       <context attribute="Comment" lineEndContext="#pop" name="SingleLineComment">
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
       <context attribute="Comment" lineEndContext="#stay" name="MultiLineComment">
         <DetectSpaces />
         <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment"/>
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
         <DetectIdentifier />
       </context>
 
@@ -253,7 +251,7 @@
 
       <context attribute="Comment" lineEndContext="#stay" name="Outscoped" >
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Comments" />
         <DetectIdentifier />
         <DetectChar attribute="String" context="String" char="&quot;"/>
         <IncludeRules context="FindComments" />
@@ -263,7 +261,7 @@
 
       <context attribute="Comment" lineEndContext="#stay" name="Outscoped intern">
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Comments" />
         <DetectIdentifier />
         <DetectChar attribute="String" context="String" char="&quot;"/>
         <IncludeRules context="FindComments" />

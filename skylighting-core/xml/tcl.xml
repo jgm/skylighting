@@ -28,7 +28,7 @@
 	    - Fixed detection of varaibles with names containing serval namespace delimiters (::)
 -->
 
-<language name="Tcl/Tk" version="5" kateversion="2.4" section="Scripts" extensions="*.tcl;*.tk" mimetype="text/x-tcl" license="BSD">
+<language name="Tcl/Tk" version="7" kateversion="5.62" section="Scripts" extensions="*.tcl;*.tk" mimetype="text/x-tcl" license="BSD">
   <highlighting>
     <list name="keywords">
       <item>after</item>
@@ -534,13 +534,12 @@
 
       <context name = "Comment" attribute = "Comment" lineEndContext="#pop">
         <DetectSpaces />
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
       </context>
 
-      <context name = "New command line" attribute = "Normal Text" lineEndContext="#stay">
-        <RegExpr String = "\s*#" attribute="Comment" context="Comment" />
-        <RegExpr String = "." attribute="Normal Text" context="#pop" lookAhead="true" />
+      <context name = "New command line" attribute = "Normal Text" lineEndContext="#stay" fallthroughContext="#pop">
+        <DetectSpaces attribute="Normal Text" context="#stay"/>
+        <DetectChar char="#" attribute="Comment" context="Comment" />
       </context>
     </contexts>
 

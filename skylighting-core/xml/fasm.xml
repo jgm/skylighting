@@ -12,7 +12,7 @@
 
     <!ENTITY number "[0-9]*+(?:to[0-9]+|(?=d?))">
 ]>
-<language name="Intel x86 (FASM)" section="Assembler" version="4" kateversion="5.62" extensions="*.asm;*.inc;*.fasm" mimetype="" author="rCX (rCX12@yahoo.com)" license="GPL">
+<language name="Intel x86 (FASM)" section="Assembler" version="5" kateversion="5.62" extensions="*.asm;*.inc;*.fasm" mimetype="" author="rCX (rCX12@yahoo.com)" license="GPL">
   <highlighting>
     <list name="registers">
       <!-- General purpose registers -->
@@ -1714,8 +1714,7 @@
 
       <context name="Comment" attribute="Comment" lineEndContext="#pop">
         <DetectSpaces attribute="Comment"/>
-        <IncludeRules context="##Alerts"/>
-        <IncludeRules context="##Modelines"/>
+        <IncludeRules context="##Comments"/>
         <DetectIdentifier attribute="Comment"/>
       </context>
 

@@ -24,7 +24,7 @@
 <language
     name="ISO C++"
     section="Sources"
-    version="20"
+    version="21"
     kateversion="5.0"
     indenter="cstyle"
     style="C++"
@@ -595,8 +595,7 @@
       <context name="Comment 1" attribute="Comment" lineEndContext="#pop">
         <LineContinue attribute="Error" context="#stay" />
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
         <DetectIdentifier />
       </context>
 
@@ -604,8 +603,7 @@
         <DetectSpaces />
         <LineContinue attribute="Comment" context="#stay" />
         <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment" />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
         <DetectIdentifier />
       </context>
 
@@ -736,8 +734,7 @@
 
       <context name="Outscoped Common" attribute="Comment" lineEndContext="#stay">
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
         <DetectIdentifier />
         <!-- prevent incorrect highlighting in case of not closed properly comment block -->
         <Detect2Chars attribute="Comment" context="#stay" char="*" char1="/" />
@@ -781,8 +778,7 @@
 
       <context name="Outscoped intern" attribute="Comment" lineEndContext="#stay">
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
         <DetectIdentifier />
         <!-- prevent incorrect highlighting in case of not closed properly comment block -->
         <Detect2Chars attribute="Comment" context="#stay" char="*" char1="/" />

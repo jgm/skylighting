@@ -6,7 +6,7 @@
   <!ENTITY wikiLinkWithDescription "\[\[[^]|]*\|[^]]*\]\]">
   <!ENTITY wikiLinkWithoutDescription "\[\[[^]|]*\]\]">
 ]>
-<language name="MediaWiki" section="Markup" version="8" kateversion="5.0" extensions="*.mediawiki" mimetype="" license="FDL" >
+<language name="MediaWiki" section="Markup" version="10" kateversion="5.0" extensions="*.mediawiki" mimetype="" license="FDL" >
   <highlighting>
     <contexts>
       <context attribute="Normal" lineEndContext="#stay" name="normal" >
@@ -144,8 +144,7 @@
       <context attribute="Comment" lineEndContext="#stay" name="comment" >
         <StringDetect String="--&gt;" context="#pop" attribute="Comment" endRegion="comment" />
         <DetectSpaces />
-        <IncludeRules context="##Alerts" />
-        <IncludeRules context="##Modelines" />
+        <IncludeRules context="##Comments" />
       </context>
       <context attribute="Link" lineEndContext="#stay" name="DelimitedURL" >
         <DetectChar char="]" context="#pop" attribute="WikiTag" />
@@ -257,7 +256,7 @@
       </context>
       <context name="WikiLinkDescriptionBold" attribute="Bold" lineEndContext="#stay" >
         <IncludeRules context="WikiLinkDescriptionRules" />
-        <StringDetect String="''" context="BoldItalic" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="BoldItalic" attribute="WikiTag" />
         <RegExpr String="&lt;u *&gt;" attribute="HtmlTag" context="BoldUnderlined" />
       </context>
       <context name="WikiLinkDescriptionItalic" attribute="Italic" lineEndContext="#stay" >
@@ -268,7 +267,7 @@
       <context name="WikiLinkDescriptionUnderlined" attribute="Underlined" lineEndContext="#stay" >
         <IncludeRules context="WikiLinkDescriptionRules" />
         <StringDetect String="'''" context="UnderlinedBold" attribute="WikiTag" />
-        <StringDetect String="''" context="UnderlinedItalic" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="UnderlinedItalic" attribute="WikiTag" />
       </context>
       <context name="WikiLinkDescriptionBoldItalic" attribute="BoldItalic" lineEndContext="#stay" >
         <IncludeRules context="WikiLinkDescriptionRules" />
@@ -276,7 +275,7 @@
       </context>
       <context name="WikiLinkDescriptionBoldUnderlined" attribute="BoldUnderlined" lineEndContext="#stay" >
         <IncludeRules context="WikiLinkDescriptionRules" />
-        <StringDetect String="''" context="BoldUnderlinedItalic" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="BoldUnderlinedItalic" attribute="WikiTag" />
       </context>
       <context name="WikiLinkDescriptionItalicUnderlined" attribute="ItalicUnderlined" lineEndContext="#stay" >
         <IncludeRules context="WikiLinkDescriptionRules" />
@@ -287,7 +286,7 @@
       </context>
 
       <context attribute="TemplateName" lineEndContext="#stay" name="Template" >
-        <StringDetect String="|" context="TemplateParameterSlot" attribute="WikiTag" />
+        <DetectChar char="|" context="TemplateParameterSlot" attribute="WikiTag" />
         <Detect2Chars char="}" char1="}" context="#pop" attribute="WikiTag" endRegion="template" />
       </context>
       <context attribute="Normal" lineEndContext="#stay" name="TemplateParameterSlot" >
@@ -306,13 +305,13 @@
         <StringDetect String="&lt;pre&gt;" context="Pre" attribute="HtmlTag" />
         <IncludeRules context="FindSyntaxHighlightingHtmlElement" />
         <RegExpr String="[&lt;][^&gt;]+[&gt;]" attribute="HtmlTag" context="#stay" />
-        <StringDetect String="|" context="#pop" attribute="WikiTag" lookAhead="true" />
+        <DetectChar char="|" context="#pop" attribute="WikiTag" lookAhead="true" />
         <RegExpr String="[^{}|=]+(?=[=])" attribute="Parameter" context="TemplateParameterSlotEqual" />
       </context>
       <context attribute="Normal" lineEndContext="#stay" name="TemplateParameterSlotEqual" >
         <Detect2Chars char="}" char1="}" context="#pop" attribute="WikiTag" lookAhead="true" />
-        <StringDetect String="|" context="#pop" attribute="WikiTag" lookAhead="true" />
-        <StringDetect String="=" context="TemplateParameterSlotValue" attribute="WikiTag" />
+        <DetectChar char="|" context="#pop" attribute="WikiTag" lookAhead="true" />
+        <DetectChar char="=" context="TemplateParameterSlotValue" attribute="WikiTag" />
       </context>
       <context attribute="Normal" lineEndContext="#stay" name="TemplateParameterSlotValue" >
         <StringDetect String="&lt;!--" context="comment" attribute="Comment" beginRegion="comment" />
@@ -330,7 +329,7 @@
         <IncludeRules context="FindSyntaxHighlightingHtmlElement" />
         <RegExpr String="[&lt;][^&gt;]+[&gt;]" attribute="HtmlTag" context="#stay" />
         <Detect2Chars char="}" char1="}" context="#pop" attribute="WikiTag" lookAhead="true" />
-        <StringDetect String="|" context="#pop" attribute="WikiTag" lookAhead="true" />
+        <DetectChar char="|" context="#pop" attribute="WikiTag" lookAhead="true" />
       </context>
       <context attribute="Parameter" lineEndContext="#stay" name="TemplateParameter" >
         <StringDetect String="}}}" context="#pop" attribute="WikiTag" />
@@ -433,27 +432,27 @@
       <context attribute="Bold" lineEndContext="#pop" name="Bold" >
         <IncludeRules context="FindTemplate" />
         <StringDetect String="'''" context="#pop" attribute="WikiTag" />
-        <StringDetect String="''" context="BoldItalic" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="BoldItalic" attribute="WikiTag" />
         <RegExpr String="&lt;u *&gt;" attribute="HtmlTag" context="BoldUnderlined" />
         <IncludeRules context="FindWikiLinkBeingBold" />
       </context>
       <context attribute="Italic" lineEndContext="#pop" name="Italic" >
         <IncludeRules context="FindTemplate" />
         <StringDetect String="'''" attribute="WikiTag" context="ItalicBold" />
-        <StringDetect String="''" context="#pop" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="#pop" attribute="WikiTag" />
         <RegExpr String="&lt;u *&gt;" attribute="HtmlTag" context="ItalicUnderlined" />
         <IncludeRules context="FindWikiLinkBeingItalic" />
       </context>
       <context attribute="Underlined" name="Underlined" lineEndContext="#stay" >
         <IncludeRules context="FindTemplate" />
         <StringDetect String="'''" context="UnderlinedBold" attribute="WikiTag" />
-        <StringDetect String="''" context="UnderlinedItalic" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="UnderlinedItalic" attribute="WikiTag" />
         <RegExpr String="&lt;/u *&gt;" context="#pop" attribute="HtmlTag" />
         <IncludeRules context="FindWikiLinkBeingUnderlined" />
       </context>
       <context name="BoldItalic" attribute="BoldItalic" lineEndContext="#pop" >
         <IncludeRules context="FindTemplate" />
-        <StringDetect String="''" context="#pop" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="#pop" attribute="WikiTag" />
         <RegExpr String="&lt;u *&gt;" attribute="HtmlTag" context="BoldItalicUnderlined" />
         <IncludeRules context="FindWikiLinkBeingBoldItalic" />
       </context>
@@ -466,13 +465,13 @@
       <context name="BoldUnderlined" attribute="BoldUnderlined" lineEndContext="#pop" >
         <IncludeRules context="FindTemplate" />
         <RegExpr String="&lt;/u *&gt;" context="#pop" attribute="HtmlTag" />
-        <StringDetect String="''" context="BoldUnderlinedItalic" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="BoldUnderlinedItalic" attribute="WikiTag" />
         <IncludeRules context="FindWikiLinkBeingBoldUnderlined" />
       </context>
       <context name="UnderlinedBold" attribute="BoldUnderlined" lineEndContext="#pop" >
         <IncludeRules context="FindTemplate" />
         <StringDetect String="'''" context="#pop" attribute="WikiTag" />
-        <StringDetect String="''" context="BoldUnderlinedItalic" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="BoldUnderlinedItalic" attribute="WikiTag" />
         <IncludeRules context="FindWikiLinkBeingBoldUnderlined" />
       </context>
       <context name="ItalicUnderlined" attribute="ItalicUnderlined" lineEndContext="#pop" >
@@ -483,7 +482,7 @@
       </context>
       <context name="UnderlinedItalic" attribute="ItalicUnderlined" lineEndContext="#pop" >
         <IncludeRules context="FindTemplate" />
-        <StringDetect String="''" context="#pop" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="#pop" attribute="WikiTag" />
         <StringDetect String="'''" context="ItalicUnderlinedBold" attribute="WikiTag" />
         <IncludeRules context="FindWikiLinkBeingItalicUnderlined" />
       </context>
@@ -494,7 +493,7 @@
       </context>
       <context name="BoldUnderlinedItalic" attribute="BoldItalicUnderlined" lineEndContext="#pop" >
         <IncludeRules context="FindTemplate" />
-        <StringDetect String="''" context="#pop" attribute="WikiTag" />
+        <Detect2Chars char="'" char1="'" context="#pop" attribute="WikiTag" />
         <IncludeRules context="FindWikiLinkBeingBoldItalicUnderlined" />
       </context>
       <context name="ItalicUnderlinedBold" attribute="BoldItalicUnderlined" lineEndContext="#pop" >
@@ -534,12 +533,12 @@
 
       <context name="FindTextDecorations" attribute="Normal" lineEndContext="#stay">
         <StringDetect String="'''" attribute="WikiTag" context="Bold" />
-        <StringDetect String="''" attribute="WikiTag" context="Italic" />
+        <Detect2Chars char="'" char1="'" attribute="WikiTag" context="Italic" />
         <RegExpr String="&lt;u *&gt;" attribute="HtmlTag" context="Underlined" />
       </context>
       <context attribute="Normal" lineEndContext="#stay" name="FindTextDecorationsInHeader" >
         <StringDetect String="'''" attribute="WikiTag" context="Bold" />
-        <StringDetect String="''" attribute="WikiTag" context="BoldItalic" />
+        <Detect2Chars char="'" char1="'" attribute="WikiTag" context="BoldItalic" />
       </context>
 
       <context attribute="Normal" lineEndContext="#stay" name="FindUrl" >
