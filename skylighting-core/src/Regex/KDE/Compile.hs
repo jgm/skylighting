@@ -1,4 +1,5 @@
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Regex.KDE.Compile
@@ -84,12 +85,11 @@ pSuffix re = option re $ do
       maxn <- option Nothing $ char ',' *>
                        (readMay . U.toString <$> A.takeWhile isDig)
       _ <- char '}'
-      return $!
-        case (minn, maxn) of
-          (Nothing, Nothing) -> atleast 0 re
-          (Just n, Nothing)  -> atleast n re
-          (Nothing, Just n)  -> atmost n re
-          (Just m, Just n)   -> between m n re
+      case (minn, maxn) of
+          (Nothing, Nothing) -> mzero
+          (Just n, Nothing)  -> return $! atleast n re
+          (Nothing, Just n)  -> return $! atmost n re
+          (Just m, Just n)   -> return $! between m n re
     _   -> fail "pSuffix encountered impossible byte") >>= pQuantifierModifier
  where
    atmost 0 _ = MatchNull
@@ -242,7 +242,7 @@ isSpecial 92 = True -- '\\'
 isSpecial 63 = True -- '?'
 isSpecial 42 = True -- '*'
 isSpecial 43 = True -- '+'
-isSpecial 123 = True -- '{'
+-- isSpecial 123 = True -- '{'  -- this is okay except in suffixes
 isSpecial 91 = True -- '['
 isSpecial 93 = True -- ']'
 isSpecial 37 = True -- '%'

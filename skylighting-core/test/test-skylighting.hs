@@ -294,6 +294,9 @@ regexTests =
   , ("\\w+?e", "aaaeeee", Just ("aaae", []))
   , ("a+b??", "aaab", Just ("aaa", []))
   , ("\\([a-z]+(?R)*\\)", "(aa(b(c)(d)))", Just ("(aa(b(c)(d)))", []))
+  , ("a{}", "aaa", Nothing)
+  , ("a{}", "a{}", Just ("a{}", []))
+  , ("a{3", "a{3", Just ("a{3", []))
   ]
 
 
