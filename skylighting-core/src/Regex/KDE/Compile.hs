@@ -58,9 +58,21 @@ pRegexPart caseSensitive =
 pParenthesized :: Bool -> RParser Regex
 pParenthesized caseSensitive = (do
   _ <- lift (satisfy (== 40))
-  modifier <- lift (satisfy (== 63) *> pGroupModifiers)
-                <|> (MatchCapture <$> (modify (+ 1) *> get))
-  contents <- pRegex caseSensitive
+  -- pcrepattern says: A group that starts with (?| resets the capturing
+  -- parentheses numbers in each alternative.
+  resetCaptureNumbers <- option False (True <$ lift (string "?|"))
+  modifier <- if resetCaptureNumbers
+                 then return id
+                 else lift (satisfy (== 63) *> pGroupModifiers)
+                    <|> (MatchCapture <$> (modify (+ 1) *> get))
+  currentCaptureNumber <- get
+  contents <- option MatchNull $
+    foldr MatchAlt
+      <$> (pAltPart caseSensitive)
+      <*> (many $ lift (char '|') *>
+            (((if resetCaptureNumbers
+                  then put currentCaptureNumber
+                  else return ()) >> pAltPart caseSensitive) <|> pure mempty))
   _ <- lift (satisfy (== 41))
   return $ modifier contents)
   <|> Recurse <$ (lift (string "(?R)" <|> string "(?0)"))

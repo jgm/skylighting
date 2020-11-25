@@ -297,6 +297,9 @@ regexTests =
   , ("a{}", "aaa", Nothing)
   , ("a{}", "a{}", Just ("a{}", []))
   , ("a{3", "a{3", Just ("a{3", []))
+  , ("(?|(abc)|(def))", "abc", Just ("abc", [(1,"abc")]))
+  , ("(?|(abc)|(def))", "def", Just ("def", [(1,"def")]))
+  , ("(?:(abc)|(def))", "def", Just ("def", [(2,"def")]))
   ]
 
 
