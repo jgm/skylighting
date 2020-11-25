@@ -1,5 +1,37 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.1
+
+  * Regex: handle `(?|)` modifier.  This is used in bash.xml now.
+    It resets the numbers of capturing groups in alternatives.
+
+  * Improve regex handling of `{` and `}` not in quantifiers:
+    - `{}` is literal (not a quantifier).
+    - loose unescaped `{` and `}` that are not part of a quantifier are
+      literal matchers.
+
+  * Update xml syntax definitions from upstream.
+    For: abc, actionscript, ada, agda, alert, apache, asn1, asp,
+    ats, awk, bash, boo, c, clojure, cmake, coffee, coldfusion,
+    commonlisp, cs, css, curry, d, djangotemplate, dockerfile,
+    dot, doxygen, dtd, eiffel, elixir, elm, erlang, fasm,
+    fortran-fixed, fortran-free, fsharp, glsl, gnuassembler, go,
+    graphql, groovy, hamlet, haskell, haxe, html, idris, ini,
+    isocpp, j, java, javadoc, javascript, jsp, julia, kotlin,
+    latex, lex, lilypond, literate-curry, literate-haskell,
+    llvm, lua, m4, makefile, markdown, mathematica, matlab,
+    maxima, mediawiki, metafont, mips, modula-2, modula-3,
+    monobasic, mustache, nasm, nim, noweb, objectivec,
+    objectivecpp, ocaml, octave, opencl, pascal, perl, php,
+    pike, postscript, povray, powershell, prolog, protobuf,
+    pure, purebasic, python, r, relaxng, relaxngcompact, rest,
+    rhtml, roff, ruby, rust, scala, scheme, sci, sed, sgml, sml,
+    sql-mysql, sql-postgresql, sql, stata, tcl, tcsh, texinfo,
+    toml, verilog, vhdl, xml, xorg, xslt, xul, yacc, yaml, zsh.
+    Also added spdx-comments.xml and comments.xml, which are
+    needed for these.  Closes #111 (latex bug in matrix).
+
+
 ## 0.10.0.3
 
   * Add groovy syntax.
