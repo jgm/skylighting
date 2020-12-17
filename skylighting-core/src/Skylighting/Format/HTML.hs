@@ -183,6 +183,7 @@ styleToCss f = unlines $
             "pre > code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for relative contents
           , "pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }"
           , "pre > code.sourceCode > span:empty { height: 1.2em; }" -- correct empty line height
+          , ".sourceCode { overflow: visible; }" -- needed for line numbers
           , "code.sourceCode > span { color: inherit; text-decoration: inherit; }"
           , "div.sourceCode { margin: 1em 0; }" -- Collapse neighbours correctly
           , "pre.sourceCode { margin: 0; }" -- Collapse neighbours correctly
