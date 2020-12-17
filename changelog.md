@@ -1,5 +1,24 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.2
+
+  * Update syntax definitions for abc, actionscript, asn1, ats,
+    bash, boo, coffee, comments, cpp, cs, css, curry, d,
+    djangotemplate, dockerfile, doxygen, dtd, elixir, graphql,
+    groovy, hamlet, haskell, haxe, idris, ini, j, java,
+    javadoc, javascript-react, javascript, jsp, kotlin, lex,
+    lilypond, literate-curry, literate-haskell, m4, makefile,
+    mandoc, markdown, mediawiki, mips, modula-2, modula-3,
+    monobasic, mustache, nim, noweb, objectivec, objectivecpp,
+    ocaml, opencl, pascal, perl, php, pike, postscript,
+    prolog, protobuf, pure, purebasic, python, qml, relaxng,
+    relaxngcompact, rest, rhtml, roff, ruby, scala, sci, sed,
+    sgml, sml, spdx-comments, stata, tcsh, texinfo, verilog,
+    xml, xorg, xul.
+
+  * Re-insert CSS line needed to make line numbers appear in
+    HTML.  See jgm/pandoc#6625.
+
 ## 0.10.1
 
   * Regex: handle `(?|)` modifier.  This is used in bash.xml now.
