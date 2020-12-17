@@ -3,7 +3,7 @@
 <language name="Pascal"
           section="Sources" 
           version="4"
-          kateversion="3.3"
+          kateversion="5.0"
           extensions="*.p;*.pas;*.pp"
           mimetype="text/x-pascal" 
           priority="8"

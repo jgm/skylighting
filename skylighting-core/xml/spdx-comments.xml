@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <language
-    version="1"
+    version="2"
     kateversion="3.1"
     name="SPDX-Comments"
     section="Other"
@@ -517,13 +517,11 @@
     <contexts>
       <context name="Normal" attribute="SPDX Tag" lineEndContext="#pop">
         <WordDetect String="SPDX-License-Identifier:" attribute="SPDX Tag" context="license-expression" />
-        <keyword String="tags" context="value" attribute="SPDX Tag" />
+        <keyword String="tags" attribute="SPDX Tag" />
       </context>
 
-      <context name="value" attribute="SPDX Value" lineEndContext="#pop">
-      </context>
-
-      <context name="license-expression" attribute="SPDX Value" lineEndContext="#pop">
+      <context name="license-expression" attribute="SPDX Value" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
+        <DetectSpaces/>
         <DetectChar char="(" context="#stay" attribute="SPDX License Expression Operator" />
         <DetectChar char=")" context="#stay" attribute="SPDX License Expression Operator" />
         <DetectChar char="+" context="#stay" attribute="SPDX License Expression Operator" />

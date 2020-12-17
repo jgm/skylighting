@@ -3,7 +3,7 @@
 
 <language name="CoffeeScript"
           version="15"
-          kateversion="5.0"
+          kateversion="5.53"
           section="Scripts"
           extensions="Cakefile;*.coffee;*.coco;*.cson"
           mimetype="text/x-coffeescript;application/x-coffeescript;application/vnd.coffeescript"

@@ -73,7 +73,7 @@ Changes:
   <!ENTITY types "int|integer|bool|boolean|float|double|real|string|array|object">
 ]>
 
-<language name="PHP/PHP" indenter="cstyle" version="17" kateversion="5.0" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
+<language name="PHP/PHP" indenter="cstyle" version="17" kateversion="5.53" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
   <highlighting>
     <!-- https://secure.php.net/manual/en/reserved.keywords.php -->
     <list name="control structures">
@@ -10970,27 +10970,27 @@ Changes:
         <DetectChar attribute="String" context="#pop" char="'" />
       </context>
       <context name="htmlheredoc" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Heredoc" />
+        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Heredoc" column="0" />
         <IncludeRules context="commonheredoc" />
         <IncludeRules context="##HTML" />
       </context>
       <context name="cssheredoc" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Heredoc" />
+        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Heredoc" column="0" />
         <IncludeRules context="commonheredoc" />
         <IncludeRules context="##CSS" />
       </context>
       <context name="mysqlheredoc" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Heredoc" />
+        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Heredoc" column="0" />
         <IncludeRules context="commonheredoc" />
         <IncludeRules context="##SQL (MySQL)" />
       </context>
       <context name="javascriptheredoc" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Heredoc" />
+        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Heredoc" column="0" />
         <IncludeRules context="commonheredoc" />
         <IncludeRules context="Normal##JavaScript" />
       </context>
       <context name="heredoc" attribute="String" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Heredoc" />
+        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Heredoc" column="0" />
         <IncludeRules context="commonheredoc" />
       </context>
       <context name="commonheredoc" attribute="String" lineEndContext="#stay">
@@ -10999,27 +10999,27 @@ Changes:
         <RegExpr attribute="Variable" context="#stay" String="\{\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(\[([0-9]*|&quot;[a-zA-Z_]*&quot;)|'[a-zA-Z_]*'|\])*(-&gt;[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(\[[a-zA-Z0-9_]*\])*(\[([0-9]*|&quot;[a-zA-Z_]*&quot;)|'[a-zA-Z_]*'|\])*)*\}" />
       </context>
       <context name="htmlnowdoc" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Nowdoc" />
+        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Nowdoc" column="0" />
         <IncludeRules context="commonnowdoc" />
         <IncludeRules context="##HTML" />
       </context>
       <context name="cssnowdoc" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Nowdoc" />
+        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Nowdoc" column="0" />
         <IncludeRules context="commonnowdoc" />
         <IncludeRules context="##CSS" />
       </context>
       <context name="mysqlnowdoc" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Nowdoc" />
+        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Nowdoc" column="0" />
         <IncludeRules context="commonnowdoc" />
         <IncludeRules context="##SQL (MySQL)" />
       </context>
       <context name="javascriptnowdoc" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Nowdoc" />
+        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Nowdoc" column="0" />
         <IncludeRules context="commonnowdoc" />
         <IncludeRules context="Normal##JavaScript" />
       </context>
       <context name="nowdoc" attribute="String" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Nowdoc" />
+        <RegExpr attribute="Backslash Code" context="#pop" String="^%1;?$" dynamic="true" endRegion="Nowdoc" column="0" />
         <IncludeRules context="commonnowdoc" />
       </context>
       <context name="commonnowdoc" attribute="String" lineEndContext="#stay">

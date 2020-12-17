@@ -5,7 +5,7 @@
   word character *or* a number, hence the lookahead -->
   <!ENTITY name    "(?![0-9])[\w_:][\w.:_-]*">
 ]>
-<language name="Hamlet" version="5" kateversion="2.4" section="Markup" extensions="*.hamlet" author="Bastian Holst (bastianholst@gmx.de)" license="LGPL" indenter="haskell">
+<language name="Hamlet" version="5" kateversion="5.53" section="Markup" extensions="*.hamlet" author="Bastian Holst (bastianholst@gmx.de)" license="LGPL" indenter="haskell">
 <highlighting>
 <contexts>
   <context attribute="Normal Text" lineEndContext="#pop" name="Normal Text" >

@@ -339,7 +339,7 @@
     </list>
     <contexts>
       <context name="normal" attribute="Normal Text" lineEndContext="#stay">
-        <RegExpr attribute="Keyword" context="#stay" String="^#!\/.*" />
+        <RegExpr attribute="Keyword" context="#stay" String="^#!\/.*" column="0" />
         <StringDetect attribute="Keyword" context="data_handle" String="__DATA__" firstNonSpace="true" />
         <StringDetect attribute="Keyword" context="#stay" String="__END__" firstNonSpace="true"/>
         <RegExpr attribute="Keyword" context="sub_name_def" String="\bsub\s+" />

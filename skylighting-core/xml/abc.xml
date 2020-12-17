@@ -2,7 +2,7 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 <!-- Andrea Primiani - primiani at dag dot it
  	version1.10 - 12 december 2005 -->
-<language name="ABC" version="7" kateversion="2.4" section="Other" extensions="*.abc;*.ABC" mimetype="text/vnd.abc" casesensitive="1" author="Andrea Primiani (primiani@dag.it)" license="LGPL">
+<language name="ABC" version="7" kateversion="5.0" section="Other" extensions="*.abc;*.ABC" mimetype="text/vnd.abc" casesensitive="1" author="Andrea Primiani (primiani@dag.it)" license="LGPL">
     <highlighting>
         <contexts>
            <context name="Normal" attribute="Normal Text" lineEndContext="#stay">

@@ -21,7 +21,7 @@ Improvements:
 <language
 	name="Nim"
 	version="3"
-	kateversion="5.0"
+	kateversion="5.53"
 	section="Sources"
 	extensions="*.nim"
 	mimetype="text/x-nim"

@@ -19,7 +19,7 @@
           section="Sources"
           version="8"
           priority="10"
-          kateversion="2.4"
+          kateversion="5.0"
           author="Glyn Webster (glynwebster@orcon.net.nz) and Vincent Hugot (vincent.hugot@gmail.com)"
           license="LGPL" >
 
@@ -489,7 +489,7 @@
 
 
         <!-- A dash at the start of a line is a bullet point. -->
-        <RegExpr String="^[ &#009;]*-\s" context="#stay"  attribute="Ocamldoc Markup" />
+        <RegExpr String="^[ &#009;]*-\s" context="#stay"  attribute="Ocamldoc Markup" column="0" />
 
         <IncludeRules context="Unmatched Closing Brackets" />
       </context>

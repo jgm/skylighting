@@ -503,7 +503,7 @@ TODO sorted by priority
 	-->
 	    <!-- shebang: ("#!") Detect shebang and fallthrough to clause_seq -->
 	    <context name="shebang" lineEndContext="clause" lineEmptyContext="clause" attribute="Syntax Error" fallthroughContext="clause">
-		<!-- no way: fallthrough="1" fallthroughContext="clause_seq" > -->
+		<!-- no way: fallthroughContext="clause_seq" > -->
 		<Detect2Chars column="0" char="#" char1="!" context="1-comment" attribute="% italic predicates: w/ side effects" />
 		<!-- else fallthrough (workaround broken fallthrough) -->
 	    </context>
@@ -717,7 +717,7 @@ TODO sorted by priority
 	    <!-- "0'" or "0'\" at EOL is a syntax error, catched below.  If
 	    possible, highlight white @next line to make clear error is the nl -->
 	    <context name="syntax_error_cc" lineEndContext="#stay" attribute="Syntax Error"
-		    fallthrough="true" fallthroughContext="#pop" >
+		    fallthroughContext="#pop" >
 		<DetectSpaces context="#pop" attribute="Syntax Error" />
 	    </context>
 
@@ -732,14 +732,14 @@ TODO sorted by priority
 	    </context>
 	    <!-- esc_seq_cc: #pop#pop out of cc on std esc seq, else pass char back
 	    ASSERT we do NOT need the leading bs here anymore -->
-	    <context name="esc_seq_cc" fallthrough="true" fallthroughContext="#pop"
+	    <context name="esc_seq_cc" fallthroughContext="#pop"
 		    lineEndContext="#pop#pop" attribute="Syntax Error" >
 		<DetectChar char="&tab;" context="#pop#pop" attribute="Warning (!use background)" />
 		<AnyChar String="&any_esc_iso;" context="#pop#pop" attribute="escaped (!use background)" />
 	    </context>
 	    <!-- esc_seq_q2: Handle standard esc seq in quoted else pass char back
 	    ASSERT we do NOT need the leading bs here anymore -->
-	    <context name="esc_seq_q2" fallthrough="true" fallthroughContext="#pop#pop"
+	    <context name="esc_seq_q2" fallthroughContext="#pop#pop"
 		    lineEndContext="syntax_error" attribute="Syntax Error" >
 		<DetectChar char="&tab;" context="#pop#pop" attribute="Warning (!use background)" />
 		<AnyChar String="&any_esc_iso;" context="#pop#pop" attribute="escaped (!use background)" />
@@ -753,18 +753,18 @@ TODO sorted by priority
 	    <context name="var" attribute="Syntax Error" lineEndContext="#stay" >
 		<DetectIdentifier context="#pop" attribute="_VARIABLE" />
 	    </context>
-	    <context name="graphic" lineEndContext="#pop" attribute="Syntax Error" fallthrough="true" fallthroughContext="#pop" >
+	    <context name="graphic" lineEndContext="#pop" attribute="Syntax Error" fallthroughContext="#pop" >
 		<AnyChar String="&any_graphic_iso;" context="#stay" attribute="Normal Text" />
 	    </context>
 
 	    <!-- numbers (after "0[box]") -->
-	    <context name="bin" lineEndContext="#pop" attribute="Syntax Error" fallthrough="true" fallthroughContext="#pop" >
+	    <context name="bin" lineEndContext="#pop" attribute="Syntax Error" fallthroughContext="#pop" >
 		<AnyChar String="&any_bin_iso;" context="#stay" attribute="0b1001 0o007 0xF1" />
 	    </context>
-	    <context name="oct" lineEndContext="#pop" attribute="Syntax Error" fallthrough="true" fallthroughContext="#pop" >
+	    <context name="oct" lineEndContext="#pop" attribute="Syntax Error" fallthroughContext="#pop" >
 		<AnyChar String="&any_oct_iso;" context="#stay" attribute="0b1001 0o007 0xF1" />
 	    </context>
-	    <context name="hex" lineEndContext="#pop" attribute="Syntax Error" fallthrough="true" fallthroughContext="#pop" >
+	    <context name="hex" lineEndContext="#pop" attribute="Syntax Error" fallthroughContext="#pop" >
 		<AnyChar String="&any_hex_iso;" context="#stay" attribute="0b1001 0o007 0xF1" />
 	    </context>
 
@@ -791,7 +791,7 @@ TODO sorted by priority
 		<IncludeRules context="1-comment" />
 	    </context>
 	    <context name="layout_fold" lineEndContext="#stay" attribute="Syntax Error"
-		    fallthrough="true" fallthroughContext="#pop" >
+		    fallthroughContext="#pop" >
 		<DetectSpaces attribute="Normal Text" />
 		<StringDetect String="%BEGIN" context="region_marker" attribute="%BEGIN folding region"
 			    firstNonSpace="true" beginRegion="user_region" />

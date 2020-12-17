@@ -7,6 +7,7 @@
         <!ENTITY eos      "(?=($|\s))">			<!-- eol or space following -->
         <!ENTITY noword   "(?![\w$+-])">		<!-- no word, $, + or - following -->
         <!ENTITY pathpart "([\w_@.&#37;*?+-]|\\ )">     <!-- valid character in a file name -->
+        <!ENTITY tab      "&#9;">
 ]>
 <language name="Tcsh" version="9" kateversion="5.53" section="Scripts" extensions="*.csh;*.tcsh;csh.cshrc;csh.login;.tcshrc;.cshrc;.login" mimetype="application/x-csh" casesensitive="1" author="Matthew Woehlke (mw_triad@users.sourceforge.net)" license="LGPL">
 
@@ -324,7 +325,7 @@
       <context attribute="Normal Text" lineEndContext="#pop" name="CmdSetEnv" fallthrough="true" fallthroughContext="#pop">
         <!-- handle command line options -->
         <RegExpr attribute="Variable" context="#pop" String="\b&varname;" />
-        <RegExpr attribute="Variable" context="Assign" String="\s" />
+        <AnyChar attribute="Variable" context="Assign" String="&tab; " />
         <IncludeRules context="FindMost" />
       </context>
 

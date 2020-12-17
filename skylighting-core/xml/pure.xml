@@ -32,7 +32,7 @@
  Boston, MA 02111-1307, USA.
 
 -->
-<language name="Pure" version="4" kateversion="2.4" section="Sources" extensions="*.pure">
+<language name="Pure" version="4" kateversion="5.0" section="Sources" extensions="*.pure">
   <highlighting>
     <list name="blockstarters">
       <item>case</item>

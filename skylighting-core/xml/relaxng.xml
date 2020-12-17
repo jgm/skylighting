@@ -17,7 +17,7 @@
 -->
 
 <language version="6"
-          kateversion="2.4"
+          kateversion="5.0"
           name="RELAX NG"
           section="Markup"
           extensions="*.rng;*.RNG"

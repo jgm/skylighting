@@ -104,10 +104,10 @@
         <Detect2Chars attribute="Comment" context="MatchComment" char="/" char1="*" lookAhead="true" />
         <DetectChar attribute="Symbol" context="#stay" char="{" beginRegion="block1"/>
         <DetectChar attribute="Symbol" context="#stay" char="}" endRegion="block1"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\bpartial(?=\s+(class|struct|interface|void))"/>
+        <RegExpr attribute="Keyword" context="#stay" String="\bpartial(?=\s+(?:class|struct|interface|void))"/>
         <RegExpr attribute="Data Type" context="#stay" String="\bvar(?=\s+\w+)"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\byield(?=\s+(return|break))"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\b(set|get)(?=\s*[;{])"/>
+        <RegExpr attribute="Keyword" context="#stay" String="\byield(?=\s+(?:return|break))"/>
+        <RegExpr attribute="Keyword" context="#stay" String="\b(?:set|get)(?=\s*[;{])"/>
         <RegExpr attribute="Keyword" context="#stay" String="\bglobal(?=\s*::\s*\w+)"/>
         <StringDetect attribute="Decimal" context="Decimal" String="#region" beginRegion="Region1"/>
         <StringDetect attribute="Decimal" context="Decimal" String="#endregion" endRegion="Region1"/>
@@ -116,17 +116,12 @@
         <AnyChar attribute="Symbol" context="#stay" String=":!%&amp;()+,-/*&lt;=&gt;?[]|~^&#59;"/>
       </context>
       <context name="Float Suffixes" attribute="Float" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-          <AnyChar String="fF" attribute="Float" context="#pop"/>
+          <AnyChar String="dDfFmM" attribute="Float" context="#pop"/>
       </context>
       <context name="Int Suffixes" attribute="Decimal" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-          <StringDetect attribute="Decimal" context="#pop" String="ULL" insensitive="true"/>
-          <StringDetect attribute="Decimal" context="#pop" String="LUL" insensitive="true"/>
-          <StringDetect attribute="Decimal" context="#pop" String="LLU" insensitive="true"/>
           <StringDetect attribute="Decimal" context="#pop" String="UL" insensitive="true"/>
           <StringDetect attribute="Decimal" context="#pop" String="LU" insensitive="true"/>
-          <StringDetect attribute="Decimal" context="#pop" String="LL" insensitive="true"/>
-          <StringDetect attribute="Decimal" context="#pop" String="U" insensitive="true"/>
-          <StringDetect attribute="Decimal" context="#pop" String="L" insensitive="true"/>
+          <AnyChar attribute="Decimal" context="#pop" String="ULul"/>
       </context>
       <context attribute="String" lineEndContext="#pop" name="String">
         <LineContinue attribute="String" context="#pop"/>

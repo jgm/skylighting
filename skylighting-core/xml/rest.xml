@@ -67,8 +67,8 @@
         <RegExpr attribute="Role" String=":[\w\-_\.\+]+:" context="#pop"/>
       </context>
       <context name="Comment" attribute="Comment" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Code" String="^%1   " context="#stay" column="0" dynamic="true"/>
-        <RegExpr attribute="Normal" String="^(.|$)" lookAhead="true" column="0" context="#pop"/>
+        <StringDetect attribute="Code" String="%1   " context="#stay" column="0" dynamic="true"/>
+        <RegExpr attribute="Normal" String="^." lookAhead="true" column="0" context="#pop"/>
         <IncludeRules context="##Comments"/>
       </context>
 
@@ -77,8 +77,8 @@
       </context>
 
       <context name="Code" attribute="Code" lineEndContext="#stay" dynamic="true">
-        <RegExpr attribute="Code" String="^%1" context="#stay" column="0" dynamic="true"/>
-        <RegExpr attribute="Normal" String="^(.|$)" lookAhead="true" context="#pop#pop" column="0"/>
+        <StringDetect attribute="Code" String="%1" context="#stay" column="0" dynamic="true"/>
+        <RegExpr attribute="Normal" String="^." lookAhead="true" context="#pop#pop" column="0"/>
       </context>
     </contexts>
 

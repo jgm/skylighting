@@ -402,7 +402,7 @@
         <Detect2Chars attribute="Normal Text"   char="." char1="."/>
         
         <!-- Float starting with a dot -->
-        <RegExpr attribute="Float" context="#stay" String="\.\d[\d_]*([eE][-+]?\d[\d_]*)?[fFL]?i?"/>
+        <RegExpr attribute="Float" context="#stay" String="\.\d[\d_]*(?:[eE][-+]?\d[\d_]*)?[fFL]?i?"/>
         
         <!-- Try to match various built-in properties -->
         <DetectChar char="." attribute="Normal Text" context="Properties"/>
@@ -476,26 +476,26 @@
       <context name="NumberLiteral" attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop">
         <!-- Float literals -->
         <!-- Floats must be matched before Binary|Octal|Hex|DecInteger -->
-        <RegExpr attribute="Float" context="#pop" String="0[xX][\da-fA-F_]*(\.[\da-fA-F_]*)?[pP][-+]?\d[\d_]*[fFL]?i?"/>
+        <RegExpr attribute="Float" context="#pop" String="0[xX][\da-fA-F_]*(?:\.[\da-fA-F_]*)?[pP][-+]?\d[\d_]*[fFL]?i?"/>
         <!-- Float starting with a dot is matched in main context -->
         <!-- All floats except integers -->
         <!-- RegExpr is branched rather than using look aheads for efficiency at the expense of extra length -->
-        <RegExpr attribute="Float" context="#pop" String="\d[_\d]*(\.(?!\.)[_\d]*([eE][-+]?\d[_\d]*)?[fFL]?i?|[eE][-+]?\d[_\d]*[fFL]?i?|[fF]i?|[fFL]?i)"/>
+        <RegExpr attribute="Float" context="#pop" String="\d[_\d]*(?:\.(?!\.)[_\d]*(?:[eE][-+]?\d[_\d]*)?[fFL]?i?|[eE][-+]?\d[_\d]*[fFL]?i?|[fF]i?|[fFL]?i)"/>
         
         <!-- Binary|Octal|Hex|DecInteger -->
         <!-- Common, optional suffix: (L[uU]?|[uU]L?)? -->
-        <RegExpr attribute="Binary"  context="#pop" String="0[bB]_*[01][01_]*(L[uU]?|[uU]L?)?"/>
+        <RegExpr attribute="Binary"  context="#pop" String="0[bB]_*[01][01_]*(?:L[uU]?|[uU]L?)?"/>
         <!-- Octal must be matched before DecInteger -->
-        <RegExpr attribute="Octal"   context="#pop" String="0[0-7_]+(L[uU]?|[uU]L?)?"/>
-        <RegExpr attribute="Hex"     context="#pop" String="0[xX]_*[\da-fA-F][\da-fA-F_]*(L[uU]?|[uU]L?)?"/>
+        <RegExpr attribute="Octal"   context="#pop" String="0[0-7_]+(?:L[uU]?|[uU]L?)?"/>
+        <RegExpr attribute="Hex"     context="#pop" String="0[xX]_*[\da-fA-F][\da-fA-F_]*(?:L[uU]?|[uU]L?)?"/>
         <!-- Decimal integers must be matched last -->
-        <RegExpr attribute="Integer" context="#pop" String="\d+[\d_]*(L[uU]?|[uU]L?)?"/>
+        <RegExpr attribute="Integer" context="#pop" String="\d+[\d_]*(?:L[uU]?|[uU]L?)?"/>
       </context>
 
       <context name="LinePragma" attribute="Pragma" lineEndContext="#pop">
         <DetectSpaces/>
         <!-- Match an Integer -->
-        <RegExpr attribute="Integer" context="#stay" String="((0([0-7_]+|[bB]_*[01][01_]*|[xX]_*[\da-fA-F][\da-fA-F_]*))|\d+[\d_]*)(L[uU]?|[uU]L?)?"/>
+        <RegExpr attribute="Integer" context="#stay" String="(?:(?:0(?:[0-7_]+|[bB]_*[01][01_]*|[xX]_*[\da-fA-F][\da-fA-F_]*))|\d+[\d_]*)(?:L[uU]?|[uU]L?)?"/>
         <RegExpr attribute="String" context="#stay" String="&quot;[^&quot;]*&quot;"/>
         <keyword attribute="SpecialTokens"  context="#stay"      String="specialtokens"/>
         <IncludeRules context="CommentRules" />
@@ -563,7 +563,7 @@
       <context name="VersionSpec" attribute="Normal Text" lineEndContext="#stay">
         <DetectSpaces/>
         <DetectIdentifier attribute="Normal Text" context="#stay"/>
-        <RegExpr attribute="Integer" context="#stay" String="\d+[\d_]*(L[uU]?|[uU]L?)?"/>
+        <RegExpr attribute="Integer" context="#stay" String="\d+[\d_]*(?:L[uU]?|[uU]L?)?"/>
         <DetectChar char=";" attribute="Normal Text" context="#pop#pop"/>
         <RegExpr String="." attribute="Error" context="#pop#pop"/>
       </context>
@@ -571,7 +571,7 @@
         <DetectSpaces/>
         <keyword    attribute="Version Type" context="#stay" String="vtypes"/>
         <DetectIdentifier attribute="Normal Text" context="#stay"/>
-        <RegExpr attribute="Integer" context="#stay" String="\d+[\d_]*(L[uU]?|[uU]L?)?"/>
+        <RegExpr attribute="Integer" context="#stay" String="\d+[\d_]*(?:L[uU]?|[uU]L?)?"/>
         <IncludeRules context="CommentRules" />
         <!-- Fall-through rules, highlighting errors: -->
         <DetectChar char=")" attribute="Normal Text" context="#pop#pop"/>
@@ -646,7 +646,7 @@
         <!-- \t \n \r etc. -->
         <HlCStringChar attribute="EscapeSequence" context="CharLiteralClosing"/>
         <!-- \u 4HexDigits | \U 8HexDigits | HTMLEntity -->
-        <RegExpr attribute="EscapeSequence" context="CharLiteralClosing" String="\\(u[\da-fA-F]{4}|U[\da-fA-F]{8}|&amp;[a-zA-Z]\w+;)"/>
+        <RegExpr attribute="EscapeSequence" context="CharLiteralClosing" String="\\(?:u[\da-fA-F]{4}|U[\da-fA-F]{8}|&amp;[a-zA-Z]\w+;)"/>
         <!-- Invalid escape sequences -->
         <RegExpr attribute="Error" context="CharLiteralClosing" String="\\."/>
         <!-- Any character -->
@@ -675,8 +675,8 @@
       <!-- delimited strings -->
       <!-- q"IDENTIFIER...IDENTIFIER" -->
       <context name="DelimStrHeredoc" attribute="Delimited String Content" lineEndContext="#stay">
-        <RegExpr attribute="Delimited String Delimiter" context="#pop" String="^%1&quot;" dynamic="true" />
-        <RegExpr attribute="Error" context="#pop" String="^%1" dynamic="true" />
+        <StringDetect attribute="Delimited String Delimiter" context="#pop" String="%1&quot;" dynamic="true" column="0" />
+        <StringDetect attribute="Error" context="#pop" String="%1" dynamic="true" column="0" />
       </context>
       <!-- q"[...]" -->
       <context name="DelimStrBracket" attribute="Delimited String Content" lineEndContext="#stay">
@@ -762,7 +762,7 @@
         <DetectSpaces />
         <DetectIdentifier attribute="Ddoc"/>
         <Detect2Chars attribute="Macros" context="DdocMacro" char="$" char1="(" />
-        <RegExpr attribute="DdocSection" context="#stay" String="[\w_]+:($|\s)" />
+        <RegExpr attribute="DdocSection" context="#stay" String="[\w_]+:(?:$|\s)" />
         <IncludeRules context="##Comments" />
       </context>
       
@@ -773,14 +773,14 @@
         <DetectChar attribute="Comment" context="#stay" char="*" firstNonSpace="true" />
         
         <Detect2Chars attribute="Macros" context="DdocMacro" char="$" char1="(" />
-        <RegExpr attribute="DdocSection" context="#stay" String="[\w_]+:($|\s)" />
+        <RegExpr attribute="DdocSection" context="#stay" String="[\w_]+:(?:$|\s)" />
         <IncludeRules context="##Comments" />
         
         <!-- Avoid matching this; do it this way since (^|\s)-* always matches .- and \s-* never
              matches .- (spaces have already been matched); however -*($|\s) matches just fine.
              Also can't use \b since - is not a word character. -->
         <RegExpr attribute="Ddoc" context="#stay" String="[^-]-{3,}" />
-        <RegExpr attribute="Comment" context="DdocBlockCode" String="-{3,}($|\s)" />
+        <RegExpr attribute="Comment" context="DdocBlockCode" String="-{3,}(?:$|\s)" />
       </context>
       
       <context name="DdocNested" attribute="Ddoc" lineEndContext="#stay">
@@ -792,12 +792,12 @@
         <DetectChar attribute="Comment" context="#stay" char="+" firstNonSpace="true" />
         
         <Detect2Chars attribute="Macros" context="DdocMacro" char="$" char1="(" />
-        <RegExpr attribute="DdocSection" context="#stay" String="[\w_]+:($|\s)" />
+        <RegExpr attribute="DdocSection" context="#stay" String="[\w_]+:(?:$|\s)" />
         <IncludeRules context="##Comments" />
         
         <!-- As above. -->
         <RegExpr attribute="Ddoc" context="#stay" String="[^-]-{3,}" />
-        <RegExpr attribute="Comment" context="DdocNestedCode" String="-{3,}($|\s)" />
+        <RegExpr attribute="Comment" context="DdocNestedCode" String="-{3,}(?:$|\s)" />
       </context>
       
       <context name="DdocNested2" attribute="Ddoc" lineEndContext="#stay">
@@ -844,7 +844,7 @@
         <DetectChar attribute="Comment" context="#stay" char="*" firstNonSpace="true" />
         <!-- As above. -->
         <RegExpr attribute="DdocCode" context="#stay" String="[^-]-{3,}" />
-        <RegExpr attribute="Comment" context="#pop" String="-{3,}($|\s)" />
+        <RegExpr attribute="Comment" context="#pop" String="-{3,}(?:$|\s)" />
         <IncludeRules context="##D" />
       </context>
       <context name="DdocNestedCode" attribute="DdocCode" lineEndContext="#stay">
@@ -854,7 +854,7 @@
         <DetectChar attribute="Comment" context="#stay" char="+" firstNonSpace="true" />
         <!-- As above. -->
         <RegExpr attribute="DdocCode" context="#stay" String="[^-]-{3,}" />
-        <RegExpr attribute="Comment" context="#pop" String="-{3,}($|\s)" />
+        <RegExpr attribute="Comment" context="#pop" String="-{3,}(?:$|\s)" />
         <IncludeRules context="##D" />
       </context>
     </contexts>

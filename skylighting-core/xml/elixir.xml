@@ -109,14 +109,14 @@
         <RegExpr String="\b[_A-Z]+[A-Z_0-9]+\b" attribute="Global Constant" context="#stay"/>
 
         <!-- Generally a module or class name like "File", "MyModule_1", .. -->
-        <RegExpr String="\b[A-Z]+_*([0-9]|[a-z])[_a-zA-Z0-9]*\b" attribute="Constant" context="#stay"/>
+        <RegExpr String="\b[A-Z]+_*(?:[0-9]|[a-z])[_a-zA-Z0-9]*\b" attribute="Constant" context="#stay"/>
 
         <!-- Numeric values. Note that we have to allow underscores between two digits (thus the creepy regular expressions). -->
-        <RegExpr String="\b\-?0[xX]([0-9a-fA-F]|_[0-9a-fA-F])+" attribute="Hex" context="#stay"/>
-        <RegExpr String="\b\-?0[bB]([01]|_[01])+" attribute="Bin" context="#stay"/>
-        <RegExpr String="\b\-?0[1-7]([0-7]|_[0-7])*" attribute="Octal" context="#stay"/>
-        <RegExpr String="\b\-?[0-9]([0-9]|_[0-9])*\.[0-9]([0-9]|_[0-9])*([eE]\-?[1-9]([0-9]|_[0-9])*(\.[0-9]*)?)?" attribute="Float" context="#stay"/>
-        <RegExpr String="\b\-?[1-9]([0-9]|_[0-9])*\b" attribute="Dec" context="#stay"/>
+        <RegExpr String="\b\-?0[xX](?:[0-9a-fA-F]|_[0-9a-fA-F])+" attribute="Hex" context="#stay"/>
+        <RegExpr String="\b\-?0[bB](?:[01]|_[01])+" attribute="Bin" context="#stay"/>
+        <RegExpr String="\b\-?0[1-7](?:[0-7]|_[0-7])*" attribute="Octal" context="#stay"/>
+        <RegExpr String="\b\-?[0-9](?:[0-9]|_[0-9])*\.[0-9](?:[0-9]|_[0-9])*(?:[eE]\-?[1-9](?:[0-9]|_[0-9])*(?:\.[0-9]*)?)?" attribute="Float" context="#stay"/>
+        <RegExpr String="\b\-?[1-9](?:[0-9]|_[0-9])*\b" attribute="Dec" context="#stay"/>
         <Int attribute="Dec" context="#stay"/>
         <HlCChar attribute="Char" context="#stay"/>
         <DetectChar attribute="Operator" char="." context="#stay"/>
@@ -128,10 +128,10 @@
         <RegExpr String="\s!" attribute="Operator" context="#stay"/>
         <RegExpr String="/=\s" attribute="Operator" context="#stay" insensitive="0"/>
         <Detect2Chars char="%" char1="=" attribute="Operator" context="#stay"/>
-        <RegExpr String=":(@{1,2}|\$)?[a-zA-Z_][a-zA-Z0-9_]*[=?!]?" attribute="Symbol" context="#stay"/>
-        <RegExpr String="\b(@{1,2}|\$)?[a-zA-Z_][a-zA-Z0-9_]*[=?!]?:" attribute="Symbol" context="#stay"/>
+        <RegExpr String=":(?:@{1,2}|\$)?[a-zA-Z_][a-zA-Z0-9_]*[=?!]?" attribute="Symbol" context="#stay"/>
+        <RegExpr String="\b(?:@{1,2}|\$)?[a-zA-Z_][a-zA-Z0-9_]*[=?!]?:" attribute="Symbol" context="#stay"/>
         <RegExpr String=":\[\]=?" attribute="Symbol" context="#stay"/>
-        <RegExpr String="@(module)?doc\s+&quot;&quot;&quot;" attribute="Attribute" context="Documentation"/>
+        <RegExpr String="@(?:module)?doc\s+&quot;&quot;&quot;" attribute="Attribute" context="Documentation"/>
         <StringDetect String="&quot;&quot;&quot;" attribute="String" context="Triple Quoted String"/>
         <DetectChar attribute="String" char="&quot;" context="Quoted String"/>
         <DetectChar attribute="Raw String" char="'" context="Apostrophed String"/>
@@ -146,10 +146,10 @@
       </context>
       <context attribute="DocComment" lineEndContext="#stay" name="Documentation">
         <StringDetect String="&quot;&quot;&quot;" attribute="Attribute" context="#pop"/>
-        <RegExpr attribute="MarkdownHead" String="^\s*#+\s.*[#]?$"/>
-        <RegExpr attribute="MarkdownBullet" String="^\s*[\*\+\-]\s"/>
-        <RegExpr attribute="MarkdownNumlist" String="^\s*[\d]+\.\s"/>
-        <RegExpr attribute="MarkdownCode" context="Markdown Code" String="^\s*\`\`\`\s*$"/>
+        <RegExpr attribute="MarkdownHead" String="^\s*#+\s.*[#]?$" column="0"/>
+        <RegExpr attribute="MarkdownBullet" String="^\s*[\*\+\-]\s" column="0"/>
+        <RegExpr attribute="MarkdownNumlist" String="^\s*[\d]+\.\s" column="0"/>
+        <RegExpr attribute="MarkdownCode" context="Markdown Code" String="^\s*\`\`\`\s*$" column="0"/>
         <DetectSpaces />
         <IncludeRules context="Normal Text##Markdown"/>
       </context>
@@ -184,7 +184,7 @@
         <IncludeRules context="##Comments"/>
       </context>
       <context attribute="MarkdownCode" lineEndContext="#stay" name="Markdown Code">
-        <RegExpr String="^\s*\`\`\`\s*$" attribute="MarkdownCode" context="#pop"/>
+        <RegExpr String="^\s*```\s*$" attribute="MarkdownCode" context="#pop" column="0"/>
       </context>
     </contexts>
     <itemDatas>

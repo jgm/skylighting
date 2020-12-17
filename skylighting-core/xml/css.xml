@@ -38,7 +38,7 @@ Changelog:
 
 -->
 
-<language name="CSS" version="12" kateversion="5.0" section="Markup" extensions="*.css" indenter="cstyle" mimetype="text/css" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
+<language name="CSS" version="12" kateversion="5.53" section="Markup" extensions="*.css" indenter="cstyle" mimetype="text/css" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
     <!-- https://www.w3.org/Style/CSS/current-work -->
 
     <highlighting>

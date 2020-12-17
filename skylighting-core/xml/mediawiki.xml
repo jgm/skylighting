@@ -1,12 +1,13 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE language SYSTEM "language.dtd" [
+  <!ENTITY tab "&#9;">
   <!ENTITY url          "(http:|https:|ftp:|mailto:)[^]| ]*(?=$|[]|\s])">
   <!ENTITY htmlTagName  "(?![0-9])[\w_:][\w.:_-]*">
   <!ENTITY htmlEntity   "&amp;(#[0-9]+|#[xX][0-9A-Fa-f]+|&htmlTagName;);">
   <!ENTITY wikiLinkWithDescription "\[\[[^]|]*\|[^]]*\]\]">
   <!ENTITY wikiLinkWithoutDescription "\[\[[^]|]*\]\]">
 ]>
-<language name="MediaWiki" section="Markup" version="10" kateversion="5.0" extensions="*.mediawiki" mimetype="" license="FDL" >
+<language name="MediaWiki" section="Markup" version="10" kateversion="5.53" extensions="*.mediawiki" mimetype="" license="FDL" >
   <highlighting>
     <contexts>
       <context attribute="Normal" lineEndContext="#stay" name="normal" >
@@ -58,7 +59,7 @@
         <StringDetect String="&lt;pre&gt;" context="Pre" attribute="HtmlTag" />
         <IncludeRules context="FindSyntaxHighlightingHtmlElement" />
         <RegExpr String="[&lt;][^&gt;]+[&gt;]" attribute="HtmlTag" context="#stay" />
-        <RegExpr String="[\s]" context="Unformatted" column="0" />
+        <AnyChar String="&tab; " context="Unformatted" column="0" />
         <StringDetect String="~~~~" attribute="WikiTag" context="#stay" />
         <StringDetect String="~~~" attribute="WikiTag" context="#stay" />
         <RegExpr String="[-]{4,}" attribute="WikiTag" context="#stay" />
@@ -509,8 +510,7 @@
       </context>
 
       <context name="FindHtmlStartTagAttributes" attribute="Normal" lineEndContext="#stay">
-        <RegExpr attribute="HtmlAttribute" context="HtmlAttribute" String="^&htmlTagName;" />
-        <RegExpr attribute="HtmlAttribute" context="HtmlAttribute" String="\s+&htmlTagName;" />
+        <RegExpr attribute="HtmlAttribute" context="HtmlAttribute" String="^&htmlTagName;|\s+&htmlTagName;" />
         <RegExpr attribute="Error" context="#stay" String="\S" />
       </context>
 

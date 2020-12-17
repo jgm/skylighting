@@ -12,7 +12,7 @@
   ========================================================================
 -->
 
-<language name="Haxe" section="Sources" extensions="*.hx;*.Hx;*.hX;*.HX;" mimetype="text/x-hxsrc" version="4" kateversion="2.4" casesensitive="true" author="Chad Joan" license="MIT">
+<language name="Haxe" section="Sources" extensions="*.hx;*.Hx;*.hX;*.HX;" mimetype="text/x-hxsrc" version="4" kateversion="5.0" casesensitive="true" author="Chad Joan" license="MIT">
   <highlighting>
     <list name="keywords">
     

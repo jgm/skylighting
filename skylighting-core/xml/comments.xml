@@ -2,7 +2,7 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 <language
     version="1"
-    kateversion="3.1"
+    kateversion="5.0"
     name="Comments"
     section="Other"
     extensions=""

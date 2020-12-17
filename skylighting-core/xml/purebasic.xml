@@ -1728,8 +1728,8 @@
 
         <DetectChar attribute="String" context="String" char="&quot;" />
 
-        <RegExpr attribute="Region Marker" context="#stay" String="^\s*;+\s*BEGIN.*$" beginRegion="marker"/>
-        <RegExpr attribute="Region Marker" context="#stay" String="^\s*;+\s*END.*$" endRegion="marker"/>
+        <RegExpr attribute="Region Marker" context="#stay" String="^\s*;+\s*BEGIN.*$" beginRegion="marker" column="0"/>
+        <RegExpr attribute="Region Marker" context="#stay" String="^\s*;+\s*END.*$" endRegion="marker" column="0"/>
 
         <DetectChar attribute="Comment" context="Comment1" char=";"/>
 
