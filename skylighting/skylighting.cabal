@@ -155,6 +155,7 @@ library
                        Skylighting.Syntax.Python
                        Skylighting.Syntax.Qml
                        Skylighting.Syntax.R
+                       Skylighting.Syntax.Raku
                        Skylighting.Syntax.Relaxng
                        Skylighting.Syntax.Relaxngcompact
                        Skylighting.Syntax.Rest
