@@ -1,5 +1,9 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.3
+
+  * Add support for raku (#114).
+
 ## 0.10.2
 
   * Update syntax definitions for abc, actionscript, asn1, ats,
