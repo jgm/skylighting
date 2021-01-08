@@ -23,7 +23,7 @@ syntaxFileExtension = ".xml"
 isSyntaxFile :: FilePath -> Bool
 isSyntaxFile = (== syntaxFileExtension) . takeExtension
 
--- | Loads a syntax definition from the specifed file path. The file
+-- | Loads a syntax definition from the specified file path. The file
 -- path must refer to a file containing an XML Kate syntax definition.
 loadSyntaxFromFile :: FilePath -> IO (Either String Syntax)
 loadSyntaxFromFile path = do
