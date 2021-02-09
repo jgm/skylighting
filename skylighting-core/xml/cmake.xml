@@ -16,7 +16,7 @@
 
 <language
     name="CMake"
-    version="28"
+    version="29"
     kateversion="5.0"
     section="Other"
     extensions="CMakeLists.txt;*.cmake;*.cmake.in"
@@ -1345,6 +1345,7 @@
       <item>CMAKE_ANDROID_STL_TYPE</item>
       <item>CMAKE_ANSI_CXXFLAGS</item>
       <item>CMAKE_APPBUNDLE_PATH</item>
+      <item>CMAKE_APPLE_SILICON_PROCESSOR</item>
       <item>CMAKE_AR</item>
       <item>CMAKE_ARCHIVE_OUTPUT_DIRECTORY</item>
       <item>CMAKE_ARGC</item>
@@ -1566,6 +1567,9 @@
       <item>CMAKE_INSTALL_UCRT_LIBRARIES</item>
       <item>CMAKE_INTERPROCEDURAL_OPTIMIZATION</item>
       <item>CMAKE_IOS_INSTALL_COMBINED</item>
+      <item>CMAKE_ISPC_HEADER_DIRECTORY</item>
+      <item>CMAKE_ISPC_HEADER_SUFFIX</item>
+      <item>CMAKE_ISPC_INSTRUCTION_SETS</item>
       <item>CMAKE_JOB_POOLS</item>
       <item>CMAKE_JOB_POOL_COMPILE</item>
       <item>CMAKE_JOB_POOL_LINK</item>
@@ -2225,6 +2229,7 @@
       <item>CC</item>
       <item>CFLAGS</item>
       <item>CMAKE_APPBUNDLE_PATH</item>
+      <item>CMAKE_APPLE_SILICON_PROCESSOR</item>
       <item>CMAKE_BUILD_PARALLEL_LEVEL</item>
       <item>CMAKE_CONFIG_TYPE</item>
       <item>CMAKE_EXPORT_COMPILE_COMMANDS</item>
@@ -2467,6 +2472,9 @@
       <item>INTERFACE_SYSTEM_INCLUDE_DIRECTORIES</item>
       <item>INTERPROCEDURAL_OPTIMIZATION</item>
       <item>IOS_INSTALL_COMBINED</item>
+      <item>ISPC_HEADER_DIRECTORY</item>
+      <item>ISPC_HEADER_SUFFIX</item>
+      <item>ISPC_INSTRUCTION_SETS</item>
       <item>JOB_POOL_COMPILE</item>
       <item>JOB_POOL_LINK</item>
       <item>LABELS</item>

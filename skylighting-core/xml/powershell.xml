@@ -1,7 +1,7 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 <language
   name="PowerShell"
-  version="9"
+  version="10"
   kateversion="5.0"
   extensions="*.ps1;*.psm1;*.psd1"
   section="Scripts"
@@ -929,7 +929,7 @@
       <itemData name="HereString"       defStyleNum="dsVerbatimString"/>
       <itemData name="Comment"      defStyleNum="dsComment"/>
       <itemData name="Cmdlets"      defStyleNum="dsBuiltIn" spellChecking="false"/>
-      <itemData name="Symbol"       defStyleNum="dsNormal" spellChecking="false"/>
+      <itemData name="Symbol"       defStyleNum="dsOperator" spellChecking="false"/>
       <itemData name="Variable" defStyleNum="dsVariable" spellChecking="false"/>
       <itemData name="Special Variable" defStyleNum="dsVariable" bold="1" spellChecking="false"/>
     </itemDatas>

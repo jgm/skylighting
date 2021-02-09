@@ -52,7 +52,7 @@
   <!-- <!ENTITY regadverb "(?!\()\s*(?::\w+\s*)*(?=[^\w\s])"> -->
   <!ENTITY regadverb "(?!\()\s*(?=[^\w\s])">
 ]>
-<language name="Raku" version="7" kateversion="5.53" section="Scripts" extensions="*.raku;*.rakumod;*.rakudoc;*.rakutest;*.pl6;*.PL6;*.p6;*.pm6;*.pod6" priority="6" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
+<language name="Raku" version="8" kateversion="5.53" section="Scripts" extensions="*.raku;*.rakumod;*.rakudoc;*.rakutest;*.pl6;*.PL6;*.p6;*.pm6;*.pod6" priority="6" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
   <highlighting>
 
     <list name="pod">
@@ -1131,7 +1131,7 @@
       </context>
 
       <context name="PodBlockConfigParam" attribute="Pod Key" lineEndContext="#pop#pop#pop" fallthrough="1" fallthroughContext="#pop">
-        <AnyChar String="&lt;" context="PodParamSequence" attribute="Pod Operator"/>
+        <DetectChar char="&lt;" context="PodParamSequence" attribute="Pod Operator"/>
         <DetectChar char="{" context="PodParamHash" attribute="Pod Operator"/>
         <AnyChar String="([" context="PodParamList" attribute="Pod Operator"/>
       </context>
@@ -1168,7 +1168,7 @@
       </context>
 
       <context name="PodConfigParam" attribute="Pod Key" lineEndContext="#pop#pop#pop#pop" fallthrough="1" fallthroughContext="#pop#pop">
-        <AnyChar String="&lt;" context="PodParamSequence" attribute="Pod Operator"/>
+        <DetectChar char="&lt;" context="PodParamSequence" attribute="Pod Operator"/>
         <DetectChar char="{" context="PodParamHash" attribute="Pod Operator"/>
         <AnyChar String="([" context="PodParamList" attribute="Pod Operator"/>
       </context>
@@ -1358,19 +1358,19 @@
         <DetectChar char=":" context="#pop!q_QuotingForm2" attribute="Operator"/>
       </context>
       <context name="q_QuotingForm2" attribute="Operator" lineEndContext="#pop" fallthrough="1" fallthroughContext="q_String">
+        <WordDetect String="heredoc" context="q_Heredoc" attribute="Operator"/>
+        <keyword String="quoting" context="#stay" attribute="Operator"/>
         <AnyChar String="wvx:sahfb" context="#stay" attribute="Operator"/>
         <!-- :closure as qq -->
         <DetectChar char="c" context="#pop!qq_QuotingForm" attribute="Operator"/>
         <Detect2Chars char="t" char1="o" context="q_Heredoc" attribute="Operator"/>
-        <WordDetect String="heredoc" context="q_Heredoc" attribute="Operator"/>
-        <keyword String="quoting" context="#stay" attribute="Operator"/>
       </context>
 
       <context name="qq_QuotingForm" attribute="Operator" lineEndContext="#pop" fallthrough="1" fallthroughContext="qq_String">
-        <AnyChar String="wvx:sahfcb" context="#stay" attribute="Operator"/>
-        <Detect2Chars char="t" char1="o" context="qq_Heredoc" attribute="Operator"/>
         <WordDetect String="heredoc" context="qq_Heredoc" attribute="Operator"/>
         <keyword String="quoting" context="#stay" attribute="Operator"/>
+        <AnyChar String="wvx:sahfcb" context="#stay" attribute="Operator"/>
+        <Detect2Chars char="t" char1="o" context="qq_Heredoc" attribute="Operator"/>
       </context>
 
 
@@ -1630,9 +1630,9 @@
         <StringDetect String="[[[" attribute="Comment" context="MultilineComment[[[" beginRegion="comment"/>
       </context>
       <context name="MultilineComment{{{" attribute="Comment" lineEndContext="#stay">
-        <IncludeRules context="SingleLineComment"/>
         <StringDetect String="}}}" attribute="Comment" context="#pop" endRegion="comment"/>
         <StringDetect String="{{{" attribute="Comment" context="MultilineComment{{{" beginRegion="comment"/>
+        <IncludeRules context="SingleLineComment"/>
       </context>
       <context name="MultilineComment«««" attribute="Comment" lineEndContext="#stay">
         <IncludeRules context="SingleLineComment"/>

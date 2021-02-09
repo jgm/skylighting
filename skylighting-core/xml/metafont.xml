@@ -6,7 +6,7 @@ We have moved some keywords for consistency
 -->
 
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Metapost/Metafont" section="Markup" version="9" kateversion="5.0"
+<language name="Metapost/Metafont" section="Markup" version="10" kateversion="5.0"
 extensions="*.mp;*.mps;*.mpost;*.mf" mimetype="text/x-metapost" 
 author="Yedvilun (yedvilun@gmail.com)" license="LGPL">
   <highlighting>
@@ -900,10 +900,9 @@ author="Yedvilun (yedvilun@gmail.com)" license="LGPL">
       <!--TeX mode : we just define generic TeX commands-->
       <!--syntax from highlighting file latex.xml-->
       <context name="TeXMode" attribute="TeX" lineEndContext="#stay">
+        <Detect2Chars char="\" char1="(" attribute="Math" context="MathMode" beginRegion="mathMode" />
         <DetectChar char="\" attribute="Keyword" context="ContrSeq"/>
         <DetectChar char="$" attribute="Math" context="MathMode" beginRegion="mathMode" />
-
-        <Detect2Chars char="\" char1="(" attribute="Math" context="MathMode" beginRegion="mathMode" />
         <RegExpr String="\betex\b" insensitive="1" attribute="Identifier" context="#pop" endRegion="TeXblock"/>
       </context>
       <context name="ContrSeq" attribute="Keyword" lineEndContext="#pop">
@@ -926,11 +925,9 @@ author="Yedvilun (yedvilun@gmail.com)" license="LGPL">
       <!-- math mode: starting with $ or \( -->
       <context name="MathMode" attribute="Math" lineEndContext="#stay">
         <Detect2Chars char="$" char1="$" attribute="Error" context="#stay" />
+        <Detect2Chars char="\" char1=")" attribute="Math" context="#pop" endRegion="mathMode" />
         <DetectChar char="\" attribute="Keyword Mathmode" context="MathContrSeq"/>
         <DetectChar char="$" attribute="Math" context="#pop" endRegion="mathMode" />
-        <Detect2Chars char="\" char1=")" attribute="Math" context="#pop" endRegion="mathMode" />
-
-        <Detect2Chars char="\" char1="]" attribute="Error" context="#stay" />
       </context>
       <context name="MathContrSeq" attribute="Keyword Mathmode" lineEndContext="#pop">
         <DetectChar char="&#xd7;" attribute="Bullet" context="#stay"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE  language SYSTEM "language.dtd">
-<language name="ASP" version="7" kateversion="5.44" section="Markup" extensions="*.asp;" mimetype="text/x-asp-src;text/x-asp-src" author="Antonio Salazar (savedfastcool@gmail.com)" license="LGPL">
+<language name="ASP" version="8" kateversion="5.44" section="Markup" extensions="*.asp;" mimetype="text/x-asp-src;text/x-asp-src" author="Antonio Salazar (savedfastcool@gmail.com)" license="LGPL">
     <highlighting>
         <list name="control structures">
             <item>select</item>
@@ -246,7 +246,6 @@
                 <RegExpr attribute="HTML Tag" context="#pop" String="&lt;\s*\/\s*script\s*&gt;" insensitive="true" />
                 <DetectChar attribute="Comment" context="asp_onelinecomment" char="'" />
                 <DetectChar attribute="String" context="doublequotestring" char="&quot;" />
-                <DetectChar attribute="String" context="singlequotestring" char="&#39;" />
                 <DetectChar attribute="Keyword" context="#stay" char="&amp;" />
                 <RegExpr attribute="String" context="#stay" String="[0123456789]*\.\.\.[0123456789]*" />
                 <HlCOct attribute="Octal" context="#stay" />

@@ -2,7 +2,7 @@ diff --git a/skylighting-core/xml/php.xml b/skylighting-core/xml/php.xml
 index 063bb96..87a1fdd 100644
 --- a/skylighting-core/xml/php.xml
 +++ b/skylighting-core/xml/php.xml
-@@ -10911,7 +10911,8 @@ Changes:
+@@ -10911,7 +10911,8 @@
      </list>
  
      <contexts>

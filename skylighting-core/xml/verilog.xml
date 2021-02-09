@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Verilog" version="6" kateversion="5.0" section="Hardware" extensions="*.v;*.V;*.vl" mimetype="text/x-verilog-src" author="Yevgen Voronenko (ysv22@drexel.edu), Ryan Dalzell (ryan@tullyroan.com)" license="">
+<language name="Verilog" version="7" kateversion="5.0" section="Hardware" extensions="*.v;*.V;*.vl" mimetype="text/x-verilog-src" author="Yevgen Voronenko (ysv22@drexel.edu), Ryan Dalzell (ryan@tullyroan.com)" license="">
   <highlighting>
     <list name="keywords">
       <item>macromodule</item>
@@ -232,7 +232,7 @@
       <itemData name="String"  defStyleNum="dsString"/>
       <itemData name="String Char"  defStyleNum="dsChar"/>
       <itemData name="Comment"  defStyleNum="dsComment"/>
-      <itemData name="Symbol"  defStyleNum="dsNormal"/>
+      <itemData name="Symbol"  defStyleNum="dsOperator"/>
       <itemData name="Preprocessor"  defStyleNum="dsOthers"/>
       <itemData name="Prep. Lib"  defStyleNum="dsFloat"/>
       <itemData name="System Task" defStyleNum="dsDataType"/>

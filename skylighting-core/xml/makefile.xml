@@ -12,7 +12,7 @@
 <!-- v10 by Peter J. Mello <admin@petermello.net>
      Add recognition of POSIX 2013 '::=' operator for variable assignment -->
 <language name="Makefile" section="Other"
-          version="11" kateversion="5.0"
+          version="12" kateversion="5.0"
           extensions="GNUmakefile;Makefile;makefile;GNUmakefile.*;Makefile.*;makefile.*;*.mk"
           mimetype="text/x-makefile" priority="11"
           author="Per Wigren (wigren@home.se)" license="">
@@ -384,6 +384,8 @@
           TODO :[range]
         -->
         <!--  Modifiers without arguments:-->
+        <!-- :Ox  Randomize words in variable. -->
+        <Detect2Chars attribute="Builtin" context="#pop!expect}" char="O" char1="x"/>
         <!--
           :E Replaces each word in the variable with its suffix.
           :H Replaces each word in the variable with everything but the last component.
@@ -398,8 +400,6 @@
         <AnyChar    attribute="Builtin" context="#pop!expect}" String="EHOQRTuLP"/>
         <!-- :sh  If the variable is non-empty it is run as a command and the output becomes the new value. -->
         <Detect2Chars attribute="Builtin" context="#pop!expect}" char="s" char1="h"/>
-        <!-- :Ox  Randomize words in variable. -->
-        <Detect2Chars attribute="Builtin" context="#pop!expect}" char="O" char1="x"/>
         <!-- :tA  Attempt to convert variable to an absolute path using realpath(3),-->
         <Detect2Chars attribute="Builtin" context="#pop!expect}" char="t" char1="A"/>
         <!-- :tl  Converts variable to lower-case letters.-->

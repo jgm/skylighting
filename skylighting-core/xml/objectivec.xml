@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Objective-C" version="6" kateversion="5.0" section="Sources" extensions="*.m;*.h" mimetype="text/x-objc-src;text/x-c-hdr">
+<language name="Objective-C" version="7" kateversion="5.0" section="Sources" extensions="*.m;*.h" mimetype="text/x-objc-src;text/x-c-hdr">
   <highlighting>
     <list name="keywords">
       <item>break</item>
@@ -121,7 +121,7 @@
       <itemData name="String"  defStyleNum="dsString"/>
       <itemData name="String Char"  defStyleNum="dsSpecialChar" spellChecking="false"/>
       <itemData name="Comment"  defStyleNum="dsComment"/>
-      <itemData name="Symbol"  defStyleNum="dsNormal" spellChecking="false"/>
+      <itemData name="Symbol"  defStyleNum="dsOperator" spellChecking="false"/>
       <itemData name="Preprocessor"  defStyleNum="dsPreprocessor" spellChecking="false"/>
       <itemData name="Prep. Lib"  defStyleNum="dsImport" spellChecking="false"/>
     </itemDatas>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Objective-C++" version="8" kateversion="5.0" section="Sources" extensions="*.mm;*.M;*.h" mimetype="text/x-objcpp-src;text/x-c-hdr" author="Gennady Telegin (gepo@lvk.cs.msu.su">
+<language name="Objective-C++" version="10" kateversion="5.0" section="Sources" extensions="*.mm;*.M;*.h" mimetype="text/x-objcpp-src;text/x-c-hdr" author="Gennady Telegin (gepo@lvk.cs.msu.su">
   <highlighting>
     <list name="keywords">
       <item>break</item>
@@ -184,8 +184,6 @@
 
         <keyword attribute="Extensions" context="#stay" String="extensions" />
 
-        <DetectChar attribute="Symbol" context="#stay" char="{" beginRegion="Brace1" />
-        <DetectChar attribute="Symbol" context="#stay" char="}" endRegion="Brace1" />
         <AnyChar attribute="Symbol" context="#stay" String=":!%&amp;()+,-/.*&lt;=&gt;?[]{|}~^&#59;"/>
       </context>
 
@@ -276,7 +274,7 @@
       <itemData name="String"        defStyleNum="dsString"/>
       <itemData name="String Char"   defStyleNum="dsSpecialChar" spellChecking="false"/>
       <itemData name="Comment"       defStyleNum="dsComment"/>
-      <itemData name="Symbol"        defStyleNum="dsNormal" spellChecking="false"/>
+      <itemData name="Symbol"        defStyleNum="dsOperator" spellChecking="false"/>
       <itemData name="Preprocessor"  defStyleNum="dsPreprocessor" spellChecking="false"/>
       <itemData name="Prep. Lib"     defStyleNum="dsImport" spellChecking="false"/>
       <itemData name="Region Marker" defStyleNum="dsRegionMarker"/>

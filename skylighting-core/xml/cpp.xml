@@ -11,7 +11,7 @@
 <language
     name="C++"
     section="Sources"
-    version="9"
+    version="12"
     kateversion="5.0"
     indenter="cstyle"
     style="C++"
@@ -38,6 +38,8 @@
     <item>SLOT</item>
     <!-- http://doc.qt.io/qt-5/qapplication.html#macros -->
     <item>qApp</item>
+    <!-- https://doc.qt.io/qt-5/qguiapplication.html#qGuiApp -->
+    <item>qGuiApp</item>
     <!-- http://doc.qt.io/qt-5/qcoreapplication.html#macros -->
     <item>Q_COREAPP_STARTUP_FUNCTION</item>
     <item>Q_DECLARE_TR_FUNCTIONS</item>
@@ -584,6 +586,8 @@
     <item>qmlRegisterUncreatableType</item>
     <!-- http://doc.qt.io/qt-5/qextensionmanager.html#related-non-members -->
     <item>qt_extension</item>
+    <!-- https://doc.qt.io/qt-5/qvariant.html#related-non-members -->
+    <item>qvariant_cast</item>
     <!-- http://doc.qt.io/qt-5/qdbusargument.html#related-non-members -->
     <item>qDBusRegisterMetaType</item>
     <item>qdbus_cast</item>
@@ -2176,6 +2180,9 @@
     <item>QValueAxis</item>
     <item>QVariant</item>
     <item>QVariantAnimation</item>
+    <item>QVariantHash</item>
+    <item>QVariantList</item>
+    <item>QVariantMap</item>
     <item>QVarLengthArray</item>
     <item>QVBarModelMapper</item>
     <item>QVBoxLayout</item>
@@ -2352,6 +2359,11 @@
     <item>QTouchEventSequence</item>                      <!-- QTest -->
     <item>QStringListIterator</item>
     <item>QStringBuilder</item>
+    <!-- Helper classes for C++11-only code, where qOverload (requires C++14) can't be used
+         https://doc.qt.io/qt-5/qtglobal.html#qOverload -->
+    <item>QOverload</item>
+    <item>QConstOverload</item>
+    <item>QNonConstOverload</item>
   </list>
 
   <contexts>

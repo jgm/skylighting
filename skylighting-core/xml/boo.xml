@@ -2,7 +2,7 @@
 <!DOCTYPE language>
 <!-- Based on Python syntax highlighting v1.99 by Primoz Anzur, Paul Giannaros, Michael Bueker, Per Wigren -->
 <!-- Also based on boo.lang from gtksourceview -->
-<language name="Boo" version="8" kateversion="5.0" section="Sources" extensions="*.boo" mimetype="text/x-boo" casesensitive="1" author="Marc Dassonneville" license="LGPL">
+<language name="Boo" version="9" kateversion="5.0" section="Sources" extensions="*.boo" mimetype="text/x-boo" casesensitive="1" author="Marc Dassonneville" license="LGPL">
 	<highlighting>
 		<list name="namespace">
 			<item>import</item>
@@ -188,7 +188,6 @@
 				<Detect2Chars attribute="Operator" char="|" char1="]" context="#pop" endRegion="qq"/>
 
 				<AnyChar attribute="Operator" String="+*/%|=;!&lt;&gt;!^&amp;~-" context="#stay"/>
-				<RegExpr attribute="String Substitution" String="%[a-zA-Z]" context="#stay"/>
 			</context>
 
 			<context name="parenthesised" attribute="Normal Text" lineEndContext="#stay" noIndentationBasedFolding="true">

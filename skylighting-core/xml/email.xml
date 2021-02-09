@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Email" version="5" kateversion="5.0" extensions="*.eml;*.email;*.emlx;*.mbox;*.mbx" section="Other" mimetype="message/rfc822" casesensitive="0" author="Volker Krause (vkrause@kde.org)" license="MIT">
+<language name="Email" version="6" kateversion="5.0" extensions="*.eml;*.email;*.emlx;*.mbox;*.mbx" section="Other" mimetype="message/rfc822" casesensitive="0" author="Volker Krause (vkrause@kde.org)" license="MIT">
     <highlighting>
         <list name="header-names">
             <item>Authentication-Results:</item>
@@ -73,12 +73,18 @@
             </context>
 
             <context name="string-context" attribute="String" lineEndContext="#stay">
-                <HlCStringChar/>
+                <IncludeRules context="quoted-pair"/>
                 <DetectChar attribute="String" context="#pop" char="&quot;"/>
             </context>
 
             <context name="comment-context" attribute="Comment" lineEndContext="#stay">
+                <DetectChar attribute="Comment" context="comment-context" char="("/>
                 <DetectChar attribute="Comment" context="#pop" char=")"/>
+                <IncludeRules context="quoted-pair"/>
+            </context>
+
+            <context name="quoted-pair" attribute="Escaped Character" lineEndContext="#stay">
+                <RegExpr attribute="Escaped Character" context="#stay" String="\\[\x00-\x7F]"/>
             </context>
 
             <context name="body-context" attribute="Normal Text" lineEndContext="#stay">
@@ -92,6 +98,7 @@
             <itemData name="String" defStyleNum="dsString" spellChecking="false"/>
             <itemData name="Address" defStyleNum="dsVariable" spellChecking="false"/>
             <itemData name="Comment" defStyleNum="dsComment" spellChecking="false"/>
+            <itemData name="Escaped Character" defStyleNum="dsSpecialChar" spellChecking="false"/>
             <itemData name="Content Boundary" defStyleNum="dsRegionMarker" spellChecking="false"/>
         </itemDatas>
     </highlighting>

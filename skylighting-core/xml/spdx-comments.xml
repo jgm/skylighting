@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <language
-    version="2"
+    version="4"
     kateversion="3.1"
     name="SPDX-Comments"
     section="Other"
@@ -42,6 +42,7 @@
       <item>AML</item>
       <item>AMPAS</item>
       <item>ANTLR-PD</item>
+      <item>ANTLR-PD-fallback</item>
       <item>APAFML</item>
       <item>APL-1.0</item>
       <item>APSL-1.0</item>
@@ -77,6 +78,7 @@
       <item>BSD-Protection</item>
       <item>BSD-Source-Code</item>
       <item>BSL-1.0</item>
+      <item>BUSL-1.1</item>
       <item>Bahyph</item>
       <item>Barr</item>
       <item>Beerware</item>
@@ -92,6 +94,7 @@
       <item>CC-BY-2.5</item>
       <item>CC-BY-3.0</item>
       <item>CC-BY-3.0-AT</item>
+      <item>CC-BY-3.0-US</item>
       <item>CC-BY-4.0</item>
       <item>CC-BY-NC-1.0</item>
       <item>CC-BY-NC-2.0</item>
@@ -116,6 +119,7 @@
       <item>CC-BY-ND-4.0</item>
       <item>CC-BY-SA-1.0</item>
       <item>CC-BY-SA-2.0</item>
+      <item>CC-BY-SA-2.0-UK</item>
       <item>CC-BY-SA-2.5</item>
       <item>CC-BY-SA-3.0</item>
       <item>CC-BY-SA-3.0-AT</item>
@@ -206,6 +210,7 @@
       <item>Glulxe</item>
       <item>HPND</item>
       <item>HPND-sell-variant</item>
+      <item>HTMLTIDY</item>
       <item>HaskellReport</item>
       <item>Hippocratic-2.1</item>
       <item>IBM-pibs</item>
@@ -252,6 +257,7 @@
       <item>MIT-advertising</item>
       <item>MIT-enna</item>
       <item>MIT-feh</item>
+      <item>MIT-open-group</item>
       <item>MITNFA</item>
       <item>MPL-1.0</item>
       <item>MPL-1.1</item>
@@ -515,6 +521,7 @@
     </list>
 
     <contexts>
+
       <context name="Normal" attribute="SPDX Tag" lineEndContext="#pop">
         <WordDetect String="SPDX-License-Identifier:" attribute="SPDX Tag" context="license-expression" />
         <keyword String="tags" attribute="SPDX Tag" />
@@ -536,13 +543,13 @@
     </contexts>
 
     <itemDatas>
-      <itemData name="SPDX Tag" defStyleNum="dsAnnotation" italic="true" />
-      <itemData name="SPDX Value" defStyleNum="dsAnnotation" italic="true" />
-      <itemData name="SPDX License" defStyleNum="dsAnnotation" italic="true" />
-      <itemData name="SPDX License Exception" defStyleNum="dsAnnotation" italic="true" />
-      <itemData name="SPDX Deprecated License" defStyleNum="dsAnnotation" italic="true" />
-      <itemData name="SPDX Deprecated License Exception" defStyleNum="dsAnnotation" italic="true" />
-      <itemData name="SPDX License Expression Operator" defStyleNum="dsOperator" italic="true" />
+      <itemData name="SPDX Tag" defStyleNum="dsAnnotation" italic="true" spellChecking="false" />
+      <itemData name="SPDX Value" defStyleNum="dsAnnotation" italic="true" spellChecking="false" />
+      <itemData name="SPDX License" defStyleNum="dsAnnotation" italic="true" spellChecking="false" />
+      <itemData name="SPDX License Exception" defStyleNum="dsAnnotation" italic="true" spellChecking="false" />
+      <itemData name="SPDX Deprecated License" defStyleNum="dsAnnotation" italic="true" spellChecking="false" />
+      <itemData name="SPDX Deprecated License Exception" defStyleNum="dsAnnotation" italic="true" spellChecking="false" />
+      <itemData name="SPDX License Expression Operator" defStyleNum="dsOperator" italic="true" spellChecking="false" />
     </itemDatas>
 
   </highlighting>

@@ -26,7 +26,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 -->
 
 
-<language name="Go" version="6" kateversion="5.0" section="Sources" indenter="cstyle" extensions="*.go" author="Miquel Sabaté (mikisabate@gmail.com)" license="GPLv2+">
+<language name="Go" version="7" kateversion="5.0" section="Sources" indenter="cstyle" extensions="*.go" author="Miquel Sabaté (mikisabate@gmail.com)" license="GPLv2+">
     <highlighting>
     <list name="keywords">
 <!-- Keywords have been taken from The Go Programming Language Specification -> Keywords section -->
@@ -162,7 +162,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
       <itemData name="Hex"          defStyleNum="dsBaseN" spellChecking="false"/>
       <itemData name="Float"        defStyleNum="dsFloat" spellChecking="false"/>
       <itemData name="Char"         defStyleNum="dsChar"   spellChecking="false"/>
-      <itemData name="Symbol"       defStyleNum="dsNormal" spellChecking="false"/>
+      <itemData name="Symbol"       defStyleNum="dsOperator" spellChecking="false"/>
     </itemDatas>
     </highlighting>
   <general>

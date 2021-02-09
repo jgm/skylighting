@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="GLSL" section="3D" extensions="*.glsl;*.vert;*.vs;*.frag;*.fs;*.geom;*.gs;*.tcs;*.tes" mimetype="text/x-glslsrc" version="7" kateversion="5.0" author="Oliver Richers (o.richers@tu-bs.de)" license="LGPL">
+<language name="GLSL" section="3D" extensions="*.glsl;*.vert;*.vs;*.frag;*.fs;*.geom;*.gs;*.tcs;*.tes" mimetype="text/x-glslsrc" version="8" kateversion="5.0" author="Oliver Richers (o.richers@tu-bs.de)" license="LGPL">
 	<highlighting>
 		<list name="keywords">
 			<item>break</item>
@@ -1198,7 +1198,7 @@
 			<itemData name="Octal"          defStyleNum="dsBaseN"/>
 			<itemData name="Hex"            defStyleNum="dsBaseN"/>
 			<itemData name="Float"          defStyleNum="dsFloat"/>
-			<itemData name="Symbol"         defStyleNum="dsNormal"/>
+			<itemData name="Symbol"         defStyleNum="dsOperator"/>
 			<itemData name="Preprocessor"   defStyleNum="dsPreprocessor"/>
 			<itemData name="Comment"        defStyleNum="dsComment"/>
 		</itemDatas>

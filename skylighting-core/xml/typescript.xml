@@ -61,7 +61,7 @@
 -->
 
 <language name="TypeScript"
-          version="11"
+          version="12"
           kateversion="5.53"
           section="Scripts"
           extensions="*.ts"
@@ -328,7 +328,8 @@
 		<context name="Normal-ParametersOverridden" attribute="Normal Text" lineEndContext="#stay">
 			<IncludeRules context="Normal Pt1" />
 			<IncludeRules context="Normal Pt2" />
-			<RegExpr context="#stay" attribute="Parameter" String="&parameter;" />
+			<!-- unrecheable by Regex=&identifier; in "JSBase##JavaScript" included by "Normal Pt2"
+			<RegExpr context="#stay" attribute="Parameter" String="&parameter;" />-->
 		</context>
 		<context name="ConditionalExpressionEnd" attribute="Normal Text" lineEndContext="#stay">
 			<AnyChar context="#pop" String=";,}])" lookAhead="true" />
@@ -579,7 +580,6 @@
 			<RegExpr context="#stay" attribute="Object Member" String="&identifier;(?=&objectPoint;)" />
 			<RegExpr context="#pop!NoRegExp" attribute="Object Member" String="&identifier;" />
 			<IncludeRules context="NoRegExp" />
-			<DetectSpaces />
 
 			<!-- Generic functions -->
 			<keyword context="#pop!NoRegExp" attribute="Function Name" String="functions" />

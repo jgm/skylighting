@@ -7,7 +7,7 @@
   <!ENTITY wikiLinkWithDescription "\[\[[^]|]*\|[^]]*\]\]">
   <!ENTITY wikiLinkWithoutDescription "\[\[[^]|]*\]\]">
 ]>
-<language name="MediaWiki" section="Markup" version="10" kateversion="5.53" extensions="*.mediawiki" mimetype="" license="FDL" >
+<language name="MediaWiki" section="Markup" version="11" kateversion="5.53" extensions="*.mediawiki" mimetype="" license="FDL" >
   <highlighting>
     <contexts>
       <context attribute="Normal" lineEndContext="#stay" name="normal" >
@@ -81,7 +81,6 @@
         <RegExpr String="[&lt;][^&gt;]+[&gt;]" attribute="HtmlTag" context="#stay" />
         <RegExpr String="={6,} *$" context="#pop" attribute="Normal" />
         <RegExpr String="={5,5} *$" context="#pop" attribute="Section" />
-        <RegExpr String="={1,4} *$" context="#pop" attribute="Normal" />
         <RegExpr String="={1,4} *$" context="#pop" attribute="Normal" />
         <RegExpr String="=*[^=]+$" context="#pop" attribute="Normal" />
       </context>
@@ -484,7 +483,6 @@
       <context name="UnderlinedItalic" attribute="ItalicUnderlined" lineEndContext="#pop" >
         <IncludeRules context="FindTemplate" />
         <Detect2Chars char="'" char1="'" context="#pop" attribute="WikiTag" />
-        <StringDetect String="'''" context="ItalicUnderlinedBold" attribute="WikiTag" />
         <IncludeRules context="FindWikiLinkBeingItalicUnderlined" />
       </context>
       <context name="BoldItalicUnderlined" attribute="BoldItalicUnderlined" lineEndContext="#pop" >

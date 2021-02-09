@@ -1,5 +1,5 @@
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="C#" version="9" kateversion="5.0" section="Sources" extensions="*.cs" mimetype="text/x-csharp-src;text/x-csharp-hde" indenter="cstyle" style="C++">
+<language name="C#" version="10" kateversion="5.0" section="Sources" extensions="*.cs" mimetype="text/x-csharp-src;text/x-csharp-hde" indenter="cstyle" style="C++">
   <highlighting>
     <list name="keywords">
       <item>abstract</item>
@@ -158,7 +158,7 @@
       <itemData name="String"       defStyleNum="dsString"/>
       <itemData name="String Char"  defStyleNum="dsSpecialChar"/>
       <itemData name="Comment"      defStyleNum="dsComment"/>
-      <itemData name="Symbol"       defStyleNum="dsNormal"/>
+      <itemData name="Symbol"       defStyleNum="dsOperator"/>
     </itemDatas>
   </highlighting>
   <general>

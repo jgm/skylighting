@@ -17,7 +17,7 @@
    * QML
    * CoffeeScript (embedded)
 -->
-<language name="JavaScript" version="17" kateversion="5.53" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
+<language name="JavaScript" version="18" kateversion="5.53" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
 
@@ -1791,7 +1791,6 @@
         <RegExpr attribute="Object Member" context="#stay" String="&identifier;(?=\s*\.)" />
         <RegExpr attribute="Object Member" context="#pop!NoRegExp" String="&identifier;" />
         <IncludeRules context="NoRegExp" />
-        <DetectSpaces />
 
         <!-- Generic Functions -->
         <keyword attribute="Function Name" context="#pop!NoRegExp" String="functions" />

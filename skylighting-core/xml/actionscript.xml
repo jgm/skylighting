@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="ActionScript 2.0" version="8" kateversion="5.62" section="Sources" extensions="*.as" mimetype="text/x-actionscript" license="LGPL" author="Aaron Miller (armantic101@gmail.com)">
+<language name="ActionScript 2.0" version="9" kateversion="5.62" section="Sources" extensions="*.as" mimetype="text/x-actionscript" license="LGPL" author="Aaron Miller (armantic101@gmail.com)">
   <highlighting>
     
     <list name="properties">
@@ -308,7 +308,7 @@
       <itemData name="String"       defStyleNum="dsString"/>
       <itemData name="String Char"  defStyleNum="dsSpecialString"/>
       <itemData name="Comment"      defStyleNum="dsComment"/>
-      <itemData name="Symbol"       defStyleNum="dsNormal"/>
+      <itemData name="Symbol"       defStyleNum="dsOperator"/>
       <itemData name="Properties"   defStyleNum="dsAttribute" bold="1"/>
       <itemData name="Global Functions"   defStyleNum="dsFunction" bold="1"/>
       <itemData name="Classes"   defStyleNum="dsBuiltIn" bold="1"/>

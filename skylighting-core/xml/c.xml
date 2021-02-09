@@ -10,7 +10,7 @@
     <!ENTITY pphash "&ispphash;\s*">
 ]>
 <language name="C" section="Sources"
-          version="12" kateversion="5.0"
+          version="13" kateversion="5.0"
           indenter="cstyle"
           extensions="*.c;*.C;*.h"
           mimetype="text/x-csrc;text/x-c++src;text/x-chdr"
@@ -269,7 +269,7 @@
       <itemData name="String"       defStyleNum="dsString"/>
       <itemData name="String Char"  defStyleNum="dsSpecialChar"/>
       <itemData name="Comment"      defStyleNum="dsComment"/>
-      <itemData name="Symbol"       defStyleNum="dsNormal" spellChecking="false"/>
+      <itemData name="Symbol"       defStyleNum="dsOperator" spellChecking="false"/>
       <itemData name="Preprocessor" defStyleNum="dsPreprocessor" spellChecking="false"/>
       <itemData name="Prep. Lib"    defStyleNum="dsImport" spellChecking="false"/>
       <itemData name="Region Marker" defStyleNum="dsRegionMarker" spellChecking="false"/>

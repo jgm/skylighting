@@ -24,7 +24,7 @@
 <language
     name="ISO C++"
     section="Sources"
-    version="21"
+    version="23"
     kateversion="5.0"
     indenter="cstyle"
     style="C++"
@@ -410,7 +410,7 @@
       </context>
 
       <context name="IntSuffixPattern" attribute="Error" lineEndContext="#pop#pop" fallthrough="true" fallthroughContext="NumericSuffixError">
-        <RegExpr attribute="Standard Suffix" context="NumericSuffixError" String="[Uu][Ll]{0,2}|[Ll]{0,2}[Uu]?" />
+        <RegExpr attribute="Standard Suffix" context="NumericSuffixError" String="([Uu][Ll]{0,2}|[Ll]{0,2}[Uu]?)\b" />
         <!-- https://en.cppreference.com/w/cpp/language/user_literal#Standard_library -->
         <RegExpr attribute="Standard Classes" context="NumericSuffixError" String="(?:i[fl]?|min|[mun]?s|[hyd])\b" />
         <DetectChar attribute="Error" context="#pop!NumericUserSuffixPattern" char="_" lookAhead="true" />
@@ -806,8 +806,8 @@
       <itemData name="String"             defStyleNum="dsString"    spellChecking="true"  />
       <itemData name="String Char"        defStyleNum="dsSpecialChar" spellChecking="false" />
       <itemData name="Comment"            defStyleNum="dsComment"   spellChecking="true"  />
-      <itemData name="Symbol"             defStyleNum="dsNormal"    spellChecking="false" />
-      <itemData name="Separator Symbol"   defStyleNum="dsNormal"    spellChecking="false" />
+      <itemData name="Symbol"             defStyleNum="dsOperator"  spellChecking="false" />
+      <itemData name="Separator Symbol"   defStyleNum="dsOperator"  spellChecking="false" />
       <itemData name="Data Members (m_*)" defStyleNum="dsVariable"  spellChecking="false" />
       <itemData name="Globals (g_*)"      defStyleNum="dsVariable"  spellChecking="false" />
       <itemData name="Statics (s_*)"      defStyleNum="dsVariable"  spellChecking="false" />

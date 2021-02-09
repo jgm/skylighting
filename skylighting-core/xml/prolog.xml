@@ -101,11 +101,11 @@ to make the rules more expressive. -->
     <!ENTITY comma	",">
     <!ENTITY cut        "!">
     <!ENTITY bar        "|">
-    <!ENTITY tab	"	">
+    <!ENTITY tab	"&#x9;">
     <!ENTITY bs         "\">
 ]>
 <language name="Prolog" section="Sources"
-	  version="13" kateversion="5.62"
+	  version="14" kateversion="5.62"
 	  mimetype="text/x-prolog"
 	  extensions="*.prolog;*.dcg;*.pro"
 	  author="Torsten Eichstädt (torsten.eichstaedt@web.de)"

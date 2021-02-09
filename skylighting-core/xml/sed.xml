@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="sed" section="Scripts" version="5" kateversion="5.0" extensions="*.sed" mimetype="text/x-sed" author="Bart Sas (bart.sas@gmail.com)" license="GPL">
+<language name="sed" section="Scripts" version="6" kateversion="5.0" extensions="*.sed" mimetype="text/x-sed" author="Bart Sas (bart.sas@gmail.com)" license="GPL">
         <highlighting>
                 <contexts>
                         <context name="BeginningOfLine" attribute="Normal" lineEndContext="#stay">
@@ -14,7 +14,6 @@
                                 <DetectChar char=":"     attribute="Label"       context="Label"/>
                                 <DetectChar char="!"     attribute="Negation"    context="Command"/>
                                 <IncludeRules                                    context="Command"/>
-                                <RegExpr String="\S"     attribute="Error"       context="Error"/>
                         </context>
 
                         <context name="FirstAddressRegex" attribute="Regex" lineEndContext="Error" dynamic="true">
@@ -28,7 +27,6 @@
                                 <DetectSpaces/>
                                 <DetectChar char="!" attribute="Negation" context="Command"/>
                                 <IncludeRules                             context="AfterFirstAddress2"/>
-                                <RegExpr String="\S" attribute="Error"    context="Error"/>
                         </context>
 
                         <context name="AfterFirstAddress2" attribute="Normal" lineEndContext="BeginningOfLine">
@@ -36,7 +34,6 @@
                                 <DetectChar char="," attribute="Normal" context="SecondAddress"/>
                                 <DetectChar char="~" attribute="Normal" context="Step"/>
                                 <IncludeRules                           context="Command"/>
-                                <RegExpr String="\S" attribute="Error"  context="Error"/>
                         </context>
 
                         <context name="SecondAddress" attribute="Normal" lineEndContext="Error">
@@ -59,7 +56,6 @@
                                 <DetectSpaces/>
                                 <DetectChar char="!" attribute="Negation" context="Command"/>
                                 <IncludeRules                             context="Command"/>
-                                <RegExpr String="\S" attribute="Error"    context="Error"/>
                         </context>
 
                         <context name="Step" attribute="Normal" lineEndContext="Error">

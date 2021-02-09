@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <!-- Based on haskell.xml and idris.vim (https://github.com/idris-hackers/idris-vim/blob/6bdb44b85406b75e3b3a4fa265deab1dbe8c6ff1/syntax/idris.vim) -->
-<language name="Idris" version="5" kateversion="5.0" section="Sources" extensions="*.idr" author="Alexander Shabalin" license="LGPL">
+<language name="Idris" version="6" kateversion="5.0" section="Sources" extensions="*.idr" author="Alexander Shabalin" license="LGPL">
   <highlighting>
   <list name="keywords">
     <item>abstract</item>
@@ -109,7 +109,6 @@
         <DetectChar attribute="String" context="string" char="&quot;" />
         <Int attribute="Decimal" context="#stay" />
         <RegExpr attribute="Hex" context="#stay" String="0[Xx][0-9A-Fa-f]+"/>
-        <RegExpr attribute="Octal" context="#stay" String="0[Xx][0-9A-Fa-f]+"/>
         <RegExpr attribute="Float" context="#stay" String="\d+\.\d+([eE][-+]?\d+)?" />
         <RegExpr attribute="Type" context="#stay" String="([A-Z][a-zA-Z0-9_]*'*|_\|_)" />
         <RegExpr attribute="Normal" context="#stay" String="[a-z][a-zA-Z0-9_]*'*" />
@@ -159,7 +158,6 @@
     <itemData name="String" defStyleNum="dsString" spellChecking="true" />
     <itemData name="Decimal" defStyleNum="dsDecVal" spellChecking="false" />
     <itemData name="Hex" defStyleNum="dsBaseN" spellChecking="false" />
-    <itemData name="Octal" defStyleNum="dsBaseN" spellChecking="false" />
     <itemData name="Float" defStyleNum="dsFloat" spellChecking="false" />
     <itemData name="Type" defStyleNum="dsDataType" spellChecking="false" />
     <itemData name="MetaVar" defStyleNum="dsOthers" spellChecking="false" />

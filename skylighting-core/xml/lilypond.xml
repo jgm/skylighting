@@ -43,11 +43,11 @@
   <!ENTITY engraver0 "Accidental|Ambitus|Arpeggio|Auto_beam|Axis_group|Balloon|Bar|Bar_number|Beam|Bend|Break_align|Breathing_sign|Chord_name|Chord_tremolo|Clef|Cluster_spanner|Collision|Completion_heads|Custos|Default_bar_line|Dot_column|Dots|Drum_notes|Dynami_align|Dynamic|Episema|Extender|Figured_bass|Figured_bass_position|Fingering|Font_size|Forbid_line_break|Fretboard|Glissando|Grace_beam|Grace|Grace_spacing|Grid_line_span|Grid_point|Grob_pq|Hara_kiri|Horizontal_bracket">
   <!ENTITY engraver1 "Hyphen|Instrument_name|Instrument_switch|Key|Laissez_vibrer|Ledger_line|Ligature_bracket|Lyric|Mark|Measure_grouping|Melody|Mensural_ligature|Metronome_mark|Multi_measure_rest|New_dynamic|New_fingering|Note_head_line|Note_heads|Note_name|Note_spacing|Ottava_spanner|Output_property|Page_turn|Paper_column|Parenthesis|Part_combine|Percent_repeat|Phrasing_slur|Piano_pedal_align|Piano_pedal|Pitch_squash|Pitched_trill|Repeat_acknowledge|Repeat_tie|Rest_collision|Rest|Rhythmic_column|Scheme|Script_column|Script|Script_row">
   <!ENTITY engraver2 "Separating_line_group|Slash_repeat|Slur|Spacing|Span_arpeggio|Span_bar|Spanner_break_forbid|Staff_collecting|Staff_symbol|Stanza_number_align|Stanza_number|Stem|String_number|Swallow|System_start_delimiter|Tab_harmonic|Tab_note_heads|Tab_staff_symbol|Text|Text_spanner|Tie|Time_signature|Trill_spanner|Tuplet|Tweak|Vaticana_ligature|Vertical_align|Vertically_spaced_contexts|Volta">
-  <!ENTITY engravers00 "(&engraver0;)_engraver">
-  <!ENTITY engravers01 "(&engraver1;)_engraver">
-  <!ENTITY engravers02 "(&engraver2;)_engraver">
-  <!ENTITY engravers1 "(&performer;)_performer">
-  <!ENTITY engravers2 "(&translator;)_translator">
+  <!ENTITY engravers00 "(?:&engraver0;)_engraver">
+  <!ENTITY engravers01 "(?:&engraver1;)_engraver">
+  <!ENTITY engravers02 "(?:&engraver2;)_engraver">
+  <!ENTITY engravers1 "(?:&performer;)_performer">
+  <!ENTITY engravers2 "(?:&translator;)_translator">
 
   <!ENTITY schemename "[a-zA-Z#][^\s(){}[\];$&quot;]*">
   <!ENTITY schemefunc0 "\b(define|defined\?|define\*(-public)?|define-(\*|builtin-markup-(list-)?command|class|(extra-)?display-method|fonts?|grob-property|ly-syntax(-loc|-simple)?|macro(-public)?|markup-(list-)command|method|module|music-function|post-event-display-method|public(-macro|-toplevel)?|safe-public|span-event-display-method)|defmacro(\*(-public)?)?|lambda\*?|and|or|if|cond|case|let\*?|letrec|begin|do|delay|set!|else|(quasi)?quote|unquote(-splicing)?|(define|let|letrec)-syntax|syntax-rules)(?=($|\s|\)))">
@@ -56,7 +56,7 @@
 ]>
 <language name="LilyPond" section="Other"
           style="lilypond" indenter="lilypond"
-          version="8" kateversion="5.0"
+          version="9" kateversion="5.0"
           extensions="*.ly;*.LY;*.ily;*.ILY;*.lyi;*.LYI"
           mimetype="text/x-lilypond"
           author="Wilbert Berendsen (info@wilbertberendsen.nl)" license="LGPL">
@@ -1087,11 +1087,11 @@
         <DetectChar char="{" attribute="Keyword" context="sectionrules" beginRegion="section"/>
         <keyword String="contexts" attribute="Context"/>
         <keyword String="deprecatedcontexts" attribute="Deprecated Context"/>
-        <RegExpr String="(&quot;?)\b(&engravers00;)\b\1" attribute="Engraver"/>
-        <RegExpr String="(&quot;?)\b(&engravers01;)\b\1" attribute="Engraver"/>
-        <RegExpr String="(&quot;?)\b(&engravers02;)\b\1" attribute="Engraver"/>
-        <RegExpr String="(&quot;?)\b(&engravers1;)\b\1" attribute="Engraver"/>
-        <RegExpr String="(&quot;?)\b(&engravers2;)\b\1" attribute="Engraver"/>
+        <RegExpr String="(&quot;?)\b(?:&engravers00;)\b\1" attribute="Engraver"/>
+        <RegExpr String="(&quot;?)\b(?:&engravers01;)\b\1" attribute="Engraver"/>
+        <RegExpr String="(&quot;?)\b(?:&engravers02;)\b\1" attribute="Engraver"/>
+        <RegExpr String="(&quot;?)\b(?:&engravers1;)\b\1" attribute="Engraver"/>
+        <RegExpr String="(&quot;?)\b(?:&engravers2;)\b\1" attribute="Engraver"/>
         <keyword String="layoutobjects" attribute="Layout Object"/>
         <keyword String="properties" attribute="Property"/>
         <RegExpr String="\b(&headervars;|&papervars;|&layoutvars;)\b" attribute="Variable"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <language name="Ada"
-          version="5"
+          version="6"
           kateversion="5.0"
           section="Sources"
           extensions="*.adb;*.ads;*.ada;*.a"
@@ -189,7 +189,7 @@
       <itemData name="Char"        defStyleNum="dsChar" />
       <itemData name="String"      defStyleNum="dsString" />
       <itemData name="Comment"     defStyleNum="dsComment" />
-      <itemData name="Symbol"      defStyleNum="dsNormal"/>
+      <itemData name="Symbol"      defStyleNum="dsOperator"/>
       <itemData name="Region Marker" defStyleNum="dsRegionMarker" />
     </itemDatas>
   </highlighting>

@@ -43,7 +43,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 -->
 
-<language name="GNU Assembler" version="5" kateversion="5.0" section="Assembler" extensions="*.s;*.S" mimetype="text/x-asm" author="John Zaitseff (J.Zaitseff@zap.org.au), Roland Pabel (roland@pabel.name), Miquel Sabaté (mikisabate@gmail.com)" license="GPLv2+">
+<language name="GNU Assembler" version="7" kateversion="5.0" section="Assembler" extensions="*.s;*.S" mimetype="text/x-asm" author="John Zaitseff (J.Zaitseff@zap.org.au), Roland Pabel (roland@pabel.name), Miquel Sabaté (mikisabate@gmail.com)" license="GPLv2+">
   <highlighting>
     <list name="keywords">
       <item>.abort</item>
@@ -235,7 +235,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
-        <RegExpr      attribute="Label" context="#stay" String="[_\w\d-]*\s*:" />
+        <RegExpr      attribute="Label" context="#stay" String="[\.]?[_\w\d-]*\s*:" />
         <keyword      attribute="Keyword" context="#stay" String="keywords"/>
         <HlCOct       attribute="Octal" context="#stay" />
         <HlCHex       attribute="Hex" context="#stay" />
@@ -287,7 +287,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
       <itemData name="Char"         defStyleNum="dsChar"     />
       <itemData name="String"       defStyleNum="dsString"   />
       <itemData name="String Char"  defStyleNum="dsSpecialChar" />
-      <itemData name="Symbol"       defStyleNum="dsNormal"   />
+      <itemData name="Symbol"       defStyleNum="dsOperator" />
       <itemData name="Comment"      defStyleNum="dsComment"  />
       <itemData name="Preprocessor" defStyleNum="dsPreprocessor" />
     </itemDatas>
