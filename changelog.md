@@ -4,6 +4,19 @@
 
   * Add support for raku (#114).
 
+  * Reimplement PR #40 and add haskell.xml.patch (#116).
+
+  * Update syntax definitions: actionscript ada asp awk bash
+    bibtex boo c cmake cpp cs d elm email fasm fsharp glsl
+    gnuassembler go haskell haskell idris isocpp
+    javascript julia latex lilypond makefile mediawiki metafont
+    mustache objectivec objectivecpp octave opencl perl php
+    php powershell prolog purebasic raku rest ruby sed
+    spdx-comments sql-mysql sql-postgresql sql typescript
+    verilog vhdl.
+
+  * Fix php.xml.patch so it applies again.
+
 ## 0.10.2
 
   * Update syntax definitions for abc, actionscript, asn1, ats,
