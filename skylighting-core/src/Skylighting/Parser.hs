@@ -58,15 +58,15 @@ defaultKeywordAttr :: KeywordAttr
 defaultKeywordAttr = KeywordAttr { keywordCaseSensitive = True
                                  , keywordDelims = standardDelims }
 
-vBool :: Bool -> Maybe Text -> Bool
+vBool :: Bool -> Text -> Bool
 vBool defaultVal value = case value of
-                           Just "true"  -> True
-                           Just "yes"   -> True
-                           Just "1"     -> True
-                           Just "false" -> False
-                           Just "no"    -> False
-                           Just "0"     -> False
-                           _            -> defaultVal
+                           "true"  -> True
+                           "yes"   -> True
+                           "1"     -> True
+                           "false" -> False
+                           "no"    -> False
+                           "0"     -> False
+                           _       -> defaultVal
 
 -- | Parses a file containing a Kate XML syntax definition
 -- into a 'Syntax' description.
@@ -89,12 +89,15 @@ documentToSyntax fp Document{ documentRoot = rootEl } = do
   unless (elementName rootEl == "language") $
     throwError "Root element is not language"
   let filename = takeFileName fp
-  let rootAttr = elementAttributes rootEl
-  let casesensitive = vBool True $ M.lookup "casesensitive" rootAttr
+  let casesensitive = vBool True $ getAttrValue "casesensitive" rootEl
 
-  lists <- undefined
+  hlEl <- case getElementsNamed "highlighting" rootEl of
+            []      -> throwError "No highlighting element"
+            (hl:_)  -> return hl
 
-  itemDatas <- undefined
+  lists <- M.fromList <$> mapM getList (getElementsNamed "list" hlEl)
+
+  let itemDatas = getItemData hlEl
 
   defKeywordAttr <- undefined
 
@@ -110,17 +113,15 @@ documentToSyntax fp Document{ documentRoot = rootEl } = do
                        []    -> throwError "No contexts"
 
   return Syntax{
-             sName       = fromMaybe "" $ M.lookup "name" rootAttr
+             sName       = getAttrValue "name" rootEl
            , sFilename   = filename
            , sShortname  = T.pack $ pathToLangName filename
-           , sAuthor     = fromMaybe "" $ M.lookup "author" rootAttr
-           , sVersion    = fromMaybe "" $ M.lookup "version" rootAttr
-           , sLicense    = fromMaybe "" $ M.lookup "license" rootAttr
-           , sExtensions = case M.lookup "extensions" rootAttr of
-                             Nothing -> []
-                             Just t -> words $ map
-                                         (\c -> if c == ';' then ' ' else c)
-                                         $ T.unpack t
+           , sAuthor     = getAttrValue "author" rootEl
+           , sVersion    = getAttrValue "version" rootEl
+           , sLicense    = getAttrValue "license" rootEl
+           , sExtensions = words $ map (\c -> if c == ';' then ' ' else c)
+                                 $ T.unpack
+                                 $ getAttrValue "extensions" rootEl
            , sContexts   = M.fromList
                   [(cName c, c) | c <- contexts]
            , sStartingContext = startingContext
@@ -134,18 +135,42 @@ getElementsNamed :: String -> Element -> [Element]
 getElementsNamed name node =
   [el | NodeElement el <- filter (elementNamed name) (elementNodes node)]
 
+getAttrValue :: String -> Element -> Text
+getAttrValue key el = fromMaybe mempty $ M.lookup (String.fromString key)
+                                       $ elementAttributes el
+
+getTextContent :: Element -> Text
+getTextContent el =
+  mconcat [t | NodeContent t <- elementNodes el]
+
+getList :: Element -> Except String (Text, [Text])
+getList el = do
+  case M.lookup "name" (elementAttributes el) of
+    Nothing   -> throwError "No name attribute on list"
+    Just name ->
+      return (name, map (T.strip . getTextContent)
+                        (getElementsNamed "item" el))
+
+
 getContext :: Bool
            -> FilePath
-           -> [ItemData]
-           -> [(Text, [Text])]
+           -> ItemData
+           -> M.Map Text [Text]
            -> KeywordAttr
            -> Element
            -> Except String Context
 getContext casesensitive name itemDatas lists defKeywordAttr = do
   undefined
 
--- 
+getItemData :: Element -> ItemData
+getItemData el = toItemDataTable $
+  [(getAttrValue "name" el, getAttrValue "defStyleNum" el)
+    | el <- (getElementsNamed "itemDatas" el >>= getElementsNamed "itemData")
+  ]
+
+
 -- getItemDatas :: IOSArrow XmlTree [(String,String)]
+--
 -- getItemDatas =
 --   multi (hasName "itemDatas")
 --      >>>
@@ -155,23 +180,6 @@ getContext casesensitive name itemDatas lists defKeywordAttr = do
 --              >>>
 --              getAttrValue "name" &&& getAttrValue "defStyleNum")
 -- 
--- getLists :: IOSArrow XmlTree [(String, [String])]
--- getLists =
---   listA $ multi (hasName "list")
---      >>>
---      getAttrValue "name" &&& getListContents
--- 
--- getListContents :: IOSArrow XmlTree [String]
--- getListContents =
---   listA $ getChildren
---      >>>
---      hasName "item"
---      >>>
---      getChildren
---      >>>
---      getText
---      >>>
---      arr T.strip
 -- 
 -- getContexts ::
 --      (Bool,
