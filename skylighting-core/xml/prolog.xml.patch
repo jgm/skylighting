@@ -1,0 +1,13 @@
+diff --git a/skylighting-core/xml/prolog.xml b/skylighting-core/xml/prolog.xml
+index e7f2bff..678a8b9 100644
+--- a/skylighting-core/xml/prolog.xml
++++ b/skylighting-core/xml/prolog.xml
+@@ -30,7 +30,7 @@
+  **********************************************************************
+ -->
+ <!DOCTYPE language SYSTEM "language.dtd"
+-[<!-- [Regular Expressions, Character Classes & Important Tokens]
++[<!-- Regular Expressions, Character Classes & Important Tokens
+ E.g. the dot "." has so many different meanings (i.e. in an RegExpr 'any char',
+ 'fullstop' of a clause, etc. pp.) that I decided it's usefull to write these out
+ to make the rules more expressive. -->

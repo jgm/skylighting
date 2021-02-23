@@ -1,20 +1,22 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Skylighting.Parser ( parseSyntaxDefinition
-                          , parseSyntaxDefinitionFromLBS
+                          , parseSyntaxDefinitionFromText
                           , addSyntaxDefinition
                           , missingIncludes
                           ) where
 
 import qualified Data.String as String
-import Data.ByteString.UTF8 (fromString, toString)
-import qualified Data.ByteString as BS
-import qualified Data.ByteString.Lazy as BL
+import qualified Data.ByteString.Lazy.Char8 as BL
 import Data.Char (isAlphaNum, toUpper)
 import qualified Data.Map as M
 import Data.Maybe (fromMaybe)
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as T
+import qualified Data.Text.Lazy as TL
+import qualified Data.Text.Lazy.Encoding as TLE
+import qualified Data.Text.Read as TR
+import qualified Data.Text.Encoding as TE
 import Safe
 import Skylighting.Regex
 import Skylighting.Types
@@ -71,13 +73,21 @@ vBool defaultVal value = case value of
 -- | Parses a file containing a Kate XML syntax definition
 -- into a 'Syntax' description.
 parseSyntaxDefinition :: FilePath -> IO (Either String Syntax)
-parseSyntaxDefinition fp =
-  parseSyntaxDefinitionFromLBS fp <$> BL.readFile fp
+parseSyntaxDefinition fp = do
+  bs <- BL.readFile fp
+  return $ parseSyntaxDefinitionFromText fp (toTextLazy bs)
+ where
+  toTextLazy = TLE.decodeUtf8 . filterCRs . dropBOM
+  dropBOM bs =
+         if "\xEF\xBB\xBF" `BL.isPrefixOf` bs
+            then BL.drop 3 bs
+            else bs
+  filterCRs = BL.filter (/='\r')
 
-parseSyntaxDefinitionFromLBS ::
-  FilePath -> BL.ByteString -> Either String Syntax
-parseSyntaxDefinitionFromLBS fp xml =
-    case parseLBS def xml of
+parseSyntaxDefinitionFromText ::
+  FilePath -> TL.Text -> Either String Syntax
+parseSyntaxDefinitionFromText fp xml =
+    case parseText def xml of
       Left e    -> Left $ E.displayException e
       Right doc -> runExcept $ documentToSyntax fp doc
 
@@ -99,13 +109,13 @@ documentToSyntax fp Document{ documentRoot = rootEl } = do
 
   let itemDatas = getItemData hlEl
 
-  defKeywordAttr <- undefined
+  let defKeywordAttr = getKeywordAttrs rootEl
 
-  contextEls <- case getElementsNamed "contexts" rootEl of
-                  []  -> throwError "No contexts element"
-                  (cel:_) -> return $ getElementsNamed "context" cel
+  let contextEls = getElementsNamed "contexts" hlEl >>=
+                   getElementsNamed "context"
   contexts <- mapM
-    (getContext casesensitive filename itemDatas lists defKeywordAttr)
+    (getContext casesensitive (T.pack filename)
+        itemDatas lists defKeywordAttr)
     contextEls
 
   startingContext <- case contexts of
@@ -151,192 +161,145 @@ getList el = do
       return (name, map (T.strip . getTextContent)
                         (getElementsNamed "item" el))
 
+getParser :: Bool -> Text -> ItemData -> M.Map Text [Text] -> KeywordAttr
+          -> Text -> Element -> Except String Rule
+getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
+  let name = nameLocalName . elementName $ el
+  let attribute = getAttrValue "attribute" el
+  let context = getAttrValue "context" el
+  let char0 = readChar $ getAttrValue "char" el
+  let char1 = readChar $ getAttrValue "char1" el
+  let str' = getAttrValue "String" el
+  let insensitive = vBool (not casesensitive) $ getAttrValue "insensitive" el
+  let includeAttrib = vBool False $ getAttrValue "includeAttrib" el
+  let lookahead = vBool False $ getAttrValue "lookAhead" el
+  let firstNonSpace = vBool False $ getAttrValue "firstNonSpace" el
+  let column' = getAttrValue "column" el
+  let dynamic = vBool False $ getAttrValue "dynamic" el
+  children <- mapM (getParser casesensitive
+                    syntaxname itemdatas lists kwattr attribute)
+                  [e | NodeElement e <- elementNodes el ]
+  let tildeRegex = name == "RegExpr" && T.take 1 str' == "^"
+  let str = if tildeRegex then T.drop 1 str' else str'
+  let column = if tildeRegex
+                  then Just (0 :: Int)
+                  else either (\_ -> Nothing) (Just . fst) $
+                         TR.decimal column'
+  let re = RegExpr RE{ reString = TE.encodeUtf8 str
+                     , reCaseSensitive = not insensitive }
+  let (incsyntax, inccontext) =
+          case T.breakOn "##" context of
+                (_,x) | T.null x -> (syntaxname, context)
+                (cont, lang)     -> (T.drop 2 lang, cont)
+  matcher <- case name of
+                 "DetectChar" -> return $ DetectChar char0
+                 "Detect2Chars" -> return $ Detect2Chars char0 char1
+                 "AnyChar" -> return $ AnyChar $ Set.fromList $ T.unpack str
+                 "RangeDetect" -> return $ RangeDetect char0 char1
+                 "StringDetect" -> return $ StringDetect str
+                 "WordDetect" -> return $ WordDetect str
+                 "RegExpr" -> return $ re
+                 "keyword" -> return $ Keyword kwattr $
+                    maybe (makeWordSet True [])
+                      (makeWordSet (keywordCaseSensitive kwattr))
+                      (M.lookup str lists)
+                 "Int" -> return $ Int
+                 "Float" -> return $ Float
+                 "HlCOct" -> return $ HlCOct
+                 "HlCHex" -> return $ HlCHex
+                 "HlCStringChar" -> return $ HlCStringChar
+                 "HlCChar" -> return $ HlCChar
+                 "LineContinue" -> return $ LineContinue
+                 "IncludeRules" -> return $
+                   IncludeRules (incsyntax, inccontext)
+                 "DetectSpaces" -> return $ DetectSpaces
+                 "DetectIdentifier" -> return $ DetectIdentifier
+                 _ -> throwError $ "Unknown element " ++ T.unpack name
+
+  let contextSwitch = if name == "IncludeRules"
+                         then []  -- is this right?
+                         else parseContextSwitch incsyntax inccontext
+  return $ Rule{ rMatcher = matcher
+               , rAttribute = fromMaybe NormalTok $
+                    if T.null attribute
+                       then M.lookup cattr itemdatas
+                       else M.lookup attribute itemdatas
+               , rIncludeAttribute = includeAttrib
+               , rDynamic = dynamic
+               , rCaseSensitive = not insensitive
+               , rChildren = children
+               , rContextSwitch = contextSwitch
+               , rLookahead = lookahead
+               , rFirstNonspace = firstNonSpace
+               , rColumn = column
+               }
+
 
 getContext :: Bool
-           -> FilePath
+           -> Text
            -> ItemData
            -> M.Map Text [Text]
            -> KeywordAttr
            -> Element
            -> Except String Context
-getContext casesensitive name itemDatas lists defKeywordAttr = do
-  undefined
+getContext casesensitive syntaxname itemDatas lists kwattr el = do
+  let name = getAttrValue "name" el
+  let attribute = getAttrValue "attribute" el
+  let lineEmptyContext = getAttrValue "lineEmptyContext" el
+  let lineEndContext = getAttrValue "lineEndContext" el
+  let lineBeginContext = getAttrValue "lineBeginContext" el
+  let fallthrough = vBool False $ getAttrValue "fallthrough" el
+  let fallthroughContext = getAttrValue "fallthroughContext" el
+  let dynamic = vBool False $ getAttrValue "dynamic" el
+
+  parsers <- mapM (getParser casesensitive
+                    syntaxname itemDatas lists kwattr attribute)
+                  [e | NodeElement e <- elementNodes el ]
+
+  return $ Context {
+            cName = name
+          , cSyntax = syntaxname
+          , cRules = parsers
+          , cAttribute = fromMaybe NormalTok $ M.lookup attribute itemDatas
+          , cLineEmptyContext =
+               parseContextSwitch syntaxname lineEmptyContext
+          , cLineEndContext =
+               parseContextSwitch syntaxname lineEndContext
+          , cLineBeginContext =
+               parseContextSwitch syntaxname lineBeginContext
+          , cFallthrough = fallthrough
+          , cFallthroughContext =
+               parseContextSwitch syntaxname fallthroughContext
+          , cDynamic = dynamic
+          }
 
 getItemData :: Element -> ItemData
 getItemData el = toItemDataTable $
-  [(getAttrValue "name" el, getAttrValue "defStyleNum" el)
-    | el <- (getElementsNamed "itemDatas" el >>= getElementsNamed "itemData")
+  [(getAttrValue "name" e, getAttrValue "defStyleNum" e)
+    | e <- (getElementsNamed "itemDatas" el >>= getElementsNamed "itemData")
   ]
 
+getKeywordAttrs :: Element -> KeywordAttr
+getKeywordAttrs el =
+  case (getElementsNamed "general" el >>= getElementsNamed "keywords") of
+     []    -> defaultKeywordAttr
+     (x:_) ->
+       let weakDelim = T.unpack $ getAttrValue "weakDeliminator" x
+           additionalDelim = T.unpack $ getAttrValue "additionalDeliminator" x
+        in KeywordAttr { keywordCaseSensitive =
+                             vBool True $ getAttrValue "casesensitive" x
+                       , keywordDelims = Set.union standardDelims
+                           (Set.fromList additionalDelim) Set.\\
+                             Set.fromList weakDelim }
 
--- getItemDatas :: IOSArrow XmlTree [(String,String)]
---
--- getItemDatas =
---   multi (hasName "itemDatas")
---      >>>
---      (listA $ getChildren
---              >>>
---              hasName "itemData"
---              >>>
---              getAttrValue "name" &&& getAttrValue "defStyleNum")
--- 
--- 
--- getContexts ::
---      (Bool,
---        (String,
---          (M.Map String TokenType,
---            ([(String, [String])], KeywordAttr))))
---             -> IOSArrow XmlTree [Context]
--- getContexts (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) =
---   listA $ multi (hasName "context")
---      >>>
---      proc x -> do
---        name <- getAttrValue "name" -< x
---        attribute <- getAttrValue "attribute" -< x
---        lineEmptyContext <- getAttrValue "lineEmptyContext" -< x
---        lineEndContext <- getAttrValue "lineEndContext" -< x
---        lineBeginContext <- getAttrValue "lineBeginContext" -< x
---        fallthrough <- arr (vBool False) <<< getAttrValue "fallthrough" -< x
---        fallthroughContext <- getAttrValue "fallthroughContext" -< x
---        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
---        parsers <- getParsers (casesensitive, (syntaxname,
---                                 (itemdatas, (lists, kwattr)))) $<
---                             getAttrValue "attribute" -< x
---        returnA -< Context {
---                      cName = T.pack name
---                    , cSyntax = T.pack syntaxname
---                    , cRules = parsers
---                    , cAttribute = fromMaybe NormalTok $
---                            M.lookup attribute itemdatas
---                    , cLineEmptyContext =
---                         parseContextSwitch syntaxname lineEmptyContext
---                    , cLineEndContext =
---                         parseContextSwitch syntaxname lineEndContext
---                    , cLineBeginContext =
---                         parseContextSwitch syntaxname lineBeginContext
---                    , cFallthrough = fallthrough
---                    , cFallthroughContext =
---                         parseContextSwitch syntaxname fallthroughContext
---                    , cDynamic = dynamic
---                    }
--- 
--- -- Note, some xml files have "\\" for a backslash,
--- -- others have "\".  Not sure what the rules are, but
--- -- this covers both bases:
--- readChar :: String -> Char
--- readChar s = case s of
---                   [c] -> c
---                   _   -> readDef '\xffff' $ "'" ++ s ++ "'"
--- 
--- 
--- getParsers :: (Bool,
---                 (String,
---                   (M.Map String TokenType,
---                     ([(String, [String])], KeywordAttr))))
---             -> String  -- context attribute
---             -> IOSArrow XmlTree [Rule]
--- getParsers (casesensitive, (syntaxname, (itemdatas, (lists, kwattr)))) cattr =
---   listA $ getChildren
---      >>>
---      proc x -> do
---        name <- getName -< x
---        attribute <- getAttrValue "attribute" -< x
---        context <- getAttrValue "context" -< x
---        char0 <- arr readChar <<< getAttrValue "char" -< x
---        char1 <- arr readChar <<< getAttrValue "char1" -< x
---        str' <- getAttrValue "String" -< x
---        insensitive <- arr (vBool (not casesensitive))
---                             <<< getAttrValue "insensitive" -< x
---        includeAttrib <- arr (vBool False) <<< getAttrValue "includeAttrib" -< x
---        lookahead <- arr (vBool False) <<< getAttrValue "lookAhead" -< x
---        firstNonSpace <- arr (vBool False) <<< getAttrValue "firstNonSpace" -< x
---        column' <- getAttrValue "column" -< x
---        dynamic <- arr (vBool False) <<< getAttrValue "dynamic" -< x
---        children <- getParsers
---                      (casesensitive, (syntaxname, (itemdatas, (lists, kwattr))))
---                      cattr -< x
---        let tildeRegex = name == "RegExpr" && take 1 str' == "^"
---        let str = if tildeRegex then drop 1 str' else str'
---        let column = if tildeRegex
---                        then Just (0 :: Int)
---                        else readMay column'
---        let re = RegExpr RE{ reString = fromString str
---                           , reCaseSensitive = not insensitive }
---        let (incsyntax, inccontext) =
---                case break (=='#') context of
---                      (cont, '#':'#':lang) -> (lang, cont)
---                      _                    -> (syntaxname, context)
---        let mbmatcher = case name of
---                          "DetectChar" -> Just $ DetectChar char0
---                          "Detect2Chars" -> Just $ Detect2Chars char0 char1
---                          "AnyChar" -> Just $ AnyChar $ Set.fromList str
---                          "RangeDetect" -> Just $ RangeDetect char0 char1
---                          "StringDetect" -> Just $ StringDetect $ T.pack str
---                          "WordDetect" -> Just $ WordDetect $ T.pack str
---                          "RegExpr" -> Just $ re
---                          "keyword" -> Just $ Keyword kwattr $
---                             maybe (makeWordSet True [])
---                               (makeWordSet (keywordCaseSensitive kwattr) . map T.pack)
---                               (lookup str lists)
---                          "Int" -> Just $ Int
---                          "Float" -> Just $ Float
---                          "HlCOct" -> Just $ HlCOct
---                          "HlCHex" -> Just $ HlCHex
---                          "HlCStringChar" -> Just $ HlCStringChar
---                          "HlCChar" -> Just $ HlCChar
---                          "LineContinue" -> Just $ LineContinue
---                          "IncludeRules" -> Just $
---                            IncludeRules (T.pack incsyntax, T.pack inccontext)
---                          "DetectSpaces" -> Just $ DetectSpaces
---                          "DetectIdentifier" -> Just $ DetectIdentifier
---                          _ -> Nothing
--- 
---        matcher <- case mbmatcher of
---                        Nothing -> none
---                                    <<< applyA (arr issueWarn)
---                                    <<< arr ("Unknown element " ++)
---                                    <<< getName -< x
---                        Just m  -> returnA -< m
--- 
---        let contextSwitch = if name == "IncludeRules"
---                               then []  -- is this right?
---                               else parseContextSwitch incsyntax inccontext
---        returnA -< Rule{ rMatcher = matcher,
---                         rAttribute = fromMaybe NormalTok $
---                            if null attribute
---                               then M.lookup cattr itemdatas
---                               else M.lookup attribute itemdatas,
---                         rIncludeAttribute = includeAttrib,
---                         rDynamic = dynamic,
---                         rCaseSensitive = not insensitive,
---                         rChildren = children,
---                         rContextSwitch = contextSwitch,
---                         rLookahead = lookahead,
---                         rFirstNonspace = firstNonSpace ,
---                         rColumn = column }
--- 
--- getKeywordAttrs :: IOSArrow XmlTree [KeywordAttr]
--- getKeywordAttrs =
---   listA $ multi $ hasName "keywords"
---      >>>
---      proc x -> do
---        caseSensitive <- arr (vBool True) <<< getAttrValue "casesensitive" -< x
---        weakDelim <- getAttrValue "weakDeliminator" -< x
---        additionalDelim <- getAttrValue "additionalDeliminator" -< x
---        returnA -< KeywordAttr
---                          { keywordCaseSensitive = caseSensitive
---                          , keywordDelims = (Set.union standardDelims
---                              (Set.fromList additionalDelim)) Set.\\
---                                 Set.fromList weakDelim }
---
-
-parseContextSwitch :: String -> String -> [ContextSwitch]
-parseContextSwitch _ [] = []
-parseContextSwitch _ "#stay" = []
-parseContextSwitch syntaxname ('#':'p':'o':'p':xs) =
-  Pop : parseContextSwitch syntaxname xs
-parseContextSwitch syntaxname ('!':xs) = [Push (T.pack syntaxname, T.pack xs)]
-parseContextSwitch syntaxname xs = [Push (T.pack syntaxname, T.pack xs)]
+parseContextSwitch :: Text -> Text -> [ContextSwitch]
+parseContextSwitch syntaxname t =
+  if T.null t || t == "#stay"
+     then []
+     else
+       case T.stripPrefix "#pop" t of
+         Just rest -> Pop : parseContextSwitch syntaxname rest
+         Nothing   -> [Push (syntaxname, T.dropWhile (=='!') t)]
 
 type ItemData = M.Map Text TokenType
 
@@ -379,9 +342,17 @@ toTokenType t =
     "dsError"          -> ErrorTok
     _                  -> NormalTok
 
+-- Note, some xml files have "\\" for a backslash,
+-- others have "\".  Not sure what the rules are, but
+-- this covers both bases:
+readChar :: Text -> Char
+readChar t = case T.unpack t of
+                  [c] -> c
+                  s   -> readDef '\xffff' $ "'" ++ s ++ "'"
+
 pathToLangName :: String -> String
 pathToLangName s = capitalize (camelize (takeBaseName s))
- 
+
 camelize :: String -> String
 camelize (d:c:cs) | not (isAlphaNum d) = toUpper c : camelize cs
 camelize (c:cs)   = c : camelize cs
