@@ -113,9 +113,11 @@ documentToSyntax fp Document{ documentRoot = rootEl } = do
 
   let contextEls = getElementsNamed "contexts" hlEl >>=
                    getElementsNamed "context"
+
+  let syntaxname = getAttrValue "name" rootEl
+
   contexts <- mapM
-    (getContext casesensitive (T.pack filename)
-        itemDatas lists defKeywordAttr)
+    (getContext casesensitive syntaxname itemDatas lists defKeywordAttr)
     contextEls
 
   startingContext <- case contexts of
