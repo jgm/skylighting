@@ -190,19 +190,10 @@ executable skylighting-extract
   build-depends:       base >= 4.8 && < 5.0,
                        skylighting-core,
                        filepath,
-                       bytestring,
-                       base64-bytestring,
                        text,
                        safe,
-                       hxt,
-                       utf8-string,
-                       case-insensitive,
-                       aeson >= 1.0,
                        binary,
-                       containers,
-                       directory,
-                       ansi-terminal >= 0.7,
-                       colour >= 2.0
+                       directory
   if flag(executable)
     buildable:         True
   else
