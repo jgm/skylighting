@@ -188,7 +188,7 @@ library
                        Skylighting.Syntax.Yacc
                        Skylighting.Syntax.Yaml
                        Skylighting.Syntax.Zsh
-  other-extensions:    CPP, Arrows
+  other-extensions:    CPP
   build-depends:       base >= 4.8 && < 5.0,
                        skylighting-core == 0.10.3,
                        bytestring,
