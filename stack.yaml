@@ -1,7 +1,10 @@
 packages:
 - skylighting-core
 - skylighting
-extra-deps: []
+extra-deps:
+- git: https://github.com/jgm/xml
+  subdir: xml-conduit
+  commit: 16c048905b1158820a3437d7f70507e9c123b695
 resolver: lts-14.6
 ghc-options:
     "$locals": -optP-Wno-nonportable-include-path
