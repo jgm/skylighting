@@ -4,7 +4,7 @@ packages:
 extra-deps:
 - git: https://github.com/jgm/xml
   subdir: xml-conduit
-  commit: 16c048905b1158820a3437d7f70507e9c123b695
+  commit: 2274b3c26fda7406337ce47cdfd862ef187694e2
 resolver: lts-14.6
 ghc-options:
     "$locals": -optP-Wno-nonportable-include-path
