@@ -2,9 +2,9 @@ packages:
 - skylighting-core
 - skylighting
 extra-deps:
-- git: https://github.com/jgm/xml
+- git: https://github.com/snoyberg/xml
   subdir: xml-conduit
-  commit: 2274b3c26fda7406337ce47cdfd862ef187694e2
+  commit: 4be1021791dcdee8b164d239433a2043dc0939ea
 resolver: lts-14.6
 ghc-options:
     "$locals": -optP-Wno-nonportable-include-path
