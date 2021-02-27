@@ -126,7 +126,7 @@ library
                        case-insensitive,
                        attoparsec,
                        utf8-string,
-                       xml-conduit,
+                       xml-conduit >= 1.9.1.0 && < 1.10,
                        safe,
                        base64-bytestring,
                        blaze-html >= 0.5,
