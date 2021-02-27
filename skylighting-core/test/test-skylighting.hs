@@ -8,7 +8,9 @@ import Data.Aeson (decode, encode)
 import Data.Algorithm.Diff
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Map as Map
-import Data.Monoid ((<>))
+#if !MIN_VERSION_base(4,11,0)
+import Data.Semigroup ((<>), Semigroup)
+#endif
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
