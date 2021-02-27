@@ -113,7 +113,7 @@ library
                        Regex.KDE.Regex
                        Regex.KDE.Compile
                        Regex.KDE.Match
-  other-extensions:    CPP, Arrows
+  other-extensions:    CPP
   build-depends:       base >= 4.8 && < 5.0,
                        mtl,
                        transformers,
@@ -131,7 +131,6 @@ library
                        base64-bytestring,
                        blaze-html >= 0.5,
                        containers >= 0.5.8.2,
-                       utf8-string,
                        ansi-terminal >= 0.7,
                        colour >= 2.0
   hs-source-dirs:      src
