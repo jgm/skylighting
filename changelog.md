@@ -1,5 +1,21 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.4
+
+  * Move from hxt to xml-conduit for XML parsing.
+
+    This gives about a 4X speedup in parsing syntax definitions.
+    It also reduces the pandoc build dependency footprint, as we
+    depend on xml-conduit anyway and now no longer need to compile
+    HXT and its dependencies.
+
+    There are improvements in accuracy as well: the change to
+    xml-conduit improved parsing for one of the prolog rules;
+    a matcher that should have been for tab characters had been set for a
+    space instead.
+
+  * Removed some unnecessary build-depends in skylighting-extract.
+
 ## 0.10.3
 
   * Add support for raku (#114).
