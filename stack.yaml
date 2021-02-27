@@ -3,6 +3,6 @@ packages:
 - skylighting
 extra-deps:
 - xml-conduit-1.9.1.0
-resolver: lts-14.6
+resolver: lts-17.2
 ghc-options:
     "$locals": -optP-Wno-nonportable-include-path
