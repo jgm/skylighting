@@ -1,8 +1,7 @@
 packages:
 - skylighting-core
 - skylighting
-extra-deps:
-- xml-conduit-1.9.1.0
-resolver: lts-17.2
+extra-deps: []
+resolver: lts-17.5
 ghc-options:
     "$locals": -optP-Wno-nonportable-include-path
