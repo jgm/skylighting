@@ -207,11 +207,9 @@ Flag executable
 
 executable skylighting
   build-depends:       base >= 4.8 && < 5.0,
-                       filepath,
                        text,
                        pretty-show,
                        containers,
-                       directory,
                        bytestring,
                        blaze-html >= 0.5,
                        skylighting

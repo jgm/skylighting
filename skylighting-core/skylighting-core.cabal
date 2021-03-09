@@ -151,17 +151,14 @@ test-suite test-skylighting
   main-is:        test-skylighting.hs
   hs-source-dirs: test
   build-depends:  base >= 4.8 && < 5.0,
-                  HUnit,
                   tasty,
                   tasty-golden,
                   tasty-hunit,
                   tasty-quickcheck,
                   QuickCheck,
                   containers,
-                  random,
                   Diff,
                   text,
-                  utf8-string,
                   pretty-show,
                   aeson >= 1.0,
                   bytestring,
