@@ -174,7 +174,6 @@ popContextStack = do
        (_ :| []) -> info "WARNING: Tried to pop only element on context stack!"
        (_ :| (x:xs)) -> do
          modify (\st -> st{ contextStack = ContextStack (x :| xs) })
-         currentContext >>= checkLineEnd
          infoContextStack
 
 pushContextStack :: Context -> TokenizerM ()
@@ -182,9 +181,6 @@ pushContextStack cont = do
   modify (\st -> st{ contextStack =
                       ContextStack
                        ((cont <|) . unContextStack $ contextStack st) } )
-  -- not sure why we need this in pop but not here, but if we
-  -- put it here we can get loops...
-  -- checkLineEnd cont
   infoContextStack
 
 currentContext :: TokenizerM Context
@@ -429,8 +425,10 @@ checkLineEnd c = do
     info $ "checkLineEnd for " ++ show (cName c) ++ " eol = " ++ show eol ++ " cLineEndContext = " ++ show (cLineEndContext c)
     when eol $ do
       lineCont' <- gets lineContinuation
-      unless lineCont' $
+      unless lineCont' $ do
         doContextSwitches (cLineEndContext c)
+        c' <- currentContext
+        unless (c == c') $ checkLineEnd c'
 
 detectChar :: Bool -> Char -> ByteString -> TokenizerM Text
 detectChar dynamic c inp = do

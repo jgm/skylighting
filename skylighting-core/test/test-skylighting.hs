@@ -116,6 +116,8 @@ main = do
                              (lookupSyntax "html" sMap)
           cpp  = maybe (error "could not find CPP syntax") id
                              (lookupSyntax "cpp" sMap)
+          bash  = maybe (error "could not find bash syntax") id
+                             (lookupSyntax "bash" sMap)
           c    = maybe (error "could not find C syntax") id
                              (lookupSyntax "c" sMap) in
       [ testCase "perl NUL case" $ Right
@@ -178,6 +180,19 @@ main = do
       , testCase "Chinese characters in HTML (#110)" $ Right
           [ [ ( NormalTok , "\35797\65306" ) , ( KeywordTok , "<a>" ) ]
           ] @=? tokenize defConfig html "试：<a>"
+
+      , testCase "Bash closing brace (#119)" $ Right
+          [ [ ( FunctionTok , "f()" )
+            , ( NormalTok , " " )
+            , ( KeywordTok , "{" ) ]
+          , [ ( NormalTok , "    " )
+            , ( BuiltInTok , "echo" )
+            , ( NormalTok , " " )
+            , ( OperatorTok , ">" )
+            , ( NormalTok , " f" ) ]
+          , [ ( KeywordTok , "}" ) ] ]
+             @=? tokenize defConfig bash
+                     "f() {\n    echo > f\n}\n"
 
       ]
     ]
