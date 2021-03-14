@@ -1,5 +1,13 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.4.1
+
+  * Fixed logic for checking line-end-context (#119).
+
+  * Use NonEmpty for the context stack.
+
+  * Remove unneeded build-depends.
+
 ## 0.10.4
 
   * Move from hxt to xml-conduit for XML parsing.
