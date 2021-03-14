@@ -171,7 +171,7 @@ popContextStack :: TokenizerM ()
 popContextStack = do
   ContextStack cs <- gets contextStack
   case cs of
-       (_ :| []) -> return ()
+       (_ :| []) -> info "WARNING: Tried to pop only element on context stack!"
        (_ :| (x:xs)) -> do
          modify (\st -> st{ contextStack = ContextStack (x :| xs) })
          currentContext >>= checkLineEnd
@@ -201,9 +201,7 @@ doContextSwitch (Push (syn,c)) = do
        Nothing  -> throwError $ "Unknown syntax or context: " ++ show (syn, c)
 
 doContextSwitches :: [ContextSwitch] -> TokenizerM ()
-doContextSwitches [] = return ()
-doContextSwitches xs = do
-  mapM_ doContextSwitch xs
+doContextSwitches = mapM_ doContextSwitch
 
 lookupContext :: Text -> Syntax -> Maybe Context
 lookupContext name syntax | Text.null name =
