@@ -31,11 +31,13 @@ import Data.Text.Encoding (decodeUtf8', encodeUtf8)
 import Debug.Trace
 import Skylighting.Regex
 import Skylighting.Types
+import Data.List.NonEmpty (NonEmpty((:|)), (<|), toList)
 #if !MIN_VERSION_base(4,11,0)
 import Data.Semigroup
 #endif
 
-newtype ContextStack = ContextStack{ unContextStack :: [Context] }
+
+newtype ContextStack = ContextStack{ unContextStack :: NonEmpty Context }
   deriving (Show)
 
 data TokenizerState = TokenizerState{
@@ -131,19 +133,27 @@ instance MonadError String TokenizerM where
 -- | Tokenize some text using 'Syntax'.
 tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]
 tokenize config syntax inp =
-  case runTokenizerM action config initState of
+  eitherStack >>= \stack ->
+    case runTokenizerM action config (startingState stack) of
        (_, Success ls) -> Right ls
        (_, Error e)    -> Left e
        (_, Failure)    -> Left "Could not tokenize code"
   where
     action = mapM tokenizeLine (zip (BS.lines (encodeUtf8 inp)) [1..])
-    initState = startingState{ endline = Text.null inp
-                             , contextStack =
-                                   case lookupContext
-                                         (sStartingContext syntax) syntax of
-                                         Just c  -> ContextStack [c]
-                                         Nothing -> ContextStack [] }
-
+    eitherStack = case lookupContext (sStartingContext syntax) syntax of
+                    Just c  -> Right $ ContextStack (c :| [])
+                    Nothing -> Left "No starting context specified"
+    startingState stack =
+      TokenizerState{ input = BS.empty
+                    , endline = Text.null inp
+                    , prevChar = '\n'
+                    , contextStack = stack
+                    , captures = mempty
+                    , column = 0
+                    , lineContinuation = False
+                    , firstNonspaceColumn = Nothing
+                    , compiledRegexes = Map.empty
+                    }
 
 info :: String -> TokenizerM ()
 info s = do
@@ -155,24 +165,23 @@ infoContextStack = do
   tr <- asks traceOutput
   when tr $ do
     ContextStack stack <- gets contextStack
-    info $ "CONTEXT STACK " ++ show (map cName stack)
+    info $ "CONTEXT STACK " ++ show (map cName $ toList stack)
 
 popContextStack :: TokenizerM ()
 popContextStack = do
   ContextStack cs <- gets contextStack
   case cs of
-       []     -> throwError "Empty context stack (the impossible happened)"
-       -- programming error
-       (_:[]) -> return ()
-       (_:rest) -> do
-         modify (\st -> st{ contextStack = ContextStack rest })
+       (_ :| []) -> return ()
+       (_ :| (x:xs)) -> do
+         modify (\st -> st{ contextStack = ContextStack (x :| xs) })
          currentContext >>= checkLineEnd
          infoContextStack
 
 pushContextStack :: Context -> TokenizerM ()
 pushContextStack cont = do
   modify (\st -> st{ contextStack =
-                      ContextStack (cont : unContextStack (contextStack st)) } )
+                      ContextStack
+                       ((cont <|) . unContextStack $ contextStack st) } )
   -- not sure why we need this in pop but not here, but if we
   -- put it here we can get loops...
   -- checkLineEnd cont
@@ -180,10 +189,8 @@ pushContextStack cont = do
 
 currentContext :: TokenizerM Context
 currentContext = do
-  ContextStack cs <- gets contextStack
-  case cs of
-       []    -> throwError "Empty context stack" -- programming error
-       (c:_) -> return c
+  ContextStack (c :| _) <- gets contextStack
+  return c
 
 doContextSwitch :: ContextSwitch -> TokenizerM ()
 doContextSwitch Pop = popContextStack
@@ -204,19 +211,6 @@ lookupContext name syntax | Text.null name =
      then Nothing
      else lookupContext (sStartingContext syntax) syntax
 lookupContext name syntax = Map.lookup name $ sContexts syntax
-
-startingState :: TokenizerState
-startingState =
-  TokenizerState{ input = BS.empty
-                , endline = True
-                , prevChar = '\n'
-                , contextStack = ContextStack []
-                , captures = mempty
-                , column = 0
-                , lineContinuation = False
-                , firstNonspaceColumn = Nothing
-                , compiledRegexes = Map.empty
-                }
 
 tokenizeLine :: (ByteString, Int) -> TokenizerM [Token]
 tokenizeLine (ln, linenum) = do
