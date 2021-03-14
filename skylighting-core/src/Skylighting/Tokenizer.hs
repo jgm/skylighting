@@ -424,15 +424,13 @@ includeRules mbattr (syn, con) inp = do
 
 checkLineEnd :: Context -> TokenizerM ()
 checkLineEnd c = do
-  if null (cLineEndContext c)
-     then return ()
-     else do
-       eol <- gets endline
-       info $ "checkLineEnd for " ++ show (cName c) ++ " eol = " ++ show eol ++ " cLineEndContext = " ++ show (cLineEndContext c)
-       when eol $ do
-         lineCont' <- gets lineContinuation
-         unless lineCont' $
-           doContextSwitches (cLineEndContext c)
+  unless (null (cLineEndContext c)) $ do
+    eol <- gets endline
+    info $ "checkLineEnd for " ++ show (cName c) ++ " eol = " ++ show eol ++ " cLineEndContext = " ++ show (cLineEndContext c)
+    when eol $ do
+      lineCont' <- gets lineContinuation
+      unless lineCont' $
+        doContextSwitches (cLineEndContext c)
 
 detectChar :: Bool -> Char -> ByteString -> TokenizerM Text
 detectChar dynamic c inp = do
