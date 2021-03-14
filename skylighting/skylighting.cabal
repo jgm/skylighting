@@ -191,7 +191,6 @@ library
   other-extensions:    CPP
   build-depends:       base >= 4.8 && < 5.0,
                        skylighting-core == 0.10.4,
-                       bytestring,
                        containers,
                        binary
   hs-source-dirs:      src
