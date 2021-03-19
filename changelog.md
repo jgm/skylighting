@@ -1,5 +1,23 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.5
+
+  * Fix regression from 0.10.3 with Haskell highlighting of Char (#120).
+
+  * Update xml syntax definitions from upstream.  Updated
+    syntaxes: abc apache asp bash bibtex boo c changelog clojure
+    cmake commonlisp cs curry d diff djangotemplate doxygen
+    elixir elm email erlang fortran-fixed fortran-free fsharp
+    hamlet haskell haxe html idris ini javascript-react
+    javascript json julia kotlin latex lex lilypond
+    literate-curry literate-haskell makefile markdown
+    mathematica maxima mediawiki metafont modula-2 mustache nasm
+    nim noweb ocaml octave opencl perl powershell prolog pure
+    python r roff ruby rust sed spdx-comments sql-mysql
+    sql-postgresql tcl tcsh toml typescript verilog xml xslt xul
+    yacc yaml.  Not updated: rhtml (causes an error on our test
+    suite), zsh (has a regex we can't parse).
+
 ## 0.10.4.1
 
   * Fixed logic for checking line-end-context (#119).
