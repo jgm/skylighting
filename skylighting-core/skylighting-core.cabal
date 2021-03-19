@@ -193,7 +193,6 @@ executable skylighting-extract
                        skylighting-core,
                        filepath,
                        text,
-                       safe,
                        binary,
                        directory
   if flag(executable)
