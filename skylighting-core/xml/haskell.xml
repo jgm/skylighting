@@ -484,7 +484,7 @@
       <RegExpr    attribute="Octal"   context="#stay" String="0[Oo][0-7]+"/>
       <RegExpr    attribute="Hex"     context="#stay" String="0[Xx][0-9A-Fa-f]+"/>
       <Int        attribute="Decimal" context="#stay" />
-      <DetectChar attribute="Char"    context="#stay" String="'(\\'|\\[^']+|[^\\\n])'" /> <!-- see https://github.com/jgm/skylighting/pull/40 -->
+      <RegExpr attribute="Char"    context="#stay" String="'(\\'|\\[^']+|[^\\\n])'" /> <!-- see https://github.com/jgm/skylighting/pull/40 -->
       <DetectChar attribute="String"  context="string" char="&quot;" />
 
       <DetectChar attribute="Function Infix" context="infix" char="`"/>
