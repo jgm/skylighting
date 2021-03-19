@@ -8,7 +8,7 @@
     <!ENTITY hexfloat "\b0[xX](&hex;\.?+&hex;?+|\.&hex;?)[pP][-+]?&int;[fF]?\b">
 ]>
 <!-- kotlin language syntax http://kotlinlang.org -->
-<language name="Kotlin" version="9" kateversion="5.62" section="Sources" extensions="*.kt;*.kts" license="LGPLv2+" author="Sergey Mashkov (sergey.mashkov@jetbrains.com)" style="cstyle" indenter="cstyle">
+<language name="Kotlin" version="10" kateversion="5.62" section="Sources" extensions="*.kt;*.kts" license="LGPLv2+" author="Sergey Mashkov (sergey.mashkov@jetbrains.com)" style="cstyle" indenter="cstyle">
     <highlighting>
         <list name="keywords">
             <item>package</item>
@@ -216,7 +216,6 @@
             </context>
 
             <context attribute="Normal Text" lineEndContext="#pop" name="Imports">
-                <DetectChar attribute="Symbol" context="#stay" char="."/>
                 <AnyChar attribute="Symbol" context="#stay" String=".*"/>
                 <WordDetect attribute="Keyword" context="TypeName" String="as" />
                 <DetectIdentifier attribute="Imports" context="#stay"/>

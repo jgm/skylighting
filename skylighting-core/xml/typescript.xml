@@ -61,7 +61,7 @@
 -->
 
 <language name="TypeScript"
-          version="12"
+          version="13"
           kateversion="5.53"
           section="Scripts"
           extensions="*.ts"
@@ -377,8 +377,7 @@
 		<context name="FindNumbers" attribute="Normal Text" lineEndContext="#stay">
 			<RegExpr context="NoRegExp" attribute="Hexadecimal" String="\b0[xX][\da-fA-F][\da-fA-F_]*&numSuffix;" />
 			<RegExpr context="NoRegExp" attribute="Binary" String="\b0[bB][01][01_]*&numSuffix;" />
-			<RegExpr context="NoRegExp" attribute="Float" String="(?:\b\d[\d_]*\.?|(?:\b\d[\d_]*)?\.\d[\d_]*)[eE][\+\-]?\d[\d_]*&numSuffix;" />
-			<RegExpr context="NoRegExp" attribute="Float" String="(?:\.\d[\d_]*|\b\d[\d_]*\.(?:\d[\d_]*)?)&numSuffix;" />
+			<RegExpr context="NoRegExp" attribute="Float" String="(?:\b\d[\d_]*\.?|(?:\b\d[\d_]*)?\.\d[\d_]*)[eE][\+\-]?\d[\d_]*&numSuffix;|(?:\.\d[\d_]*|\b\d[\d_]*\.(?:\d[\d_]*)?)&numSuffix;" />
 			<RegExpr context="NoRegExp" attribute="Octal" String="\b0[oO]?[0-7][0-7_]*&numSuffix;" />
 			<RegExpr context="NoRegExp" attribute="Decimal" String="\b\d[\d_]*&numSuffix;" />
 		</context>

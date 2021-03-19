@@ -33,7 +33,7 @@
   <!ENTITY hex "[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?">
 ]>
 
-<language name="Julia" section="Sources" version="10" kateversion="5.0" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
+<language name="Julia" section="Sources" version="11" kateversion="5.0" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
 
   <highlighting>
     <list name="block_begin">
@@ -467,8 +467,7 @@
         <StringDetect String="#END" context="region_marker" attribute="FoldingComment" endRegion="user_region" />
 
         <!-- Keywords, types, and comments -->
-        <RegExpr context="#stay" attribute="Keyword" String="\b(abstract|primitive)\s+type\b" />
-        <RegExpr context="#stay" attribute="Keyword" String="\bmutable\s+struct\b" />
+        <RegExpr context="#stay" attribute="Keyword" String="\b(abstract|primitive)\s+type\b|\bmutable\s+struct\b" />
         <keyword context="#stay" attribute="Keyword" String="keywords" />
         <keyword context="#stay" attribute="Data Type" String="types" />
         <keyword context="#stay" attribute="Boolean" String="booleans" />
@@ -596,8 +595,7 @@
       <context attribute="String" lineEndContext="#pop" name="Raw-String">
         <DetectSpaces />
         <LineContinue attribute="String" context="#stay"/>
-        <RegExpr attribute="String Char" context="#stay" String="(\\\\)*\\&quot;"/>
-        <RegExpr attribute="String Char" context="#stay" String="(\\\\)+(?=&quot;)"/>
+        <RegExpr attribute="String Char" context="#stay" String="(\\\\)*\\&quot;|(\\\\)+(?=&quot;)"/>
         <DetectChar attribute="String" context="#pop" char="&quot;"/>
       </context>
       <context attribute="String" lineEndContext="#stay" name="Raw-Block-String">

@@ -105,7 +105,7 @@ to make the rules more expressive. -->
     <!ENTITY bs         "\">
 ]>
 <language name="Prolog" section="Sources"
-	  version="14" kateversion="5.62"
+	  version="15" kateversion="5.62"
 	  mimetype="text/x-prolog"
 	  extensions="*.prolog;*.dcg;*.pro"
 	  author="Torsten Eichstädt (torsten.eichstaedt@web.de)"
@@ -545,8 +545,7 @@ TODO sorted by priority
 		<DetectChar char="(" context="nested" beginRegion="nested" attribute="( ) [ ]" />
 		<DetectChar char="[" context="list" beginRegion="list" attribute="( ) [ ]" />
 		<DetectChar char="{" context="curly" beginRegion="curly" attribute="{ DCG }" />
-		<DetectChar char="&comma;" context="#stay" attribute="Logic &amp; Control" />
-		<DetectChar char="&cut;" context="#stay" attribute="Logic &amp; Control" />
+		<AnyChar String="&comma;&cut;" context="#stay" attribute="Logic &amp; Control" />
 		<DetectChar char="&bar;" context="#stay" attribute="Normal Text" />
 		<!-- lookAhead to give different style to the dot and the brace -->
 		<Detect2Chars lookAhead="true" char="&dot;" char1="(" context="list_functor" attribute="Syntax Error" />
@@ -561,8 +560,7 @@ TODO sorted by priority
 		<DetectChar char="(" context="nested" beginRegion="nested" attribute="( ) [ ]" />
 		<DetectChar char="[" context="list" beginRegion="list" attribute="( ) [ ]" />
 		<DetectChar char="{" context="curly" beginRegion="curly" attribute="{ DCG }" />
-		<DetectChar char="&cut;" context="#stay" attribute="Logic &amp; Control" />
-		<DetectChar char="&comma;" context="#stay" attribute="Logic &amp; Control" />
+		<AnyChar String="&cut;&comma;" context="#stay" attribute="Logic &amp; Control" />
 		<DetectChar char="&bar;" context="#stay" attribute="Normal Text" />
 		<Detect2Chars lookAhead="true" char="&dot;" char1="(" context="list_functor" attribute="Normal Text" />
 		<RegExpr String="&fullstop_iso;" context="#stay" attribute="Warning (!use background)" />
@@ -574,8 +572,7 @@ TODO sorted by priority
 		<DetectChar char="]" context="#pop" endRegion="list" attribute="( ) [ ]" />
 		<DetectChar char="[" context="list" beginRegion="list" attribute="( ) [ ]" />
 		<DetectChar char="{" context="curly" beginRegion="curly" attribute="( ) [ ]" />
-		<DetectChar char="&comma;" context="#stay" attribute="Normal Text" />
-		<DetectChar char="&cut;" context="#stay" attribute="Normal Text" />
+		<AnyChar String="&comma;&cut;" context="#stay" attribute="Normal Text" />
 		<DetectChar char="&bar;" context="#stay" attribute="other built-in operator" />
 		<Detect2Chars lookAhead="true" char="&dot;" char1="(" context="list_functor" attribute="Normal Text" />
 		<IncludeRules context="atomic" />
@@ -586,8 +583,7 @@ TODO sorted by priority
 		<DetectChar char="[" context="list" beginRegion="list" attribute="( ) [ ]" />
 		<DetectChar char="}" context="#pop" endRegion="curly" attribute="{ DCG }" />
 		<DetectChar char="{" context="curly" beginRegion="curly" attribute="{ DCG }" />
-		<DetectChar char="&comma;" context="#stay" attribute="Logic &amp; Control" />
-		<DetectChar char="&cut;" context="#stay" attribute="Logic &amp; Control" />
+		<AnyChar String="&comma;&cut;" context="#stay" attribute="Logic &amp; Control" />
 		<DetectChar char="&bar;" context="#stay" attribute="Normal Text" />
 		<Detect2Chars lookAhead="true" char="&dot;" char1="(" context="list_functor" attribute="Normal Text" />
 		<IncludeRules context="atomic" />
@@ -605,13 +601,11 @@ TODO sorted by priority
 		<DetectChar lookAhead="true" char="}" context="#pop" attribute="{ DCG }" />
 		<DetectChar lookAhead="true" char="]" context="#pop" attribute="( ) [ ]" />
 		<!-- FIXME check if cut may be an op, else (and in any case 99.9% likely) it's a usual cut here -->
-		<DetectChar lookAhead="true" char="&cut;" context="#pop" attribute="Logic &amp; Control" />
-		<DetectChar lookAhead="true" char="&comma;" context="#pop" attribute="Logic &amp; Control" />
+		<AnyChar lookAhead="true" String="&cut;&comma;" context="#pop" attribute="Logic &amp; Control" />
 		<!-- bar & dot could be a user-def'd op, pre-def'd ops could be
 		redef'd; but let's assume the default and just end the expr -->
 		<DetectChar lookAhead="true" char="&bar;" context="#pop" attribute="other built-in operator" />
-		<RegExpr lookAhead="true" String="&fullstop_iso;" context="#pop" attribute="Logic &amp; Control" />
-		<RegExpr lookAhead="true" String="&logic_control_ops_iso;" context="#pop" attribute="Logic &amp; Control" />
+		<RegExpr lookAhead="true" String="&fullstop_iso;|&logic_control_ops_iso;" context="#pop" attribute="Logic &amp; Control" />
 		<IncludeRules context="arith_expr_common" />
 	    </context>
 	    <context name="nested_expr" lineEndContext="#stay" attribute="Syntax Error" noIndentationBasedFolding="true" >
@@ -726,8 +720,7 @@ TODO sorted by priority
 	    ASSERT esc'd newline is handled by the calling context
 	    ASSERT we get the leading bs here to highlight the whole thing -->
 	    <context name="esc_seq_q" lineEndContext="syntax_error" attribute="Syntax Error" >
-		<RegExpr String="&esc_oct_iso;" context="#pop" attribute="0'a (!use background)" />
-		<RegExpr String="&esc_hex_iso;" context="#pop" attribute="0'a (!use background)" />
+		<RegExpr String="&esc_oct_iso;|&esc_hex_iso;" context="#pop" attribute="0'a (!use background)" />
 		<DetectChar char="&bs;" context="esc_seq_q2" attribute="escaped (!use background)" />
 	    </context>
 	    <!-- esc_seq_cc: #pop#pop out of cc on std esc seq, else pass char back
@@ -907,9 +900,7 @@ TODO sorted by priority
 		<Detect2Chars char="0" char1="o" context="oct" attribute="0b1001 0o007 0xF1" />
 		<Detect2Chars char="0" char1="x" context="hex" attribute="0b1001 0o007 0xF1" />
 
-		<RegExpr String="&float1_iso;" context="#stay" attribute="2.718281E-9" />
-		<RegExpr String="&float2_iso;" context="#stay" attribute="2.718281E-9" />
-		<RegExpr String="&float3_iso;" context="#stay" attribute="2.718281E-9" />
+		<RegExpr String="&float1_iso;|&float2_iso;|&float3_iso;" context="#stay" attribute="2.718281E-9" />
 		<Int context="#stay" attribute="1  2  3  42" />
 	    </context>
 
@@ -922,9 +913,7 @@ TODO sorted by priority
 		<RegExpr String="&predefined_ops_iso;" context="#stay" attribute="other built-in operator" />
 		<RegExpr String="&dcg_production_iso;" context="#stay" attribute="{ DCG }" />
 		<RegExpr String="&arith_compare_iso;" context="arith_expr" attribute="Arithmetics" />
-		<RegExpr String="&arith_ops_mixed_iso;" context="#stay" attribute="other built-in operator" />
-		<RegExpr String="&arith_ops_int_iso;" context="#stay" attribute="other built-in operator" />
-		<RegExpr String="&arith_ops_float_iso;" context="#stay" attribute="other built-in operator" />
+		<RegExpr String="&arith_ops_mixed_iso;|&arith_ops_int_iso;|&arith_ops_float_iso;" context="#stay" attribute="other built-in operator" />
 		<RegExpr String="&arith_bogus_iso;" context="#stay" attribute="ISO Bogus" />
 	    </context>
 

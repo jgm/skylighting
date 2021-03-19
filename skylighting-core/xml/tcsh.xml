@@ -9,7 +9,7 @@
         <!ENTITY pathpart "([\w_@.&#37;*?+-]|\\ )">     <!-- valid character in a file name -->
         <!ENTITY tab      "&#9;">
 ]>
-<language name="Tcsh" version="9" kateversion="5.53" section="Scripts" extensions="*.csh;*.tcsh;csh.cshrc;csh.login;.tcshrc;.cshrc;.login" mimetype="application/x-csh" casesensitive="1" author="Matthew Woehlke (mw_triad@users.sourceforge.net)" license="LGPL">
+<language name="Tcsh" version="10" kateversion="5.53" section="Scripts" extensions="*.csh;*.tcsh;csh.cshrc;csh.login;.tcshrc;.cshrc;.login" mimetype="application/x-csh" casesensitive="1" author="Matthew Woehlke (mw_triad@users.sourceforge.net)" license="LGPL">
 
 <!-- (c) 2006 Matthew Woehlke (mw_triad@users.sourceforge.net)
     Based on the bash highlighter by Wilbert Berendsen (wilbert@kde.nl)
@@ -164,8 +164,7 @@
         <!-- start expression in double parentheses -->
 <!--!--><Detect2Chars attribute="Keyword" context="ExprDblParen" char="(" char1="(" beginRegion="expression" />
         <!-- start expression in single brackets -->
-<!--!--><RegExpr attribute="Builtin" context="ExprBracket" String="\[&eos;" beginRegion="expression" column="0"/>
-<!--!--><RegExpr attribute="Builtin" context="ExprBracket" String="\s\[&eos;" beginRegion="expression" />
+<!--!--><RegExpr attribute="Builtin" context="ExprBracket" String="(^\[|\s\[)&eos;" beginRegion="expression" column="0"/>
         <!-- start a group command with { -->
 <!--!--><RegExpr attribute="Keyword" context="Group" String="\{&eos;" beginRegion="group" />
         <!-- start a subshell -->
@@ -180,8 +179,7 @@
 <!--!--><RegExpr attribute="Control Flow" context="#stay" String="\b(foreach|while)&noword;" beginRegion="loop" />
 <!--!--><RegExpr attribute="Control Flow" context="#stay" String="\bend&noword;" endRegion="loop" />
         <!-- handle command line options -->
-        <RegExpr attribute="Option" context="#stay" String="-[A-Za-z0-9][A-Za-z0-9_]*" />
-        <RegExpr attribute="Option" context="#stay" String="--[a-z][A-Za-z0-9_-]*" />
+        <RegExpr attribute="Option" context="#stay" String="-[A-Za-z0-9][A-Za-z0-9_]*|--[a-z][A-Za-z0-9_-]*" />
         <!-- handle variable assignments -->
 <!--R--><RegExpr attribute="Keyword" context="#stay" String="\b@\s" />
 <!--R--><WordDetect attribute="Keyword" context="#stay" String="set" />
@@ -207,9 +205,7 @@
       <context attribute="Normal Text" lineEndContext="#stay" name="FindOthers">
         <RegExpr attribute="Escape" context="#stay" String="\\[;&quot;\\'$`{}()|&amp;&lt;&gt;* ]" />
 <!--?   <RegExpr attribute="Escape" context="#stay" String="\{(?!(\s|$))\S*\}" />-->
-        <RegExpr attribute="Path" context="#stay" String="&pathpart;*(?=/)" />
-        <RegExpr attribute="Path" context="#stay" String="~\w*" />
-        <RegExpr attribute="Path" context="#stay" String="/&pathpart;*(?=([\s/):;$`'&quot;]|$))" />
+        <RegExpr attribute="Path" context="#stay" String="&pathpart;*(?=/)|~\w*|/&pathpart;*(?=([\s/):;$`'&quot;]|$))" />
         <!-- TODO: shell globs -->
       </context>
 
@@ -224,13 +220,8 @@
       <!-- FindSubstitutions goes after anything starting with $ and ` and their escapes -->
       <context attribute="Normal Text" lineEndContext="#stay" name="FindSubstitutions">
         <RegExpr attribute="Variable" context="Subscript" String="\$&varname;\[" />
-        <RegExpr attribute="Variable" context="#stay" String="\$&varname;" />
-        <RegExpr attribute="Variable" context="#stay" String="\$[*@#?$!_0-9-]" />
-        <RegExpr attribute="Variable" context="#stay" String="\$\{[*@#?$!_0-9-]\}" />
-        <RegExpr attribute="Variable" context="#stay" String="\$\{#&varname;\}" />
-        <RegExpr attribute="Variable" context="#stay" String="\$\{!&varname;\*?\}" />
-        <RegExpr attribute="Variable" context="VarBrace" String="\$\{&varname;" />
-        <RegExpr attribute="Variable" context="VarBrace" String="\$\{[*@#?$!_0-9-](?=[:#%/])" />
+        <RegExpr attribute="Variable" context="#stay" String="\$(&varname;)|\$[*@#?$!_0-9-]|\$\{[*@#?$!_0-9-]\}|\$\{#&varname;\}|\$\{!&varname;\*?\}" />
+        <RegExpr attribute="Variable" context="VarBrace" String="\$\{&varname;|\$\{[*@#?$!_0-9-](?=[:#%/])" />
         <StringDetect attribute="Variable" context="ExprDblParenSubst" String="$((" beginRegion="expression" />
 <!--?   <StringDetect attribute="Redirection" context="SubstFile" String="$(&lt;" />-->
 <!--?   <StringDetect attribute="Variable" context="SubstCommand" String="$(" />-->
@@ -240,10 +231,7 @@
 
       <!-- FindTests finds operators valid in tests -->
       <context attribute="Normal Text" lineEndContext="#stay" name="FindTests">
-        <RegExpr attribute="Expression" context="#stay" String="-[rwxXeozsfdlbcpSugktRLDIFNZ](?=\s)"/>
-        <RegExpr attribute="Expression" context="#stay" String="-[AMCUG]:?(?=\s)"/>
-        <RegExpr attribute="Expression" context="#stay" String="-P[0-7]{,3}:?(?=\s)"/>
-        <RegExpr attribute="Expression" context="#stay" String="[=!][~=]|[*>&lt;!~]"/>
+        <RegExpr attribute="Expression" context="#stay" String="-[rwxXeozsfdlbcpSugktRLDIFNZ](?=\s)|-[AMCUG]:?(?=\s)|-P[0-7]{,3}:?(?=\s)|[=!][~=]|[*>&lt;!~]"/>
       </context>
 
 
@@ -272,8 +260,7 @@
 
       <!-- ExprBracket consumes an expression till ] -->
       <context attribute="Normal Text" lineEndContext="#stay" name="ExprBracket">
-        <RegExpr attribute="Builtin" context="#pop" String="\s\](?=($|[\s;|&amp;]))" endRegion="expression" />
-        <RegExpr attribute="Builtin" context="#pop" String="\](?=($|[\s;|&amp;]))" endRegion="expression" column="0"/>
+        <RegExpr attribute="Builtin" context="#pop" String="(\s\]|^\])(?=($|[\s;|&amp;]))" endRegion="expression" />
         <DetectChar attribute="Normal Text" context="ExprSubParen" char="(" />
         <IncludeRules context="FindTests" />
         <IncludeRules context="FindMost" />
@@ -332,8 +319,7 @@
       <!-- VarName consumes spare variable names and assignments -->
       <context attribute="Normal Text" lineEndContext="#pop" name="VarName" fallthrough="true" fallthroughContext="#pop">
         <!-- handle command line options -->
-        <RegExpr attribute="Option" context="#stay" String="-[A-Za-z0-9]+" />
-        <RegExpr attribute="Option" context="#stay" String="--[a-z][A-Za-z0-9_-]*" />
+        <RegExpr attribute="Option" context="#stay" String="-[A-Za-z0-9]+|--[a-z][A-Za-z0-9_-]*" />
         <RegExpr attribute="Variable" context="#stay" String="\b&varname;" />
         <DetectChar attribute="Variable" context="Subscript" char="[" />
         <DetectChar attribute="Variable" context="Assign" char="=" />
@@ -357,8 +343,7 @@
       <!-- StringEsc eats till ', but escaping many characters -->
       <context attribute="String SingleQ" lineEndContext="#stay" name="StringEsc">
         <DetectChar attribute="String SingleQ" context="#pop" char="'" />
-        <RegExpr attribute="String Escape" context="#stay" String="\\[abefnrtv\\']" />
-        <RegExpr attribute="String Escape" context="#stay" String="\\([0-7]{1,3}|x[A-Fa-f0-9]{1,2}|c.)" />
+        <RegExpr attribute="String Escape" context="#stay" String="\\[abefnrtv\\']|\\([0-7]{1,3}|x[A-Fa-f0-9]{1,2}|c.)" />
       </context>
 
       <!-- VarBrace is called as soon as ${xxx is encoutered -->

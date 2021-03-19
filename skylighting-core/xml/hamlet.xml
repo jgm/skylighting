@@ -5,7 +5,7 @@
   word character *or* a number, hence the lookahead -->
   <!ENTITY name    "(?![0-9])[\w_:][\w.:_-]*">
 ]>
-<language name="Hamlet" version="5" kateversion="5.53" section="Markup" extensions="*.hamlet" author="Bastian Holst (bastianholst@gmx.de)" license="LGPL" indenter="haskell">
+<language name="Hamlet" version="6" kateversion="5.53" section="Markup" extensions="*.hamlet" author="Bastian Holst (bastianholst@gmx.de)" license="LGPL" indenter="haskell">
 <highlighting>
 <contexts>
   <context attribute="Normal Text" lineEndContext="#pop" name="Normal Text" >
@@ -24,8 +24,7 @@
   <context attribute="Element" lineEndContext="#stay" name="element" >
     <Detect2Chars attribute="Element" context="#pop" char="/" char1="&gt;" />
     <DetectChar attribute="Element" context="#pop" char="&gt;" />
-    <RegExpr attribute="Attribute" context="Attribute" String="&name;" column="0"/>
-    <RegExpr attribute="Attribute" context="Attribute" String="\s+&name;" />
+    <RegExpr attribute="Attribute" context="Attribute" String="^&name;|\s+&name;" />
     <RegExpr attribute="Class" context="#stay" String="\.&name;"/>
     <RegExpr attribute="Error" context="#stay" String="\S" />
   </context>

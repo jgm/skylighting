@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language
-  SYSTEM 'language.dtd'>
+  SYSTEM 'language.dtd' [
+
+  <!ENTITY symbols "(?:@{1,2}|\$)?[a-zA-Z_][a-zA-Z0-9_]*[=?!]?">
+]>
 <!--
   Elixir syntax highlighting definition for Kate.
 
@@ -24,13 +27,13 @@
 <language author="Rubén Caro (ruben.caro.estevez@gmail.com), Boris Egorov (egorov@linux.com)"
           extensions="*.ex;*.exs;*.eex;*.xml.eex;*.js.eex"
           indenter="elixir"
-          kateversion="5.62"
+          kateversion="5.79"
           license="LGPLv2+"
           mimetype="text/x-elixir"
           name="Elixir"
           section="Sources"
           style="elixir"
-          version="9">
+          version="11">
   <highlighting>
     <list name="control-flow">
       <item>catch</item>
@@ -96,7 +99,7 @@
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
         <!-- "shebang" line -->
-        <RegExpr String="#!\/.*" attribute="Keyword" column="0" context="#stay"/>
+        <RegExpr String="^#!\/.*" attribute="Keyword" column="0" context="#stay"/>
 
         <!-- Defined words -->
         <keyword String="keywords" attribute="Keyword" context="#stay"/>
@@ -122,23 +125,17 @@
         <DetectChar attribute="Operator" char="." context="#stay"/>
         <Detect2Chars attribute="Operator" char="&amp;" char1="&amp;" context="#stay"/>
         <Detect2Chars attribute="Operator" char="|" char1="|" context="#stay"/>
-        <RegExpr String="\s[\?\:\%]\s" attribute="Operator" context="#stay"/>
-        <RegExpr String="[|&amp;&lt;&gt;\^\+*~\-=/]+" attribute="Operator" context="#stay"/>
-        <!-- regexp hack -->
-        <RegExpr String="\s!" attribute="Operator" context="#stay"/>
-        <RegExpr String="/=\s" attribute="Operator" context="#stay" insensitive="0"/>
+        <!-- \s!|/=\s is regexp hack -->
+        <RegExpr String="\s[\?\:\%]\s|[|&amp;&lt;&gt;\^\+*~\-=/]+|\s!|/=\s" attribute="Operator" context="#stay"/>
         <Detect2Chars char="%" char1="=" attribute="Operator" context="#stay"/>
-        <RegExpr String=":(?:@{1,2}|\$)?[a-zA-Z_][a-zA-Z0-9_]*[=?!]?" attribute="Symbol" context="#stay"/>
-        <RegExpr String="\b(?:@{1,2}|\$)?[a-zA-Z_][a-zA-Z0-9_]*[=?!]?:" attribute="Symbol" context="#stay"/>
-        <RegExpr String=":\[\]=?" attribute="Symbol" context="#stay"/>
+        <RegExpr String=":&symbols;|\b&symbols;:|:\[\]=?" attribute="Symbol" context="#stay"/>
         <RegExpr String="@(?:module)?doc\s+&quot;&quot;&quot;" attribute="Attribute" context="Documentation"/>
         <StringDetect String="&quot;&quot;&quot;" attribute="String" context="Triple Quoted String"/>
         <DetectChar attribute="String" char="&quot;" context="Quoted String"/>
         <DetectChar attribute="Raw String" char="'" context="Apostrophed String"/>
         <Detect2Chars char="?" char1="#" attribute="Normal Text" context="#stay"/>
         <DetectChar attribute="Comment" char="#" context="General Comment"/>
-        <DetectChar attribute="Delimiter" char="[" context="#stay"/>
-        <DetectChar attribute="Delimiter" char="]" context="#stay"/>
+        <AnyChar attribute="Delimiter" String="[]" context="#stay"/>
         <RegExpr String="@[a-zA-Z_0-9]+" attribute="Attribute" context="#stay"/>
         <!-- handle the different regular expression formats -->
         <DetectChar attribute="Normal Text" char=")" context="#stay"/>

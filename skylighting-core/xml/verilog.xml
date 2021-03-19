@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Verilog" version="7" kateversion="5.0" section="Hardware" extensions="*.v;*.V;*.vl" mimetype="text/x-verilog-src" author="Yevgen Voronenko (ysv22@drexel.edu), Ryan Dalzell (ryan@tullyroan.com)" license="">
+<language name="Verilog" version="8" kateversion="5.0" section="Hardware" extensions="*.v;*.V;*.vl" mimetype="text/x-verilog-src" author="Yevgen Voronenko (ysv22@drexel.edu), Ryan Dalzell (ryan@tullyroan.com)" license="">
   <highlighting>
     <list name="keywords">
       <item>macromodule</item>
@@ -150,8 +150,7 @@
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
         <DetectSpaces />
-        <RegExpr attribute="Keyword" context="Block name" String="begin\ *:" beginRegion="Block"/>
-        <RegExpr attribute="Keyword" context="Block name" String="fork\ *:" beginRegion="Block"/>
+        <RegExpr attribute="Keyword" context="Block name" String="(begin|fork)\ *:" beginRegion="Block"/>
         <keyword attribute="Keyword" String="beginwords" context="#stay" beginRegion="Block"/>
         <keyword attribute="Keyword" String="endwords" context="#stay" endRegion="Block"/>
 

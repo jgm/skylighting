@@ -7,15 +7,15 @@
   <!ENTITY wikiLinkWithDescription "\[\[[^]|]*\|[^]]*\]\]">
   <!ENTITY wikiLinkWithoutDescription "\[\[[^]|]*\]\]">
 ]>
-<language name="MediaWiki" section="Markup" version="11" kateversion="5.53" extensions="*.mediawiki" mimetype="" license="FDL" >
+<language name="MediaWiki" section="Markup" version="12" kateversion="5.53" extensions="*.mediawiki" mimetype="" license="FDL" >
   <highlighting>
     <contexts>
       <context attribute="Normal" lineEndContext="#stay" name="normal" >
         <StringDetect String="&lt;!--" context="comment" attribute="Comment" beginRegion="comment" />
-        <RegExpr String="[=]{5,5}(?!=)" context="Section5" attribute="Section" column="0" />
-        <RegExpr String="[=]{4,4}(?!=)" context="Section4" attribute="Section" column="0" />
-        <RegExpr String="[=]{3,3}(?!=)" context="Section3" attribute="Section" column="0" />
-        <RegExpr String="[=]{2,2}(?!=)" context="Section2" attribute="Section" column="0" />
+        <RegExpr String="^[=]{5,5}(?!=)" context="Section5" attribute="Section" column="0" />
+        <RegExpr String="^[=]{4,4}(?!=)" context="Section4" attribute="Section" column="0" />
+        <RegExpr String="^[=]{3,3}(?!=)" context="Section3" attribute="Section" column="0" />
+        <RegExpr String="^[=]{2,2}(?!=)" context="Section2" attribute="Section" column="0" />
         <StringDetect String="~~~~" attribute="WikiTag" context="#stay" />
         <StringDetect String="~~~" attribute="WikiTag" context="#stay" />
         <DetectChar char=";" attribute="WikiTag" context="DefinitionListHeader" column="0" />
@@ -39,10 +39,10 @@
       </context>
       <context name="TableContent" attribute="Normal" lineEndContext="#stay">
         <StringDetect String="&lt;!--" context="comment" attribute="Comment" beginRegion="comment" />
-        <RegExpr String="[=]{5,5}(?!=)" context="Section5" attribute="Section" column="0" />
-        <RegExpr String="[=]{4,4}(?!=)" context="Section4" attribute="Section" column="0" />
-        <RegExpr String="[=]{3,3}(?!=)" context="Section3" attribute="Section" column="0" />
-        <RegExpr String="[=]{2,2}(?!=)" context="Section2" attribute="Section" column="0" />
+        <RegExpr String="^[=]{5,5}(?!=)" context="Section5" attribute="Section" column="0" />
+        <RegExpr String="^[=]{4,4}(?!=)" context="Section4" attribute="Section" column="0" />
+        <RegExpr String="^[=]{3,3}(?!=)" context="Section3" attribute="Section" column="0" />
+        <RegExpr String="^[=]{2,2}(?!=)" context="Section2" attribute="Section" column="0" />
         <DetectChar char=";" attribute="WikiTag" context="DefinitionListHeader" column="0" />
         <IncludeRules context="FindListItem" />
         <IncludeRules context="FindUrl" />
@@ -79,10 +79,8 @@
         <StringDetect String="&lt;pre&gt;" context="Pre" attribute="HtmlTag" />
         <IncludeRules context="FindSyntaxHighlightingHtmlElement" />
         <RegExpr String="[&lt;][^&gt;]+[&gt;]" attribute="HtmlTag" context="#stay" />
-        <RegExpr String="={6,} *$" context="#pop" attribute="Normal" />
         <RegExpr String="={5,5} *$" context="#pop" attribute="Section" />
-        <RegExpr String="={1,4} *$" context="#pop" attribute="Normal" />
-        <RegExpr String="=*[^=]+$" context="#pop" attribute="Normal" />
+        <RegExpr String="={6,} *$|={1,4} *$|=*[^=]+$" context="#pop" attribute="Normal" />
       </context>
       <context attribute="Section" lineEndContext="#pop" name="Section4" >
         <StringDetect String="&lt;!--" context="comment" attribute="Comment" beginRegion="comment" />
@@ -98,10 +96,8 @@
         <StringDetect String="&lt;pre&gt;" context="Pre" attribute="HtmlTag" />
         <IncludeRules context="FindSyntaxHighlightingHtmlElement" />
         <RegExpr String="[&lt;][^&gt;]+[&gt;]" attribute="HtmlTag" context="#stay" />
-        <RegExpr String="={5,} *$" context="#pop" attribute="Normal" />
         <RegExpr String="={4,4} *$" context="#pop" attribute="Section" />
-        <RegExpr String="={1,3} *$" context="#pop" attribute="Normal" />
-        <RegExpr String="=*[^=]+$" context="#pop" attribute="Normal" />
+        <RegExpr String="={5,} *$|={1,3} *$|=*[^=]+$" context="#pop" attribute="Normal" />
       </context>
       <context attribute="Section" lineEndContext="#pop" name="Section3" >
         <StringDetect String="&lt;!--" context="comment" attribute="Comment" beginRegion="comment" />
@@ -117,10 +113,8 @@
         <StringDetect String="&lt;pre&gt;" context="Pre" attribute="HtmlTag" />
         <IncludeRules context="FindSyntaxHighlightingHtmlElement" />
         <RegExpr String="[&lt;][^&gt;]+[&gt;]" attribute="HtmlTag" context="#stay" />
-        <RegExpr String="={4,} *$" context="#pop" attribute="Normal" />
         <RegExpr String="={3,3} *$" context="#pop" attribute="Section" />
-        <RegExpr String="={1,2} *$" context="#pop" attribute="Normal" />
-        <RegExpr String="=*[^=]+$" context="#pop" attribute="Normal" />
+        <RegExpr String="={4,} *$|={1,2} *$|=*[^=]+$" context="#pop" attribute="Normal" />
       </context>
       <context attribute="Section" lineEndContext="#pop" name="Section2" >
         <StringDetect String="&lt;!--" context="comment" attribute="Comment" beginRegion="comment" />
@@ -136,10 +130,8 @@
         <StringDetect String="&lt;pre&gt;" context="Pre" attribute="HtmlTag" />
         <IncludeRules context="FindSyntaxHighlightingHtmlElement" />
         <RegExpr String="[&lt;][^&gt;]+[&gt;]" attribute="HtmlTag" context="#stay" />
-        <RegExpr String="={3,} *$" context="#pop" attribute="Normal" />
         <RegExpr String="={2,2} *$" context="#pop" attribute="Section" />
-        <RegExpr String="={1,1} *$" context="#pop" attribute="Normal" />
-        <RegExpr String="=*[^=]+$" context="#pop" attribute="Normal" />
+        <RegExpr String="={3,} *$|={1,1} *$|=*[^=]+$" context="#pop" attribute="Normal" />
       </context>
       <context attribute="Comment" lineEndContext="#stay" name="comment" >
         <StringDetect String="--&gt;" context="#pop" attribute="Comment" endRegion="comment" />
@@ -154,8 +146,7 @@
       </context>
       <context attribute="Link" lineEndContext="#stay" name="DelimitedUrlLink" >
         <IncludeRules context="FindTemplate" />
-        <DetectChar char=" " context="#pop" lookAhead="true" />
-        <DetectChar char="]" context="#pop" lookAhead="true" />
+        <AnyChar String=" ]" context="#pop" lookAhead="true" />
       </context>
 
       <context attribute="Link" lineEndContext="#pop" name="LooseURL" >
@@ -513,7 +504,7 @@
       </context>
 
       <context attribute="Normal" lineEndContext="#stay" name="FindListItem" >
-        <RegExpr String="[*#;:\s]*[*#:]+" attribute="WikiTag" context="#stay" column="0" />
+        <RegExpr String="^[*#;:\s]*[*#:]+" attribute="WikiTag" context="#stay" column="0" />
       </context>
 
       <context attribute="Normal" lineEndContext="#stay" name="FindSyntaxHighlightingHtmlElement" >

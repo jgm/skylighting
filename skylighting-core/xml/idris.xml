@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <!-- Based on haskell.xml and idris.vim (https://github.com/idris-hackers/idris-vim/blob/6bdb44b85406b75e3b3a4fa265deab1dbe8c6ff1/syntax/idris.vim) -->
-<language name="Idris" version="6" kateversion="5.0" section="Sources" extensions="*.idr" author="Alexander Shabalin" license="LGPL">
+<language name="Idris" version="7" kateversion="5.0" section="Sources" extensions="*.idr" author="Alexander Shabalin" license="LGPL">
   <highlighting>
   <list name="keywords">
     <item>abstract</item>
@@ -96,9 +96,7 @@
   <contexts>
      <context attribute="Normal" lineEndContext="#stay" name="code">
         <RegExpr attribute="Comment" context="line comment"
-           String="---*(?=[^!#\$%&amp;\*\+/&lt;=&gt;\?&#92;@\^\|~\.:]|$)" />
-        <RegExpr attribute="Comment" context="line comment"
-           String="\|\|\|(?=[^\-!#\$%&amp;\*\+/&lt;=&gt;\?&#92;@\^\|~\.:]|$)" />
+           String="---*(?=[^!#\$%&amp;\*\+/&lt;=&gt;\?&#92;@\^\|~\.:]|$)|\|\|\|(?=[^\-!#\$%&amp;\*\+/&lt;=&gt;\?&#92;@\^\|~\.:]|$)" />
         <Detect2Chars attribute="Comment" context="block comment" char="{" char1="-" beginRegion="BlockComment" />
         <RegExpr attribute="Normal" context="declaration" lookAhead="true"
            String="^\s*(?:[a-z]+\s+)*(?:[A-Za-z][A-Za-z0-9_]*'*|\([\-!#\$%&amp;\*\+\./&lt;=&gt;\?@&#92;\^\|~:]+\))\s*:" column="0" />
@@ -115,8 +113,7 @@
         <RegExpr attribute="MetaVar" context="#stay" String="\?[a-z][A-Za-z0-9_]+'*" />
         <RegExpr attribute="Special" context="#stay" String="(:|=&gt;|\-&gt;|&lt;\-)" />
         <RegExpr attribute="Operator" context="#stay"
-           String="([\-!#\$%&amp;\*\+\./&lt;=&gt;\?@&#92;\^\|~:]+|\b_\b)" />
-        <RegExpr attribute="Operator" context="#stay" String="`[A-Za-z][A-Za-z0-9_]*'*`" />
+           String="([\-!#\$%&amp;\*\+\./&lt;=&gt;\?@&#92;\^\|~:]+|\b_\b)|`[A-Za-z][A-Za-z0-9_]*'*`" />
      </context>
      <context attribute="Normal" lineEndContext="#pop" name="declaration">
         <keyword attribute="Keyword" context="#stay" String="keywords" />

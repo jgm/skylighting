@@ -30,7 +30,7 @@
         <!ENTITY heredocq "(?|&quot;([^&quot;]+)&quot;|'([^']+)'|\\(.[^&wordseps;&substseps;]*))">
 ]>
 
-<language name="Bash" version="24" kateversion="5.62" section="Scripts" extensions="*.sh;*.bash;*.ebuild;*.eclass;*.nix;.bashrc;.bash_profile;.bash_login;.profile;PKGBUILD;APKBUILD" mimetype="application/x-shellscript" casesensitive="1" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL">
+<language name="Bash" version="27" kateversion="5.79" section="Scripts" extensions="*.sh;*.bash;*.ebuild;*.eclass;*.nix;.bashrc;.bash_profile;.bash_login;.profile;PKGBUILD;APKBUILD" mimetype="application/x-shellscript" casesensitive="1" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL">
 
 <!-- (c) 2004 by Wilbert Berendsen (wilbert@kde.nl)
     Changes by Matthew Woehlke (mw_triad@users.sourceforge.net)
@@ -83,13 +83,11 @@
       <item>exit</item>
       <item>fc</item>
       <item>fg</item>
-      <item>getopts</item>
       <item>hash</item>
       <item>help</item>
       <item>history</item>
       <item>jobs</item>
       <item>kill</item>
-      <item>let</item>
       <item>logout</item>
       <item>popd</item>
       <item>printf</item>
@@ -112,12 +110,14 @@
 
     <list name="builtins_var">
       <item>export</item>
-      <item>unset</item>
       <item>declare</item>
-      <item>typeset</item>
+      <item>getopts</item>
+      <item>let</item>
       <item>local</item>
       <item>read</item>
       <item>readonly</item>
+      <item>typeset</item>
+      <item>unset</item>
     </list>
 
     <list name="unixcommands">
@@ -485,7 +485,7 @@
         <!-- handle keywords -->
         <keyword context="DispatchKeyword" String="keywords" lookAhead="1"/>
         <!-- handle commands that have variable names as argument -->
-        <keyword attribute="Builtin" context="VarName" String="builtins_var"/>
+        <keyword attribute="Builtin" context="VarName" String="builtins_var" lookAhead="1"/>
         <!-- mark function definitions without function keyword -->
         <RegExpr attribute="Function" context="#stay" String="&funcname;[ &tab;]*\(\)"/>
         <keyword attribute="Builtin" context="CommandArgs" String="builtins"/>
@@ -909,17 +909,70 @@
       </context>
 
       <!-- VarName consumes spare variable names and assignments -->
-      <context attribute="Normal Text" lineEndContext="#pop" name="VarName" fallthroughContext="NormalOption">
-        <DetectChar attribute="Variable" context="Subscript" char="["/>
-        <DetectChar attribute="Variable" context="Assign" char="="/>
-        <DetectChar attribute="Variable" context="AssignArray" char="("/>
-        <IncludeRules context="CommandArgs"/>
-        <!-- handle command line options -->
-        <RegExpr attribute="Option" context="#stay" String="-[A-Za-z0-9]+"/>
-        <IncludeRules context="FindRegVarName"/>
+      <context attribute="Normal Text" lineEndContext="#pop" name="VarName">
+        <StringDetect attribute="Builtin" context="#pop!BuiltinGetopts" String="getopts"/>
+        <StringDetect attribute="Builtin" context="#pop!BuiltinLet" String="let"/>
+        <DetectIdentifier attribute="Builtin" context="#pop!VarNameArgs"/>
+        <AnyChar attribute="Builtin" context="#pop!VarNameArgs" String=".:"/>
       </context>
-      <context attribute="Normal Text" lineEndContext="#stay" name="FindRegVarName">
-        <RegExpr attribute="Variable" context="#stay" String="&varname;"/>
+      <context attribute="Normal Text" lineEndContext="#pop" name="VarNameArgs" fallthroughContext="#pop!CommandArgs">
+        <DetectSpaces attribute="Normal Text" context="VarNameArg"/>
+        <LineContinue attribute="Escape" context="#stay"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop#pop" name="VarNameArg" fallthroughContext="#pop!VarNameArg2">
+        <!-- In command arguments, do not allow comments after escaped characters.
+             This avoids highlighting comments within paths or other text. Ex: pathtext\ #no\ comment -->
+        <DetectChar context="#pop#pop" char="#" lookAhead="1"/>
+        <DetectChar attribute="Option" context="#pop!ShortOption" char="-"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="VarNameArg2" fallthroughContext="#pop!NormalOption">
+        <DetectChar attribute="Variable" context="Subscript" char="["/>
+        <DetectChar attribute="Operator" context="Assign" char="="/>
+        <DetectChar attribute="Variable" context="AssignArray" char="("/>
+        <DetectIdentifier attribute="Variable" context="#stay"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="BuiltinGetopts" fallthroughContext="#pop!CommandArgs">
+        <DetectSpaces attribute="Normal Text" context="#pop!BuiltinGetoptsOpt"/>
+        <LineContinue attribute="Escape" context="#stay"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop#pop" name="BuiltinGetoptsOpt" fallthroughContext="#pop!BuiltinGetoptsOpt2">
+        <DetectChar context="#pop#pop" char="#" lookAhead="1"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="BuiltinGetoptsOpt2" fallthroughContext="#pop!NormalOption">
+        <DetectChar attribute="Operator" context="#stay" char=":"/>
+        <DetectIdentifier attribute="Normal Text" context="#stay" />
+        <DetectSpaces attribute="Normal Text" context="#pop!BuiltinGetoptsVar"/>
+        <AnyChar context="#pop" String="&wordseps;`" lookAhead="1"/>
+        <IncludeRules context="FindWord"/>
+        <DetectChar context="NormalMaybeBraceExpansion" char="{" lookAhead="1"/>
+        <AnyChar attribute="Normal Text" context="#stay" String="/%.0123456789"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="BuiltinGetoptsVar" fallthroughContext="#pop!CommandArgs">
+        <DetectIdentifier attribute="Variable" context="#pop!CommandArgs"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="BuiltinLet" fallthroughContext="#pop!CommandArgs">
+        <DetectSpaces attribute="Normal Text" context="#pop!BuiltinLetArgs"/>
+        <LineContinue attribute="Escape" context="#stay"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="BuiltinLetArgs" fallthroughContext="BuiltinLetArg">
+        <AnyChar context="BuiltinLetArgsNumber" String="0123456789" lookAhead="1"/>
+        <IncludeRules context="CommandArgs"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="BuiltinLetArgsNumber" fallthroughContext="#pop!BuiltinLetArg">
+        <IncludeRules context="FindRedirection"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop#pop" name="BuiltinLetArg" fallthroughContext="#pop!BuiltinLetExpr">
+        <DetectChar context="#pop#pop" char="#" lookAhead="1"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="BuiltinLetExpr" fallthroughContext="#pop!NormalOption">
+        <DetectIdentifier attribute="Variable" context="#stay" />
+        <AnyChar context="#pop" String="&wordseps;`" lookAhead="1"/>
+        <AnyChar attribute="Operator" context="#stay" String="+-/%=^:"/>
+        <AnyChar context="Number" String="0123456789" lookAhead="1"/>
+        <DetectChar attribute="Parameter Expansion Operator" context="Subscript" char="["/>
+        <IncludeRules context="FindWord"/>
+        <DetectChar attribute="Error" context="#stay" char="#"/>
+        <DetectChar context="NormalMaybeBraceExpansion" char="{" lookAhead="1"/>
       </context>
 
       <!-- ProcessSubst handles <(command) and >(command) -->
@@ -997,7 +1050,7 @@
 
       <!-- VarBracePrefix called as soon as ${! is encoutered -->
       <context attribute="Variable" lineEndContext="#pop" name="VarBracePrefix">
-        <RegExpr attribute="Variable" context="#pop!VarBracePrefixSuffix" String="&varname;"/>
+        <DetectIdentifier attribute="Variable" context="#pop!VarBracePrefixSuffix"/>
       </context>
       <context attribute="Variable" lineEndContext="#pop" name="VarBracePrefixSuffix" fallthroughContext="#pop!VarError">
         <DetectChar attribute="Parameter Expansion" context="#pop" char="}"/>
@@ -1009,7 +1062,9 @@
       <!-- VarBrace is called as soon as ${ or ${# are encoutered -->
       <context attribute="Variable" lineEndContext="#stay" name="VarBrace" fallthroughContext="#pop!VarError">
         <DetectChar attribute="Variable" context="#pop" char="}"/>
-        <RegExpr attribute="Variable" context="#pop!CheckVarAlt" String="&varname;|[*@?$!-]|[0-9]+"/>
+        <DetectIdentifier attribute="Variable" context="#pop!CheckVarAlt"/>
+        <AnyChar attribute="Variable" context="#pop!CheckVarAlt" String="*@?$!-"/>
+        <Int attribute="Variable" context="#pop!CheckVarAlt" additionalDeliminator=":#%^,/@{}"/>
       </context>
       <context attribute="Error" lineEndContext="#stay" name="VarError">
         <DetectChar attribute="Variable" context="#pop" char="}"/>
@@ -1028,11 +1083,9 @@
         <Detect2Chars attribute="Parameter Expansion Operator" context="#pop!AlternatePatternValue" char="^" char1="^"/>
         <Detect2Chars attribute="Parameter Expansion Operator" context="#pop!AlternatePatternValue" char="," char1=","/>
         <DetectChar attribute="Parameter Expansion Operator" context="#pop!VarSub" char=":"/>
-        <DetectChar attribute="Parameter Expansion Operator" context="#pop!AlternateValue" char="%"/>
-        <DetectChar attribute="Parameter Expansion Operator" context="#pop!AlternateValue" char="#"/>
         <DetectChar attribute="Parameter Expansion Operator" context="#pop!VarSubst" char="/"/>
-        <DetectChar attribute="Parameter Expansion Operator" context="#pop!AlternatePatternValue" char="^"/>
-        <DetectChar attribute="Parameter Expansion Operator" context="#pop!AlternatePatternValue" char=","/>
+        <AnyChar attribute="Parameter Expansion Operator" context="#pop!AlternateValue" String="%#"/>
+        <AnyChar attribute="Parameter Expansion Operator" context="#pop!AlternatePatternValue" String="^,"/>
         <DetectChar attribute="Parameter Expansion Operator" context="#pop!VarTransformation" char="@"/>
       </context>
 
@@ -1123,14 +1176,12 @@
         <AnyChar attribute="Operator" context="#stay" String="+-!~*/%&lt;>=&amp;^|?:"/>
         <DetectChar attribute="Control" context="#stay" char=","/>
         <DetectChar attribute="Normal Text" context="ExprSubDblParen" char="("/>
-        <DetectChar context="RegularVariable" char="$" lookAhead="1"/>
-        <IncludeRules context="FindStrings"/>
         <AnyChar context="Number" String="0123456789" lookAhead="1"/>
-        <DetectChar attribute="Backquote" context="RegularBackq" char="`"/>
-        <DetectChar context="MaybeArithmeticBrace" char="{" lookAhead="1"/>
-        <DetectChar attribute="Error" context="#stay" char="#"/>
         <DetectChar attribute="Parameter Expansion Operator" context="Subscript" char="["/>
-        <IncludeRules context="FindRegVarName"/>
+        <IncludeRules context="FindWord"/>
+        <DetectChar attribute="Error" context="#stay" char="#"/>
+        <DetectChar context="MaybeArithmeticBrace" char="{" lookAhead="1"/>
+        <DetectIdentifier attribute="Variable" context="#stay"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="ExprSubDblParen">
         <DetectChar attribute="Normal Text" context="#pop" char=")"/>

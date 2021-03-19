@@ -56,7 +56,7 @@
 ]>
 <language name="LilyPond" section="Other"
           style="lilypond" indenter="lilypond"
-          version="9" kateversion="5.0"
+          version="10" kateversion="5.0"
           extensions="*.ly;*.LY;*.ily;*.ILY;*.lyi;*.LYI"
           mimetype="text/x-lilypond"
           author="Wilbert Berendsen (info@wilbertberendsen.nl)" license="LGPL">
@@ -737,8 +737,7 @@
 
       <context name="musiccommand" attribute="Normal Text" lineEndContext="#pop"
                fallthrough="true" fallthroughContext="#pop">
-        <RegExpr String="\\(&dynamics;)&b;" attribute="Dynamic"/>
-        <RegExpr String="\\[&lt;!&gt;]" attribute="Dynamic"/>
+        <RegExpr String="\\((&dynamics;)&b;|[&lt;!&gt;])" attribute="Dynamic"/>
         <RegExpr String="\\(&scripts;)&b;" attribute="Articulation"/>
         <RegExpr String="\\[()]" attribute="Slur"/>
         <RegExpr String="\\[][]" attribute="Beam"/>
@@ -762,14 +761,7 @@
         <RegExpr String="\\skip&b;" attribute="Command" context="duration"/>
         <RegExpr String="\\tempo&b;" attribute="Command" context="tempo"/>
         <RegExpr String="\\(&keywords;)&b;" attribute="Keyword"/>
-        <RegExpr String="\\(&commands-heads;)&b;" attribute="Command"/>
-        <RegExpr String="\\(&commands-other1;)&b;" attribute="Command"/>
-        <RegExpr String="\\(&commands-other2;)&b;" attribute="Command"/>
-        <RegExpr String="\\(&commands-other3;)&b;" attribute="Command"/>
-        <RegExpr String="\\(&commands-other4;)&b;" attribute="Command"/>
-        <RegExpr String="\\(&commands-other5;)&b;" attribute="Command"/>
-        <RegExpr String="\\(&commands-other6;)&b;" attribute="Command"/>
-        <RegExpr String="\\(&commands-other7;)&b;" attribute="Command"/>
+        <RegExpr String="\\(&commands-heads;|&commands-other1;|&commands-other2;|&commands-other3;|&commands-other4;|&commands-other5;|&commands-other6;|&commands-other7;)&b;" attribute="Command"/>
         <RegExpr String="\\(&toplevelvars;)&b;" attribute="Variable"/>
         <RegExpr String="\\(&deprecatedkeywords;)&b;" attribute="Deprecated Keyword"/>
         <RegExpr String="\\(&deprecatedcommands;)&b;" attribute="Deprecated Command"/>
@@ -809,8 +801,9 @@
                fallthrough="true" fallthroughContext="#pop">
         <DetectSpaces attribute="Normal Text"/>
         <RegExpr String="=\s*('+|,+)?" attribute="Check"/>
-        <RegExpr String="&duration;" attribute="Invalid" context="#pop"/><!-- no duration in chord allowed -->
-        <RegExpr String="\d+" attribute="Invalid" context="#pop"/><!-- catch other (wrong) durations as well -->
+        <!-- no duration in chord allowed -->
+        <!-- catch other (wrong) durations as well -->
+        <RegExpr String="&duration;|\d+" attribute="Invalid" context="#pop"/>
       </context>
 
       <context name="chordend" attribute="Chord" lineEndContext="#stay"
@@ -870,21 +863,14 @@
         <keyword String="musicexpressions" attribute="Scheme Keyword"/>
         <keyword String="contexts" attribute="Scheme Keyword"/>
         <keyword String="layoutobjects" attribute="Scheme Keyword"/>
-        <RegExpr String="[-+]?(\d+(\.\d+)?|\.\d+)" attribute="Scheme Value"/>
-        <RegExpr String="#(t|f|b[-+]?[01.]+|o[-+]?[0-7.]+|d[-+]?[0-9.]+|x[-+]?[0-9a-f.]+)"
-                 insensitive="true" attribute="Scheme Value"/>
-        <RegExpr String="[+-](inf|nan)\.0" attribute="Scheme Value"/>
-        <RegExpr String="&schemefunc0;" attribute="Scheme Keyword"/>
-        <RegExpr String="&schemefunc1;" attribute="Scheme Keyword"/>
-        <RegExpr String="&schemefunc2;" attribute="Scheme Keyword"/>
+        <RegExpr String="[-+]?(\d+(\.\d+)?|\.\d+)|#([tfTF]|[bB][-+]?[01.]+|[oO][-+]?[0-7.]+|[dD][-+]?[0-9.]+|[xX][-+]?[0-9a-fA-F.]+)|[+-](inf|nan)\.0" attribute="Scheme Value"/>
+        <RegExpr String="&schemefunc0;|&schemefunc1;|&schemefunc2;" attribute="Scheme Keyword"/>
         <RegExpr String="&schemename;"/>
       </context>
 
       <context name="schemequote" attribute="Scheme" lineEndContext="#pop"
                fallthrough="true" fallthroughContext="#pop">
-        <RegExpr String="&schemefunc0;"/>
-        <RegExpr String="&schemefunc1;"/>
-        <RegExpr String="&schemefunc2;"/>
+        <RegExpr String="&schemefunc0;|&schemefunc1;|&schemefunc2;"/>
       </context>
 
       <context name="schemelily" attribute="Normal Text" lineEndContext="#stay">
@@ -1087,11 +1073,7 @@
         <DetectChar char="{" attribute="Keyword" context="sectionrules" beginRegion="section"/>
         <keyword String="contexts" attribute="Context"/>
         <keyword String="deprecatedcontexts" attribute="Deprecated Context"/>
-        <RegExpr String="(&quot;?)\b(?:&engravers00;)\b\1" attribute="Engraver"/>
-        <RegExpr String="(&quot;?)\b(?:&engravers01;)\b\1" attribute="Engraver"/>
-        <RegExpr String="(&quot;?)\b(?:&engravers02;)\b\1" attribute="Engraver"/>
-        <RegExpr String="(&quot;?)\b(?:&engravers1;)\b\1" attribute="Engraver"/>
-        <RegExpr String="(&quot;?)\b(?:&engravers2;)\b\1" attribute="Engraver"/>
+        <RegExpr String="(&quot;?)\b(?:&engravers00;|&engravers01;|&engravers02;|&engravers1;|&engravers2;)\b\1" attribute="Engraver"/>
         <keyword String="layoutobjects" attribute="Layout Object"/>
         <keyword String="properties" attribute="Property"/>
         <RegExpr String="\b(&headervars;|&papervars;|&layoutvars;)\b" attribute="Variable"/>

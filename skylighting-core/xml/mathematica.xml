@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Mathematica" version="11" kateversion="5.0" section="Scientific"
+<language name="Mathematica" version="12" kateversion="5.0" section="Scientific"
           extensions="*.nb" mimetype="application/mathematica;application/vnd.wolfram.mathematica" indenter="cstyle"
           author="Sven Brauch (svenbrauch@gmail.com)" license="LGPL" priority="3">
   <highlighting>
@@ -3268,8 +3268,7 @@
         <IncludeRules context="##Comments"/>
       </context>
       <context name="CommentCreatedBy" attribute="Comment" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-        <RegExpr attribute="String" context="#pop" String="'(?:[^'\*]|\*+[^'\*\)])*\*?'"/>
-        <RegExpr attribute="String" context="#pop" String="&quot;(?:[^&quot;\*]|\*+[^&quot;\*\)])*\*?&quot;"/>
+        <RegExpr attribute="String" context="#pop" String="'(?:[^'\*]|\*+[^'\*\)])*\*?'|&quot;(?:[^&quot;\*]|\*+[^&quot;\*\)])*\*?&quot;"/>
       </context>
       <context name="CommentCacheId" attribute="Comment" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
         <DetectSpaces/>

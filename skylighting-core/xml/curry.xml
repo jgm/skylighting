@@ -30,7 +30,7 @@
   <!-- dashes introducing a currydoc comment -->
   <!ENTITY currydoc    "---" >
 ]>
-<language name="Curry" version="3" kateversion="5.0"
+<language name="Curry" version="4" kateversion="5.0"
           section="Sources" extensions="*.curry" mimetype="text/x-curry"
           author="Björn Peemöller (bjp@informatik.uni-kiel.de)" license="LGPL"
           indenter="haskell">
@@ -266,11 +266,7 @@
     <!-- Character escape sequence -->
     <context name="CharEscape" attribute="Char" lineEndContext="#pop!CharSyntaxError" >
       <AnyChar attribute="Char"         context="#pop!CharEnd" String="&escSeqChar;"   />
-      <RegExpr attribute="Char"         context="#pop!CharEnd" String="o&octal;"       />
-      <RegExpr attribute="Char"         context="#pop!CharEnd" String="&decimal;"      />
-      <RegExpr attribute="Char"         context="#pop!CharEnd" String="x&hexadecimal;" />
-      <RegExpr attribute="Char"         context="#pop!CharEnd" String="&escSeqCntrl;"  />
-      <RegExpr attribute="Char"         context="#pop!CharEnd" String="&escSeqAscii;"  />
+      <RegExpr attribute="Char"         context="#pop!CharEnd" String="o&octal;|&decimal;|x&hexadecimal;|&escSeqCntrl;|&escSeqAscii;" />
       <RegExpr attribute="Syntax Error" context="#pop!CharEnd" String="."              />
     </context>
 
@@ -295,11 +291,7 @@
     <!-- String escape sequence -->
     <context name="StringEscape" attribute="String" lineEndContext="StringGap" >
       <AnyChar      attribute="String Escape"  context="#pop"      String="&escSeqChar;&amp;" />
-      <RegExpr      attribute="String Escape"  context="#pop"      String="o&octal;"          />
-      <RegExpr      attribute="String Escape"  context="#pop"      String="&decimal;"         />
-      <RegExpr      attribute="String Escape"  context="#pop"      String="x&hexadecimal;"    />
-      <RegExpr      attribute="String Escape"  context="#pop"      String="&escSeqCntrl;"     />
-      <RegExpr      attribute="String Escape"  context="#pop"      String="&escSeqAscii;"     />
+      <RegExpr      attribute="String Escape"  context="#pop"      String="o&octal;|&decimal;|x&hexadecimal;|&escSeqCntrl;|&escSeqAscii;" />
       <DetectSpaces attribute="String Escape"  context="StringGap"                            />
       <RegExpr      attribute="Syntax Error"   context="#pop"      String="."                 />
     </context>

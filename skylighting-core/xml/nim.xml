@@ -210,8 +210,7 @@ Improvements:
 				<Int     context="#stay" attribute="Decimal"/>
 
 				<RegExpr context="#stay" attribute="Types"  String="\b_*[A-Z](?:\w|\._*[A-Z])*\b"/>
-				<RegExpr context="#stay" attribute="Funcs"  String="\b\w+\b\s*(?=(?:\[.*\]\w*)?(?:\(|(?:[ ](?![,+\-*/=!^&amp;&lt;&gt;|?]|and|as|div|in|is|isnot|mod|notin|of|or|shl|shr|xor))))"/>
-				<RegExpr context="#stay" attribute="Funcs"  String="\b\w+(?=&quot;)"/>
+				<RegExpr context="#stay" attribute="Funcs"  String="\b\w+\b\s*(?=(?:\[.*\]\w*)?(?:\(|(?:[ ](?![,+\-*/=!^&amp;&lt;&gt;|?]|and|as|div|in|is|isnot|mod|notin|of|or|shl|shr|xor))))|\b\w+(?=&quot;)"/>
 
 				<DetectIdentifier/>
 
@@ -303,7 +302,6 @@ Improvements:
 				<keyword context="#pop" attribute="Types" String="types"/>
 				<RegExpr context="#pop" attribute="Types" String="_*[A-Z]\w*"/>
 				<RegExpr context="#pop" attribute="Funcs" String="_*[a-z]\w*(?=\()"/>
-				<RegExpr context="#pop" attribute="Props" String="_*[a-z]\w*(?=\.)"/>
 				<RegExpr context="#pop" attribute="Props" String="_*[a-z]\w*"/>
 				<RegExpr context="#pop" attribute="Brackets" String="\.+"/>
 			</context>

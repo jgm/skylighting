@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="noweb" version="4" kateversion="5.53" section="Sources" extensions="*.w;*.nw" author="Scott Collins (scc@scottcollins.net)">
+<language name="noweb" version="5" kateversion="5.53" section="Sources" extensions="*.w;*.nw" author="Scott Collins (scc@scottcollins.net)">
 <!-- 
 #########################################################################
 # First version added to repository was 0.4, added as 1.0 .
@@ -30,8 +30,7 @@
         <IncludeRules context="##C++" includeAttrib="true" />
       </context>
       <context name="CodeSection" attribute="Code" lineEndContext="#stay">
-        <RegExpr String="^@$" attribute="Punctuation" context="RawDocumentation" endRegion="CodeSection" column="0" />
-        <RegExpr String="^@(?=[\s%])" attribute="Punctuation" context="RawDocumentation" endRegion="CodeSection" column="0" />
+        <RegExpr String="^@$|^@(?=[\s%])" attribute="Punctuation" context="RawDocumentation" endRegion="CodeSection" column="0" />
         <RegExpr String="^&lt;&lt;.*&gt;&gt;=$" context="RawDocumentation" lookAhead="true" endRegion="CodeSection" column="0" />
         <IncludeRules context="SectionNames" />
         <IncludeRules context="##C++" includeAttrib="true" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language version="9" kateversion="5.0" name="Common Lisp" section="Sources" extensions="*.lisp;*.cl;*.lsp" mimetype="" author="Dominik Haumann (dhaumann@kde.org)" license="MIT">
+<language version="10" kateversion="5.0" name="Common Lisp" section="Sources" extensions="*.lisp;*.cl;*.lsp" mimetype="" author="Dominik Haumann (dhaumann@kde.org)" license="MIT">
   <highlighting>
     <list name="symbols">
       <item>&lt;</item>
@@ -1116,8 +1116,7 @@
         <RegExpr attribute="Region Marker" context="#stay" String=";+\s*END.*$" endRegion="region"/>
         <DetectChar attribute="Comment" context="Comment" char=";"/>
         <Detect2Chars attribute="Comment" context="MultiLineComment" char="#" char1="|" beginRegion="BlockComment"/>
-        <DetectChar attribute="Brackets" context="#stay" char="("/>
-        <DetectChar attribute="Brackets" context="#stay" char=")"/>
+        <AnyChar attribute="Brackets" context="#stay" String="()"/>
         <keyword attribute="Keyword" context="#stay" String="keywords"/>
         <keyword attribute="Operator" context="#stay" String="symbols"/>
         <keyword attribute="Modifier" context="#stay" String="modifiers"/>

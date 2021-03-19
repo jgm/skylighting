@@ -11,7 +11,7 @@
 	<!ENTITY datetime "\d\d\d\d-\d\d-\d\d(T&time;)?">
 ]>
 <!-- https://github.com/toml-lang/toml -->
-<language name="TOML" section="Configuration" extensions="*.toml" mimetype="text/x-toml" version="7" kateversion="5.0" author="flying-sheep@web.de" license="LGPLv2+">
+<language name="TOML" section="Configuration" extensions="*.toml" mimetype="text/x-toml" version="8" kateversion="5.0" author="flying-sheep@web.de" license="LGPLv2+">
 <highlighting>
 	<list name="bools">
 		<item>true</item>
@@ -65,22 +65,19 @@
 		<!-- Quoted keys and Strings -->
 		<context attribute="Key" lineEndContext="#pop" name="QuotedKey">
 			<LineContinue attribute="Escape" context="#stay"/>
-			<RegExpr attribute="Escape" String="\\[btnfr&quot;\\]" context="#stay" />
-			<RegExpr attribute="Escape" String="\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})" context="#stay" />
+			<RegExpr attribute="Escape" String="\\[btnfr&quot;\\]|\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})" context="#stay" />
 			<RegExpr attribute="Error" String="\\." context="#stay" />
 			<DetectChar attribute="Key" context="#pop" char="&quot;"/>
 		</context>
 		<context attribute="String" lineEndContext="#pop" name="String">
 			<LineContinue attribute="Escape" context="#stay"/>
-			<RegExpr attribute="Escape" String="\\[btnfr&quot;\\]" context="#stay" />
-			<RegExpr attribute="Escape" String="\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})" context="#stay" />
+			<RegExpr attribute="Escape" String="\\[btnfr&quot;\\]|\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})" context="#stay" />
 			<RegExpr attribute="Error" String="\\." context="#stay" />
 			<DetectChar attribute="String" context="#pop" char="&quot;"/>
 		</context>
 		<context attribute="String" lineEndContext="#stay" name="MultilineString">
 			<LineContinue attribute="Escape" context="#stay"/>
-			<RegExpr attribute="Escape" String="\\[btnfr&quot;\\]" context="#stay" />
-			<RegExpr attribute="Escape" String="\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})" context="#stay" />
+			<RegExpr attribute="Escape" String="\\[btnfr&quot;\\]|\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})" context="#stay" />
 			<RegExpr attribute="Error" String="\\." context="#stay" />
 			<StringDetect attribute="String" context="#pop" String="&quot;&quot;&quot;"/>
 		</context>

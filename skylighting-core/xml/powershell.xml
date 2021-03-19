@@ -1,7 +1,7 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 <language
   name="PowerShell"
-  version="10"
+  version="11"
   kateversion="5.0"
   extensions="*.ps1;*.psm1;*.psd1"
   section="Scripts"
@@ -884,16 +884,14 @@
         <Detect2Chars attribute="Comment" context="Commentar 2" char="&lt;" char1="#" beginRegion="CommentRegion"/>
         <DetectChar attribute="Symbol" context="#stay" char="{" beginRegion="block1"/>
         <DetectChar attribute="Symbol" context="#stay" char="}" endRegion="block1"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\b\$global(?=\s+(:))"/>
-        <RegExpr attribute="Keyword" context="#stay" String="\b\$script(?=\s+(:))"/>
+        <RegExpr attribute="Keyword" context="#stay" String="\b\$(global|script)(?=\s+(:))"/>
         <RegExpr attribute="Variable" context="#stay" String="\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*" />
         <keyword attribute="Special Variable" context="#stay" String="special-variables"/>
         <DetectChar attribute="Symbol" context="Member" char="." />
         <AnyChar attribute="Symbol" context="#stay" String=":!%&amp;()+,-/*&lt;=&gt;?[]|~^&#59;"/>
       </context>
       <context attribute="String Char" lineEndContext="#stay" name="StringEscape">
-        <RegExpr attribute="String Char" String="`[`&quot;0abefnrtv]" context="#stay"/>
-        <RegExpr attribute="String Char" String="`u\{[0-9A-Fa-f]+\}" context="#stay"/>
+        <RegExpr attribute="String Char" String="`[`&quot;0abefnrtv]|`u\{[0-9A-Fa-f]+\}" context="#stay"/>
       </context>
       <context attribute="String" lineEndContext="#pop" name="String">
         <IncludeRules context="StringEscape"/>

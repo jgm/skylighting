@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd">
+<!DOCTYPE language SYSTEM "language.dtd" [
+  <!ENTITY hexfloat "0[xX][\da-fA-F_]*(?:\.[\da-fA-F_]*)?[pP][-+]?\d[\d_]*[fFL]?i?">
+  <!-- Float starting with a dot is matched in main context -->
+  <!-- All floats except integers -->
+  <!-- RegExpr is branched rather than using look aheads for efficiency at the expense of extra length -->
+  <!ENTITY float "\d[_\d]*(?:\.(?!\.)[_\d]*(?:[eE][-+]?\d[_\d]*)?[fFL]?i?|[eE][-+]?\d[_\d]*[fFL]?i?|[fF]i?|[fFL]?i)">
+]>
 <!--
   ========================================================================
 
@@ -99,7 +105,7 @@
    ========================================================================
 -->
 
-<language name="D" version="10" kateversion="5.0" section="Sources" extensions="*.d;*.D;*.di;*.DI;" mimetype="text/x-dsrc" casesensitive="true" author="Diggory Hardy (diggory.hardy@gmail.com), Aziz Köksal (aziz.koeksal@gmail.com), Jari-Matti Mäkelä (jmjm@iki.fi), Simon J Mackenzie (project.katedxml@smackoz.fastmail.fm)" license="LGPL">
+<language name="D" version="11" kateversion="5.0" section="Sources" extensions="*.d;*.D;*.di;*.DI;" mimetype="text/x-dsrc" casesensitive="true" author="Diggory Hardy (diggory.hardy@gmail.com), Aziz Köksal (aziz.koeksal@gmail.com), Jari-Matti Mäkelä (jmjm@iki.fi), Simon J Mackenzie (project.katedxml@smackoz.fastmail.fm)" license="LGPL">
   <highlighting>
     <!-- User-defined keywords (add identifiers you'd like highlighted here) -->
     <list name="userkeywords">
@@ -431,12 +437,10 @@
           
           <!-- detect whether scope, in, out, etc. are used as attributes or statements (etc.) -->
           <!-- rules cannot match across newlines unfortunately -->
-          <RegExpr String="in\s*(?=\{)"    attribute="Statement"       context="#stay"     />
-          <RegExpr String="out\s*(?=(\(([a-zA-Z_][\w_]*)?\)\s*)?\{)" attribute="Statement" context="#stay" />
+          <RegExpr String="in\s*(?=\{)|out\s*(?=(\(([a-zA-Z_][\w_]*)?\)\s*)?\{)" attribute="Statement" context="#stay" />
           <RegExpr String="scope\s*(?=\()" attribute="Statement"       context="Scope"     />
           <RegExpr String="import\s*(?=\()" attribute="Expression"     context="#stay"     />
-          <RegExpr String="function\s*(?=\()" attribute="Declarator"   context="#stay"     />
-          <RegExpr String="delegate\s*(?=\()" attribute="Declarator"   context="#stay"     />
+          <RegExpr String="(function|delegate)\s*(?=\()" attribute="Declarator"   context="#stay"     />
           
           <keyword String="statements"      attribute="Statement"      context="#stay"     />
           <keyword String="attributes"      attribute="Attribute"      context="#stay"     />
@@ -476,11 +480,7 @@
       <context name="NumberLiteral" attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop">
         <!-- Float literals -->
         <!-- Floats must be matched before Binary|Octal|Hex|DecInteger -->
-        <RegExpr attribute="Float" context="#pop" String="0[xX][\da-fA-F_]*(?:\.[\da-fA-F_]*)?[pP][-+]?\d[\d_]*[fFL]?i?"/>
-        <!-- Float starting with a dot is matched in main context -->
-        <!-- All floats except integers -->
-        <!-- RegExpr is branched rather than using look aheads for efficiency at the expense of extra length -->
-        <RegExpr attribute="Float" context="#pop" String="\d[_\d]*(?:\.(?!\.)[_\d]*(?:[eE][-+]?\d[_\d]*)?[fFL]?i?|[eE][-+]?\d[_\d]*[fFL]?i?|[fF]i?|[fFL]?i)"/>
+        <RegExpr attribute="Float" context="#pop" String="&hexfloat;|&float;"/>
         
         <!-- Binary|Octal|Hex|DecInteger -->
         <!-- Common, optional suffix: (L[uU]?|[uU]L?)? -->

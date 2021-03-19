@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE  language SYSTEM "language.dtd">
-<language name="ASP" version="8" kateversion="5.44" section="Markup" extensions="*.asp;" mimetype="text/x-asp-src;text/x-asp-src" author="Antonio Salazar (savedfastcool@gmail.com)" license="LGPL">
+<language name="ASP" version="9" kateversion="5.44" section="Markup" extensions="*.asp;" mimetype="text/x-asp-src;text/x-asp-src" author="Antonio Salazar (savedfastcool@gmail.com)" license="LGPL">
     <highlighting>
         <list name="control structures">
             <item>select</item>
@@ -297,8 +297,7 @@
             <context name="doublequotestring" attribute="String" lineEndContext="#stay">
                 <DetectSpaces />
                 <Detect2Chars attribute="Escape Code" context="#stay" char="&quot;" char1="&quot;" />
-                <RegExpr attribute="Escape Code" context="#stay" String="\\[0-7]{1,3}" />
-                <RegExpr attribute="Escape Code" context="#stay" String="\\x[0-9A-Fa-f]{1,2}" />
+                <RegExpr attribute="Escape Code" context="#stay" String="\\[0-7]{1,3}|\\x[0-9A-Fa-f]{1,2}" />
                 <DetectChar attribute="String" context="#pop" char="&quot;" />
             </context>
             <context name="singlequotestring" attribute="String" lineEndContext="#stay">

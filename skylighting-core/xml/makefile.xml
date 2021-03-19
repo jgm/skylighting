@@ -12,7 +12,7 @@
 <!-- v10 by Peter J. Mello <admin@petermello.net>
      Add recognition of POSIX 2013 '::=' operator for variable assignment -->
 <language name="Makefile" section="Other"
-          version="12" kateversion="5.0"
+          version="13" kateversion="5.0"
           extensions="GNUmakefile;Makefile;makefile;GNUmakefile.*;Makefile.*;makefile.*;*.mk"
           mimetype="text/x-makefile" priority="11"
           author="Per Wigren (wigren@home.se)" license="">
@@ -417,12 +417,11 @@
           :Dnewval If the variable is defined newval is the value.
           :Unewval If the variable is undefined newval is the value.
         -->
-        <AnyChar    attribute="Builtin" context="#pop!bmake_var_modifier_arg" String="MNDU"/>
         <!-- TODO: add new context to highligh old_string and new_string differently
           :S/old_string/new_string/[1gW]
           :C/pattern/replacement/[1gW]
         -->
-        <AnyChar attribute="Builtin" context="#pop!bmake_var_modifier_arg" String="SC"/>
+        <AnyChar    attribute="Builtin" context="#pop!bmake_var_modifier_arg" String="MNDUSC"/>
         <!-- ::=str The variable is assigned the value str after substitution. -->
         <Detect2Chars attribute="Builtin" context="#pop!bmake_var_modifier_arg" char=":" char1="="/>
         <!-- ::?=str As for ::= but only if the variable does not already have a value. -->

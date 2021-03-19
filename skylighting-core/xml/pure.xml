@@ -32,7 +32,7 @@
  Boston, MA 02111-1307, USA.
 
 -->
-<language name="Pure" version="4" kateversion="5.0" section="Sources" extensions="*.pure">
+<language name="Pure" version="5" kateversion="5.0" section="Sources" extensions="*.pure">
   <highlighting>
     <list name="blockstarters">
       <item>case</item>
@@ -104,7 +104,7 @@
         <keyword attribute="Keyword" context="#stay" String="keywords"/>
         <keyword attribute="Function" context="#stay" String="special"/>
         <keyword attribute="Type" context="#stay" String="types"/>
-        <RegExpr attribute="Normal Text" context="#stay" String="[A-Za-z_][A-Za-z0-9_]*"/>
+        <DetectIdentifier attribute="Normal Text" context="#stay"/>
         <RegExpr attribute="Number" context="#stay" String="0x[A-Za-z0-9]+"/>
         <Float attribute="Number" context="#stay"/>
         <Int attribute="Number" context="#stay"/>

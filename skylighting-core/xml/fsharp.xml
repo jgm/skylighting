@@ -9,7 +9,7 @@
 <!ENTITY ESC    "(\\[ntbr'&quot;\\]|\\[0-9]{3}|\\x[0-9A-Fa-f]{2})"> <!-- OCaml character code escapes. -->
 <!ENTITY DEC    "[0-9][0-9_]*">                                     <!-- Decimal digits with underscores. -->
 ]>
-<language name="FSharp" version="9" kateversion="5.0" section="Sources" extensions="*.fs;*.fsi;*.fsx" mimetype="" priority="10" author="Bas Bossink (bas.bossink@gmail.com)" license="LGPL">
+<language name="FSharp" version="10" kateversion="5.0" section="Sources" extensions="*.fs;*.fsi;*.fsx" mimetype="" priority="10" author="Bas Bossink (bas.bossink@gmail.com)" license="LGPL">
 
   <highlighting>
     <list name="keywords">
@@ -204,10 +204,9 @@
 
       <context attribute="String" lineEndContext="#stay" name="String Constant">
         <DetectChar attribute="String" context="#pop" char="&quot;" />
-        <RegExpr attribute="Escaped characters" context="#stay" String="&ESC;" />
         <!-- An underscore at the end of a line in a string indicates  -->
         <!-- that the string will continue on the next line.           -->
-        <RegExpr attribute="Escaped characters" context="#stay" String="\\$" />
+        <RegExpr attribute="Escaped characters" context="#stay" String="&ESC;|\\$" />
       </context>
 
       <context attribute="Normal Text" lineEndContext="#stay" name="Block">
@@ -248,8 +247,7 @@
         <Detect2Chars attribute="Camlp4 Quotation" context="#pop" char="&gt;" char1="&gt;" />
         <Detect2Chars attribute="Camlp4 Quotation" context="Camlp4 Quotation Constant" char="&lt;" char1="&lt;" />
         <RegExpr attribute="Camlp4 Quotation" context="Camlp4 Quotation Constant" String="&lt;:&IDENT;&lt;" />
-        <RegExpr attribute="Escaped characters" context="#stay" String="\\(\\|&gt;&gt;|&lt;&lt;)" />
-        <RegExpr attribute="Escaped characters" context="#stay" String="\\&lt;:&IDENT;&lt;" />
+        <RegExpr attribute="Escaped characters" context="#stay" String="\\(\\|&gt;&gt;|&lt;&lt;|&lt;:&IDENT;&lt;)" />
       </context>
     </contexts>
 

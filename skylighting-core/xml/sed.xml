@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="sed" section="Scripts" version="6" kateversion="5.0" extensions="*.sed" mimetype="text/x-sed" author="Bart Sas (bart.sas@gmail.com)" license="GPL">
+<language name="sed" section="Scripts" version="7" kateversion="5.0" extensions="*.sed" mimetype="text/x-sed" author="Bart Sas (bart.sas@gmail.com)" license="GPL">
         <highlighting>
                 <contexts>
                         <context name="BeginningOfLine" attribute="Normal" lineEndContext="#stay">
                                 <DetectSpaces/>
                                 <DetectChar char="#"     attribute="Comment"     context="Comment"/>
-                                <RegExpr String="(/)"    attribute="Separator"   context="FirstAddressRegex"/>
-                                <RegExpr String="\\(\S)" attribute="Separator"   context="FirstAddressRegex"/>
+                                <RegExpr String="(?|(/)|\\(\S))" attribute="Separator"   context="FirstAddressRegex"/>
                                 <Int                     attribute="Line Number" context="AfterFirstAddress"/>
                                 <DetectChar char="$"     attribute="Last Line"   context="AfterFirstAddress"/>
                                 <DetectChar char="}"     attribute="Brace"       context="AfterCommand"/>
@@ -38,8 +37,7 @@
 
                         <context name="SecondAddress" attribute="Normal" lineEndContext="Error">
                                 <DetectSpaces/>
-                                <RegExpr String="(/)"    attribute="Separator"   context="SecondAddressRegex"/>
-                                <RegExpr String="\\(\S)" attribute="Separator"   context="SecondAddressRegex"/>
+                                <RegExpr String="(?|(/)|\\(\S))" attribute="Separator"   context="SecondAddressRegex"/>
                                 <Int                     attribute="Line Number" context="AfterSecondAddress"/>
                                 <DetectChar char="$"     attribute="Last Line"   context="AfterSecondAddress"/>
                                 <RegExpr String="\S"     attribute="Error"       context="Error"/>
@@ -208,12 +206,7 @@
                                 <Detect2Chars char="\" char1="7" attribute="Regex Escape" context="#stay"/>
                                 <Detect2Chars char="\" char1="8" attribute="Regex Escape" context="#stay"/>
                                 <Detect2Chars char="\" char1="9" attribute="Regex Escape" context="#stay"/>
-                                <DetectChar   char="*"           attribute="Regex Escape" context="#stay"/>
-                                <DetectChar   char="."           attribute="Regex Escape" context="#stay"/>
-                                <DetectChar   char="^"           attribute="Regex Escape" context="#stay"/>
-                                <DetectChar   char="$"           attribute="Regex Escape" context="#stay"/>
-                                <DetectChar   char="["           attribute="Regex Escape" context="#stay"/>
-                                <DetectChar   char="]"           attribute="Regex Escape" context="#stay"/>
+                                <AnyChar String="*.^$[]"         attribute="Regex Escape" context="#stay"/>
                         </context>
 
                         <context name="Comment" attribute="Comment" lineEndContext="#pop">

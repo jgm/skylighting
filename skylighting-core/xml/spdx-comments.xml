@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 <language
-    version="4"
+    version="5"
     kateversion="3.1"
     name="SPDX-Comments"
     section="Other"
@@ -529,9 +529,7 @@
 
       <context name="license-expression" attribute="SPDX Value" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
         <DetectSpaces/>
-        <DetectChar char="(" context="#stay" attribute="SPDX License Expression Operator" />
-        <DetectChar char=")" context="#stay" attribute="SPDX License Expression Operator" />
-        <DetectChar char="+" context="#stay" attribute="SPDX License Expression Operator" />
+        <AnyChar String="()+" context="#stay" attribute="SPDX License Expression Operator" />
         <keyword String="licenses" context="#stay" attribute="SPDX License" />
         <keyword String="deprecated-licenses" context="#stay" attribute="SPDX Deprecated License" />
         <keyword String="exceptions" context="#stay" attribute="SPDX License Exception" />

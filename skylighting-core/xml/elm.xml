@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="Elm" version="7" kateversion="5.0" section="Sources" extensions="*.elm" author="Bonghyun Kim (bonghyun.d.kim@gmail.com)" license="MIT" style="elm">
+<language name="Elm" version="8" kateversion="5.0" section="Sources" extensions="*.elm" author="Bonghyun Kim (bonghyun.d.kim@gmail.com)" license="MIT" style="elm">
   <highlighting>
     <list name="declarations">
       <item>type</item>
@@ -53,9 +53,7 @@
         <WordDetect attribute="Import" context="import" String="import" />
 
         <RegExpr attribute="Name"         context="#stay" String="(\b[a-z]\w*|\b_\b)" />
-        <RegExpr attribute="Operator"         context="#stay" String="(-&gt;|::|\/\/|\.\.|&amp;&amp;|\|\||\+\+|\|&gt;|&lt;\||&gt;&gt;|&lt;&lt;|==|\/=|&lt;=|&gt;=)" />
-        <RegExpr attribute="Operator"         context="#stay" String="[+-\/*%=&gt;&lt;^\|!]" />
-        <AnyChar attribute="Operator"         context="#stay" String="@#$&amp;~?" />
+        <RegExpr attribute="Operator"         context="#stay" String="-&gt;|::|\/\/|\.\.|&amp;&amp;|\|\||\+\+|\|&gt;|&lt;\||&gt;&gt;|&lt;&lt;|==|\/=|&lt;=|&gt;=|[+-\/*%=&gt;&lt;^\|!@#$&amp;~?]" />
 
         <RegExpr attribute="Type"             context="#stay" String="\b[A-Z][\w]*" />
 

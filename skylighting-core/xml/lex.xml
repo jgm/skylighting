@@ -20,7 +20,7 @@
   
   ========================================================================
 -->
-<language name="Lex/Flex" version="5" kateversion="5.0" section="Sources" extensions="*.l;*.lex;*.flex" author="Jan Villat (jan.villat@net2000.ch)" license="LGPL">
+<language name="Lex/Flex" version="6" kateversion="5.0" section="Sources" extensions="*.l;*.lex;*.flex" author="Jan Villat (jan.villat@net2000.ch)" license="LGPL">
 
 <highlighting>
 <contexts>
@@ -32,7 +32,7 @@
     <Detect2Chars attribute="Content-Type Delimiter" context="Rules" char="%" char1="%" beginRegion="rules" endRegion="definitions" />
     <DetectChar attribute="Directive" context="Percent Command" char="%" />
     <Detect2Chars attribute="Comment" context="Comment" char="/" char1="*" column="0" beginRegion="BlockComment"/>
-    <RegExpr attribute="Definition" context="Definition RegExpr" String="[A-Za-z_]\w*\s+" column="0"/>
+    <RegExpr attribute="Definition" context="Definition RegExpr" String="^[A-Za-z_]\w*\s+" column="0"/>
   </context>
   <context name="Rules" attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="Rule RegExpr">
     <IncludeRules context="Detect C" />

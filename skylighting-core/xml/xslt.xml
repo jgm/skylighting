@@ -52,7 +52,7 @@
 
 -->
 
-<language version="8" kateversion="5.0" name="xslt" section="Markup" extensions="*.xsl;*.xslt" license="LGPL" author="Peter Lammich (views@gmx.de)">
+<language version="9" kateversion="5.0" name="xslt" section="Markup" extensions="*.xsl;*.xslt" license="LGPL" author="Peter Lammich (views@gmx.de)">
   <highlighting>
     <list name="keytags">
       <item>xsl:value-of</item>
@@ -333,9 +333,7 @@
        <context name="xattributes" attribute="Attribute" lineEndContext="#stay">
           <Detect2Chars attribute="Tag" context="#pop#pop" char="/" char1="&gt;" />
           <DetectChar attribute="Tag" context="#pop#pop" char="&gt;" />
-          <RegExpr attribute="Attribute" context="xattrValue" String="select\s*=\s*" />
-          <RegExpr attribute="Attribute" context="xattrValue" String="test\s*=\s*" />
-          <RegExpr attribute="Attribute" context="xattrValue" String="match\s*=\s*" />
+          <RegExpr attribute="Attribute" context="xattrValue" String="select\s*=\s*|test\s*=\s*|match\s*=\s*" />
           <RegExpr attribute="Attribute" context="attrValue" String="\s*=\s*" />
        </context>
 

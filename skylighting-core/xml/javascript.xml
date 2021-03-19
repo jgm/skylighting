@@ -17,7 +17,7 @@
    * QML
    * CoffeeScript (embedded)
 -->
-<language name="JavaScript" version="18" kateversion="5.53" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
+<language name="JavaScript" version="19" kateversion="5.53" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
 
@@ -1876,13 +1876,9 @@
       <!-- Regular Expressions -->
       <context attribute="Regular Expression" lineEndContext="#stay" name="Regular Expression">
         <RegExpr attribute="Regular Expression" context="#pop#pop" String="/\w*" />
-        <RegExpr attribute="Pattern Internal Operator" String="\{[\d, ]+\}" />
-        <RegExpr attribute="Pattern Internal Operator" String="\\[bB]" />
         <RegExpr attribute="Pattern Character Class" String="\\[nrtvfDdSsWw]" />
         <DetectChar attribute="Pattern Character Class" context="(charclass caret first check)" char="[" />
-        <RegExpr attribute="Pattern Internal Operator" String="\\." />
-        <RegExpr attribute="Pattern Internal Operator" String="\$(?=/)" />
-        <AnyChar attribute="Pattern Internal Operator" String="?+*()|" />
+        <RegExpr attribute="Pattern Internal Operator" String="\{[\d, ]+\}|\\[bB]|\\.|\$(?=/)|[?+*()|]" />
       </context>
       <context attribute="Pattern Character Class" lineEndContext="#stay" name="Regular Expression Character Class">
         <RegExpr String="\\[\[\]]" />

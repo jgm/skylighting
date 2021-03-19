@@ -32,8 +32,15 @@
 	<!ENTITY rustIntSuf "(?:[iu](?:8|16|32|64|128|size)?)?">
 	<!ENTITY commonEscape "(?:[trn0&apos;&quot;\\]|x[0-9a-fA-F]{2})">
 	<!ENTITY unicodeEscape "u\{(?:[0-9a-fA-F]_*){1,6}\}">
+
+	<!ENTITY hexadecimal_octal_binary "\b0(?:x[0-9a-fA-F_]+|o[0-7_]+|b[01_]+)&rustIntSuf;\b">
+	<!ENTITY float_decimal "\b[0-9][0-9_]*(?:(?:\.[0-9][0-9_]*)?(?:[eE][\+\-]?[0-9_]+)?(?:f32|f64)?|&rustIntSuf;)\b">
+
+	<!ENTITY scope1 "&rustIdent;::">
+	<!ENTITY scope2 "::(?=[^\s\:])"> <!-- Points after keyword or group { } -->
+
 ]>
-<language name="Rust" version="10" kateversion="5.0" section="Sources" extensions="*.rs" mimetype="text/rust" priority="15" license="MIT" author="The Rust Project Developers">
+<language name="Rust" version="11" kateversion="5.0" section="Sources" extensions="*.rs" mimetype="text/rust" priority="15" license="MIT" author="The Rust Project Developers">
 <highlighting>
 	<list name="fn">
 		<item>fn</item>
@@ -371,16 +378,12 @@
 			<keyword String="cconstants" attribute="CConstant" context="#stay"/>
 			<keyword String="traits" attribute="Trait" context="#stay"/>
 			<IncludeRules context="FindComments"/>
-			<!-- Hexadecimal, Octal & Binary -->
-			<RegExpr String="\b0(?:x[0-9a-fA-F_]+|o[0-7_]+|b[01_]+)&rustIntSuf;\b" attribute="Number" context="#stay"/>
-			<!-- Float & Decimal -->
-			<RegExpr String="\b[0-9][0-9_]*(?:(?:\.[0-9][0-9_]*)?(?:[eE][\+\-]?[0-9_]+)?(?:f32|f64)?|&rustIntSuf;)\b" attribute="Number" context="#stay"/>
+			<RegExpr String="&hexadecimal_octal_binary;|&float_decimal;" attribute="Number" context="#stay"/>
 			<!-- Invalid number -->
 			<RegExpr String="\b0(?:b[01_]*[^01_]|o[0-7_]*[^0-7_]|x[0-9a-fA-F_]*[^0-9a-fA-F_])\w*&rustIntSuf;\b" attribute="Error" context="#stay"/>
 			<Detect2Chars char="#" char1="[" attribute="Attribute" context="Attribute" beginRegion="Attribute"/>
 			<StringDetect String="#![" attribute="Attribute" context="Attribute" beginRegion="Attribute"/>
-			<RegExpr String="&rustIdent;::" attribute="Scope"/>
-			<RegExpr String="::(?=[^\s\:])" attribute="Scope"/> <!-- Points after keyword or group { } -->
+			<RegExpr String="&scope1;|&scope2;" attribute="Scope"/>
 			<RegExpr String="&rustIdent;!" attribute="Macro"/>
 			<RegExpr String="&apos;&rustIdent;(?!&apos;)" attribute="Lifetime"/>
 			<DetectChar char="{" attribute="Symbol" context="#stay" beginRegion="Brace" />
@@ -408,15 +411,12 @@
 		</context>
 		<context attribute="Definition" lineEndContext="#stay" name="Function">
 			<DetectSpaces/>
-			<DetectChar char="(" attribute="Normal Text" context="#pop" lookAhead="true"/>
-			<DetectChar char="&lt;" attribute="Normal Text" context="#pop" lookAhead="true"/>
+			<AnyChar String="(&lt;" attribute="Normal Text" context="#pop" lookAhead="true"/>
 			<IncludeRules context="FindComments"/>
 		</context>
 		<context attribute="Definition" lineEndContext="#stay" name="Type">
 			<DetectSpaces/>
-			<DetectChar char="=" attribute="Normal Text" context="#pop" lookAhead="true"/>
-			<DetectChar char="&lt;" attribute="Normal Text" context="#pop" lookAhead="true"/>
-			<DetectChar char=";" attribute="Normal Text" context="#pop" lookAhead="true"/>
+			<AnyChar String="=&lt;;" attribute="Normal Text" context="#pop" lookAhead="true"/>
 			<IncludeRules context="FindComments"/>
 		</context>
 		<!-- Rustc allows strings to extend over multiple lines, and the

@@ -43,7 +43,7 @@
      * v1 [2019-02-10]: Initial version
 -->
 
-<language name="Mustache/Handlebars (HTML)" version="7" kateversion="5.53"
+<language name="Mustache/Handlebars (HTML)" version="8" kateversion="5.53"
           section="Markup" priority="1" mimetype=""
           extensions="*.mustache;*.handlebars;*.hbs;*.ractive;*.hogan;*.hulk;*.html.mst;*.html.mu;*.html.rac"
           author="Nibaldo González (nibgonz@gmail.com), based on the HTML highlighter by Wilbert Berendsen (wilbert@kde.nl)"
@@ -262,8 +262,7 @@
 		<context name="ValueNQ" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
 			<IncludeRules context="MustacheVariables" />
 			<IncludeRules context="FindEntityRefs" />
-			<RegExpr context="#stay" attribute="Value" String="/(?!&gt;)" />
-			<RegExpr context="#stay" attribute="Value" String="[^/&gt;&lt;&quot;&apos;\s]" />
+			<RegExpr context="#stay" attribute="Value" String="/(?!&gt;)|[^/&gt;&lt;&quot;&apos;\s]" />
 		</context>
 
 		<!-- HTML -->

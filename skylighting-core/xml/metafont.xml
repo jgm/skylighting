@@ -5,8 +5,10 @@ files mp.vim and mf.vim
 We have moved some keywords for consistency
 -->
 
-<!DOCTYPE language SYSTEM "language.dtd">
-<language name="Metapost/Metafont" section="Markup" version="10" kateversion="5.0"
+<!DOCTYPE language SYSTEM "language.dtd" [
+  <!ENTITY lengths "(bp|cc|cm|dd|in|mm|pc|pt)">
+]>
+<language name="Metapost/Metafont" section="Markup" version="11" kateversion="5.0"
 extensions="*.mp;*.mps;*.mpost;*.mf" mimetype="text/x-metapost" 
 author="Yedvilun (yedvilun@gmail.com)" license="LGPL">
   <highlighting>
@@ -855,16 +857,11 @@ author="Yedvilun (yedvilun@gmail.com)" license="LGPL">
         <Int attribute="Decimal"/>
 
         <!--Metafont lengths-->
-        <RegExpr String="\b(bp|cc|cm|dd|in|mm|pc|pt)\b" attribute="Float" context="#stay"/>
-        <RegExpr String="\b-?\d+(bp|cc|cm|dd|in|mm|pc|pt)#?\b" attribute="Float" context="#stay"/>
-        <RegExpr String="\b-?\.\d+(bp|cc|cm|dd|in|mm|pc|pt)#?\b" attribute="Float" context="#stay"/>
-        <RegExpr String="\b-?\d+\.\d+(bp|cc|cm|dd|in|mm|pc|pt)#?\b" attribute="Float" context="#stay"/>
+        <RegExpr String="\b(&lengths;|-?(\d+&lengths;|\.\d+&lengths;|\d+\.\d+&lengths;)#?)\b" attribute="Float" context="#stay"/>
 
         <!--Metafont coordinates, points, pathes-->
 
-        <RegExpr String="\b[xy]\d(\w|\')*" attribute="Variable" context="#stay"/>
-        <RegExpr String="\bz\d(\w|\')*" attribute="Variable" context="#stay"/>
-        <RegExpr String="\bp\d(\w|\')*" attribute="Variable" context="#stay"/>
+        <RegExpr String="\b[xyzp]\d(\w|\')*" attribute="Variable" context="#stay"/>
 
         <!--Special characters-->
         <DetectChar char="$" attribute="Special" context="#stay"/>
@@ -909,8 +906,7 @@ author="Yedvilun (yedvilun@gmail.com)" license="LGPL">
         <StringDetect String="verb*" attribute="Keyword" context="Verb"/>
         <RegExpr String="verb(?=[^a-zA-Z])" attribute="Keyword" context="Verb"/>
         <DetectChar char="&#xd7;" attribute="Bullet" context="#stay"/>
-        <RegExpr String="[a-zA-Z]+(\+?|\*{0,3})" attribute="Keyword" context="#pop"/>
-        <RegExpr String="[^a-zA-Z]" attribute="Keyword" context="#pop" />
+        <RegExpr String="[a-zA-Z]+(\+?|\*{0,3})|[^a-zA-Z]" attribute="Keyword" context="#pop" />
       </context>
       <context name="Verb" attribute="Verbatim" lineEndContext="#pop#pop" >
         <RegExpr String="(.)" attribute="Normal Text" context="VerbEnd" />
@@ -931,8 +927,7 @@ author="Yedvilun (yedvilun@gmail.com)" license="LGPL">
       </context>
       <context name="MathContrSeq" attribute="Keyword Mathmode" lineEndContext="#pop">
         <DetectChar char="&#xd7;" attribute="Bullet" context="#stay"/>
-        <RegExpr String="[a-zA-Z]+\*?" attribute="Keyword Mathmode" context="#pop"/>
-        <RegExpr String="[^a-zA-Z]" attribute="Keyword Mathmode" context="#pop" /> 
+        <RegExpr String="[a-zA-Z]+\*?|[^a-zA-Z]" attribute="Keyword Mathmode" context="#pop" />
       </context>
 
       <!-- comment -->
