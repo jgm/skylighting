@@ -36,7 +36,6 @@ import Data.List.NonEmpty (NonEmpty((:|)), (<|), toList)
 import Data.Semigroup
 #endif
 
-
 newtype ContextStack = ContextStack{ unContextStack :: NonEmpty Context }
   deriving (Show)
 
@@ -575,7 +574,7 @@ getCapture :: Int -> TokenizerM Text
 getCapture capnum = do
   capts <- gets captures
   case IntMap.lookup capnum capts of
-     Nothing -> mzero
+     Nothing -> throwError $ "Capture " <> show capnum <> " not defined!"
      Just x  -> decodeBS x
 
 keyword :: KeywordAttr -> WordSet Text -> ByteString -> TokenizerM Text
