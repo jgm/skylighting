@@ -65,7 +65,11 @@ exec top dir (MatchDynamic n) = -- if this hasn't been replaced, match literal
 exec _ _ AssertEnd = Set.filter (\m -> matchOffset m == B.length (matchBytes m))
 exec _ _ AssertBeginning = Set.filter (\m -> matchOffset m == 0)
 exec top _ (AssertPositive dir regex) =
-  Set.filter (\m -> not (null (exec top dir regex (Set.singleton m))))
+  Set.unions . Set.map
+    (\m -> Set.map (\m' -> -- we keep captures but not matches
+                            m'{ matchBytes = matchBytes m,
+                               matchOffset = matchOffset m })
+           $ exec top dir regex (Set.singleton m))
 exec top _ (AssertNegative dir regex) =
   Set.filter (\m -> null (exec top dir regex (Set.singleton m)))
 exec _ _ AssertWordBoundary = Set.filter atWordBoundary

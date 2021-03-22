@@ -59,6 +59,7 @@ extra-source-files:  README.md
                      test/cases/life.lua
                      test/cases/hk91.html
                      test/cases/if.cmake
+                     test/cases/docbook.xml
                      test/cases/issue41.djangotemplate
                      test/expected/abc.ada.native
                      test/expected/abc.agda.native
@@ -91,6 +92,7 @@ extra-source-files:  README.md
                      test/expected/hk91.html.native
                      test/expected/if.cmake.native
                      test/expected/issue41.djangotemplate.native
+                     test/expected/docbook.xml.native
 
 cabal-version:       >=1.10
 

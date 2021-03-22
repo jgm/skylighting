@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V3.1//EN">
+<article>
+  <!-- just an example -->
+  <sect1>
+    <title>The Month of May</title>
+      <para>
+      When you install DocBook Tools a number of files are added to
+      <filename class="directory">/usr/bin</filename>, including
+      <filename>db2html</filename>, and <filename>db2pdf</filename>.
+      </para>
+  </sect1>
+</article>

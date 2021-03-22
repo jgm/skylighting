@@ -526,7 +526,7 @@ regExpr dynamic re inp = do
         Just (matchedBytes, capts) -> do
           unless (null capts) $
              modify $ \st -> st{ captures =
-                                  IntMap.map (toSlice matchedBytes) capts }
+                                  IntMap.map (toSlice inp) capts }
           takeChars (UTF8.length matchedBytes)
         _ -> mzero
 

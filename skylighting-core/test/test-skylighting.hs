@@ -317,6 +317,7 @@ regexTests =
   , ("(?|(abc)|(def))", "abc", Just ("abc", [(1,"abc")]))
   , ("(?|(abc)|(def))", "def", Just ("def", [(1,"def")]))
   , ("(?:(abc)|(def))", "def", Just ("def", [(2,"def")]))
+  , ("d(?=(bc)|(ef))", "def", Just ("d", [(2,"ef")]))
   ]
 
 

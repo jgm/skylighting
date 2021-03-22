@@ -1,0 +1,69 @@
+[ [ ( FunctionTok , "<?xml" )
+  , ( OtherTok , " version=" )
+  , ( StringTok , "\"1.0\"" )
+  , ( OtherTok , " encoding=" )
+  , ( StringTok , "\"utf-8\"" )
+  , ( FunctionTok , "?>" )
+  ]
+, [ ( DataTypeTok , "<!DOCTYPE" )
+  , ( NormalTok , " " )
+  , ( DataTypeTok , "article" )
+  , ( NormalTok , " PUBLIC \"-//OASIS//DTD DocBook V3.1//EN\"" )
+  , ( DataTypeTok , ">" )
+  ]
+, [ ( NormalTok , "<" )
+  , ( KeywordTok , "article" )
+  , ( NormalTok , ">" )
+  ]
+, [ ( NormalTok , "  " )
+  , ( CommentTok , "<!-- just an example -->" )
+  ]
+, [ ( NormalTok , "  <" )
+  , ( KeywordTok , "sect1" )
+  , ( NormalTok , ">" )
+  ]
+, [ ( NormalTok , "    <" )
+  , ( KeywordTok , "title" )
+  , ( NormalTok , ">The Month of May</" )
+  , ( KeywordTok , "title" )
+  , ( NormalTok , ">" )
+  ]
+, [ ( NormalTok , "      <" )
+  , ( KeywordTok , "para" )
+  , ( NormalTok , ">" )
+  ]
+, [ ( NormalTok
+    , "      When you install DocBook Tools a number of files are added to"
+    )
+  ]
+, [ ( NormalTok , "      <" )
+  , ( KeywordTok , "filename" )
+  , ( OtherTok , " class=" )
+  , ( StringTok , "\"directory\"" )
+  , ( NormalTok , ">/usr/bin</" )
+  , ( KeywordTok , "filename" )
+  , ( NormalTok , ">, including" )
+  ]
+, [ ( NormalTok , "      <" )
+  , ( KeywordTok , "filename" )
+  , ( NormalTok , ">db2html</" )
+  , ( KeywordTok , "filename" )
+  , ( NormalTok , ">, and <" )
+  , ( KeywordTok , "filename" )
+  , ( NormalTok , ">db2pdf</" )
+  , ( KeywordTok , "filename" )
+  , ( NormalTok , ">." )
+  ]
+, [ ( NormalTok , "      </" )
+  , ( KeywordTok , "para" )
+  , ( NormalTok , ">" )
+  ]
+, [ ( NormalTok , "  </" )
+  , ( KeywordTok , "sect1" )
+  , ( NormalTok , ">" )
+  ]
+, [ ( NormalTok , "</" )
+  , ( KeywordTok , "article" )
+  , ( NormalTok , ">" )
+  ]
+]
