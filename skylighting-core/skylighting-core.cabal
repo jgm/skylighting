@@ -132,7 +132,7 @@ library
                        safe,
                        base64-bytestring,
                        blaze-html >= 0.5,
-                       containers >= 0.5.8.2,
+                       containers >= 0.6.0.1,
                        ansi-terminal >= 0.7,
                        colour >= 2.0
   hs-source-dirs:      src
