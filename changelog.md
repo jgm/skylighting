@@ -1,5 +1,15 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.5.1
+
+  * Regex: Allow lookaheads to capture groups.  Previously
+    captures in lookaheads, like `(?=(a*))`, were ignored.  This
+    led to errors highlighting xml and probably other formats (#121).
+
+  * Throw an exception if a capture group isn't defined (with 'dynamic')
+    rather than simply having getCapture fail so that the rule fails.
+    This will make it easier to debug issues like #121.
+
 ## 0.10.5
 
   * Fix regression from 0.10.3 with Haskell highlighting of Char (#120).
