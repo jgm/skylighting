@@ -135,7 +135,7 @@ References
 ----------
 
 Kate syntax highlighting documentation:
-<https://docs.kde.org/stable5/en/applications/katepart/highlight.html>
+<https://docs.kde.org/stable5/en/kate/katepart/highlight.html>
 
 Kate highlighting definitions: [KDE repository]
 
