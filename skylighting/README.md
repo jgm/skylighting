@@ -70,10 +70,10 @@ package.
 Using cabal:
 
     cd skylighting-core
-    cabal install -fexecutable
+    cabal v1-install -fexecutable
     cd ../skylighting
     skylighting-extract ../skylighting-core/xml/*.xml
-    cabal install -fexecutable
+    cabal v1-install -fexecutable
 
 Using stack:
 
