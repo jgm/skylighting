@@ -69,8 +69,9 @@ package.
 
 Using cabal:
 
-    cd skylighting-core
-    cabal install -fexecutable
+    # First, install ~/.cabal/bin/skylighting-extract
+    cabal install -fexecutable skylighting-core
+    # Now, generate the syntax files
     cd ../skylighting
     skylighting-extract ../skylighting-core/xml/*.xml
     cabal install -fexecutable
