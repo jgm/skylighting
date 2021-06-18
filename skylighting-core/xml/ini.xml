@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="INI Files" section="Configuration" extensions="*.ini;*.pls;*.kcfgc" mimetype="" version="8" kateversion="5.0" author="Jan Janssen (medhefgo@web.de)" license="LGPL">
+<language name="INI Files" section="Configuration" extensions="*.ini;*.pls;*.kcfgc" mimetype="" version="9" kateversion="5.0" author="Jan Janssen (medhefgo@web.de)" license="LGPL">
 
 <highlighting>
 <list name="keywords">
@@ -40,9 +40,15 @@
  </context>
 
  <context name="Value" attribute="Value" lineEndContext="#pop" >
+  <DetectChar attribute="String" context="String" char="&quot;"/>
   <Float attribute="Float" />
   <Int attribute="Int" />
   <keyword attribute="Keyword" String="keywords" />
+ </context>
+
+ <context attribute="String" lineEndContext="#pop" name="String">
+  <HlCStringChar attribute="String Char" context="#stay"/>
+  <DetectChar attribute="String" context="#pop" char="&quot;"/>
  </context>
 
  <context name="Comment" attribute="Comment" lineEndContext="#pop">
@@ -62,6 +68,8 @@
  <itemData name="Float" defStyleNum="dsFloat" />
  <itemData name="Int" defStyleNum="dsDecVal" />
  <itemData name="Keyword" defStyleNum="dsKeyword" />
+ <itemData name="String" defStyleNum="dsString"/>
+ <itemData name="String Char" defStyleNum="dsSpecialChar"/>
 </itemDatas>
 </highlighting>
 
