@@ -1,5 +1,13 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.10.5.2
+
+  * Added swift grammar definition (Igor Ranieri).
+
+  * Simplify README.md instructions for two-step build.
+
+  * Fix link to KDE documentation.
+
 ## 0.10.5.1
 
   * Regex: Allow lookaheads to capture groups.  Previously
