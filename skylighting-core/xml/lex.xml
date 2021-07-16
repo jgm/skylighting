@@ -20,7 +20,7 @@
   
   ========================================================================
 -->
-<language name="Lex/Flex" version="6" kateversion="5.0" section="Sources" extensions="*.l;*.lex;*.flex" author="Jan Villat (jan.villat@net2000.ch)" license="LGPL">
+<language name="Lex/Flex" version="7" kateversion="5.0" section="Sources" extensions="*.l;*.lex;*.flex" author="Jan Villat (jan.villat@net2000.ch)" license="LGPL">
 
 <highlighting>
 <contexts>
@@ -56,7 +56,7 @@
     <RegExpr attribute="Alert" context="#stay" String=".*" />  
   </context>
   <context name="Rule RegExpr" attribute="RegExpr" lineEndContext="#pop">
-    <RegExpr attribute="Content-Type Delimiter" context="Start Conditions Scope" String="\{$" beginRegion="SCscope" />  
+    <LineContinue attribute="Content-Type Delimiter" context="Start Conditions Scope" char="{" beginRegion="SCscope" />  
     <IncludeRules context="RegExpr Base" />
     <RegExpr attribute="RegExpr" context="#stay" String="\S" />  
     <DetectSpaces attribute="Normal Text" context="Action" />  

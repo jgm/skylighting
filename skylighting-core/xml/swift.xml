@@ -138,7 +138,6 @@
                 <DetectChar attribute="Symbol" context="Dot" char="." lookAhead="1"/>
                 <DetectChar attribute="Symbol" context="#stay" char="{" beginRegion="Brace1"/>
                 <DetectChar attribute="Symbol" context="#stay" char="}" endRegion="Brace1"/>
-                <DetectChar attribute="Annotation" context="Annotation" char="@" />
 
                 <Detect2Chars attribute="Comment" context="CommentSingleLine" char="/" char1="/"/>
                 <Detect2Chars attribute="Comment" context="CommentMultiline" char="/" char1="*" beginRegion="Comment"/>
@@ -157,6 +156,8 @@
 
                 <WordDetect attribute="Keyword" context="Imports" String="@testable"/>
                 <WordDetect attribute="Keyword" context="Imports" String="import"/>
+
+                <DetectChar attribute="Annotation" context="Annotation" char="@" />
 
                 <WordDetect attribute="Keyword" context="TypeDeclaration" String="struct"/>
                 <WordDetect attribute="Keyword" context="TypeDeclaration" String="class"/>
@@ -252,17 +253,31 @@
 
             <context name="TypeDeclaration" lineEndContext="#stay" attribute="Normal Text">
                 <keyword attribute="Keyword" context="#stay" String="keywords"/>
-                <RegExpr attribute="Type" context="#stay" String="([A-Z])+?[A-Za-z0-9]+" />
+
                 <DetectChar attribute="Symbol" context="TypeParameters" char="&lt;" />
                 <DetectChar attribute="Symbol" context="Parameters" char="(" />
+                <DetectChar attribute="Symbol" context="SuperTypes" char=":" />
                 <DetectChar attribute="Symbol" context="#pop" char="{" lookAhead="true" />
             </context>
 
+            <context name="SuperTypes" lineEndContext="#stay" attribute="Normal Text">
+                <keyword attribute="Keyword" context="#pop#pop" String="keywords" lookAhead="true" />
+
+                <DetectChar attribute="Symbol" context="#stay" char="," />
+                <DetectChar attribute="Symbol" context="#pop" char="{" lookAhead="true" />
+                <DetectChar attribute="Symbol" context="Parameters" char="(" />
+                <DetectChar attribute="Symbol" context="TypeParameters" char="&lt;" />
+
+                <DetectIdentifier attribute="Data Type" context="#stay"/>
+            </context>
+
             <context name="FunctionDeclaration" lineEndContext="#stay" attribute="Normal Text">
-                <keyword attribute="Keyword" context="#stay" String="func"/>
+                <keyword attribute="Keyword" context="#stay" String="keywords"/>
                 <DetectChar attribute="Symbol" context="#stay" char="." />
                 <DetectChar attribute="Symbol" context="Parameters" char="(" />
                 <DetectChar attribute="Symbol" context="TypeParameters" char="&lt;" />
+                <DetectChar attribute="Symbol" context="TypeName" char=":" />
+
                 <AnyChar attribute="Symbol" context="#pop" String="{=" lookAhead="true" />
 
                 <DetectIdentifier attribute="Function" context="#stay"/>

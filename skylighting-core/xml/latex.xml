@@ -4,7 +4,7 @@
     <!ENTITY bullet "&#xd7;">
     <!ENTITY envname "[a-zA-Z]+\*?">
 ]>
-<language name="LaTeX" version="18" section="Markup" kateversion="5.0" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
+<language name="LaTeX" version="19" section="Markup" kateversion="5.0" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
   <highlighting>
     <!-- NOTE: Keywords of kind "\something" do not need a delimiter before "\".
          Using a DetectChar rule with lookAhead to detect "\" at the beginning
@@ -771,7 +771,7 @@
         <DetectChar char="&bullet;" attribute="Bullet" context="#stay"/>
       </context>
       <context name="BackslashMathModeEnv" attribute="Math" lineEndContext="#pop">
-        <keyword String="beginEnv" attribute="Structure" context="#pop!FindBeginEnvironmentInMathMode" beginRegion="block"/>
+        <keyword String="beginEnv" attribute="Structure" context="#pop!FindBeginEnvironment" beginRegion="block"/>
         <keyword String="endEnv" attribute="Structure" context="#pop!MathFindEnd"/>
         <keyword String="MathModeText" attribute="Macro Mathmode" context="#pop!MathModeText"/>
         <Detect2Chars char="\" char1="(" attribute="Error" context="#pop"/>
@@ -779,25 +779,6 @@
         <Detect2Chars char="\" char1="[" attribute="Error" context="#pop"/>
         <Detect2Chars char="\" char1="]" attribute="Error" context="#pop"/>
         <DetectChar char="\" attribute="Macro Mathmode" context="#pop!MathContrSeq"/>
-      </context>
-
-      <!-- start of an environment in math mode -->
-      <context name="FindBeginEnvironmentInMathMode" attribute="Normal Text" lineEndContext="#stay">
-        <DetectSpaces/>
-        <DetectChar char="{" attribute="Normal Text" context="BeginEnvironmentInMathMode"/>
-        <RegExpr String="." attribute="Normal Text" context="#pop"/>
-      </context>
-
-      <!-- filter the environment name and check the type in math mode -->
-      <context name="BeginEnvironmentInMathMode" attribute="Environment" lineEndContext="#stay">
-        <keyword String="ListingsEnv" attribute="Environment" context="ListingsEnv"/>
-        <keyword String="MintedEnv" attribute="Environment" context="MintedEnv"/>
-        <keyword String="VerbatimEnv" attribute="Environment" context="VerbatimEnv" lookAhead="true"/>
-        <keyword String="CommentEnv" attribute="Environment" context="CommentEnv"/>
-        <keyword String="TabEnv" attribute="Environment" context="TabEnv"/>
-        <DetectChar char="&bullet;" attribute="Bullet" context="#stay"/>
-        <RegExpr String="&envname;" attribute="Environment" context="LatexEnv"/>
-        <RegExpr String="." attribute="Error" context="#pop"/>
       </context>
 
       <!-- end of math environment -->

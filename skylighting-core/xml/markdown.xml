@@ -90,7 +90,7 @@
 <!ENTITY checkbox "\[[ x]\](?=\s)">
 ]>
 
-<language name="Markdown" version="17" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
+<language name="Markdown" version="18" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
   <highlighting>
     <contexts>
       <!-- Start of the Markdown document: find metadata or code block -->
@@ -149,12 +149,12 @@
       </context>
 
       <context name="find-header" attribute="Normal Text" lineEndContext="#pop">
-        <RegExpr attribute="Header H1" context="#pop" String="^#\s.*[#]?$" column="0"/>
-        <RegExpr attribute="Header H2" context="#pop" String="^##\s.*[#]?$" column="0"/>
-        <RegExpr attribute="Header H3" context="#pop" String="^###\s.*[#]?$" column="0"/>
-        <RegExpr attribute="Header H4" context="#pop" String="^####\s.*[#]?$" column="0"/>
-        <RegExpr attribute="Header H5" context="#pop" String="^#####\s.*[#]?$" column="0"/>
-        <RegExpr attribute="Header H6" context="#pop" String="^######\s.*[#]?$" column="0"/>
+        <RegExpr attribute="Header H1" context="#pop" String="^#\s.*[#]?$" column="0" endRegion="H1" beginRegion="H1"/>
+        <RegExpr attribute="Header H2" context="#pop" String="^##\s.*[#]?$" column="0" endRegion="H2" beginRegion="H2"/>
+        <RegExpr attribute="Header H3" context="#pop" String="^###\s.*[#]?$" column="0" endRegion="H3" beginRegion="H3"/>
+        <RegExpr attribute="Header H4" context="#pop" String="^####\s.*[#]?$" column="0" endRegion="H4" beginRegion="H4"/>
+        <RegExpr attribute="Header H5" context="#pop" String="^#####\s.*[#]?$" column="0" endRegion="H5" beginRegion="H5"/>
+        <RegExpr attribute="Header H6" context="#pop" String="^######\s.*[#]?$" column="0" endRegion="H6" beginRegion="H6"/>
         <DetectChar attribute="Normal Text" context="#pop" char="#"/>
       </context>
       <context name="find-strong-normal" attribute="Normal Text" lineEndContext="#pop">

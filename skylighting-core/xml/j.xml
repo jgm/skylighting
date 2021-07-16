@@ -62,7 +62,7 @@ Version 1.0 (2012-03-21) by Igor Zhuravlov
 -->
 <language name="J"
           section="Scripts"
-          version="4"
+          version="5"
           kateversion="5.0"
           extensions="*.ijs;*.ijt;*.IJS;*.IJT"
           mimetype="text/x-j;text/x-jsrc"
@@ -74,7 +74,7 @@ Version 1.0 (2012-03-21) by Igor Zhuravlov
       <context attribute="Sentence" lineEndContext="#pop" name="sentence">
         <DetectSpaces/>
         <RegExpr      attribute="Foldable"       context="#stay"        String=":\s*0|\bdefine\b" beginRegion="Fold"/>
-        <RegExpr      attribute="Foldable"       context="#stay"        String="^\)$" endRegion="Fold" column="0"/>
+        <LineContinue attribute="Foldable"       context="#stay"        char=")" endRegion="Fold" column="0"/>
         <StringDetect attribute="Comment"        context="#stay"        String="NB.(" beginRegion="Fold"/>
         <StringDetect attribute="Comment"        context="#stay"        String="NB.)" endRegion="Fold"/>
         <StringDetect attribute="Comment"        context="comment line" String="NB."/>

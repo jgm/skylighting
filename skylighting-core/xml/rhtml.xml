@@ -44,7 +44,7 @@
 -->
 	
 <!-- Hold the "language" opening tag on a single line, as mentioned in "language.dtd". -->
-<language name="Ruby/Rails/RHTML" version="13" kateversion="5.63" section="Markup" extensions="*.rhtml;*.RHTML;*.html.erb" mimetype="" author="Richard Dale rdale@foton.es" license="LGPLv2+">
+<language name="Ruby/Rails/RHTML" version="14" kateversion="5.63" section="Markup" extensions="*.rhtml;*.RHTML;*.html.erb" mimetype="" author="Richard Dale rdale@foton.es" license="LGPLv2+">
 	
 	<highlighting>
 	
@@ -359,8 +359,7 @@
 			</context>
 			
 			<context name="FindAttributes" attribute="Normal Text" lineEndContext="#stay">
-				<RegExpr attribute="Attribute" context="#stay" String="&name;" column="0"/>
-				<RegExpr attribute="Attribute" context="#stay" String="\s+&name;" />
+				<RegExpr attribute="Attribute" context="#stay" String="^&name;|\s+&name;" />
 				<DetectChar attribute="Attribute" context="Value" char="=" />
 			</context>
 			
@@ -501,8 +500,7 @@
 				<IncludeRules context="find-rubysource" />
 				
 				<IncludeRules context="FindEntityRefs" />
-				<RegExpr attribute="Value" context="#stay" String="/(?!&gt;)" />
-				<RegExpr attribute="Value" context="#stay" String="[^/&gt;&lt;&quot;&apos;\s]" />
+				<RegExpr attribute="Value" context="#stay" String="/(?!&gt;)|[^/&gt;&lt;&quot;&apos;\s]" />
 			</context>
 			
 			<context name="Value DQ" attribute="Value" lineEndContext="#stay">
@@ -544,10 +542,10 @@
 				<LineContinue attribute="Ruby Normal Text" context="Line Continue"/>
 
 				<!-- __END__ token on own line. -->
-				<RegExpr attribute="Keyword" String="__END__$" context="DATA" column="0"/>
+				<RegExpr attribute="Keyword" String="^__END__$" context="DATA" column="0"/>
 				
 				<!-- "shebang" line -->
-				<StringDetect attribute="Keyword" String="#!/" context="ShebangLine" column="0"/>
+				<StringDetect attribute="Keyword" String="^#!/" context="ShebangLine" column="0"/>
 				
 				<!-- "def" - "end" blocks -->
 				<!-- check for statement modifiers with regexes -->
@@ -619,11 +617,8 @@
 				<DetectChar attribute="Operator" char="." context="#stay"/>
 				<Detect2Chars attribute="Operator" char="&amp;" char1="&amp;" context="#stay"/>
 				<Detect2Chars attribute="Operator" char="|" char1="|" context="#stay"/>
-				<RegExpr attribute="Operator" String="\s[\?\:\%/]\s" context="#stay"/>
-				<RegExpr attribute="Operator" String="[|&amp;&lt;&gt;\^\+*~\-=]+" context="#stay"/>
-				<!-- regexp hack -->
-				<RegExpr attribute="Operator" String="\s!" context="#stay"/>
-				<RegExpr attribute="Operator" String="/=\s" context="#stay" insensitive="0"/>
+				<!-- \s! is regexp hack -->
+				<RegExpr attribute="Operator" String="\s[\?\:\%/]\s|[|&amp;&lt;&gt;\^\+*~\-=]+|\s!|/=\s" context="#stay"/>
 				<Detect2Chars attribute="Operator" char="%" char1="=" context="#stay"/>
 				<Detect2Chars attribute="Operator" char=":" char1=":" context="Member Access"/>
 				
@@ -635,8 +630,8 @@
 				
 				<Detect2Chars attribute="Normal Text" char="?" char1="#" context="#stay"/>
 				
-				<RegExpr attribute="Comment" String="#\s*BEGIN.*$"  context="#stay" beginRegion="marker" column="0"/>
-				<RegExpr attribute="Comment" String="#\s*END.*$"  context="#stay" endRegion="marker" column="0"/>
+				<RegExpr attribute="Comment" String="^#\s*BEGIN.*$"  context="#stay" beginRegion="marker" column="0"/>
+				<RegExpr attribute="Comment" String="^#\s*END.*$"  context="#stay" endRegion="marker" column="0"/>
 				<DetectChar attribute="Comment" char="#"  context="Comment Line" firstNonSpace="true"/>
 				<RegExpr attribute="Comment" String="\s#"  context="General Comment"/>
 				
@@ -772,12 +767,12 @@
 			
 			<context name="normal_heredoc" attribute="Ruby Normal Text" lineEndContext="#stay" dynamic="true">
 				<!--				<RegExpr attribute="Keyword" context="#pop#pop" String="^%1$" dynamic="true" endRegion="HereDocument"/>-->
-				<RegExpr attribute="Keyword" context="#pop#pop" String="%1$" dynamic="true" endRegion="HereDocument" column="0"/>
+				<RegExpr attribute="Keyword" context="#pop#pop" String="^%1$" dynamic="true" endRegion="HereDocument" column="0"/>
 				<IncludeRules context="heredoc_rules" />
 			</context>
 			<context name="apostrophed_normal_heredoc" attribute="Ruby Normal Text" lineEndContext="#stay" dynamic="true">
 				<!--				<RegExpr attribute="Keyword" context="#pop#pop" String="^%1$" dynamic="true" endRegion="HereDocument"/>-->
-				<RegExpr attribute="Keyword" context="#pop#pop" String="%1$" dynamic="true" endRegion="HereDocument" column="0"/>
+				<RegExpr attribute="Keyword" context="#pop#pop" String="^%1$" dynamic="true" endRegion="HereDocument" column="0"/>
 			</context>
 			
 			<!-- rules for heredoc types -->

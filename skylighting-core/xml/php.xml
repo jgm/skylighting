@@ -77,8 +77,9 @@ Changes:
   <!ENTITY float "\b&LNUM;(\.(&LNUM;)?(&EXPONENT;)?|&EXPONENT;)|\.&LNUM;(&EXPONENT;)?">
 ]>
 
-<language name="PHP/PHP" indenter="cstyle" version="19" kateversion="5.53" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
+<language name="PHP/PHP" indenter="cstyle" version="21" kateversion="5.53" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
   <highlighting>
+    <!-- https://php.watch/versions -->
 
     <!-- https://secure.php.net/manual/en/reserved.keywords.php -->
     <list name="control structures">
@@ -137,6 +138,7 @@ Changes:
       <item>echo</item>
       <item>empty</item>
       <item>enddeclare</item>
+      <item>enum</item>
       <item>eval</item>
       <item>extends</item>
       <item>final</item>
@@ -859,6 +861,7 @@ Changes:
       <item>CURLOPT_CUSTOMREQUEST</item>
       <item>CURLOPT_DEFAULT_PROTOCOL</item>
       <item>CURLOPT_DISALLOW_USERNAME_IN_URL</item>
+      <item>CURLOPT_DOH_URL</item>
       <item>CURLOPT_DNS_CACHE_TIMEOUT</item>
       <item>CURLOPT_DNS_INTERFACE</item>
       <item>CURLOPT_DNS_LOCAL_IP4</item>
@@ -2412,6 +2415,7 @@ Changes:
       <item>MYSQLI_REFRESH_HOSTS</item>
       <item>MYSQLI_REFRESH_LOG</item>
       <item>MYSQLI_REFRESH_MASTER</item>
+      <item>MYSQLI_REFRESH_REPLICA</item>
       <item>MYSQLI_REFRESH_SLAVE</item>
       <item>MYSQLI_REFRESH_STATUS</item>
       <item>MYSQLI_REFRESH_TABLES</item>
@@ -5386,6 +5390,7 @@ Changes:
       <item>array_intersect_key</item>
       <item>array_intersect_uassoc</item>
       <item>array_intersect_ukey</item>
+      <item>array_is_list</item>
       <item>array_keys</item>
       <item>array_key_exists</item>
       <item>array_key_first</item>
@@ -6461,6 +6466,7 @@ Changes:
       <item>fbsql_username</item>
       <item>fbsql_warnings</item>
       <item>fclose</item>
+      <item>fdatasync</item>
       <item>fdf_add_doc_javascript</item>
       <item>fdf_add_template</item>
       <item>fdf_close</item>
@@ -6496,6 +6502,7 @@ Changes:
       <item>fdf_set_target_frame</item>
       <item>fdf_set_value</item>
       <item>fdf_set_version</item>
+      <item>fdiv</item>
       <item>feof</item>
       <item>fflush</item>
       <item>fgetc</item>
@@ -6554,6 +6561,7 @@ Changes:
       <item>fseek</item>
       <item>fsockopen</item>
       <item>fstat</item>
+      <item>fsync</item>
       <item>ftell</item>
       <item>ftok</item>
       <item>ftp_alloc</item>
@@ -6656,6 +6664,7 @@ Changes:
       <item>get_class_methods</item>
       <item>get_class_vars</item>
       <item>get_current_user</item>
+      <item>get_debug_type</item>
       <item>get_declared_classes</item>
       <item>get_declared_interfaces</item>
       <item>get_declared_traits</item>
@@ -6675,6 +6684,7 @@ Changes:
       <item>get_parent_class</item>
       <item>get_required_files</item>
       <item>get_resources</item>
+      <item>get_resource_id</item>
       <item>get_resource_type</item>
       <item>glob</item>
       <item>gmdate</item>
@@ -8742,6 +8752,7 @@ Changes:
       <item>preg_filter</item>
       <item>preg_grep</item>
       <item>preg_last_error</item>
+      <item>preg_last_error_msg</item>
       <item>preg_match</item>
       <item>preg_match_all</item>
       <item>preg_quote</item>
@@ -9518,6 +9529,8 @@ Changes:
       <item>strtoupper</item>
       <item>strtr</item>
       <item>strval</item>
+      <item>str_contains</item>
+      <item>str_ends_with</item>
       <item>str_getcsv</item>
       <item>str_ireplace</item>
       <item>str_pad</item>
@@ -9526,6 +9539,7 @@ Changes:
       <item>str_rot13</item>
       <item>str_shuffle</item>
       <item>str_split</item>
+      <item>str_starts_with</item>
       <item>str_word_count</item>
       <item>substr</item>
       <item>substr_compare</item>
@@ -10238,6 +10252,7 @@ Changes:
     </list>
 
     <list name="predefined-classes">
+        <item>AddressInfo</item>
         <item>APCIterator</item>
         <item>APCUIterator</item>
         <item>AppendIterator</item>
@@ -10299,6 +10314,10 @@ Changes:
         <item>Cond</item>
         <item>Countable</item>
         <item>CURLFile</item>
+        <item>CurlHandle</item>
+        <item>CurlMultiHandle</item>
+        <item>CurlShareHandle</item>
+        <item>CURLStringFile</item>
         <item>DateInterval</item>
         <item>DatePeriod</item>
         <item>DateTime</item>
@@ -10312,6 +10331,7 @@ Changes:
         <item>DOMAttr</item>
         <item>DOMCdataSection</item>
         <item>DomCharacterData</item>
+        <item>DOMChildNode</item>
         <item>DOMComment</item>
         <item>DOMDocument</item>
         <item>DOMDocumentFragment</item>
@@ -10325,6 +10345,7 @@ Changes:
         <item>DOMNode</item>
         <item>DOMNodeList</item>
         <item>DOMNotation</item>
+        <item>DOMParentNode</item>
         <item>DOMProcessingInstruction</item>
         <item>DOMText</item>
         <item>DomXPath</item>
@@ -10351,6 +10372,7 @@ Changes:
         <item>FilesystemIterator</item>
         <item>FilterIterator</item>
         <item>finfo</item>
+        <item>GdImage</item>
         <item>GearmanClient</item>
         <item>GearmanException</item>
         <item>GearmanJob</item>
@@ -10462,6 +10484,9 @@ Changes:
         <item>OAuthProvider</item>
         <item>OCI-Collection</item>
         <item>OCI-Lob</item>
+        <item>OpenSSLAsymmetricKey</item>
+        <item>OpenSSLCertificate</item>
+        <item>OpenSSLCertificateSigningRequest</item>
         <item>OuterIterator</item>
         <item>OutOfBoundsException</item>
         <item>OutOfRangeException</item>
@@ -10476,6 +10501,7 @@ Changes:
         <item>PharException</item>
         <item>PharFileInfo</item>
         <item>phdfs</item>
+        <item>PhpToken</item>
         <item>php_user_filter</item>
         <item>QuickHashIntHash</item>
         <item>QuickHashIntSet</item>
@@ -10551,6 +10577,7 @@ Changes:
         <item>SoapParam</item>
         <item>SoapServer</item>
         <item>SoapVar</item>
+        <item>Socket</item>
         <item>SodiumException</item>
         <item>SolrClientException</item>
         <item>SolrCollapseFunction</item>
@@ -10598,6 +10625,7 @@ Changes:
         <item>StompException</item>
         <item>StompFrame</item>
         <item>streamWrapper</item>
+        <item>Stringable</item>
         <item>SVM</item>
         <item>SVMException</item>
         <item>SVMModel</item>
@@ -10643,6 +10671,8 @@ Changes:
         <item>TypeError</item>
         <item>UnderflowException</item>
         <item>UnexpectedValueException</item>
+        <item>UnhandledMatchError</item>
+        <item>ValueError</item>
         <item>V8Js</item>
         <item>V8JsException</item>
         <item>VarnishAdmin</item>
@@ -10653,6 +10683,7 @@ Changes:
         <item>WeakMap</item>
         <item>WeakRef</item>
         <item>Worker</item>
+        <item>XMLParser</item>
         <item>XMLReader</item>
         <item>XMLWriter</item>
         <item>XSLTProcessor</item>
@@ -10927,6 +10958,7 @@ Changes:
         <Detect2Chars attribute="Keyword" context="#pop" char="?" char1="&gt;" lookAhead="true" />
         <AnyChar attribute="Other" context="#stay" String=";,?:" />
 
+        <Detect2Chars attribute="Attribute" context="Attribute" char="#" char1="["/>
         <IncludeRules context="FindComment"/>
 
         <StringDetect attribute="Operator" context="#stay" String="&lt;=>" />
@@ -11142,7 +11174,7 @@ Changes:
         <IncludeRules context="findfloat"/>
         <RegExpr attribute="Hex" context="#pop" String="\b0[xX][0-9a-fA-F]++(_[0-9a-fA-F]++)*+\b"/>
         <RegExpr attribute="Binary" context="#pop" String="\b0[bB][01]++(_[01]++)*+\b"/>
-        <RegExpr attribute="Octal" context="#pop" String="\b0_*+[0-7]++(_[0-7]++)*+\b"/>
+        <RegExpr attribute="Octal" context="#pop" String="\b0[oO_]?[0-7]++(_[0-7]++)*+\b"/>
         <RegExpr attribute="Decimal" context="#pop" String="\b(0|[1-9][0-9]*+(_[0-9]++)*+)\b"/>
         <AnyChar attribute="Error" context="#pop" String="0123456789"/>
       </context>
@@ -11198,6 +11230,16 @@ Changes:
         <DetectSpaces attribute="PHP Text"/>
       </context>
 
+      <context name="Attribute" attribute="Attribute" lineEndContext="#stay">
+        <DetectChar attribute="Attribute" context="#pop" char="]"/>
+        <DetectChar attribute="Symbol" context="ArrayInAttribute" char="["/>
+        <IncludeRules context="phpsource"/>
+      </context>
+      <context name="ArrayInAttribute" attribute="Attribute" lineEndContext="#stay">
+        <DetectChar attribute="Symbol" context="#pop" char="]"/>
+        <IncludeRules context="phpsource"/>
+      </context>
+
     </contexts>
     <itemDatas>
       <itemData name="Normal Text" defStyleNum="dsNormal" spellChecking="false" />
@@ -11206,6 +11248,7 @@ Changes:
       <itemData name="Classes" defStyleNum="dsBuiltIn" spellChecking="false" />
       <itemData name="Function" defStyleNum="dsFunction" spellChecking="false" />
       <itemData name="Special method" defStyleNum="dsBuiltIn" spellChecking="false" />
+      <itemData name="Attribute" defStyleNum="dsAttribute" spellChecking="false" />
       <itemData name="Decimal" defStyleNum="dsDecVal" spellChecking="false" />
       <itemData name="Binary" defStyleNum="dsBaseN" spellChecking="false" />
       <itemData name="Octal" defStyleNum="dsBaseN" spellChecking="false" />

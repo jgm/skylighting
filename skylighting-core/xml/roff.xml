@@ -15,7 +15,7 @@
   <!ENTITY escape2 "\\[gkmMVYz]&roffid;">
   <!ENTITY escape3 "\\O([0-4]|\[5[lrci][^]]\])">
 ]>
-<language name="Roff" section="Markup" version="7" kateversion="5.0" extensions="" author="Matthew Woehlke (mw_triad@users.sourceforge.net)" license="GPL">
+<language name="Roff" section="Markup" version="8" kateversion="5.0" extensions="" author="Matthew Woehlke (mw_triad@users.sourceforge.net)" license="GPL">
 
   <highlighting>
 
@@ -63,7 +63,7 @@
         <RegExpr attribute="Escape" context="Argument" String="\\R&argsep1;"/> <!-- TODO - &roffid; (register), measurement -->
         <RegExpr attribute="Glyph" context="GlyphArgument" String="\\C&argsep1;"/>
         <RegExpr attribute="Glyph" context="#pop" String="\\N&argsep2;[0-9]+\1|\\&roffid;"/>
-        <RegExpr attribute="Escape" context="#pop" String="\\$"/>
+        <LineContinue attribute="Escape" context="#pop" char="\"/>
         <DetectChar attribute="Error" context="#pop" char="\"/>
       </context>
 

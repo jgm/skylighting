@@ -6,7 +6,7 @@
 	  <!ENTITY latexCmd	  	"\\([a-zA-Z@]+|[^ ])">
 	  <!ENTITY refKeyFormat  	"[a-zA-Z0-9_@\\-\\:]+"> <!--taken from kile 2.0.3-->
 	  ]>
-<language name="BibTeX" version="4" kateversion="5.0" extensions="*.bib" section="Markup" mimetype="text/x-bib" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL">
+<language name="BibTeX" version="5" kateversion="5.0" extensions="*.bib" section="Markup" mimetype="text/x-bib" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL">
   <highlighting>
     <list name="kw_entry">
       <item>@article</item> 
@@ -76,7 +76,7 @@
       <context name="CurlyBracket" attribute="Normal Text" lineEndContext="#stay">
 	      <DetectChar char="{" context="CurlyBracket"/>
 	      <RegExpr String="&latexCmd;" attribute="LatexCommand" context="#stay"/>
-	      <RegExpr String="}$" context="#pop#pop"/>
+	      <LineContinue char="}" context="#pop#pop"/>
 	      <DetectChar char="}" context="#pop"/>
       </context>
 

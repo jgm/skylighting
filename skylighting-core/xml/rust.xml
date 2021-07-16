@@ -40,7 +40,7 @@
 	<!ENTITY scope2 "::(?=[^\s\:])"> <!-- Points after keyword or group { } -->
 
 ]>
-<language name="Rust" version="11" kateversion="5.0" section="Sources" extensions="*.rs" mimetype="text/rust" priority="15" license="MIT" author="The Rust Project Developers">
+<language name="Rust" version="13" kateversion="5.0" section="Sources" extensions="*.rs" mimetype="text/rust" priority="15" license="MIT" author="The Rust Project Developers">
 <highlighting>
 	<list name="fn">
 		<item>fn</item>
@@ -56,25 +56,18 @@
 		<item>await</item>
 		<item>become</item>
 		<item>box</item>
-		<item>break</item>
 		<item>const</item>
-		<item>continue</item>
 		<item>crate</item>
 		<item>default</item>
 		<item>do</item>
 		<item>dyn</item>
-		<item>else</item>
 		<item>enum</item>
 		<item>extern</item>
 		<item>final</item>
-		<item>for</item>
-		<item>if</item>
 		<item>impl</item>
 		<item>in</item>
 		<item>let</item>
-		<item>loop</item>
 		<item>macro</item>
-		<item>match</item>
 		<item>mod</item>
 		<item>move</item>
 		<item>mut</item>
@@ -85,7 +78,6 @@
 		<item>pub</item>
 		<item>pure</item>
 		<item>ref</item>
-		<item>return</item>
 		<item>sizeof</item>
 		<item>static</item>
 		<item>struct</item>
@@ -99,10 +91,20 @@
 		<item>use</item>
 		<item>virtual</item>
 		<item>where</item>
-		<item>while</item>
 		<item>yield</item>
 		<!-- Also (these keywords are in other lists):
 		     type, Self, self. -->
+	</list>
+	<list name="controlflow">
+		<item>break</item>
+		<item>continue</item>
+		<item>else</item>
+		<item>for</item>
+		<item>if</item>
+		<item>loop</item>
+		<item>match</item>
+		<item>return</item>
+		<item>while</item>
 	</list>
 	<list name="traits">
 		<!-- Core Traits -->
@@ -372,6 +374,7 @@
 			<keyword String="type" attribute="Keyword" context="Type"/>
 			<keyword String="self" attribute="Self" context="#stay"/>
 			<keyword String="keywords" attribute="Keyword" context="#stay"/>
+			<keyword String="controlflow" attribute="Control Flow" context="#stay"/>
 			<keyword String="types" attribute="Type" context="#stay"/>
 			<keyword String="ctypes" attribute="CType" context="#stay"/>
 			<keyword String="constants" attribute="Constant" context="#stay"/>
@@ -462,27 +465,28 @@
 		</context>
 	</contexts>
 	<itemDatas>
-		<itemData name="Normal Text"  defStyleNum="dsNormal"/>
+		<itemData name="Normal Text"  defStyleNum="dsNormal" spellChecking="0"/>
 		<itemData name="Keyword"      defStyleNum="dsKeyword" spellChecking="0"/>
+		<itemData name="Control Flow" defStyleNum="dsControlFlow" spellChecking="0"/>
 		<itemData name="Self"         defStyleNum="dsKeyword" spellChecking="0"/>
 		<itemData name="Type"         defStyleNum="dsDataType" spellChecking="0"/>
 		<itemData name="Trait"        defStyleNum="dsBuiltIn" spellChecking="0"/>
 		<itemData name="CType"        defStyleNum="dsDataType" spellChecking="0"/>
 		<itemData name="Constant"     defStyleNum="dsConstant" spellChecking="0"/>
 		<itemData name="CConstant"    defStyleNum="dsConstant" spellChecking="0"/>
-		<itemData name="Definition"   defStyleNum="dsNormal"/>
+		<itemData name="Definition"   defStyleNum="dsNormal" spellChecking="0"/>
 		<itemData name="Comment"      defStyleNum="dsComment"/>
-		<itemData name="Scope"        defStyleNum="dsPreprocessor"/>
-		<itemData name="Number"       defStyleNum="dsDecVal"/>
+		<itemData name="Scope"        defStyleNum="dsPreprocessor" spellChecking="0"/>
+		<itemData name="Number"       defStyleNum="dsDecVal" spellChecking="0"/>
 		<itemData name="String"       defStyleNum="dsString"/>
-		<itemData name="CharEscape"   defStyleNum="dsSpecialChar"/>
-		<itemData name="Character"    defStyleNum="dsChar"/>
-		<itemData name="Macro"        defStyleNum="dsPreprocessor"/>
-		<itemData name="Symbol"       defStyleNum="dsOperator"/>
-		<itemData name="Attribute"    defStyleNum="dsAttribute"/>
+		<itemData name="CharEscape"   defStyleNum="dsSpecialChar" spellChecking="0"/>
+		<itemData name="Character"    defStyleNum="dsChar" spellChecking="0"/>
+		<itemData name="Macro"        defStyleNum="dsPreprocessor" spellChecking="0"/>
+		<itemData name="Symbol"       defStyleNum="dsOperator" spellChecking="0"/>
+		<itemData name="Attribute"    defStyleNum="dsAttribute" spellChecking="0"/>
 		<itemData name="Lifetime"     defStyleNum="dsOthers" spellChecking="0"/>
 		<itemData name="Raw Identifier" defStyleNum="dsAnnotation" spellChecking="0"/>
-		<itemData name="Error"        defStyleNum="dsError"/>
+		<itemData name="Error"        defStyleNum="dsError" spellChecking="0"/>
 	</itemDatas>
 </highlighting>
 <general>

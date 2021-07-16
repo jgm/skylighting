@@ -24,7 +24,7 @@
 <language
     name="ISO C++"
     section="Sources"
-    version="23"
+    version="24"
     kateversion="5.0"
     indenter="cstyle"
     style="C++"
@@ -57,6 +57,10 @@
       <item>throw</item>
       <item>try</item>
       <item>while</item>
+      <!-- coroutine -->
+      <item>co_await</item>
+      <item>co_return</item>
+      <item>co_yield</item>
     </list>
 
     <!-- https://en.cppreference.com/w/cpp/keyword -->
@@ -128,19 +132,8 @@
       <item>import</item>
       <item>module</item>
       <item>export</item> <!-- Unused but reserved, keyword since c++20 -->
-      <!-- coroutine -->
-      <item>co_await</item>
-      <item>co_return</item>
-      <item>co_yield</item>
       <!-- reflexion TS -->
       <!-- <item>reflexpr</item> -->
-    </list>
-    <!-- This keyword may appear in InternalsNS context. For example in code:
-      details::some_class::template some_templated_static();
-      and it should be displayed as keyword, not like part of details namespace...
-      -->
-    <list name="template">
-      <item>template</item>
     </list>
 
     <!-- 7.6 Attributes -->
@@ -161,13 +154,6 @@
       <item>no_unique_address</item>
       <!-- TM TS -->
       <!-- <item>optimize_for_synchronized</item> -->
-    </list>
-    <!-- This keyword may appear in Attribute context. For example in code:
-    [[using CC: opt(1), debug]]
-    and it should be displayed as keyword, not like part of attribute...
-    -->
-    <list name="using">
-      <item>using</item>
     </list>
 
     <!-- https://en.cppreference.com/w/cpp/keyword -->
@@ -261,29 +247,31 @@
       <item>__VA_ARGS__</item>
       <item>__VA_OPT__</item>
     </list>
-    <list name="preprocessorIf">
+    <list name="preprocessor">
       <item>if</item>
+      <item>ifdef</item>
+      <item>ifndef</item>
+      <item>elif</item>
+      <item>else</item>
+      <item>endif</item>
+      <item>cmakedefine01</item>
+      <item>cmakedefine</item>
+      <item>define</item>
+      <item>include</item>
+      <item>error</item>
+      <item>line</item>
+      <item>pragma</item>
+      <item>undef</item>
+      <item>warning</item>
     </list>
     <list name="preprocessorIfDef">
       <item>ifdef</item>
       <item>ifndef</item>
     </list>
-    <list name="preprocessorElseIf">
-      <item>elif</item>
-    </list>
-    <list name="preprocessorElse">
-      <item>else</item>
-    </list>
-    <list name="preprocessorEndIf">
-      <item>endif</item>
-    </list>
     <list name="preprocessorDefine">
       <item>cmakedefine01</item>
       <item>cmakedefine</item>
       <item>define</item>
-    </list>
-    <list name="preprocessorInclude">
-      <item>include</item>
     </list>
     <list name="preprocessorOther">
       <item>error</item>
@@ -528,7 +516,11 @@
         <!-- Attributes may contain some text: [[deprecated("Reason text")]] -->
         <DetectChar attribute="String" context="String" char="&quot;" />
         <AnyChar attribute="Decimal" context="Integer" String="0123456789" lookAhead="true" />
-        <keyword attribute="Keyword" context="AttributeNamespace" String="using" />
+        <!-- This keyword may appear in Attribute context. For example in code:
+        [[using CC: opt(1), debug]]
+        and it should be displayed as keyword, not like part of attribute...
+        -->
+        <WordDetect attribute="Keyword" context="AttributeNamespace" String="using" />
         <IncludeRules context="DetectGccAttributes##GCCExtensions" />
         <RegExpr attribute="CONSTS/MACROS" context="#stay" String="[A-Z][A-Z0-9_]{2,}\b" />
         <DetectIdentifier />
@@ -559,7 +551,11 @@
       <context name="Region Marker" attribute="Region Marker" lineEndContext="#pop" />
 
       <context name="DetectNSEnd" attribute="Normal Text" lineEndContext="#stay">
-        <keyword attribute="Keyword" context="#stay" String="template" />
+        <!-- This keyword may appear in InternalsNS context. For example in code:
+          details::some_class::template some_templated_static();
+          and it should be displayed as keyword, not like part of details namespace...
+          -->
+        <WordDetect attribute="Keyword" context="#stay" String="template" />
         <DetectIdentifier context="#stay" />
         <AnyChar attribute="Separator Symbol" context="#pop" String="&separators;" />
         <AnyChar attribute="Symbol" context="#pop" String="&ns_punctuators; &#9;" />
@@ -614,15 +610,6 @@
       <context name="AfterHashLineError" attribute="Region Marker" lineEndContext="#pop">
         <LineContinue attribute="Error" context="#stay" />
         <RegExpr attribute="Error" context="#pop!LineError" String="[^\\]+" />
-        <!-- for auto-completion in Kate editor -->
-        <keyword attribute="Preprocessor" context="#pop!LineError" String="preprocessorInclude" />
-        <keyword attribute="Preprocessor" context="#pop!LineError" String="preprocessorIfDef" />
-        <keyword attribute="Preprocessor" context="#pop!LineError" String="preprocessorIf" />
-        <keyword attribute="Preprocessor" context="#pop!LineError" String="preprocessorElseIf" />
-        <keyword attribute="Preprocessor" context="#pop!LineError" String="preprocessorElse" />
-        <keyword attribute="Preprocessor" context="#pop!LineError" String="preprocessorEndIf" />
-        <keyword attribute="Preprocessor" context="#pop!LineError" String="preprocessorOther" />
-        <keyword attribute="Preprocessor" context="#pop!LineError" String="preprocessorDefine" />
       </context>
 
       <context name="LineError" attribute="Error" lineEndContext="#pop">
@@ -630,17 +617,17 @@
       </context>
 
       <context name="PreprocessorCmd" attribute="Error" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop!AfterHashLineError">
-        <keyword attribute="Preprocessor" context="#pop!Include" String="preprocessorInclude" />
+        <WordDetect attribute="Preprocessor" context="#pop!Include" String="include" />
         <keyword attribute="Preprocessor" context="#pop!PreprocessorIfDef" String="preprocessorIfDef" beginRegion="PP" lookAhead="true" />
-        <keyword attribute="Preprocessor" context="#pop!PreprocessorIf" String="preprocessorIf" beginRegion="PP" lookAhead="true" />
-        <keyword attribute="Preprocessor" context="#pop!PreprocessorIf" String="preprocessorElseIf" endRegion="PP" beginRegion="PP" lookAhead="true" />
-        <keyword attribute="Preprocessor" context="PreprocessorEndOfLineSpace" String="preprocessorElse" endRegion="PP" beginRegion="PP" />
-        <keyword attribute="Preprocessor" context="PreprocessorEndOfLineSpace" String="preprocessorEndIf" endRegion="PP" />
+        <WordDetect attribute="Preprocessor" context="#pop!PreprocessorIf" String="if" beginRegion="PP" lookAhead="true" />
+        <WordDetect attribute="Preprocessor" context="#pop!PreprocessorIf" String="elif" endRegion="PP" beginRegion="PP" lookAhead="true" />
+        <WordDetect attribute="Preprocessor" context="PreprocessorEndOfLineSpace" String="else" endRegion="PP" beginRegion="PP" />
+        <WordDetect attribute="Preprocessor" context="PreprocessorEndOfLineSpace" String="endif" endRegion="PP" />
         <keyword attribute="Preprocessor" context="#pop!Preprocessor" String="preprocessorOther" />
         <keyword attribute="Preprocessor" context="#pop!Define" String="preprocessorDefine" />
         <!-- GCC extension -->
         <WordDetect attribute="Preprocessor" context="#pop!Include" String="include_next" />
-        <RegExpr attribute="Preprocessor" context="#pop!Preprocessor" String="[0-9]+" />
+        <Int attribute="Preprocessor" context="#pop!Preprocessor"/>
       </context>
 
       <context name="Include" attribute="Preprocessor" lineEndContext="#pop" >

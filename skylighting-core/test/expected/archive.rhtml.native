@@ -32,7 +32,9 @@
   ]
 , [ ( NormalTok , "  " )
   , ( KeywordTok , "<p><label" )
-  , ( OtherTok , " for=" )
+  , ( NormalTok , " " )
+  , ( ErrorTok , "for" )
+  , ( OtherTok , "=" )
   , ( StringTok , "\"start_date\"" )
   , ( KeywordTok , ">" )
   , ( NormalTok , "From" )
@@ -55,7 +57,9 @@
   ]
 , [ ( NormalTok , "  " )
   , ( KeywordTok , "<label" )
-  , ( OtherTok , " for=" )
+  , ( NormalTok , " " )
+  , ( ErrorTok , "for" )
+  , ( OtherTok , "=" )
   , ( StringTok , "\"end_date\"" )
   , ( KeywordTok , ">" )
   , ( NormalTok , "To" )
@@ -85,7 +89,9 @@
   ]
 , [ ( NormalTok , "  " )
   , ( KeywordTok , "<p><label" )
-  , ( OtherTok , " for=" )
+  , ( NormalTok , " " )
+  , ( ErrorTok , "for" )
+  , ( OtherTok , "=" )
   , ( StringTok , "\"event_series\"" )
   , ( KeywordTok , ">" )
   , ( NormalTok , "Series" )

@@ -105,7 +105,7 @@ to make the rules more expressive. -->
     <!ENTITY bs         "\">
 ]>
 <language name="Prolog" section="Sources"
-	  version="15" kateversion="5.62"
+	  version="16" kateversion="5.62"
 	  mimetype="text/x-prolog"
 	  extensions="*.prolog;*.dcg;*.pro"
 	  author="Torsten Eichstädt (torsten.eichstaedt@web.de)"
@@ -868,7 +868,6 @@ TODO sorted by priority
 	    <context name="arith_expr_common" lineEndContext="#stay" attribute="Syntax Error" >
 		<IncludeRules context="layout" />
 		<IncludeRules context="number" />
-		<keyword String="arith eval ISO" context="#pop" attribute="Syntax Error" />
 		<keyword String="bogus ISO" context="#stay" attribute="ISO Bogus" />
 		<keyword String="arith expr mixed ISO" context="#stay" attribute="Arithmetics" />
 		<keyword String="arith expr int ISO" context="#stay" attribute="Integer Arithmetics" />

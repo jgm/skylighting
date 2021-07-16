@@ -105,7 +105,7 @@
    ========================================================================
 -->
 
-<language name="D" version="11" kateversion="5.0" section="Sources" extensions="*.d;*.D;*.di;*.DI;" mimetype="text/x-dsrc" casesensitive="true" author="Diggory Hardy (diggory.hardy@gmail.com), Aziz Köksal (aziz.koeksal@gmail.com), Jari-Matti Mäkelä (jmjm@iki.fi), Simon J Mackenzie (project.katedxml@smackoz.fastmail.fm)" license="LGPL">
+<language name="D" version="12" kateversion="5.0" section="Sources" extensions="*.d;*.D;*.di;*.DI;" mimetype="text/x-dsrc" casesensitive="true" author="Diggory Hardy (diggory.hardy@gmail.com), Aziz Köksal (aziz.koeksal@gmail.com), Jari-Matti Mäkelä (jmjm@iki.fi), Simon J Mackenzie (project.katedxml@smackoz.fastmail.fm)" license="LGPL">
   <highlighting>
     <!-- User-defined keywords (add identifiers you'd like highlighted here) -->
     <list name="userkeywords">
@@ -496,7 +496,7 @@
         <DetectSpaces/>
         <!-- Match an Integer -->
         <RegExpr attribute="Integer" context="#stay" String="(?:(?:0(?:[0-7_]+|[bB]_*[01][01_]*|[xX]_*[\da-fA-F][\da-fA-F_]*))|\d+[\d_]*)(?:L[uU]?|[uU]L?)?"/>
-        <RegExpr attribute="String" context="#stay" String="&quot;[^&quot;]*&quot;"/>
+        <RangeDetect attribute="String" context="#stay" char="&quot;" char1="&quot;"/>
         <keyword attribute="SpecialTokens"  context="#stay"      String="specialtokens"/>
         <IncludeRules context="CommentRules" />
         <RegExpr attribute="Error" context="#pop" String=".+"/>

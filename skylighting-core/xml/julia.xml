@@ -31,28 +31,42 @@
 [
   <!ENTITY int "[0-9]([0-9_]*[0-9])?">
   <!ENTITY hex "[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?">
+  <!ENTITY function_disallowed_chars "\s.,(){}\[\];:&#37;'&quot;&amp;$=/?\|^#@">
+  <!ENTITY function_disallowed_first_char "0-9!&function_disallowed_chars;">
+  <!ENTITY function_begin_boundary "(?:(?&lt;=[&function_disallowed_chars;!]|^)(?=[^&function_disallowed_first_char;]))">
 ]>
 
-<language name="Julia" section="Sources" version="11" kateversion="5.0" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
+<language name="Julia" section="Sources" version="12" kateversion="5.0" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
 
   <highlighting>
-    <list name="block_begin">
+    <list name="cflow_begin">
+      <item>for</item>
+      <item>while</item>
+      <item>if</item>
       <item>begin</item>
       <item>do</item>
-      <item>for</item>
-      <item>function</item>
-      <item>if</item>
-      <item>let</item>
-      <item>quote</item>
-      <item>try</item>
-      <item>type</item>
-      <item>while</item>
     </list>
-    <list name="block_eb">
-      <item>catch</item>
-      <item>finally</item>
+    <list name="cflow_eb">
       <item>else</item>
       <item>elseif</item>
+      <item>try</item>
+      <item>catch</item>
+      <item>finally</item>
+    </list>
+    <list name="cflow">
+      <item>break</item>
+      <item>return</item>
+      <item>continue</item>
+    </list>
+    <list name="block_begin">
+      <item>function</item>
+      <item>let</item>
+      <item>quote</item>
+      <item>type</item>
+      <item>struct</item>
+      <item>module</item>
+      <item>baremodule</item>
+      <item>macro</item>
     </list>
     <list name="block_end">
       <item>end</item>
@@ -60,10 +74,8 @@
     <list name="keywords">
       <item>abstract</item>
       <item>bitstype</item>
-      <item>break</item>
       <item>ccall</item>
       <item>const</item>
-      <item>continue</item>
       <item>export</item>
       <item>global</item>
       <item>import</item>
@@ -71,7 +83,6 @@
       <item>local</item>
       <item>macro</item>
       <item>module</item>
-      <item>return</item>
       <item>typealias</item>
       <item>importall</item>
       <item>baremodule</item>
@@ -372,20 +383,18 @@
       <item>stdout</item>
       <item>stderr</item>
       <item>stdin</item>
-      <item>open</item>
-      <item>read</item>
-      <item>write</item>
-      <item>create</item>
-      <item>truncate</item>
-      <item>append</item>
       <item>ENDIAN_BOM</item>
       <!-- Numbers -->
       <item>im</item>
       <item>pi</item>
+      <item>&#960;</item>
       <item>e</item>
+      <item>&#8495;</item>
       <item>catalan</item>
       <item>eulergamma</item>
+      <item>&#611;</item>
       <item>golden</item>
+      <item>&#966;</item>
       <item>Inf</item>
       <item>Inf64</item>
       <item>Inf32</item>
@@ -441,13 +450,37 @@
       <item>Math</item>
       <item>Unicode</item>
       <item>Sort</item>
+      <item>Artifacts</item>
       <item>Base64</item>
+      <item>CRC32c</item>
       <item>Dates</item>
+      <item>DelimitedFiles</item>
+      <item>Distributed</item>
+      <item>Downloads</item>
+      <item>FileWatching</item>
+      <item>Future</item>
+      <item>InteractiveUtils</item>
+      <item>LibGit2</item>
+      <item>Libc</item>
+      <item>Libdl</item>
+      <item>LinearAlgebra</item>
+      <item>Logging</item>
       <item>Mmap</item>
+      <item>Pkg</item>
+      <item>Printf</item>
+      <item>Profile</item>
+      <item>REPL</item>
       <item>Random</item>
+      <item>SHA</item>
+      <item>Serialization</item>
       <item>SharedArrays</item>
       <item>Sockets</item>
       <item>SparseArrays</item>
+      <item>Statistics</item>
+      <item>SuiteSparse</item>
+      <item>TOML</item>
+      <item>Test</item>
+      <item>UUIDs</item>
       <item>CoreLogging</item>
     </list>
     <contexts>
@@ -459,15 +492,20 @@
         <!-- Blocks -->
         <keyword context="#stay" attribute="Keyword" String="block_begin"
                  beginRegion="block" />
-        <keyword context="#stay" attribute="Keyword" String="block_eb"
-                 endRegion="block" beginRegion="block" />
+        <keyword context="controlflow-block" attribute="Control Flow" String="cflow_begin"
+                 beginRegion="block" />
+        <keyword context="#stay" attribute="Control Flow" String="cflow"/>
         <keyword context="#stay" attribute="Keyword" String="block_end"
                  endRegion="block" />
         <StringDetect String="#BEGIN" context="region_marker" attribute="FoldingComment" beginRegion="user_region" />
         <StringDetect String="#END" context="region_marker" attribute="FoldingComment" endRegion="user_region" />
 
+        <!-- functions have to be before built-in types to properly match constructors -->
+        <RegExpr context="#stay" attribute="Function" String="&function_begin_boundary;[^&function_disallowed_first_char;][^&function_disallowed_chars;]*!?(?=\.?\()" />
+        <RegExpr context="parametric-constructor" attribute="Function" String="&function_begin_boundary;[^&function_disallowed_first_char;][^&function_disallowed_chars;]*(?=\{.+\}.?\()" />
+
         <!-- Keywords, types, and comments -->
-        <RegExpr context="#stay" attribute="Keyword" String="\b(abstract|primitive)\s+type\b|\bmutable\s+struct\b" />
+        <RegExpr context="#stay" attribute="Keyword" String="\b(abstract|primitive)\s+type\b|\bmutable\s+struct\b" beginRegion="block"/>
         <keyword context="#stay" attribute="Keyword" String="keywords" />
         <keyword context="#stay" attribute="Data Type" String="types" />
         <keyword context="#stay" attribute="Boolean" String="booleans" />
@@ -505,30 +543,70 @@
 
         <!-- Multi-character operators -->
         <StringDetect context="#stay" attribute="Operator" String="..."/>
-        <Detect2Chars context="#stay" attribute="Operator" char=":" char1=":"/>
+        <Detect2Chars context="type-annotation" attribute="Operator" char=":" char1=":"/>
+        <StringDetect context="#stay" attribute="Operator" String=".&gt;&gt;&gt;="/>
         <StringDetect context="#stay" attribute="Operator" String="&gt;&gt;&gt;="/>
+        <StringDetect context="#stay" attribute="Operator" String=".&gt;&gt;="/>
         <StringDetect context="#stay" attribute="Operator" String="&gt;&gt;="/>
+        <StringDetect context="#stay" attribute="Operator" String=".&lt;&lt;="/>
         <StringDetect context="#stay" attribute="Operator" String="&lt;&lt;="/>
+        <StringDetect context="#stay" attribute="Operator" String=".&gt;&gt;&gt;"/>
         <StringDetect context="#stay" attribute="Operator" String="&gt;&gt;&gt;"/>
+        <StringDetect context="#stay" attribute="Operator" String=".&gt;&gt;"/>
         <Detect2Chars context="#stay" attribute="Operator" char="&gt;" char1="&gt;"/>
         <Detect2Chars context="#stay" attribute="Operator" char="&lt;" char1="&lt;"/>
+        <StringDetect context="#stay" attribute="Operator" String=".=="/>
         <Detect2Chars context="#stay" attribute="Operator" char="=" char1="="/>
+        <StringDetect context="#stay" attribute="Operator" String=".!="/>
         <Detect2Chars context="#stay" attribute="Operator" char="!" char1="="/>
+        <StringDetect context="#stay" attribute="Operator" String=".&lt;="/>
         <Detect2Chars context="#stay" attribute="Operator" char="&lt;" char1="="/>
+        <StringDetect context="#stay" attribute="Operator" String=".&gt;="/>
         <Detect2Chars context="#stay" attribute="Operator" char="&gt;" char1="="/>
         <Detect2Chars context="#stay" attribute="Operator" char="&amp;" char1="&amp;"/>
         <Detect2Chars context="#stay" attribute="Operator" char="|" char1="|"/>
+        <StringDetect context="#stay" attribute="Operator" String=".*="/>
         <Detect2Chars context="#stay" attribute="Operator" char="." char1="*"/>
+        <StringDetect context="#stay" attribute="Operator" String=".^="/>
         <Detect2Chars context="#stay" attribute="Operator" char="." char1="^"/>
+        <StringDetect context="#stay" attribute="Operator" String="./="/>
         <Detect2Chars context="#stay" attribute="Operator" char="." char1="/"/>
         <Detect2Chars context="#stay" attribute="Operator" char="." char1="'"/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="~"/>
+        <StringDetect context="#stay" attribute="Operator" String=".&#8891;="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="&#8891;"/>
+        <StringDetect context="#stay" attribute="Operator" String=".&amp;="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="&amp;"/>
+        <StringDetect context="#stay" attribute="Operator" String=".|="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="|"/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="!"/>
+        <StringDetect context="#stay" attribute="Operator" String=".+="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="+"/>
+        <StringDetect context="#stay" attribute="Operator" String=".-="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="-"/>
+        <StringDetect context="#stay" attribute="Operator" String=".%="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="%"/>
+        <StringDetect context="#stay" attribute="Operator" String=".&#247;="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="&#247;"/>
+        <StringDetect context="#stay" attribute="Operator" String=".&#92;="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="&#92;"/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="&#8800;"/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="&#8804;"/>
+        <Detect2Chars context="#stay" attribute="Operator" char="." char1="&#8805;"/>
         <Detect2Chars context="#stay" attribute="Operator" char="+" char1="="/>
         <Detect2Chars context="#stay" attribute="Operator" char="-" char1="="/>
         <Detect2Chars context="#stay" attribute="Operator" char="*" char1="="/>
         <Detect2Chars context="#stay" attribute="Operator" char="/" char1="="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="&#92;" char1="="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="&#247;" char1="="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="%" char1="="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="^" char1="="/>
         <Detect2Chars context="#stay" attribute="Operator" char="&amp;" char1="="/>
         <Detect2Chars context="#stay" attribute="Operator" char="|" char1="="/>
-        <Detect2Chars context="#stay" attribute="Operator" char="$" char1="="/>
+        <Detect2Chars context="#stay" attribute="Operator" char="&#8891;" char1="="/>
+
+        <!-- subtype operator -->
+        <Detect2Chars context="type-annotation" attribute="Operator" char="&lt;" char1=":"/>
 
         <!-- Look-ahead for adjoint ' after variable, number literal, closing braces and .' -->
         <RegExpr context="_adjoint" attribute="Variable" String="[a-zA-Z]\w*(?=')" />
@@ -541,7 +619,6 @@
         <RegExpr context="#stay" attribute="Incomplete Char" String="'[^']*(''[^']*)*" />
 
         <RegExpr context="#stay" attribute="Macro" String="@[a-zA-Z_]\w*" />
-        <RegExpr context="#stay" attribute="Function" String="\b[A-Za-z_]\w*(?=\!?\()" />
 
         <!-- Identifiers, numbers and braces -->
         <!-- We can't use HlCHex, Int, and Float because we need to allow the "im" at the end of complex numbers -->
@@ -554,7 +631,7 @@
         <AnyChar context="#stay" attribute="Delimiter" String="()[]{}"/>
 
         <!-- Single-character operators -->
-        <AnyChar context="#stay" attribute="Operator" String="*+-/\&amp;|&lt;&gt;~$!^=,;:@"/>
+        <AnyChar context="#stay" attribute="Operator" String="*+-/\&amp;|&lt;&gt;~$!^=,;:@&#8891;%&#247;&#92;&#8800;&#8804;&#8805;"/>
 
       </context>
 
@@ -660,7 +737,30 @@
         <Detect2Chars char="=" char1="#" context="#pop" attribute="Comment" endRegion="block-comment"/>
         <IncludeRules context="##Comments" />
       </context>
+      <context name="controlflow-block" lineEndContext="#stay" attribute="Normal Text">
+        <keyword context="#stay" attribute="Control Flow" String="cflow_eb" endRegion="block" beginRegion="block" />
+        <keyword context="#pop" attribute="Control Flow" String="block_end" endRegion="block" />
+        <IncludeRules context="_normal" />
+      </context>
+      <context name="parametric-type" lineEndContext="#stay" attribute="Data Type">
+        <DetectChar char="{" context="parametric-type"/>
+        <DetectChar char="}" context="#pop"/>
+      </context>
+      <context name="parametric-constructor" lineEndContext="#stay" attribute="Data Type">
+        <DetectChar char="{" context="parametric-type"/>
+        <AnyChar String=",;()=:&gt;&lt;&amp;%*?[]^" context="#pop"/>
+      </context>
 
+      <!-- we have to allow spaces before the type, but switch to the parent context after the type -->
+      <context name="type-annotation-internal" lineEndContext="#pop#pop" attribute="Data Type">
+        <DetectChar char="{" context="parametric-type"/>
+        <AnyChar String=",;()=:&gt;&lt;&amp;%*?[]^" context="#pop#pop"/>
+        <DetectSpaces context="#pop#pop"/>
+        <DetectChar char="}" lookAhead="true" context="#pop#pop"/>
+      </context>
+      <context name="type-annotation" lineEndContext="#pop" attribute="Data Type">
+        <DetectIdentifier context="type-annotation-internal" attribute="Data Type"/>
+      </context>
     </contexts>
 
     <itemDatas>
@@ -677,12 +777,13 @@
       <itemData name="Char" defStyleNum="dsChar"/>
       <itemData name="Incomplete Char" defStyleNum="dsChar"/>
       <itemData name="Keyword" defStyleNum="dsKeyword"/>
+      <itemData name="Control Flow" defStyleNum="dsControlFlow" />
       <itemData name="Data Type" defStyleNum="dsDataType"/>
       <itemData name="Constant" defStyleNum="dsConstant"/>
-      <itemData name="Boolean" defStyleNum="dsExtension"/>
+      <itemData name="Boolean" defStyleNum="dsConstant"/>
       <itemData name="Macro" defStyleNum="dsPreprocessor"/>
       <itemData name="Module" defStyleNum="dsBuiltIn"/>
-      <itemData name="Function" defStyleNum="dsNormal"/>
+      <itemData name="Function" defStyleNum="dsFunction"/>
       <itemData name="Command String" defStyleNum="dsSpecialString"/>
       <itemData name="Comment" defStyleNum="dsComment"/>
       <itemData name="FoldingComment" defStyleNum="dsRegionMarker" />

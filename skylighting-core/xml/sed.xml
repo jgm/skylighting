@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="sed" section="Scripts" version="7" kateversion="5.0" extensions="*.sed" mimetype="text/x-sed" author="Bart Sas (bart.sas@gmail.com)" license="GPL">
+<language name="sed" section="Scripts" version="8" kateversion="5.0" extensions="*.sed" mimetype="text/x-sed" author="Bart Sas (bart.sas@gmail.com)" license="GPL">
         <highlighting>
                 <contexts>
                         <context name="BeginningOfLine" attribute="Normal" lineEndContext="#stay">
@@ -29,7 +29,6 @@
                         </context>
 
                         <context name="AfterFirstAddress2" attribute="Normal" lineEndContext="BeginningOfLine">
-                                <DetectSpaces/>
                                 <DetectChar char="," attribute="Normal" context="SecondAddress"/>
                                 <DetectChar char="~" attribute="Normal" context="Step"/>
                                 <IncludeRules                           context="Command"/>
