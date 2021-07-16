@@ -69,18 +69,20 @@ package.
 
 Using cabal:
 
-    # First, install ~/.cabal/bin/skylighting-extract
-    cabal install -fexecutable skylighting-core
+    # First, build skylighting-extract
+    cabal build -fexecutable skylighting-core
+    # This will print the path of the built executable.
+    # Replace $EXE with this path in the following steps
     # Now, generate the syntax files
     cd ../skylighting
-    skylighting-extract ../skylighting-core/xml/*.xml
+    $EXE ../skylighting-core/xml/*.xml
     cabal install -fexecutable
 
 Using stack:
 
-    stack install --flag skylighting-core:executable skylighting-core
+    stack build --flag skylighting-core:executable skylighting-core
     cd skylighting
-    skylighting-extract ../skylighting-core/xml/*.xml
+    stack exec skylighting-extract -- ../skylighting-core/xml/*.xml
     cd ..
     stack install --flag skylighting:executable
 
