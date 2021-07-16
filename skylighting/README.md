@@ -122,6 +122,9 @@ alerting the KDE developers of the availability of a new or
 changed syntax definition; they can then decide whether to
 integrate it.
 
+We normally pull changes in syntax definitions from upstream
+before each release.
+
 License
 -------
 
