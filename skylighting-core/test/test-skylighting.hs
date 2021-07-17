@@ -103,10 +103,10 @@ main = do
                 testCase ("regex " <>
                            (Text.unpack $ TE.decodeUtf8 regex) <> " in "
                            <> sFilename syn)
-             $ assertBool "regex does not compile"
-               $ case compileRegex True regex of
-                         Right _ -> True
-                         Left _  -> False) $ getRegexesFromSyntax syn))
+             $ case compileRegex True regex of
+                 Right _ -> assertBool "regex does not compile" True
+                 Left e -> assertFailure ("regex does not compile: " <> show e))
+                         $ getRegexesFromSyntax syn))
         syntaxes
     , testGroup "Regex module" $ map regexTest regexTests
     , testGroup "Regression tests" $
@@ -318,6 +318,12 @@ regexTests =
   , ("(?|(abc)|(def))", "def", Just ("def", [(1,"def")]))
   , ("(?:(abc)|(def))", "def", Just ("def", [(2,"def")]))
   , ("d(?=(bc)|(ef))", "def", Just ("d", [(2,"ef")]))
+  , ("([bcd])([efg])(?2)(?1)", "befd", Just ("befd", [(1,"b"),(2,"e")]))
+  , ("([abc](?1)*)", "abcd", Just ("abc", [(1,"abc")]))
+  , ("(x(?1)*)", "xxxxy", Just ("xxxx", [(1,"xxxx")]))
+  , ("a|\\((?0)\\)", "(((a)))", Just ("(((a)))", []))
+  , ("([abc](x(?1))*)", "axbxcc", Just ("axbxc", [(1,"axbxc"),(2,"xc")]))
+    -- note: pcre gives insetad (2, "xbxc") -- I don't understand why
   ]
 
 

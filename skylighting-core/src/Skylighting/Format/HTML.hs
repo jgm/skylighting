@@ -1,4 +1,5 @@
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE NoOverloadedStrings #-}
 module Skylighting.Format.HTML (
       formatHtmlInline
     , formatHtmlBlock

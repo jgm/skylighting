@@ -48,30 +48,30 @@ prune ms = if Set.size ms > sizeLimit
               then Set.take sizeLimit ms
               else ms
 
--- first argument is the "top-level" regex, needed for Recurse.
-exec :: Regex -> Direction -> Regex -> Set Match -> Set Match
+-- first argument is a map of capturing groups, needed for Subroutine.
+exec :: M.IntMap Regex -> Direction -> Regex -> Set Match -> Set Match
 exec _ _ MatchNull = id
-exec top dir (Lazy re) = -- note: the action is below under Concat
-  exec top dir (MatchConcat (Lazy re) MatchNull)
-exec top dir (Possessive re) =
+exec cgs dir (Lazy re) = -- note: the action is below under Concat
+  exec cgs dir (MatchConcat (Lazy re) MatchNull)
+exec cgs dir (Possessive re) =
   foldr
-    (\elt s -> case Set.lookupMin (exec top dir re (Set.singleton elt)) of
+    (\elt s -> case Set.lookupMin (exec cgs dir re (Set.singleton elt)) of
                  Nothing -> s
                  Just m  -> Set.insert m s)
     mempty
-exec top dir (MatchDynamic n) = -- if this hasn't been replaced, match literal
-  exec top dir (MatchChar (== '%') <>
+exec cgs dir (MatchDynamic n) = -- if this hasn't been replaced, match literal
+  exec cgs dir (MatchChar (== '%') <>
             mconcat (map (\c -> MatchChar (== c)) (show n)))
 exec _ _ AssertEnd = Set.filter (\m -> matchOffset m == B.length (matchBytes m))
 exec _ _ AssertBeginning = Set.filter (\m -> matchOffset m == 0)
-exec top _ (AssertPositive dir regex) =
+exec cgs _ (AssertPositive dir regex) =
   Set.unions . Set.map
     (\m -> Set.map (\m' -> -- we keep captures but not matches
                             m'{ matchBytes = matchBytes m,
                                matchOffset = matchOffset m })
-           $ exec top dir regex (Set.singleton m))
-exec top _ (AssertNegative dir regex) =
-  Set.filter (\m -> null (exec top dir regex (Set.singleton m)))
+           $ exec cgs dir regex (Set.singleton m))
+exec cgs _ (AssertNegative dir regex) =
+  Set.filter (\m -> null (exec cgs dir regex (Set.singleton m)))
 exec _ _ AssertWordBoundary = Set.filter atWordBoundary
 exec _ Forward MatchAnyChar = mapMatching $ \m ->
   case U.decode (B.drop (matchOffset m) (matchBytes m)) of
@@ -92,12 +92,12 @@ exec _ Backward (MatchChar f) = mapMatching $ \m ->
       case U.decode (B.drop off (matchBytes m)) of
         Just (c,_) | f c -> m{ matchOffset = off }
         _                -> m{ matchOffset = -1 }
-exec top dir (MatchConcat (MatchConcat r1 r2) r3) =
-  exec top dir (MatchConcat r1 (MatchConcat r2 r3))
-exec top Forward (MatchConcat (Lazy r1) r2) =
+exec cgs dir (MatchConcat (MatchConcat r1 r2) r3) =
+  exec cgs dir (MatchConcat r1 (MatchConcat r2 r3))
+exec cgs Forward (MatchConcat (Lazy r1) r2) =
   Set.foldl Set.union mempty . Set.map
     (\m ->
-      let ms1 = exec top Forward r1 (Set.singleton m)
+      let ms1 = exec cgs Forward r1 (Set.singleton m)
        in if Set.null ms1
              then ms1
              else go ms1)
@@ -105,30 +105,30 @@ exec top Forward (MatchConcat (Lazy r1) r2) =
   go ms = case Set.lookupMax ms of   -- find shortest match
             Nothing -> Set.empty
             Just m' ->
-              let s' = exec top Forward r2 (Set.singleton m')
+              let s' = exec cgs Forward r2 (Set.singleton m')
                in if Set.null s'
                      then go (Set.delete m' ms)
                      else s'
-exec top Forward (MatchConcat r1 r2) = -- TODO longest match first
+exec cgs Forward (MatchConcat r1 r2) = -- TODO longest match first
   \ms ->
-    let ms1 = exec top Forward r1 ms
+    let ms1 = exec cgs Forward r1 ms
      in if Set.null ms1
            then ms1
-           else exec top Forward r2 (prune ms1)
-exec top Backward (MatchConcat r1 r2) =
-  exec top Backward r1 . exec top Backward r2
-exec top dir (MatchAlt r1 r2) = \ms -> exec top dir r1 ms <> exec top dir r2 ms
-exec top dir (MatchSome re) = go
+           else exec cgs Forward r2 (prune ms1)
+exec cgs Backward (MatchConcat r1 r2) =
+  exec cgs Backward r1 . exec cgs Backward r2
+exec cgs dir (MatchAlt r1 r2) = \ms -> exec cgs dir r1 ms <> exec cgs dir r2 ms
+exec cgs dir (MatchSome re) = go
  where
-  go ms = case exec top dir re ms of
+  go ms = case exec cgs dir re ms of
             ms' | Set.null ms' -> Set.empty
                 | ms' == ms    -> ms
                 | otherwise    -> let ms'' = prune ms'
                                    in ms'' <> go ms''
-exec top dir (MatchCapture i re) =
+exec cgs dir (MatchCapture i re) =
   Set.foldr Set.union Set.empty .
    Set.map (\m ->
-     Set.map (captureDifference m) (exec top dir re (Set.singleton m)))
+     Set.map (captureDifference m) (exec cgs dir re (Set.singleton m)))
  where
     captureDifference m m' =
       let len = matchOffset m' - matchOffset m
@@ -149,9 +149,10 @@ exec _ dir (MatchCaptured n) = mapMatching matchCaptured
                         -> m{ matchOffset = matchOffset m - B.length capture }
                      _  -> m{ matchOffset = -1 }
        Nothing -> m{ matchOffset = -1 }
-exec top dir Recurse = \ms -> if Set.null ms
-                                 then ms
-                                 else exec top dir top ms
+exec cgs dir (Subroutine i) =
+  case M.lookup i cgs of
+    Nothing -> id  -- ignore references to nonexistent groups
+    Just re' -> exec cgs dir re'
 
 atWordBoundary :: Match -> Bool
 atWordBoundary m =
@@ -190,8 +191,24 @@ matchRegex :: Regex
            -> ByteString
            -> Maybe (ByteString, M.IntMap (Int, Int))
 matchRegex re bs =
-  toResult <$> Set.lookupMin
-               (exec re Forward re (Set.singleton (Match bs 0 M.empty)))
+  let capturingGroups = extractCapturingGroups re
+  in  toResult <$> Set.lookupMin
+               (exec capturingGroups Forward re
+                  (Set.singleton (Match bs 0 M.empty)))
  where
    toResult m = (B.take (matchOffset m) (matchBytes m), (matchCaptures m))
 
+extractCapturingGroups :: Regex -> M.IntMap Regex
+extractCapturingGroups regex = M.singleton 0 regex <>
+  case regex of
+    MatchSome re -> extractCapturingGroups re
+    MatchAlt re1 re2 ->
+      extractCapturingGroups re1 <> extractCapturingGroups re2
+    MatchConcat re1 re2 ->
+      extractCapturingGroups re1 <> extractCapturingGroups re2
+    MatchCapture i re -> M.singleton i re
+    AssertPositive _ re -> extractCapturingGroups re
+    AssertNegative _ re -> extractCapturingGroups re
+    Possessive re -> extractCapturingGroups re
+    Lazy re -> extractCapturingGroups re
+    _ -> mempty

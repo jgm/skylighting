@@ -56,7 +56,7 @@ pRegexPart caseSensitive =
      lift . pSuffix
 
 pParenthesized :: Bool -> RParser Regex
-pParenthesized caseSensitive = (do
+pParenthesized caseSensitive = do
   _ <- lift (satisfy (== 40))
   -- pcrepattern says: A group that starts with (?| resets the capturing
   -- parentheses numbers in each alternative.
@@ -74,8 +74,7 @@ pParenthesized caseSensitive = (do
                   then put currentCaptureNumber
                   else return ()) >> pAltPart caseSensitive) <|> pure mempty))
   _ <- lift (satisfy (== 41))
-  return $ modifier contents)
-  <|> Recurse <$ (lift (string "(?R)" <|> string "(?0)"))
+  return $ modifier contents
 
 pGroupModifiers :: Parser (Regex -> Regex)
 pGroupModifiers =
@@ -83,6 +82,12 @@ pGroupModifiers =
    <|>
      do dir <- option Forward $ Backward <$ char '<'
         (AssertPositive dir <$ char '=') <|> (AssertNegative dir <$ char '!')
+   <|>
+     do n <- satisfy (\d -> d >= 48 && d <= 57)
+        return (\_ -> Subroutine (fromIntegral n - 48))
+   <|>
+     do _ <- satisfy (== 82) -- R
+        return  (\_ -> Subroutine 0)
 
 pSuffix :: Regex -> Parser Regex
 pSuffix re = option re $ do
