@@ -193,6 +193,16 @@ pEscaped c =
       case readMay ("'\\o" ++ U.toString ds ++ "'") of
         Just x  -> return x
         Nothing -> fail "invalid octal character escape"
+    _ | c >= '1' && c <= '7' -> do
+      -- \123 matches octal 123, \1 matches octal 1
+      let octalDigitScanner s w
+            | s < 3, w >= 48 && w <= 55
+                        = Just (s + 1) -- digits 0-7
+            | otherwise = Nothing
+      ds <- A.scan (1 :: Int) octalDigitScanner
+      case readMay ("'\\o" ++ [c] ++ U.toString ds ++ "'") of
+        Just x  -> return x
+        Nothing -> fail "invalid octal character escape"
     'z' -> do -- \zhhhh matches unicode hex char hhhh
       ds <- A.take 4
       case readMay ("'\\x" ++ U.toString ds ++ "'") of
