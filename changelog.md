@@ -1,5 +1,25 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.11
+
+  * Skylighting.Regex: Support regex subroutines (#118).  For example,
+    `(?1)` is replaced by the regex in the first capturing group.  So far
+    we only support this simple, absolute form, not the relative
+    form `(?-1)` supported by some engines (but not used, I think, in
+    KDE's syntax highlighters).  This change involves an API change:
+    Regex in Skylighting.Regex has a new Subroutine constructor,
+    and the Recurse constructor has been removed.  Instead of Recurse we use
+    Subroutine 0, which unifies the code.
+
+  * Skylighting.Regex: handle e.g. `[\1]` and `[\123]` (without
+    initial 0) as octal escapes (#118).  These occur in the zsh.xml
+    syntax definition.
+
+  * Pull xml definitions for bash, cmake, python, zsh from upstream.
+
+  * README: Add a note about pulling syntax definitions from upstream (#138).
+    Update build instructions for recent cabal versions (#131).
+
 ## 0.10.5.2
 
   * Added swift grammar definition (Igor Ranieri).
