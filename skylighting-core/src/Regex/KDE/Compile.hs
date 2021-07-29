@@ -99,7 +99,7 @@ pSuffix re = option re $ do
     123 -> do
       let isDig x = x >= 48 && x < 58
       minn <- option Nothing $ readMay . U.toString <$> A.takeWhile isDig
-      maxn <- option Nothing $ char ',' *>
+      maxn <- option minn $ char ',' *>
                        (readMay . U.toString <$> A.takeWhile isDig)
       _ <- char '}'
       case (minn, maxn) of
