@@ -4,13 +4,13 @@ ALL=skylighting/src/Skylighting/Syntax.hs quick
 all: $(ALL)
 
 quick:
-	stack install --test --flag "skylighting:executable" --test-arguments '--hide-successes $(TESTARGS)'
+	stack install --system-ghc --test --flag "skylighting:executable" --test-arguments '--hide-successes $(TESTARGS)'
 
 test:
-	stack test --test-arguments '--hide-successes $(TESTARGS)'
+	stack test --system-ghc --test-arguments '--hide-successes $(TESTARGS)'
 
 bench:
-	stack bench --flag 'skylighting:executable'
+	stack bench --system-ghc --flag 'skylighting:executable'
 
 format: skylighting-format skylighting-core-format
 
@@ -32,10 +32,10 @@ skylighting-format:
 bootstrap: skylighting/src/Skylighting/Syntax.hs
 
 skylighting/src/Skylighting/Syntax.hs: $(XMLS)
-	stack install --flag "skylighting-core:executable" skylighting-core
+	stack install --system-ghc --flag "skylighting-core:executable" skylighting-core
 	-rm -rf skylighting/src/Skylighting/Syntax skylighting/src/Skylighting/Syntax.hs
 	cd skylighting && skylighting-extract ../skylighting-core/xml/*.xml
-	stack install --flag "skylighting:executable" --test --test-arguments \
+	stack install --system-ghc --flag "skylighting:executable" --test --test-arguments \
 	    '--hide-successes $(TESTARGS)'
 
 syntax-highlighting:
