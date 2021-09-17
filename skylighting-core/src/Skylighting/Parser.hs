@@ -24,6 +24,7 @@ import System.FilePath
 import Text.XML
 import qualified Control.Exception as E
 import Control.Monad.Except
+import Control.Monad.Identity
 
 -- | Adds a syntax definition to a syntax map,
 -- replacing any existing definition with the same name.
@@ -75,7 +76,9 @@ vBool defaultVal value = case value of
 parseSyntaxDefinition :: FilePath -> IO (Either String Syntax)
 parseSyntaxDefinition fp = do
   bs <- BL.readFile fp
-  return $ parseSyntaxDefinitionFromText fp (toTextLazy bs)
+  case parseText def (toTextLazy bs) of
+    Left e    -> return $ Left $ E.displayException e
+    Right doc -> runExceptT (documentToSyntax fp doc)
  where
   toTextLazy = TLE.decodeUtf8 . filterCRs . dropBOM
   dropBOM bs =
@@ -89,12 +92,13 @@ parseSyntaxDefinitionFromText ::
 parseSyntaxDefinitionFromText fp xml =
     case parseText def xml of
       Left e    -> Left $ E.displayException e
-      Right doc -> runExcept $ documentToSyntax fp doc
+      Right doc -> runIdentity $ runExceptT $ documentToSyntax fp doc
 
 -- | Parses an XML 'Document' as a 'Syntax' description.
-documentToSyntax :: FilePath -- ^ used for short name
+documentToSyntax :: Monad m
+                 => FilePath -- ^ used for short name
                  -> Document
-                 -> Except String Syntax
+                 -> ExceptT String m Syntax
 documentToSyntax fp Document{ documentRoot = rootEl } = do
   unless (elementName rootEl == "language") $
     throwError "Root element is not language"
@@ -155,7 +159,7 @@ getTextContent :: Element -> Text
 getTextContent el =
   mconcat [t | NodeContent t <- elementNodes el]
 
-getList :: Element -> Except String (Text, [Text])
+getList :: Monad m => Element -> ExceptT String m (Text, [Text])
 getList el = do
   case M.lookup "name" (elementAttributes el) of
     Nothing   -> throwError "No name attribute on list"
@@ -163,8 +167,9 @@ getList el = do
       return (name, map (T.strip . getTextContent)
                         (getElementsNamed "item" el))
 
-getParser :: Bool -> Text -> ItemData -> M.Map Text [Text] -> KeywordAttr
-          -> Text -> Element -> Except String Rule
+getParser :: Monad m
+          => Bool -> Text -> ItemData -> M.Map Text [Text] -> KeywordAttr
+          -> Text -> Element -> ExceptT String m Rule
 getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
   let name = nameLocalName . elementName $ el
   let attribute = getAttrValue "attribute" el
@@ -238,13 +243,14 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
                }
 
 
-getContext :: Bool
+getContext :: Monad m
+           => Bool
            -> Text
            -> ItemData
            -> M.Map Text [Text]
            -> KeywordAttr
            -> Element
-           -> Except String Context
+           -> ExceptT String m Context
 getContext casesensitive syntaxname itemDatas lists kwattr el = do
   let name = getAttrValue "name" el
   let attribute = getAttrValue "attribute" el
