@@ -201,10 +201,11 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
                  "StringDetect" -> return $ StringDetect str
                  "WordDetect" -> return $ WordDetect str
                  "RegExpr" -> return $ re
-                 "keyword" -> return $ Keyword kwattr $
-                    maybe (makeWordSet True [])
-                      (makeWordSet (keywordCaseSensitive kwattr))
-                      (M.lookup str lists)
+                 "keyword" ->
+                    case M.lookup str lists of
+                      Nothing -> throwError $ "List not found: " ++ T.unpack str
+                      Just lst -> return $ Keyword kwattr
+                            (makeWordSet (keywordCaseSensitive kwattr) lst)
                  "Int" -> return $ Int
                  "Float" -> return $ Float
                  "HlCOct" -> return $ HlCOct
