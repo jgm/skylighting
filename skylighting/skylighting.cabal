@@ -105,8 +105,8 @@ library
                        Skylighting.Syntax.J
                        Skylighting.Syntax.Java
                        Skylighting.Syntax.Javadoc
-                       Skylighting.Syntax.JavascriptReact
                        Skylighting.Syntax.Javascript
+                       Skylighting.Syntax.JavascriptReact
                        Skylighting.Syntax.Json
                        Skylighting.Syntax.Jsp
                        Skylighting.Syntax.Julia
@@ -170,9 +170,9 @@ library
                        Skylighting.Syntax.Sgml
                        Skylighting.Syntax.Sml
                        Skylighting.Syntax.SpdxComments
+                       Skylighting.Syntax.Sql
                        Skylighting.Syntax.SqlMysql
                        Skylighting.Syntax.SqlPostgresql
-                       Skylighting.Syntax.Sql
                        Skylighting.Syntax.Stata
                        Skylighting.Syntax.Swift
                        Skylighting.Syntax.Tcl

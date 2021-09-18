@@ -196,6 +196,7 @@ executable skylighting-extract
                        filepath,
                        text,
                        binary,
+                       containers,
                        directory
   if flag(executable)
     buildable:         True

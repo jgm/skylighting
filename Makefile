@@ -34,7 +34,7 @@ bootstrap: skylighting/src/Skylighting/Syntax.hs
 skylighting/src/Skylighting/Syntax.hs: $(XMLS)
 	stack install --system-ghc --flag "skylighting-core:executable" skylighting-core
 	-rm -rf skylighting/src/Skylighting/Syntax skylighting/src/Skylighting/Syntax.hs
-	cd skylighting && skylighting-extract ../skylighting-core/xml/*.xml
+	cd skylighting && skylighting-extract ../skylighting-core/xml
 	stack install --system-ghc --flag "skylighting:executable" --test --test-arguments \
 	    '--hide-successes $(TESTARGS)'
 

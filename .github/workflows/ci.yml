@@ -46,7 +46,7 @@ jobs:
           # fail if warnings in local build
           ! grep -q ": *[Ww]arning:" build.log || exit 1
           cd skylighting
-          cabal v2-run skylighting-extract -fexecutable --disable-optimization -- ../skylighting-core/xml/*.xml
+          cabal v2-run skylighting-extract -fexecutable --disable-optimization -- ../skylighting-core/xml
     - name: Build and test
       run: |
           export PATH=/opt/cabal/${{ matrix.versions.cabal }}/bin:/opt/ghc/${{ matrix.versions.ghc }}/bin:$PATH
@@ -72,7 +72,7 @@ jobs:
           $env:Path += ";$HOME\AppData\Roaming\local\bin"
           stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
-          skylighting-extract (get-item ..\skylighting-core\xml\*.xml)
+          skylighting-extract (get-item ..\skylighting-core\xml)
     - name: Build and test
       shell: cmd
       run: |
@@ -95,7 +95,7 @@ jobs:
       run: |
           ./stack install --fast --flag skylighting-core:executable skylighting-core
           cd skylighting
-          ../stack exec skylighting-extract -- ../skylighting-core/xml/*.xml
+          ../stack exec skylighting-extract -- ../skylighting-core/xml
     - name: Build and test
       run: |
           ./stack build --test --fast --flag skylighting:executable --dependencies-only
