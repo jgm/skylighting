@@ -105,7 +105,8 @@ data Matcher =
   | StringDetect !Text
   | WordDetect !Text
   | RegExpr !RE
-  | Keyword KeywordAttr !(WordSet Text)
+  | Keyword !KeywordAttr (Either Text (WordSet Text))
+      -- Either Left list name (unresolved) or Right wordset (resolved)
   | Int
   | Float
   | HlCOct

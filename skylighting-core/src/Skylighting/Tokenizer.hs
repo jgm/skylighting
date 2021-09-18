@@ -129,17 +129,46 @@ instance MonadError String TokenizerM where
                                       (_, Error e) -> let TM y = f e in y c s
                                       z            -> z)
 
+-- | Resolve Keyword matchers that refer to lists; following up
+-- include directives in the syntax map and producing WordSets.
+resolveKeywords :: SyntaxMap -> Syntax -> Syntax
+resolveKeywords sm = goSyntax
+ where
+   goSyntax syntax = syntax{ sContexts = Map.map (goContext (sLists syntax))
+                                                 (sContexts syntax) }
+   goContext lists context = context{ cRules = map (goRule lists)
+                                                 (cRules context) }
+   goRule lists rule =
+     case rMatcher rule of
+        Keyword kwattr (Left listname) ->
+          case Map.lookup listname lists of
+            Nothing -> rule
+            Just lst -> rule{ rMatcher =
+             Keyword kwattr (Right (makeWordSet (keywordCaseSensitive kwattr)
+                                      (foldr goItem [] lst))) }
+        _ -> rule
+
+   goItem (Item t) ts = t:ts
+   goItem (IncludeList (syntaxname,listname)) ts =
+     case Map.lookup syntaxname sm >>= Map.lookup listname . sLists of
+       Nothing -> ts
+       Just lst -> foldr goItem ts lst
+
 -- | Tokenize some text using 'Syntax'.
 tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]
 tokenize config syntax inp =
   eitherStack >>= \stack ->
-    case runTokenizerM action config (startingState stack) of
+    case runTokenizerM action
+            config{ syntaxMap = Map.map (resolveKeywords (syntaxMap config))
+                                          (syntaxMap config) }
+            (startingState stack) of
        (_, Success ls) -> Right ls
        (_, Error e)    -> Left e
        (_, Failure)    -> Left "Could not tokenize code"
   where
     action = mapM tokenizeLine (zip (BS.lines (encodeUtf8 inp)) [1..])
-    eitherStack = case lookupContext (sStartingContext syntax) syntax of
+    eitherStack = case lookupContext (sStartingContext syntax)
+                         (resolveKeywords (syntaxMap config) syntax) of
                     Just c  -> Right $ ContextStack (c :| [])
                     Nothing -> Left "No starting context specified"
     startingState stack =
@@ -290,7 +319,10 @@ tryRule rule inp = do
                 HlCStringChar -> withAttr attr $ parseCStringChar inp
                 HlCChar -> withAttr attr $ parseCChar inp
                 Float -> withAttr attr $ parseFloat inp
-                Keyword kwattr kws -> withAttr attr $ keyword kwattr kws inp
+                Keyword _kwattr (Left listname) ->
+                  throwError $ "Keyword with unresolved list " <> show listname
+                Keyword kwattr (Right kws) ->
+                  withAttr attr $ keyword kwattr kws inp
                 StringDetect s -> withAttr attr $
                                     stringDetect (rDynamic rule) (rCaseSensitive rule)
                                                  s inp
