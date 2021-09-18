@@ -11,7 +11,7 @@
 <language
     name="C++"
     section="Sources"
-    version="12"
+    version="13"
     kateversion="5.0"
     indenter="cstyle"
     style="C++"
@@ -68,6 +68,7 @@
         http://doc.qt.io/qt-5/qbytearray.html#macros
         http://doc.qt.io/qt-5/qstring.html#macros
         http://doc.qt.io/qt-5/qurl.html#macros
+        https://doc.qt.io/qt-5/qflags.html#macros
       -->
     <item>Q_DECLARE_ASSOCIATIVE_CONTAINER_METATYPE</item>
     <item>Q_DECLARE_METATYPE</item>
@@ -80,6 +81,8 @@
     <item>QT_RESTRICTED_CAST_FROM_ASCII</item>
     <item>QT_NO_URL_CAST_FROM_STRING</item>
     <item>QT_USE_QSTRINGBUILDER</item>
+    <item>Q_DECLARE_FLAGS</item>
+    <item>Q_DECLARE_OPERATORS_FOR_FLAGS</item>
     <!-- QtTest macros: http://doc.qt.io/qt-5/qtest.html#macros -->
     <item>QBENCHMARK</item>
     <item>QBENCHMARK_ONCE</item>

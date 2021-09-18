@@ -24,7 +24,7 @@
 <language
     name="ISO C++"
     section="Sources"
-    version="24"
+    version="25"
     kateversion="5.0"
     indenter="cstyle"
     style="C++"
@@ -354,11 +354,11 @@
         <Detect2Chars attribute="String" context="String16" char="u" char1="&quot;" />
         <Detect2Chars attribute="String" context="String16" char="L" char1="&quot;" />
         <StringDetect attribute="String" context="String8" String="u8&quot;" />
-        <Detect2Chars attribute="String" context="RawString" char="R" char1="&quot;" />
-        <StringDetect attribute="String" context="RawString" String="uR&quot;" />
-        <StringDetect attribute="String" context="RawString" String="UR&quot;" />
-        <StringDetect attribute="String" context="RawString" String="LR&quot;" />
-        <StringDetect attribute="String" context="RawString" String="u8R&quot;" />
+        <Detect2Chars attribute="Raw String Delimiter" context="RawString" char="R" char1="&quot;" />
+        <StringDetect attribute="Raw String Delimiter" context="RawString" String="uR&quot;" />
+        <StringDetect attribute="Raw String Delimiter" context="RawString" String="UR&quot;" />
+        <StringDetect attribute="Raw String Delimiter" context="RawString" String="LR&quot;" />
+        <StringDetect attribute="Raw String Delimiter" context="RawString" String="u8R&quot;" />
         <DetectChar attribute="Char" context="Char8 Literal" char="'" />
         <Detect2Chars attribute="Char" context="Char16 Literal" char="L" char1="'" />
         <Detect2Chars attribute="Char" context="Char16 Literal" char="u" char1="'" />
@@ -538,14 +538,14 @@
       </context>
 
       <context name="RawString" attribute="String" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop!LineError">
-        <RegExpr attribute="String" context="#pop!InRawString" String="([^\(]{0,16})\(" />
+        <RegExpr attribute="Raw String Delimiter" context="#pop!InRawString" String="([^\(]{0,16})\(" beginRegion="Raw String" />
       </context>
 
-      <context name="InRawString" attribute="String" lineEndContext="#stay" dynamic="true">
+      <context name="InRawString" attribute="Raw String" lineEndContext="#stay" dynamic="true">
         <!-- fast way, can be replaced by a `UntilChars` rule if it exists -->
-        <RegExpr attribute="String" context="#stay" String="[^%)]+" />
+        <RegExpr attribute="Raw String" context="#stay" String="[^%)]+" />
         <RegExpr attribute="String Char" context="#stay" String="&printf_like;|&format_like;" />
-        <StringDetect attribute="String" context="#pop" String=")%1&quot;" dynamic="true"/>
+        <StringDetect attribute="Raw String Delimiter" context="#pop" String=")%1&quot;" dynamic="true" endRegion="Raw String" />
       </context>
 
       <context name="Region Marker" attribute="Region Marker" lineEndContext="#pop" />
@@ -792,6 +792,8 @@
       <itemData name="Char"               defStyleNum="dsChar"      spellChecking="false" />
       <itemData name="String"             defStyleNum="dsString"    spellChecking="true"  />
       <itemData name="String Char"        defStyleNum="dsSpecialChar" spellChecking="false" />
+      <itemData name="Raw String"         defStyleNum="dsVerbatimString" spellChecking="true"  />
+      <itemData name="Raw String Delimiter" defStyleNum="dsString"  spellChecking="false"  />
       <itemData name="Comment"            defStyleNum="dsComment"   spellChecking="true"  />
       <itemData name="Symbol"             defStyleNum="dsOperator"  spellChecking="false" />
       <itemData name="Separator Symbol"   defStyleNum="dsOperator"  spellChecking="false" />
