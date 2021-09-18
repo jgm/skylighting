@@ -15,6 +15,7 @@ module Skylighting.Types (
               , WordSet(..)
               , makeWordSet
               , inWordSet
+              , ListItem(..)
               , Matcher(..)
               , Rule(..)
               , Context(..)
@@ -143,12 +144,20 @@ data Rule = Rule{
 
 instance Binary Rule
 
+-- | A list item is either just a textual value or an included list.
+-- IncludeList (x,y) includes list y from syntax with full name x.
+data ListItem = Item !Text | IncludeList !(Text, Text)
+  deriving (Show, Eq, Ord, Read, Data, Typeable, Generic)
+
+instance Binary ListItem
+
 -- | A syntax corresponds to a complete Kate syntax description.
 -- The 'sShortname' field is derived from the filename.
 data Syntax = Syntax{
     sName            :: !Text
   , sFilename        :: !String
   , sShortname       :: !Text
+  , sLists           :: !(Map.Map Text [ListItem])
   , sContexts        :: !(Map.Map Text Context)
   , sAuthor          :: !Text
   , sVersion         :: !Text

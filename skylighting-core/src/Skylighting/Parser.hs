@@ -1,4 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE TupleSections #-}
 module Skylighting.Parser ( parseSyntaxDefinition
                           , parseSyntaxDefinitionFromText
                           , addSyntaxDefinition
@@ -138,6 +140,7 @@ documentToSyntax fp Document{ documentRoot = rootEl } = do
            , sExtensions = words $ map (\c -> if c == ';' then ' ' else c)
                                  $ T.unpack
                                  $ getAttrValue "extensions" rootEl
+           , sLists      = lists
            , sContexts   = M.fromList
                   [(cName c, c) | c <- contexts]
            , sStartingContext = startingContext
@@ -159,16 +162,27 @@ getTextContent :: Element -> Text
 getTextContent el =
   mconcat [t | NodeContent t <- elementNodes el]
 
-getList :: Monad m => Element -> ExceptT String m (Text, [Text])
+getList :: Monad m => Element -> ExceptT String m (Text, [ListItem])
 getList el = do
   case M.lookup "name" (elementAttributes el) of
     Nothing   -> throwError "No name attribute on list"
-    Just name ->
-      return (name, map (T.strip . getTextContent)
-                        (getElementsNamed "item" el))
+    Just name -> (name,) <$>
+                   mapM toListItem [el' | NodeElement el' <- elementNodes el]
+ where
+   toListItem el' = case elementName el' of
+                      "item"    -> return $ Item $ T.strip $ getTextContent el'
+                      "include" -> do
+                        let (syntaxname, listname) =
+                             case T.breakOn "##"
+                                   (T.strip (getTextContent el')) of
+                               (x ,y) | T.null y  -> ("", x)
+                                      | otherwise -> (T.drop 2 y, x)
+                        return $ IncludeList (syntaxname, listname)
+                      x -> throwError $ "Unknown element " ++ show x ++
+                                        " in list"
 
 getParser :: Monad m
-          => Bool -> Text -> ItemData -> M.Map Text [Text] -> KeywordAttr
+          => Bool -> Text -> ItemData -> M.Map Text [ListItem] -> KeywordAttr
           -> Text -> Element -> ExceptT String m Rule
 getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
   let name = nameLocalName . elementName $ el
@@ -210,7 +224,8 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
                     case M.lookup str lists of
                       Nothing -> throwError $ "List not found: " ++ T.unpack str
                       Just lst -> return $ Keyword kwattr
-                            (makeWordSet (keywordCaseSensitive kwattr) lst)
+                            (makeWordSet (keywordCaseSensitive kwattr)
+                              [t | Item t <- lst])
                  "Int" -> return $ Int
                  "Float" -> return $ Float
                  "HlCOct" -> return $ HlCOct
@@ -247,7 +262,7 @@ getContext :: Monad m
            => Bool
            -> Text
            -> ItemData
-           -> M.Map Text [Text]
+           -> M.Map Text [ListItem]
            -> KeywordAttr
            -> Element
            -> ExceptT String m Context
