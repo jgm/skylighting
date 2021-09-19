@@ -1,5 +1,43 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.12
+
+  * Properly handle include elements in keyword lists (#124).
+    A number of syntaxes (e.g. typescript, scala) include keyword
+    lists from other syntaxe,s and previously we weren't able to
+    handle this.
+
+    There are several pieces to this change.  We need to store lists
+    where other Syntaxes can look them up, so we add an `sLists`
+    field to `Syntax` [API change], and modify the parser to fill this.
+    We change lists so that their values are not just a `Text`, but a
+    `ListItem` that can either be a textual value or an include directive,
+    specifying a `ListName` (syntax name and list name).
+
+    The `Keyword` constructor for `Matcher` now takes, instead of a
+    `WordSet`, Either a `ListName` or a `WordSet` (API change).
+
+    Skylighting.Parser now exports `resolveKeywords` (API change),
+    which modifies all `Keyword` matchers in a syntax so that Left
+    values with a `ListName` become Right values with resolved `WordSet`s.
+    The tokenizer applies this function automatically to the SyntaxMap
+    given in Config.  But it is more efficient to do this conversion
+    just once, rather than every time `tokenize` is called. So we have
+    `loadSyntaxesFromDir` call it on the `SyntaxMap`.  With this
+    optimization, there is not an appreciable performance cost to the
+    changes described above.
+
+  * Skylighting.Regex: Fix bug with regexes like `a{10}b` (#133).
+    This requires exactly 10 a's; previously we interpreted it as
+    "at least 10."
+
+  * skylighting-extract: take a directory as argument rather than files.
+    This allows us to use `loadSyntaxesFromDir`.
+
+  * Update xml syntax definitions from upstream:
+    julia, cmake, cpp, isocpp, markdown, python, toml.
+
+
 ## 0.11
 
   * Skylighting.Regex: Support regex subroutines (#118).  For example,
