@@ -4,6 +4,7 @@
 module Skylighting.Parser ( parseSyntaxDefinition
                           , parseSyntaxDefinitionFromText
                           , addSyntaxDefinition
+                          , resolveKeywords
                           , missingIncludes
                           ) where
 
@@ -95,6 +96,31 @@ parseSyntaxDefinitionFromText fp xml =
     case parseText def xml of
       Left e    -> Left $ E.displayException e
       Right doc -> runIdentity $ runExceptT $ documentToSyntax fp doc
+
+-- | Resolve Keyword matchers that refer to lists; following up
+-- include directives in the syntax map and producing WordSets.
+resolveKeywords :: SyntaxMap -> Syntax -> Syntax
+resolveKeywords sm = goSyntax
+ where
+   goSyntax syntax = syntax{ sContexts = M.map (goContext (sLists syntax))
+                                                 (sContexts syntax) }
+   goContext lists context = context{ cRules = map (goRule lists)
+                                                 (cRules context) }
+   goRule lists rule =
+     case rMatcher rule of
+        Keyword kwattr (Left listname) ->
+          case M.lookup listname lists of
+            Nothing -> rule
+            Just lst -> rule{ rMatcher =
+             Keyword kwattr (Right (makeWordSet (keywordCaseSensitive kwattr)
+                                      (foldr goItem [] lst))) }
+        _ -> rule
+
+   goItem (Item t) ts = t:ts
+   goItem (IncludeList (syntaxname,listname)) ts =
+     case M.lookup syntaxname sm >>= M.lookup listname . sLists of
+       Nothing -> ts
+       Just lst -> foldr goItem ts lst
 
 -- | Parses an XML 'Document' as a 'Syntax' description.
 documentToSyntax :: Monad m

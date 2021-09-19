@@ -31,6 +31,7 @@ import Data.Text.Encoding (decodeUtf8', encodeUtf8)
 import Debug.Trace
 import Skylighting.Regex
 import Skylighting.Types
+import Skylighting.Parser (resolveKeywords)
 import Data.List.NonEmpty (NonEmpty((:|)), (<|), toList)
 #if !MIN_VERSION_base(4,11,0)
 import Data.Semigroup
@@ -128,31 +129,6 @@ instance MonadError String TokenizerM where
   catchError (TM x) f = TM (\c s -> case x c s of
                                       (_, Error e) -> let TM y = f e in y c s
                                       z            -> z)
-
--- | Resolve Keyword matchers that refer to lists; following up
--- include directives in the syntax map and producing WordSets.
-resolveKeywords :: SyntaxMap -> Syntax -> Syntax
-resolveKeywords sm = goSyntax
- where
-   goSyntax syntax = syntax{ sContexts = Map.map (goContext (sLists syntax))
-                                                 (sContexts syntax) }
-   goContext lists context = context{ cRules = map (goRule lists)
-                                                 (cRules context) }
-   goRule lists rule =
-     case rMatcher rule of
-        Keyword kwattr (Left listname) ->
-          case Map.lookup listname lists of
-            Nothing -> rule
-            Just lst -> rule{ rMatcher =
-             Keyword kwattr (Right (makeWordSet (keywordCaseSensitive kwattr)
-                                      (foldr goItem [] lst))) }
-        _ -> rule
-
-   goItem (Item t) ts = t:ts
-   goItem (IncludeList (syntaxname,listname)) ts =
-     case Map.lookup syntaxname sm >>= Map.lookup listname . sLists of
-       Nothing -> ts
-       Just lst -> foldr goItem ts lst
 
 -- | Tokenize some text using 'Syntax'.
 tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]

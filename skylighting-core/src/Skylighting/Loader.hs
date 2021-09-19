@@ -12,7 +12,9 @@ import Control.Monad.IO.Class (liftIO)
 import System.Directory (listDirectory, doesFileExist)
 import System.FilePath ((</>), takeExtension)
 import Skylighting.Types (SyntaxMap, Syntax)
-import Skylighting.Parser (addSyntaxDefinition, parseSyntaxDefinition)
+import Skylighting.Parser (addSyntaxDefinition, parseSyntaxDefinition,
+                           resolveKeywords)
+import qualified Data.Map as M
 #if !MIN_VERSION_base(4,11,0)
 import Data.Semigroup
 #endif
@@ -44,7 +46,8 @@ loadSyntaxesFromDir path = runExceptT $ do
             s <- ExceptT $ loadSyntaxFromFile file
             return $ addSyntaxDefinition s sMap
 
-    foldM loadSyntax mempty files
+    sm <- foldM loadSyntax mempty files
+    return $ M.map (resolveKeywords sm) sm
 
 syntaxFiles :: FilePath -> IO [FilePath]
 syntaxFiles dir = do
