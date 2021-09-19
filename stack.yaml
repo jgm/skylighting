@@ -4,4 +4,4 @@ packages:
 extra-deps: []
 resolver: lts-18.10
 ghc-options:
-    "$locals": -optP-Wno-nonportable-include-path
+    "$locals": -Wall -optP-Wno-nonportable-include-path

@@ -1,11 +1,10 @@
 {-# LANGUAGE Arrows #-}
 
 import Data.Binary (encode)
-import Data.Either (partitionEithers)
 import Data.List (intercalate, isInfixOf, sortOn)
 import qualified Data.Text as Text
 import Skylighting.Loader (loadSyntaxesFromDir)
-import Skylighting.Parser (missingIncludes, parseSyntaxDefinition)
+import Skylighting.Parser (missingIncludes)
 import Skylighting.Types
 import System.Directory
 import System.Environment (getArgs)
