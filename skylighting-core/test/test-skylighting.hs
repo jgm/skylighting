@@ -288,6 +288,7 @@ regexTests =
   , ("abc|ab$", "ab", Just ("ab", []))
   , ("abc|ab$", "abcd", Just ("abc", []))
   , ("abc|ab$", "abd", Nothing)
+  , ("[\\x50--\\x51]*", "PQR", Just ("PQ", []))
   , ("(?:ab)*|a.*", "abababa", Just ("abababa", []))
   , ("a[b-e]*", "abcdefg", Just ("abcde", []))
   , ("a[b-e\\n-]*", "abcde\nb-bcfg", Just ("abcde\nb-bc", []))
