@@ -208,6 +208,12 @@ pEscaped c =
       case readMay ("'\\x" ++ U.toString ds ++ "'") of
         Just x  -> return x
         Nothing -> fail "invalid hex character escape"
+    'x' -> do -- \xhh matches hex hh, \x{h+} matches hex h+
+      ds <- (satisfy (== 123) *> A.takeWhile (/= 125) <* satisfy (== 125))
+             <|> A.take 2
+      case readMay ("'\\x" ++ U.toString ds ++ "'") of
+        Just x  -> return x
+        Nothing -> fail "invalid hex character escape"
     _ | c >= '1' && c <= '7' -> do -- \ooo octal undocument form but works
          ds <- A.take 2
          case readMay ("'\\o" ++ c : U.toString ds ++ "'") of
