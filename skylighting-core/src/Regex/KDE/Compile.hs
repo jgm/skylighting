@@ -214,11 +214,7 @@ pEscaped c =
       case readMay ("'\\x" ++ U.toString ds ++ "'") of
         Just x  -> return x
         Nothing -> fail "invalid hex character escape"
-    _ | c >= '1' && c <= '7' -> do -- \ooo octal undocument form but works
-         ds <- A.take 2
-         case readMay ("'\\o" ++ c : U.toString ds ++ "'") of
-           Just x  -> return x
-           Nothing -> fail "invalid octal character escape"
+    _ -- | isAlphaNum c -> fail $ "invalid escape \\" ++ [c]
       | otherwise -> return c
 
 pRegexCharClass :: Parser Regex
