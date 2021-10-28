@@ -90,7 +90,7 @@
 <!ENTITY checkbox "\[[ x]\](?=\s)">
 ]>
 
-<language name="Markdown" version="19" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
+<language name="Markdown" version="20" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
   <highlighting>
     <contexts>
       <!-- Start of the Markdown document: find metadata or code block -->
@@ -320,6 +320,7 @@
         <RegExpr attribute="Fenced Code" context="#pop!javascript-code" String="&fcode;\s*(?:javascript|m?js|es6|kwinscript|julius)&end;" insensitive="true"/>
         <RegExpr attribute="Fenced Code" context="#pop!jsx-code" String="&fcode;\s*(?:jsx|tsx|(?:java|type)script\-react)&end;" insensitive="true"/> <!-- Included in the HTML definition. Also apply for TSX. -->
         <RegExpr attribute="Fenced Code" context="#pop!json-code" String="&fcode;\s*(?:json5?|gltf)&end;" insensitive="true"/>
+        <RegExpr attribute="Fenced Code" context="#pop!yaml-code" String="&fcode;\s*(?:ya?ml)&end;" insensitive="true"/>
         <RegExpr attribute="Fenced Code" context="#pop!matlab-code" String="&fcode;\s*matlab&end;" insensitive="true"/>
         <RegExpr attribute="Fenced Code" context="#pop!markdown-code" String="&fcode;\s*(?:markdown|m?md)&end;" insensitive="true"/>
         <RegExpr attribute="Fenced Code" context="#pop!mustache-code" String="&fcode;\s*(?:handlebars|hbs|mustache|mst|ractive|hogan|hulk)&end;" insensitive="true"/> <!-- Included in the HTML definition -->
@@ -402,6 +403,10 @@
       <context attribute="Normal Text" lineEndContext="#stay" name="json-code">
         <IncludeRules context="code"/>
         <IncludeRules context="##JSON" includeAttrib="true"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="yaml-code">
+        <IncludeRules context="code"/>
+        <IncludeRules context="##YAML" includeAttrib="true"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" lineEmptyContext="find-code-block" name="markdown-code">
         <IncludeRules context="code"/>
