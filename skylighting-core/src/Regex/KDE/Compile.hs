@@ -162,6 +162,7 @@ pRegexEscapedChar = do
   c <- anyChar
   (case c of
     'b' -> return AssertWordBoundary
+    'B' -> return $ AssertNegative Forward AssertWordBoundary
     '{' -> do -- captured pattern: \1 \2 \{12}
               ds <- A.takeWhile1 (\x -> x >= 48 && x <= 57)
               _ <- char '}'
@@ -214,8 +215,8 @@ pEscaped c =
       case readMay ("'\\x" ++ U.toString ds ++ "'") of
         Just x  -> return x
         Nothing -> fail "invalid hex character escape"
-    _ -- | isAlphaNum c -> fail $ "invalid escape \\" ++ [c]
-      | otherwise -> return c
+    _ | {- isPunctuation c || isSymbol c -} True -> return c
+      | otherwise -> fail $ "invalid escape \\" ++ [c]
 
 pRegexCharClass :: Parser Regex
 pRegexCharClass = do
