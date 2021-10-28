@@ -1,5 +1,14 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.12.0.1
+
+  * Update syntax definitions:  bash, cmake, dockerfile,
+    gnuassembler, markdown, spdx-comments.
+
+  * Support hex escapes using `\x` in regex char classes (#135).
+    These occur in a number of syntax definitions and weren't
+    correctly interpreted before. Thanks to @Agnishom.
+
 ## 0.12
 
   * Properly handle include elements in keyword lists (#124).
