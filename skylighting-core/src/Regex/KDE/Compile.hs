@@ -215,7 +215,7 @@ pEscaped c =
       case readMay ("'\\x" ++ U.toString ds ++ "'") of
         Just x  -> return x
         Nothing -> fail "invalid hex character escape"
-    _ | {- isPunctuation c || isSymbol c -} True -> return c
+    _ | isPunctuation c || isSymbol c || isSpace c -> return c
       | otherwise -> fail $ "invalid escape \\" ++ [c]
 
 pRegexCharClass :: Parser Regex
@@ -256,8 +256,44 @@ pRegexCharClass = do
         c <- getC
         (\d -> (\x -> x >= c && x <= d)) <$> (char '-' *> getC) <|>
           return (== c)
+  let getCClass = do -- character class \p{Lo}
+        _ <- A.string "\\p"
+        ds <- satisfy (== 123) *> A.takeWhile (/= 125) <* satisfy (== 125)
+        return $
+          (case ds of
+            "Lu" -> (== UppercaseLetter)
+            "Ll" -> (== LowercaseLetter)
+            "Lt" -> (== TitlecaseLetter)
+            "Lm" -> (== ModifierLetter)
+            "Lo" -> (== OtherLetter)
+            "Mn" -> (== NonSpacingMark)
+            "Mc" -> (== SpacingCombiningMark)
+            "Me" -> (== EnclosingMark)
+            "Nd" -> (== DecimalNumber)
+            "Nl" -> (== LetterNumber)
+            "No" -> (== OtherNumber)
+            "Pc" -> (== ConnectorPunctuation)
+            "Pd" -> (== DashPunctuation)
+            "Ps" -> (== OpenPunctuation)
+            "Pe" -> (== ClosePunctuation)
+            "Pi" -> (== InitialQuote)
+            "Pf" -> (== FinalQuote)
+            "Po" -> (== OtherPunctuation)
+            "Sm" -> (== MathSymbol)
+            "Sc" -> (== CurrencySymbol)
+            "Sk" -> (== ModifierSymbol)
+            "So" -> (== OtherSymbol)
+            "Zs" -> (== Space)
+            "Zl" -> (== LineSeparator)
+            "Zp" -> (== ParagraphSeparator)
+            "Cc" -> (== Control)
+            "Cf" -> (== Format)
+            "Cs" -> (== Surrogate)
+            "Co" -> (== PrivateUse)
+            "Cn" -> (== NotAssigned)
+            _    -> (const False)) . generalCategory
   brack <- option [] $ [(==']')] <$ char ']'
-  fs <- many (getEscapedClass <|> getPosixClass <|> getCRange)
+  fs <- many (getEscapedClass <|> getPosixClass <|> getCRange <|> getCClass)
   _ <- satisfy (== 93) -- ]
   let f c = any ($ c) $ brack ++ fs
   return $! MatchChar (if negated then (not . f) else f)

@@ -296,6 +296,7 @@ regexTests =
   , ("^\\s+\\S+\\s+$", "   abc  ", Just ("   abc  ", []))
   , ("\\$", "$$", Just ("$", []))
   , ("[\\z12bb]", "\x12bb", Just ("\x12bb", []))
+  , ("[\\p{Lu}\\p{Ll}]*", "Σφa1B", Just ("Σφa", []))
   , ("\\bhello\\b|hell", "hello there", Just ("hello", []))
   , ("\\bhello\\b|hell", "hellothere", Just ("hell", []))
   , ("[[:space:]]{2,4}.", "  abc", Just ("  a", []))
