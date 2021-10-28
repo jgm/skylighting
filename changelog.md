@@ -1,6 +1,6 @@
 # Revision history for skylighting and skylighting-core
 
-## 0.12.0.1
+## 0.12.1
 
   * Update syntax definitions:  bash, cmake, dockerfile,
     gnuassembler, markdown, spdx-comments.
@@ -8,6 +8,10 @@
   * Support hex escapes using `\x` in regex char classes (#135).
     These occur in a number of syntax definitions and weren't
     correctly interpreted before. Thanks to @Agnishom.
+
+  * Support regex property syntax, e.g. `\p{Lu}`.
+
+  * Regex: support `\B` (non-word-boundary).
 
 ## 0.12
 

@@ -1,5 +1,5 @@
 name:                skylighting
-version:             0.12.0.1
+version:             0.12.1
 synopsis:            syntax highlighting library
 description:         Skylighting is a syntax highlighting library with
                      support for over one hundred languages.  It derives
@@ -191,7 +191,7 @@ library
                        Skylighting.Syntax.Zsh
   other-extensions:    CPP
   build-depends:       base >= 4.8 && < 5.0,
-                       skylighting-core == 0.12.0.1,
+                       skylighting-core == 0.12.1,
                        containers,
                        binary
   hs-source-dirs:      src
