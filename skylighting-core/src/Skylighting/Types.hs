@@ -300,7 +300,7 @@ defStyle = TokenStyle {
   , tokenUnderline  = False
   }
 
--- | A color (red/green/blue).
+-- | A color (red, green, blue).
 data Color = RGB Word8 Word8 Word8
   deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
 
@@ -627,7 +627,7 @@ ansi256ColorList = [ (Xterm256ColorCode 232, RGB 8 8 8) -- grayscale colors
 instance ToColor Xterm256ColorCode where
     toColor = flip lookup ansi256ColorList -- cannot actually fail
 
--- | JSON @"#1aff2b" corresponds to the color @RGB 0x1a 0xff 0x2b@.
+-- | JSON @"#1aff2b"@ corresponds to the color @RGB 0x1a 0xff 0x2b@.
 instance FromJSON Color where
   parseJSON (String t) = maybe mempty return $ toColor (Text.unpack t)
   parseJSON _          = mempty
