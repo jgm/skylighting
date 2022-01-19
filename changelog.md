@@ -1,5 +1,17 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.12.2
+
+  * Parser: handle context shift to external context, e.g.,
+    `BashOneLine##Bash`.  Closes #139 (issue with Dockerfile).
+
+  * Update xml files from upstream:
+    bash, cmake, markdown, objectivecpp, php, sql-postgresql, sql, stan, zshr
+
+  * Fix formatting in `Color` doc-comment (Janek Spaderna).
+
+  * Add stan.xml (Brian Ward).
+
 ## 0.12.1
 
   * Update syntax definitions:  bash, cmake, dockerfile,
