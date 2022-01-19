@@ -199,13 +199,16 @@ getList el = do
                       "item"    -> return $ Item $ T.strip $ getTextContent el'
                       "include" -> do
                         let (syntaxname, listname) =
-                             case T.breakOn "##"
-                                   (T.strip (getTextContent el')) of
-                               (x ,y) | T.null y  -> ("", x)
-                                      | otherwise -> (T.drop 2 y, x)
+                                splitContext (getTextContent el')
                         return $ IncludeList (syntaxname, listname)
                       x -> throwError $ "Unknown element " ++ show x ++
                                         " in list"
+
+splitContext :: Text -> (Text, Text)
+splitContext t =
+  case T.breakOn "##" (T.strip t) of
+    (x, y) | T.null y  -> ("", x)
+           | otherwise -> (T.drop 2 y, x)
 
 getParser :: Monad m
           => Bool -> Text -> ItemData -> M.Map Text [ListItem] -> KeywordAttr
@@ -344,7 +347,13 @@ parseContextSwitch syntaxname t =
      else
        case T.stripPrefix "#pop" t of
          Just rest -> Pop : parseContextSwitch syntaxname rest
-         Nothing   -> [Push (syntaxname, T.dropWhile (=='!') t)]
+         Nothing   ->
+           let (othersyntax, contextname) =
+                  splitContext (T.dropWhile (=='!') t)
+               syntaxname' = if T.null othersyntax
+                                then syntaxname
+                                else othersyntax
+            in [Push (syntaxname', contextname)]
 
 type ItemData = M.Map Text TokenType
 
