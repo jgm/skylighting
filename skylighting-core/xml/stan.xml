@@ -2,10 +2,10 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 <language name="Stan"
           section="Scientific"
-          version="4"
+          version="5"
           kateversion="5.0"
           indenter="cstyle"
-          extensions="*.stan;*.stanfuncs"
+          extensions="*.stan;*.stanfunctions"
           license="MIT">
   <highlighting>
     <list name="controlflow">
@@ -17,6 +17,7 @@
       <item>in</item>
       <item>return</item>
       <item>while</item>
+      <item>profile</item>
     </list>
     <list name="keywords">
       <item>reject</item>
@@ -27,15 +28,21 @@
       <item>algebra_solver</item>
     </list>
     <list name="types">
+      <item>lower</item>
+      <item>upper</item>
+      <item>offset</item>
+      <item>multiplier</item>
       <item>int</item>
       <item>real</item>
       <item>vector</item>
+      <item>complex</item>
       <item>ordered</item>
       <item>positive_ordered</item>
       <item>simplex</item>
       <item>unit_vector</item>
       <item>row_vector</item>
       <item>matrix</item>
+      <item>array</item>
       <item>cholesky_factor_corr</item>
       <item>cholesky_factor_cov</item>
       <item>corr_matrix</item>
@@ -57,6 +64,7 @@
         <keyword attribute="Keyword" context="#stay" String="keywords" />
         <keyword attribute="Data Type" context="#stay" String="types" />
         <RegExpr attribute="Identifier" context="#stay" String="[A-Za-z][A-Za-z0-9_]*" />
+        <RegExpr attribute="Complex" context="#stay" String="(\d+(\.\d+)?|\.\d+)([eE][+-]?\d+)?i" />
         <Float attribute="Real" />
         <Int attribute="Int" />
         <DetectChar attribute="Punctuation" context="#stay" char="{" beginRegion="Brace1" />
@@ -117,6 +125,7 @@
       <itemData name="Data Type"    defStyleNum="dsDataType" spellChecking="false"/>
       <itemData name="Int"          defStyleNum="dsDecVal" spellChecking="false"/>
       <itemData name="Real"         defStyleNum="dsFloat" spellChecking="false"/>
+      <itemData name="Complex"      defStyleNum="dsFloat" spellChecking="false"/>
       <itemData name="String"       defStyleNum="dsString"/>
       <itemData name="Comment"      defStyleNum="dsComment"/>
       <itemData name="Assignment"   defStyleNum="dsNormal" spellChecking="false"/>

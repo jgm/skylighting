@@ -57,7 +57,7 @@
         <!ENTITY int "(?:[0-9]++[_0-9]*+)">
         <!ENTITY exp "(?:[eE][-+]?&int;)">
 ]>
-<language name="Zsh" version="22" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
+<language name="Zsh" version="23" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
 
   <highlighting>
     <list name="keywords">
@@ -1170,8 +1170,14 @@
         <DetectChar attribute="String DoubleQ" context="StringDQ" char="&quot;"/>
         <AnyChar attribute="Parameter Expansion Operator" context="#stay" String="#+^=~"/>
         <DetectIdentifier attribute="Variable" context="#pop!CheckVarAlt"/>
-        <AnyChar attribute="Variable" context="#pop!CheckVarAlt" String="*@?$!-"/>
+        <AnyChar attribute="Variable" context="#pop!CheckVarAlt" String="*@?$-"/>
         <Int attribute="Variable" context="#pop!CheckVarAlt" additionalDeliminator="#~=^+{}[]:-/$"/>
+        <Detect2Chars context="#pop!VarSubShell" char="!" char1="}" lookAhead="1"/>
+        <DetectChar attribute="Parameter Expansion Operator" context="#pop!AlternateValue" char="!"/>
+      </context>
+
+      <context attribute="Parameter Expansion" lineEndContext="#stay" name="VarSubShell">
+        <DetectChar attribute="Variable" context="#pop!CheckVarAlt" char="!"/>
       </context>
 
       <context attribute="Parameter Expansion" lineEndContext="#stay" name="VarFlag_s">

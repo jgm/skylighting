@@ -173,6 +173,7 @@ library
                        Skylighting.Syntax.Sql
                        Skylighting.Syntax.SqlMysql
                        Skylighting.Syntax.SqlPostgresql
+                       Skylighting.Syntax.Stan
                        Skylighting.Syntax.Stata
                        Skylighting.Syntax.Swift
                        Skylighting.Syntax.Tcl

@@ -77,9 +77,10 @@ Changes:
   <!ENTITY float "\b&LNUM;(\.(&LNUM;)?(&EXPONENT;)?|&EXPONENT;)|\.&LNUM;(&EXPONENT;)?">
 ]>
 
-<language name="PHP/PHP" indenter="cstyle" version="21" kateversion="5.53" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
+<language name="PHP/PHP" indenter="cstyle" version="22" kateversion="5.53" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
   <highlighting>
     <!-- https://php.watch/versions -->
+    <!-- Based on 8.1 -->
 
     <!-- https://secure.php.net/manual/en/reserved.keywords.php -->
     <list name="control structures">
@@ -197,6 +198,12 @@ Changes:
 
       <!-- PHP 7.2 -->
       <item>object</item>
+    </list>
+
+    <list name="properties">
+      <!-- PHP 8.1 -->
+      <item>readonly</item>
+      <item>never</item>
     </list>
 
     <!-- https://secure.php.net/manual/en/reserved.keywords.php -->
@@ -1927,6 +1934,7 @@ Changes:
       <item>IMG_TRIANGLE</item>
       <item>IMG_WBMP</item>
       <item>IMG_WEBP</item>
+      <item>IMG_WEBP_LOSSLESS</item>
       <item>IMG_WEIGHTED4</item>
       <item>IMG_XPM</item>
       <item>INF</item>
@@ -9243,6 +9251,9 @@ Changes:
       <item>sodium_crypto_sign_verify_detached</item>
       <item>sodium_crypto_stream</item>
       <item>sodium_crypto_stream_keygen</item>
+      <item>sodium_crypto_stream_xchacha20</item>
+      <item>sodium_crypto_stream_xchacha20_keygen</item>
+      <item>sodium_crypto_stream_xchacha20_xor</item>
       <item>sodium_crypto_stream_xor</item>
       <item>sodium_hex2bin</item>
       <item>sodium_increment</item>
@@ -10369,6 +10380,7 @@ Changes:
         <item>EvWatcher</item>
         <item>Exception</item>
         <item>FANNConnection</item>
+        <item>Fiber</item>
         <item>FilesystemIterator</item>
         <item>FilterIterator</item>
         <item>finfo</item>
@@ -10415,6 +10427,7 @@ Changes:
         <item>IntlChar</item>
         <item>IntlCodePointBreakIterator</item>
         <item>IntlDateFormatter</item>
+        <item>IntlDatePatternGenerator</item>
         <item>IntlException</item>
         <item>IntlGregorianCalendar</item>
         <item>IntlIterator</item>
@@ -10977,6 +10990,7 @@ Changes:
         <keyword attribute="Library Constant" context="#stay" String="constants"/>
         <keyword attribute="Operator" context="#stay" String="operators"/>
         <keyword attribute="Types" context="#stay" String="types"/>
+        <keyword attribute="Properties" context="#stay" String="properties"/>
         <keyword attribute="Error" context="#stay" String="deprecated"/>
         <RegExpr attribute="Constant" context="#stay" String="\b[A-Z_][A-Z_0-9]*\b"/>
 
@@ -11269,6 +11283,7 @@ Changes:
       <itemData name="Scope Resolution" defStyleNum="dsNormal" spellChecking="false" />
       <itemData name="Other" defStyleNum="dsOthers" spellChecking="false" />
       <itemData name="Types" defStyleNum="dsDataType" spellChecking="false" />
+      <itemData name="Properties" defStyleNum="dsDataType" spellChecking="false" />
       <itemData name="Cast" defStyleNum="dsDataType" spellChecking="false" />
       <itemData name="Error Control Operator" defStyleNum="dsPreprocessor" spellChecking="false" />
       <itemData name="Error" defStyleNum="dsError" spellChecking="false" />
