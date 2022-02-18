@@ -141,6 +141,7 @@ library
                        Skylighting.Syntax.Ocaml
                        Skylighting.Syntax.Octave
                        Skylighting.Syntax.Opencl
+                       Skylighting.Syntax.Orgmode
                        Skylighting.Syntax.Pascal
                        Skylighting.Syntax.Perl
                        Skylighting.Syntax.Php
@@ -163,9 +164,11 @@ library
                        Skylighting.Syntax.Roff
                        Skylighting.Syntax.Ruby
                        Skylighting.Syntax.Rust
+                       Skylighting.Syntax.Sass
                        Skylighting.Syntax.Scala
                        Skylighting.Syntax.Scheme
                        Skylighting.Syntax.Sci
+                       Skylighting.Syntax.Scss
                        Skylighting.Syntax.Sed
                        Skylighting.Syntax.Sgml
                        Skylighting.Syntax.Sml
@@ -176,6 +179,7 @@ library
                        Skylighting.Syntax.Stan
                        Skylighting.Syntax.Stata
                        Skylighting.Syntax.Swift
+                       Skylighting.Syntax.Systemverilog
                        Skylighting.Syntax.Tcl
                        Skylighting.Syntax.Tcsh
                        Skylighting.Syntax.Texinfo
