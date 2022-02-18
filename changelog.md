@@ -1,5 +1,9 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.12.3
+
+  * Add scss, sass, systemverilog, orgmode.
+
 ## 0.12.2
 
   * Parser: handle context shift to external context, e.g.,
