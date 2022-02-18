@@ -4,6 +4,9 @@
 
   * Add scss, sass, systemverilog, orgmode.
 
+  * Update xml definitions from upstream: bash, css, python, r, zsh.
+
+
 ## 0.12.2
 
   * Parser: handle context shift to external context, e.g.,

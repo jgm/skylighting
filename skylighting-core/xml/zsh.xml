@@ -57,7 +57,7 @@
         <!ENTITY int "(?:[0-9]++[_0-9]*+)">
         <!ENTITY exp "(?:[eE][-+]?&int;)">
 ]>
-<language name="Zsh" version="23" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
+<language name="Zsh" version="25" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
 
   <highlighting>
     <list name="keywords">
@@ -249,6 +249,8 @@
         <DetectChar context="MaybeGroupEnd" char="}" lookAhead="1"/>
 
         <LineContinue attribute="Escape" context="#stay"/>
+
+        <Detect2Chars attribute="Expression" context="#stay" char="!" char1=" "/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="MaybeGroupEnd">
         <RegExpr context="#pop!Command" String="&nogroupend;" lookAhead="1"/>
@@ -1515,10 +1517,10 @@
       </context>
 
       <context attribute="Normal Text" lineEndContext="#pop" name="TestMaybeUnary" fallthroughContext="#pop!ExprBracketValue">
-        <RegExpr attribute="Expression" context="#pop" String="-[abcdefghknoprstuvwxzLOGNS](?=[ &tab;])"/>
+        <RegExpr attribute="Expression" context="#pop" String="-[abcdefghknoprstuvwxzLOGNS](?=[ &tab;]|$)"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="TestMaybeBinary" fallthroughContext="#pop!ExprBracketValue">
-        <RegExpr attribute="Expression" context="#pop" String="(?:-(?:e[fq]|[nolg]t|[nlg]e)|==?|!=)(?=[ &tab;])"/>
+        <RegExpr attribute="Expression" context="#pop" String="(?:-(?:e[fq]|[nolg]t|[nlg]e)|==?|!=)(?=[ &tab;]|$)"/>
       </context>
 
 
@@ -1529,19 +1531,25 @@
       </context>
 
       <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketNot" fallthroughContext="#pop!ExprDblBracketParam1">
-        <DetectSpaces attribute="Normal Text" context="#pop!ExprDblBracketParam1"/>
         <DetectChar context="ExprDblBracketTestMaybeNot" char="!" lookAhead="1"/>
+        <DetectSpaces attribute="Normal Text" context="#stay"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="ExprDblBracketTestMaybeNot" fallthroughContext="#pop#pop!ExprDblBracketParam1">
         <RegExpr attribute="Expression" context="#pop" String="!(?=$|[ &tab;(])"/>
       </context>
 
-      <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketParam1" fallthroughContext="ExprDblBracketValue">
+      <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketParam1" fallthroughContext="#pop!ExprDblBracketParam1_2">
+        <DetectSpaces attribute="Normal Text" context="#stay"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketParam1_2" fallthroughContext="ExprDblBracketValue">
         <DetectSpaces attribute="Normal Text" context="#pop!ExprDblBracketParam2"/>
-        <DetectChar context="TestMaybeUnary" char="-" lookAhead="1"/>
+        <DetectChar context="TestMaybeUnary2" char="-" lookAhead="1"/>
         <AnyChar attribute="Expression" context="#pop!ExprDblBracketParam3Spe" String="&lt;>"/>
         <DetectChar context="ExprDblBracketSubValue" char="(" lookAhead="1"/>
         <IncludeRules context="FindExprDblBracketEnd"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="TestMaybeUnary2" fallthroughContext="#pop!ExprDblBracketValue">
+        <IncludeRules context="TestMaybeUnary"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="ExprDblBracketSubValue" fallthroughContext="#pop">
         <DetectChar attribute="Operator" context="ExprDblBracketNot" char="("/>
@@ -1561,7 +1569,10 @@
         <DetectChar context="#pop" char="&gt;" lookAhead="1"/>
       </context>
 
-      <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketParam2" fallthroughContext="ExprDblBracketValue">
+      <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketParam2" fallthroughContext="#pop!ExprDblBracketParam2_2">
+        <DetectSpaces attribute="Normal Text" context="#stay"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketParam2_2" fallthroughContext="ExprDblBracketValue">
         <DetectSpaces attribute="Normal Text" context="#pop!ExprDblBracketParam3"/>
         <AnyChar context="TestMaybeBinary2" String="-=!" lookAhead="1"/>
         <AnyChar attribute="Expression" context="#pop!ExprDblBracketParam3Spe" String="&lt;>"/>
@@ -1569,14 +1580,17 @@
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="TestMaybeBinary2" fallthroughContext="#pop!ExprDblBracketValue">
         <IncludeRules context="TestMaybeBinary"/>
-        <RegExpr attribute="Expression" context="#pop#pop!ExprDblBracketRegex" String="=~(?=[ &tab;(])"/>
+        <RegExpr attribute="Expression" context="#pop#pop!ExprDblBracketRegex" String="=~(?=[ &tab;(]|$)"/>
       </context>
 
       <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketParam3Spe" fallthroughContext="#pop!ExprDblBracketParam3">
         <DetectSpaces attribute="Normal Text" context="#pop!ExprDblBracketParam3"/>
       </context>
 
-      <context attribute="Normal Text" lineEndContext="ExprDblBracketFinal" name="ExprDblBracketParam3" fallthroughContext="ExprDblBracketValue">
+      <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketParam3" fallthroughContext="#pop!ExprDblBracketParam3_2">
+        <DetectSpaces attribute="Normal Text" context="#stay"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop!ExprDblBracketFinal" name="ExprDblBracketParam3_2" fallthroughContext="ExprDblBracketValue">
         <DetectSpaces attribute="Normal Text" context="#pop!ExprDblBracketFinal"/>
         <IncludeRules context="FindExprDblBracketEnd"/>
       </context>

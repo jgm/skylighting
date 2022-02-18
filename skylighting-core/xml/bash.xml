@@ -39,7 +39,7 @@
         <!ENTITY arithmetic_as_subshell "\(((?:[^`'&quot;()$]++|\$\{[^`'&quot;(){}$]+\}|\$(?=[^{`'&quot;()])|`[^`]*+`|\((?1)(?:[)]|(?=['&quot;])))++)(?:[)](?=$|[^)])|[&quot;'])">
 ]>
 
-<language name="Bash" version="34" kateversion="5.79" section="Scripts" extensions="*.sh;*.bash;*.ebuild;*.eclass;*.exlib;*.exheres-0;.bashrc;.bash_profile;.bash_login;.profile;PKGBUILD;APKBUILD" mimetype="application/x-shellscript" casesensitive="1" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL">
+<language name="Bash" version="36" kateversion="5.79" section="Scripts" extensions="*.sh;*.bash;*.ebuild;*.eclass;*.exlib;*.exheres-0;.bashrc;.bash_profile;.bash_login;.profile;PKGBUILD;APKBUILD" mimetype="application/x-shellscript" casesensitive="1" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL">
 
 <!-- (c) 2004 by Wilbert Berendsen (wilbert@kde.nl)
     Changes by Matthew Woehlke (mw_triad@users.sourceforge.net)
@@ -553,6 +553,8 @@
         <AnyChar attribute="Error" context="#stay" String=")}"/>
 
         <LineContinue attribute="Escape" context="#stay"/>
+
+        <Detect2Chars attribute="Expression" context="#stay" char="!" char1=" "/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="MaybeBracketExpression" fallthroughContext="#pop!Command">
         <!-- start expression in double brackets -->
@@ -786,8 +788,8 @@
       <!-- FindPathThenPopInAlternateValue consumes path in ${xx:here}-->
       <context attribute="Normal Text" lineEndContext="#pop" name="FindPathThenPopInAlternateValue">
         <IncludeRules context="FindExtGlobAndPopInAlternateValue"/>
-        <AnyChar attribute="Glob" context="PathThenPopInAlternateValue" String="?*"/>
-        <RegExpr attribute="Path" context="PathThenPopInAlternateValue" String="&pathpart_alt;"/>
+        <AnyChar attribute="Glob" context="#pop!PathThenPopInAlternateValue" String="?*"/>
+        <RegExpr attribute="Path" context="#pop!PathThenPopInAlternateValue" String="&pathpart_alt;"/>
       </context>
       <context attribute="Path" lineEndContext="#stay" name="FindExtGlobAndPopInAlternateValue">
         <Detect2Chars attribute="Glob" context="ExtGlobAndPopInAlternateValue" char="?" char1="("/>
@@ -1415,9 +1417,12 @@
 
       <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketParam1" fallthroughContext="ExprDblBracketValue">
         <DetectSpaces attribute="Normal Text" context="#pop!ExprDblBracketParam2"/>
-        <DetectChar context="TestMaybeUnary" char="-" lookAhead="1"/>
+        <DetectChar context="TestMaybeUnary2" char="-" lookAhead="1"/>
         <AnyChar attribute="Expression" context="#pop!ExprDblBracketParam3Spe" String="&lt;>"/>
         <IncludeRules context="FindExprDblBracketEnd"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="TestMaybeUnary2" fallthroughContext="#pop!ExprDblBracketValue">
+        <IncludeRules context="TestMaybeUnary"/>
       </context>
 
       <context attribute="Normal Text" lineEndContext="#pop" name="ExprDblBracketValue">
@@ -1465,7 +1470,7 @@
         <DetectSpaces attribute="Normal Text" context="#pop!ExprDblBracketParam3"/>
       </context>
 
-      <context attribute="Normal Text" lineEndContext="ExprDblBracketFinal" name="ExprDblBracketParam3" fallthroughContext="ExprDblBracketValue">
+      <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketParam3" fallthroughContext="ExprDblBracketValue">
         <DetectSpaces attribute="Normal Text" context="#pop!ExprDblBracketFinal"/>
         <IncludeRules context="FindExprDblBracketEnd"/>
         <AnyChar attribute="Error" context="#stay" String="&lt;>"/>
