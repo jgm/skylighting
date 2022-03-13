@@ -118,7 +118,6 @@ library
   other-extensions:    CPP
   build-depends:       base >= 4.8 && < 5.0,
                        mtl,
-                       transformers,
                        text,
                        binary,
                        bytestring,
@@ -181,7 +180,6 @@ benchmark benchmark-skylighting
                    filepath,
                    text,
                    containers,
-                   directory,
                    criterion >= 1.0 && < 1.6
   Ghc-Options:   -rtsopts -Wall -fno-warn-unused-do-bind
   if impl(ghc >= 8.4)
