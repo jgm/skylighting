@@ -18,28 +18,24 @@ jobs:
             cabal: '3.0'
           - ghc: '8.6.5'
             cabal: '3.0'
-          - ghc: '8.8.3'
+          - ghc: '8.8.4'
             cabal: '3.0'
+          - ghc: '8.10.7'
+            cabal: '3.2'
+          - ghc: '9.0.2'
+            cabal: '3.4'
+          - ghc: '9.2.2'
+            cabal: '3.6'
     steps:
     - uses: actions/checkout@v1
 
-    # need to install older cabal/ghc versions from ppa repository
-    - name: Install recent cabal/ghc
+    - name: Install ghc/cabal
       run: |
-         if [ ! -d /opt/ghc/${{ matrix.versions.ghc }} ] || \
-            [ ! -d /opt/cabal/${{ matrix.versions.cabal }} ]
-         then
-           sudo add-apt-repository ppa:hvr/ghc
-           sudo apt-get update
-         fi
-         [ -d /opt/ghc/${{ matrix.versions.ghc }} ] ||
-           sudo apt-get install ghc-${{ matrix.versions.ghc }}
-         [ -d /opt/cabal/${{ matrix.versions.cabal }} ] ||
-           sudo apt-get install cabal-install-${{ matrix.versions.cabal }}
+        ghcup install ghc --set ${{ matrix.versions.ghc }}
+        ghcup install cabal ${{ matrix.versions.cabal }}
 
     - name: Bootstrap
       run: |
-          export PATH=/opt/cabal/${{ matrix.versions.cabal }}/bin:/opt/ghc/${{ matrix.versions.ghc }}/bin:$PATH
           cabal v2-update
           cabal v2-build --only-dependencies -fexecutable --disable-optimization skylighting-core
           cabal v2-build -fexecutable --disable-optimization skylighting-core 2>&1 | tee build.log
@@ -47,9 +43,9 @@ jobs:
           ! grep -q ": *[Ww]arning:" build.log || exit 1
           cd skylighting
           cabal v2-run skylighting-extract -fexecutable --disable-optimization -- ../skylighting-core/xml
+
     - name: Build and test
       run: |
-          export PATH=/opt/cabal/${{ matrix.versions.cabal }}/bin:/opt/ghc/${{ matrix.versions.ghc }}/bin:$PATH
           cabal v2-build -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all
           cabal v2-build -j1 -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all 2>&1 | tee build.log
           # fail if warnings in local build
@@ -100,4 +96,3 @@ jobs:
       run: |
           ./stack build --test --fast --flag skylighting:executable --dependencies-only
           ./stack build --test --jobs=1 --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
-
