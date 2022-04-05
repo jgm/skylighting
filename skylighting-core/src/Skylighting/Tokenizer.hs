@@ -196,11 +196,11 @@ currentContext = do
 
 doContextSwitch :: ContextSwitch -> TokenizerM ()
 doContextSwitch Pop = popContextStack
-doContextSwitch (Push (syn,c)) = do
+doContextSwitch (Push (!syn,!c)) = do
   syntaxes <- asks syntaxMap
   case Map.lookup syn syntaxes >>= lookupContext c of
-       Just con -> pushContextStack con
-       Nothing  -> throwError $ "Unknown syntax or context: " ++ show (syn, c)
+       Just !con -> pushContextStack con
+       Nothing   -> throwError $ "Unknown syntax or context: " ++ show (syn, c)
 
 doContextSwitches :: [ContextSwitch] -> TokenizerM ()
 doContextSwitches = mapM_ doContextSwitch
@@ -213,16 +213,16 @@ lookupContext name syntax | Text.null name =
 lookupContext name syntax = Map.lookup name $ sContexts syntax
 
 tokenizeLine :: (ByteString, Int) -> TokenizerM [Token]
-tokenizeLine (ln, linenum) = do
+tokenizeLine (!ln, !linenum) = do
   modify $ \st -> st{ input = ln, endline = BS.null ln, prevChar = '\n' }
   cur <- currentContext
   lineCont <- gets lineContinuation
   if lineCont
      then modify $ \st -> st{ lineContinuation = False }
      else do
+       let !mbFirstNonspace = BS.findIndex (not . isSpace) $! ln
        modify $ \st -> st{ column = 0
-                         , firstNonspaceColumn =
-                              BS.findIndex (not . isSpace) ln }
+                         , firstNonspaceColumn = mbFirstNonspace }
        doContextSwitches (cLineBeginContext cur)
   if BS.null ln
      then doContextSwitches (cLineEmptyContext cur)
@@ -242,7 +242,7 @@ getToken :: TokenizerM (Maybe Token)
 getToken = do
   inp <- gets input
   gets endline >>= guard . not
-  context <- currentContext
+  !context <- currentContext
   msum (map (\r -> tryRule r inp) (cRules context)) <|>
      case cFallthroughContext context of
            [] | cFallthrough context -> Nothing <$ doContextSwitches [Pop]
@@ -259,7 +259,7 @@ takeChars numchars = do
   inp <- gets input
   let (bs,rest) = UTF8.splitAt numchars inp
   guard $ not (BS.null bs)
-  t <- decodeBS bs
+  !t <- decodeBS bs
   modify $ \st -> st{ input = rest,
                       endline = BS.null rest,
                       prevChar = Text.last t,
@@ -275,8 +275,8 @@ tryRule rule inp = do
        Just n  -> gets column >>= guard . (== n)
 
   when (rFirstNonspace rule) $ do
-    firstNonspace <- gets firstNonspaceColumn
-    col <- gets column
+    !firstNonspace <- gets firstNonspaceColumn
+    !col <- gets column
     guard (firstNonspace == Just col)
 
   oldstate <- if rLookahead rule
@@ -601,11 +601,13 @@ keyword kwattr kws inp = do
 
 normalizeHighlighting :: [Token] -> [Token]
 normalizeHighlighting [] = []
-normalizeHighlighting ((t,x):xs)
+normalizeHighlighting ((!t,!x):xs)
   | Text.null x = normalizeHighlighting xs
   | otherwise =
-    (t, Text.concat (x : map snd matches)) : normalizeHighlighting rest
+    (t, matchedText) : normalizeHighlighting rest
     where (matches, rest) = span (\(z,_) -> z == t) xs
+          !matchedText = Text.concat (x : map snd matches)
+
 
 parseCStringChar :: ByteString -> TokenizerM Text
 parseCStringChar inp = do
