@@ -1,5 +1,6 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# LANGUAGE StrictData            #-}
+{-# LANGUAGE BangPatterns          #-}
 {-# LANGUAGE CPP                   #-}
 {-# LANGUAGE DeriveFunctor         #-}
 {-# LANGUAGE FlexibleInstances     #-}
@@ -134,7 +135,7 @@ instance MonadError String TokenizerM where
 -- | Tokenize some text using 'Syntax'.
 tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]
 tokenize config syntax inp =
-  eitherStack >>= \stack ->
+  eitherStack >>= \(!stack) ->
     case runTokenizerM action
             config{ syntaxMap = Map.map (resolveKeywords (syntaxMap config))
                                           (syntaxMap config) }
