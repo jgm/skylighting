@@ -1,3 +1,4 @@
+{-# LANGUAGE StrictData                 #-}
 {-# LANGUAGE BangPatterns               #-}
 {-# LANGUAGE DeriveDataTypeable         #-}
 {-# LANGUAGE DeriveGeneric              #-}

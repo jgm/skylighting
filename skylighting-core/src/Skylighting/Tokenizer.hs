@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
+{-# LANGUAGE StrictData            #-}
 {-# LANGUAGE CPP                   #-}
 {-# LANGUAGE DeriveFunctor         #-}
 {-# LANGUAGE FlexibleInstances     #-}
