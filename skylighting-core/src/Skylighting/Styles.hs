@@ -130,7 +130,7 @@ pygments = Style{
     , (SpecialCharTok, defStyle{ tokenColor = color 0x4070a0 })
     , (VerbatimStringTok, defStyle{ tokenColor = color 0x4070a0 })
     , (SpecialStringTok, defStyle{ tokenColor = color 0xBB6688 })
-    , (ImportTok, defStyle{ tokenColor = 0x008000, tokenBold = True})
+    , (ImportTok, defStyle{ tokenColor = color 0x008000, tokenBold = True})
     , (VariableTok, defStyle{ tokenColor = color 0x19177C })
     , (ControlFlowTok, defStyle{ tokenColor = color 0x007020, tokenBold = True })
     , (OperatorTok, defStyle{ tokenColor = color 0x666666 })
