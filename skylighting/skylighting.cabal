@@ -135,6 +135,7 @@ library
                        Skylighting.Syntax.Mustache
                        Skylighting.Syntax.Nasm
                        Skylighting.Syntax.Nim
+                       Skylighting.Syntax.Nix
                        Skylighting.Syntax.Noweb
                        Skylighting.Syntax.Objectivec
                        Skylighting.Syntax.Objectivecpp

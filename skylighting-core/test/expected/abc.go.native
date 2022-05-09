@@ -34,7 +34,7 @@
   , ( OperatorTok , ")" )
   ]
 , [ ( NormalTok , "        " )
-  , ( KeywordTok , "return" )
+  , ( ControlFlowTok , "return" )
   , ( NormalTok , " " )
   , ( KeywordTok , "func" )
   , ( OperatorTok , "(" )
@@ -47,7 +47,7 @@
   , ( OperatorTok , "{" )
   ]
 , [ ( NormalTok , "                " )
-  , ( KeywordTok , "return" )
+  , ( ControlFlowTok , "return" )
   , ( NormalTok , " r" )
   , ( OperatorTok , "(" )
   , ( NormalTok , "word" )
@@ -74,7 +74,7 @@
   , ( OperatorTok , "{" )
   ]
 , [ ( NormalTok , "        " )
-  , ( KeywordTok , "if" )
+  , ( ControlFlowTok , "if" )
   , ( NormalTok , " word " )
   , ( OperatorTok , "==" )
   , ( NormalTok , " " )
@@ -83,7 +83,7 @@
   , ( OperatorTok , "{" )
   ]
 , [ ( NormalTok , "                " )
-  , ( KeywordTok , "return" )
+  , ( ControlFlowTok , "return" )
   , ( NormalTok , " " )
   , ( OtherTok , "true" )
   ]
@@ -100,7 +100,7 @@
   , ( DecValTok , "32" )
   ]
 , [ ( NormalTok , "        " )
-  , ( KeywordTok , "for" )
+  , ( ControlFlowTok , "for" )
   , ( NormalTok , " i" )
   , ( OperatorTok , "," )
   , ( NormalTok , " b " )
@@ -111,7 +111,7 @@
   , ( OperatorTok , "{" )
   ]
 , [ ( NormalTok , "                " )
-  , ( KeywordTok , "if" )
+  , ( ControlFlowTok , "if" )
   , ( NormalTok , " c " )
   , ( OperatorTok , "==" )
   , ( NormalTok , " b" )
@@ -148,7 +148,7 @@
   , ( NormalTok , " b" )
   ]
 , [ ( NormalTok , "                        " )
-  , ( KeywordTok , "if" )
+  , ( ControlFlowTok , "if" )
   , ( NormalTok , " r" )
   , ( OperatorTok , "(" )
   , ( NormalTok , "word" )
@@ -167,7 +167,7 @@
   , ( OperatorTok , "{" )
   ]
 , [ ( NormalTok , "                                " )
-  , ( KeywordTok , "return" )
+  , ( ControlFlowTok , "return" )
   , ( NormalTok , " " )
   , ( OtherTok , "true" )
   ]
@@ -196,7 +196,7 @@
 , [ ( NormalTok , "                " ) , ( OperatorTok , "}" ) ]
 , [ ( NormalTok , "        " ) , ( OperatorTok , "}" ) ]
 , [ ( NormalTok , "        " )
-  , ( KeywordTok , "return" )
+  , ( ControlFlowTok , "return" )
   , ( NormalTok , " " )
   , ( OtherTok , "false" )
   ]
@@ -220,7 +220,7 @@
   , ( OperatorTok , ")" )
   ]
 , [ ( NormalTok , "        " )
-  , ( KeywordTok , "for" )
+  , ( ControlFlowTok , "for" )
   , ( NormalTok , " _" )
   , ( OperatorTok , "," )
   , ( NormalTok , " word " )
