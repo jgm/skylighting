@@ -26,35 +26,37 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 -->
 
 
-<language name="Go" version="7" kateversion="5.0" section="Sources" indenter="cstyle" extensions="*.go" author="Miquel Sabaté (mikisabate@gmail.com)" license="GPLv2+">
+<language name="Go" version="8" kateversion="5.0" section="Sources" indenter="cstyle" extensions="*.go" author="Miquel Sabaté (mikisabate@gmail.com)" license="GPLv2+">
     <highlighting>
     <list name="keywords">
 <!-- Keywords have been taken from The Go Programming Language Specification -> Keywords section -->
-      <item>break</item>
-      <item>case</item>
       <item>chan</item>
       <item>const</item>
+      <item>func</item>
+      <item>import</item>
+      <item>interface</item>
+      <item>map</item>
+      <item>package</item>
+      <item>range</item>
+      <item>struct</item>
+      <item>type</item>
+      <item>var</item>
+    </list>
+      <list name="controlflow">
+      <item>break</item>
+      <item>case</item>
       <item>continue</item>
       <item>default</item>
       <item>defer</item>
       <item>else</item>
       <item>fallthrough</item>
       <item>for</item>
-      <item>func</item>
       <item>go</item>
       <item>goto</item>
       <item>if</item>
-      <item>import</item>
-      <item>interface</item>
-      <item>map</item>
-      <item>package</item>
-      <item>range</item>
       <item>return</item>
       <item>select</item>
-      <item>struct</item>
       <item>switch</item>
-      <item>type</item>
-      <item>var</item>
     </list>
     <list name="types">
       <item>bool</item>
@@ -104,6 +106,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
     <contexts>
       <context name="normal" attribute="Normal Text" lineEndContext="#stay">
         <keyword attribute="Keyword" context="#stay" String="keywords" />
+        <keyword attribute="Control Flow" context="#stay" String="controlflow" />
         <keyword attribute="Predeclared Identifier" context="#stay" String="predeclared"  />
         <keyword attribute="Data Type" context="#stay" String="types"       />
         <keyword attribute="Builtin Function" context="#stay" String="builtin"  />
@@ -151,6 +154,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
     <itemDatas>
       <itemData name="Normal Text"  defStyleNum="dsNormal"   spellChecking="false"/>
       <itemData name="Keyword"      defStyleNum="dsKeyword"  spellChecking="false"/>
+      <itemData name="Control Flow" defStyleNum="dsControlFlow" spellChecking="false"/>
       <itemData name="Predeclared Identifier" defStyleNum="dsOthers"   spellChecking="false" />
       <itemData name="Builtin Function"       defStyleNum="dsBuiltIn" spellChecking="false" />
       <itemData name="Data Type"    defStyleNum="dsDataType" spellChecking="false"/>

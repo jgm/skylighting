@@ -48,7 +48,7 @@
     - NOTE, FIXME, TODO alerts added on comments
     - improved highlighting
 -->
-<language name="Lua" version="14" indenter="lua" kateversion="5.0" section="Scripts" extensions="*.lua" mimetype="text/x-lua">
+<language name="Lua" version="15" indenter="lua" kateversion="5.0" section="Scripts" extensions="*.lua" mimetype="text/x-lua">
   <highlighting>
     <list name="keywords">
       <item>and</item>
@@ -530,6 +530,7 @@
 
       <context name="Local" attribute="Normal Text"  lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
         <DetectSpaces />
+        <WordDetect   attribute="Keyword" context="#pop!Function" beginRegion="chunk" String="function" />
         <Detect2Chars attribute="Comment" context="MatchComment" char="-" char1="-" lookAhead="true"/>
         <RegExpr          attribute="Constant" context="LocalVariable" String="\b[A-Z_][A-Z0-9_]*\b" />
         <DetectIdentifier attribute="Variable" context="LocalVariable" />

@@ -57,7 +57,7 @@
         <!ENTITY int "(?:[0-9]++[_0-9]*+)">
         <!ENTITY exp "(?:[eE][-+]?&int;)">
 ]>
-<language name="Zsh" version="25" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
+<language name="Zsh" version="26" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
 
   <highlighting>
     <list name="keywords">
@@ -1609,12 +1609,12 @@
         <RegExpr attribute="Keyword" context="#pop" String="\]\](?=($|[ &tab;;|&amp;)]))" endRegion="expression"/>
       </context>
 
-      <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketRegex">
-        <DetectSpaces attribute="Normal Text" context="#pop!Regex"/>
+      <context attribute="Normal Text" lineEndContext="#stay" name="ExprDblBracketRegex" fallthroughContext="#pop!Regex">
+        <DetectSpaces attribute="Normal Text" context="#stay"/>
       </context>
       <context attribute="Pattern" lineEndContext="#stay" name="Regex">
         <DetectSpaces attribute="Normal Text" context="#pop!ExprDblBracketFinal"/>
-        <DetectChar attribute="Error" context="#stay" char=")"/>
+        <DetectChar attribute="Operator" context="#pop" char=")"/>
         <Detect2Chars attribute="Operator" context="RegexChar" char="[" char1="^"/>
         <DetectChar attribute="Operator" context="RegexChar" char="["/>
         <IncludeRules context="FindRegex"/>
