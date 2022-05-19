@@ -1,5 +1,20 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.12.3.1
+
+  * Allow mtl 2.3.
+
+  * Update syntax defs from upstream: bash, cmake, go, haxe, lua, zsh.
+
+  * Add nix.xml (#149).
+
+  * Add Pygments styles for `Import` and `BuiltIn` token types (#147,
+    Bryan A. Danielak).
+
+  * Use StrictData.
+
+  * Remove unused dependencies (silences cabal warnings) (Andreas Abel).
+
 ## 0.12.3
 
   * Add scss, sass, systemverilog, orgmode.
