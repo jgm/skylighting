@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE TupleSections #-}
@@ -29,7 +30,9 @@ import qualified Control.Exception as E
 import Control.Monad.Trans.Except
 import Control.Monad.Error.Class
 import Control.Monad.Identity
-import Control.Monad (unless)
+#if MIN_VERSION_mtl(2,3,0)
+import Control.Monad
+#endif
 
 -- | Adds a syntax definition to a syntax map,
 -- replacing any existing definition with the same name.
@@ -339,8 +342,8 @@ getKeywordAttrs el =
         in KeywordAttr { keywordCaseSensitive =
                              vBool True $ getAttrValue "casesensitive" x
                        , keywordDelims = Set.union standardDelims
-                           (Set.fromList additionalDelim) Set.\\
-                             Set.fromList weakDelim }
+                           (Set.fromList additionalDelim)
+                             Set.\\ Set.fromList weakDelim }
 
 parseContextSwitch :: Text -> Text -> [ContextSwitch]
 parseContextSwitch syntaxname t =
