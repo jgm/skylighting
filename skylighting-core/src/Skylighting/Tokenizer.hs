@@ -14,6 +14,7 @@ module Skylighting.Tokenizer (
   ) where
 
 import Control.Applicative
+import Control.Monad (MonadPlus(..), mzero, guard, when, unless, msum)
 import Control.Monad.Except
 import Control.Monad.Reader
 import Control.Monad.State.Strict

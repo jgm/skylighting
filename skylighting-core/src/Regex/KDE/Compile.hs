@@ -15,6 +15,7 @@ import Data.Attoparsec.ByteString as A hiding (match)
 import Data.Char
 import Control.Applicative
 import Regex.KDE.Regex
+import Control.Monad (mzero)
 import Control.Monad.State.Strict
 #if !MIN_VERSION_base(4,11,0)
 import Data.Semigroup ((<>))

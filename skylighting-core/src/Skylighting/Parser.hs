@@ -26,8 +26,10 @@ import Skylighting.Types
 import System.FilePath
 import Text.XML
 import qualified Control.Exception as E
-import Control.Monad.Except
+import Control.Monad.Trans.Except
+import Control.Monad.Error.Class
 import Control.Monad.Identity
+import Control.Monad (unless)
 
 -- | Adds a syntax definition to a syntax map,
 -- replacing any existing definition with the same name.

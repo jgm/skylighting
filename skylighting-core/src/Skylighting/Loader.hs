@@ -7,7 +7,7 @@ module Skylighting.Loader ( loadSyntaxFromFile
                           where
 
 import Control.Monad (filterM, foldM)
-import Control.Monad.Except (ExceptT(ExceptT), runExceptT)
+import Control.Monad.Trans.Except (ExceptT(ExceptT), runExceptT)
 import Control.Monad.IO.Class (liftIO)
 import System.Directory (listDirectory, doesFileExist)
 import System.FilePath ((</>), takeExtension)

@@ -118,6 +118,7 @@ library
   other-extensions:    CPP
   build-depends:       base >= 4.8 && < 5.0,
                        mtl,
+                       transformers,
                        text,
                        binary,
                        bytestring,
