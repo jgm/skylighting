@@ -9,15 +9,22 @@ from KDE XML syntax highlighting descriptions.
 
 A command-line highlighter program, `skylighting`, is also provided.
 
-This project is divided up into two packages:
+This project is divided up into five packages:
 
  * `skylighting-core`: this provides KDE XML parsing, data types,
-   and output formatters. This includes the core functionality of the
+   and a tokenizer. This includes the core functionality of the
    skylighting project licensed under the BSD3 license, along with the
    KDE XML files, some of which are licensed under the LGPL or GPL. This
    package does not provide any built-in parsers corresponding to the
    XML descriptions, however. For that, use `skylighting`.
- * `skylighting`: this exposes the `skylighting-core` API but also
+* `skylighting-format-ansi`: this provides formatters for
+  rendering skylighting tokens as colored ANSI text.
+* `skylighting-format-blaze-html`: this provides formatters for
+  rendering skylighting tokens as HTML, using the `blaze-html` library.
+* `skylighting-format-latex`: this provides formatters for
+  rendering skylighting tokens as LaTeX.
+* `skylighting`: this exposes the `skylighting-core` API and
+   ANSI, HTML, and LaTeX formatters, and also
    provides bundled Haskell parser modules derived from the XML
    descriptions in the `core` package. This package is entirely licensed
    under the GPL.

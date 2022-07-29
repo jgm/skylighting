@@ -42,9 +42,9 @@ library
                        , skylighting-core:Skylighting.Parser
                        , skylighting-core:Skylighting.Styles
                        , skylighting-core:Skylighting.Tokenizer
-                       , skylighting-core:Skylighting.Format.ANSI
-                       , skylighting-core:Skylighting.Format.HTML
-                       , skylighting-core:Skylighting.Format.LaTeX
+                       , skylighting-format-ansi:Skylighting.Format.ANSI
+                       , skylighting-format-blaze-html:Skylighting.Format.HTML
+                       , skylighting-format-latex:Skylighting.Format.LaTeX
   other-modules:
                        Skylighting.Syntax.Abc
                        Skylighting.Syntax.Actionscript
@@ -198,6 +198,9 @@ library
   other-extensions:    CPP
   build-depends:       base >= 4.8 && < 5.0,
                        skylighting-core == 0.12.3.1,
+                       skylighting-format-ansi,
+                       skylighting-format-latex,
+                       skylighting-format-blaze-html,
                        containers,
                        binary
   hs-source-dirs:      src

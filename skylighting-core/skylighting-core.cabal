@@ -108,9 +108,6 @@ library
                        Skylighting.Styles
                        Skylighting.Loader
                        Skylighting.Tokenizer
-                       Skylighting.Format.ANSI
-                       Skylighting.Format.HTML
-                       Skylighting.Format.LaTeX
   other-modules:       Regex.KDE
                        Regex.KDE.Regex
                        Regex.KDE.Compile
@@ -131,10 +128,8 @@ library
                        xml-conduit >= 1.9.1.0 && < 1.10,
                        safe,
                        base64-bytestring,
-                       blaze-html >= 0.5,
-                       containers >= 0.6.0.1,
-                       ansi-terminal >= 0.7,
-                       colour >= 2.0
+                       colour >= 2.0,
+                       containers >= 0.6.0.1
   hs-source-dirs:      src
   ghc-prof-options:    -fprof-auto-exported
   default-language:    Haskell2010

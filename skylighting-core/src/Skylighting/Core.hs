@@ -10,9 +10,6 @@ module Skylighting.Core (
   , module Skylighting.Regex
   , module Skylighting.Styles
   , module Skylighting.Loader
-  , module Skylighting.Format.ANSI
-  , module Skylighting.Format.HTML
-  , module Skylighting.Format.LaTeX
   ) where
 import Control.Monad
 import Data.List (tails)
@@ -20,9 +17,6 @@ import qualified Data.Map as Map
 import Data.Maybe (listToMaybe)
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Skylighting.Format.ANSI
-import Skylighting.Format.HTML
-import Skylighting.Format.LaTeX
 import Skylighting.Loader
 import Skylighting.Parser
 import Skylighting.Regex
