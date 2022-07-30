@@ -3,14 +3,15 @@ ALL=skylighting/src/Skylighting/Syntax.hs quick
 
 all: $(ALL)
 
-quick:
-	stack install --system-ghc --test --flag "skylighting:executable" --test-arguments '--hide-successes $(TESTARGS)'
+quick: skylighting/src/Skylighting/Syntax.hs
+	cabal test -fexecutable --test-options='--hide-successes $(TESTARGS)' all
+	cabal install -fexecutable all
 
 test:
-	stack test --system-ghc --test-arguments '--hide-successes $(TESTARGS)'
+	cabal test --test-options '--hide-successes $(TESTARGS)'
 
 bench:
-	stack bench --system-ghc --flag 'skylighting:executable'
+	cabal bench -fexecutable
 
 format: skylighting-format skylighting-core-format
 
@@ -32,11 +33,9 @@ skylighting-format:
 bootstrap: skylighting/src/Skylighting/Syntax.hs
 
 skylighting/src/Skylighting/Syntax.hs: $(XMLS)
-	stack install --system-ghc --flag "skylighting-core:executable" skylighting-core
+	cabal build -fexecutable skylighting-core
 	-rm -rf skylighting/src/Skylighting/Syntax skylighting/src/Skylighting/Syntax.hs
-	cd skylighting && skylighting-extract ../skylighting-core/xml
-	stack install --system-ghc --flag "skylighting:executable" --test --test-arguments \
-	    '--hide-successes $(TESTARGS)'
+	cd skylighting && cabal run skylighting-extract -fexecutable -- ../skylighting-core/xml
 
 syntax-highlighting:
 	git clone https://github.com/KDE/syntax-highlighting
@@ -49,7 +48,7 @@ update-xml: syntax-highlighting
 	for x in *.xml.patch; do patch < $$x; done
 
 clean:
-	stack clean
+	cabal clean
 
 .PHONY: all update-xml quick clean test format
 
