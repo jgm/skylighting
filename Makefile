@@ -5,13 +5,13 @@ all: $(ALL)
 
 quick: skylighting/src/Skylighting/Syntax.hs
 	cabal test -fexecutable --test-options='--hide-successes $(TESTARGS)' all
-	cabal install -fexecutable all
+	cabal install -fexecutable exe:skylighting
 
 test:
 	cabal test --test-options '--hide-successes $(TESTARGS)'
 
 bench:
-	cabal bench -fexecutable
+	cabal bench skylighting-core
 
 format: skylighting-format skylighting-core-format
 
