@@ -1,6 +1,9 @@
 packages:
 - skylighting-core
 - skylighting
+- skylighting-format-ansi
+- skylighting-format-blaze-html
+- skylighting-format-latex
 extra-deps: []
 resolver: lts-18.10
 ghc-options:
