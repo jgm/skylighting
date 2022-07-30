@@ -1,5 +1,21 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.13
+
+  * Update syntax definitions from upstream: bash, cmake, diff,
+    ini, perl, php, sgml, xml.
+
+  * Split out formatters into separate packages (#152). API changes:
+    - Skylighting.Core no longer exports Skylighting.Format.ANSI,
+      Skylighting.Format.HTML, Skylighting.Format.LaTeX.  These are
+      now provided by separate packages, skylighting-format-ansi,
+      skylighting-format-blaze-html, skylighting-format-latex.
+    - Skylighting.Types no longer exports XTerm256ColorCode.
+      This has been moved to skylighting-format-ansi.
+
+  * Change Makefile to use cabal instead of stack.
+
+
 ## 0.12.3.1
 
   * Allow mtl 2.3.
