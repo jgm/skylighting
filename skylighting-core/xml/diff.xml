@@ -12,7 +12,7 @@
     2008-02-13: 1.11 Eduardo Robles Elvira <edulix AT gmail DOT com>
      Fixed folding.
 -->
-<language name="Diff" version="7" kateversion="5.62" section="Other" extensions="*.diff;*patch;*.rej" mimetype="text/x-patch">
+<language name="Diff" version="8" kateversion="5.62" section="Other" extensions="*.diff;*patch;*.rej" mimetype="text/x-patch">
 
   <highlighting>
 
@@ -115,13 +115,13 @@
     </contexts>
 
     <itemDatas>
-      <itemData name="Normal Text" defStyleNum="dsNormal"/>
-      <itemData name="File"  defStyleNum="dsKeyword"/>
-      <itemData name="Header"  defStyleNum="dsDataType"/>
-      <itemData name="Removed line"  defStyleNum="dsString" />
-      <itemData name="Added line"  defStyleNum="dsVariable"/>
-      <itemData name="Changed line (old)"  defStyleNum="dsString"/>
-      <itemData name="Changed line (new)"  defStyleNum="dsVariable"/>
+      <itemData name="Normal Text" defStyleNum="dsNormal" spellChecking="false"/>
+      <itemData name="File"  defStyleNum="dsKeyword" spellChecking="false"/>
+      <itemData name="Header"  defStyleNum="dsDataType" spellChecking="false"/>
+      <itemData name="Removed line"  defStyleNum="dsString" spellChecking="false"/>
+      <itemData name="Added line"  defStyleNum="dsVariable" spellChecking="false"/>
+      <itemData name="Changed line (old)"  defStyleNum="dsString" spellChecking="false"/>
+      <itemData name="Changed line (new)"  defStyleNum="dsVariable" spellChecking="false"/>
     </itemDatas>
 
   </highlighting>

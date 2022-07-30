@@ -77,7 +77,7 @@ Changes:
   <!ENTITY float "\b&LNUM;(\.(&LNUM;)?(&EXPONENT;)?|&EXPONENT;)|\.&LNUM;(&EXPONENT;)?">
 ]>
 
-<language name="PHP/PHP" indenter="cstyle" version="22" kateversion="5.53" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
+<language name="PHP/PHP" indenter="cstyle" version="23" kateversion="5.53" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
   <highlighting>
     <!-- https://php.watch/versions -->
     <!-- Based on 8.1 -->
@@ -11161,7 +11161,7 @@ Changes:
       </context>
       <context name="heredoc" attribute="String" lineEndContext="#stay" dynamic="true">
         <IncludeRules context="doublestringvariablecommon" />
-        <RegExpr attribute="Heredoc" context="#pop" String="^%1(?=;?$)" dynamic="true" endRegion="Heredoc" column="0" />
+        <RegExpr attribute="Heredoc" context="#pop" String="^\s*%1(?=;?$)" dynamic="true" endRegion="Heredoc" column="0" />
       </context>
 
       <context name="htmlnowdoc" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
