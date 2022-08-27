@@ -1,5 +1,5 @@
 name:                skylighting-format-blaze-html
-version:             0.1
+version:             0.1.1
 synopsis:            HTML formatter for skylighting syntax highlighting library
 description:         This module allows tokens produced by skylighting-core
                      to be rendered as HTML.

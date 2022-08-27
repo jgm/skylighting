@@ -3,6 +3,7 @@
 module Skylighting.Format.HTML (
       formatHtmlInline
     , formatHtmlBlock
+    , formatHtml4Block
     , styleToCss
     ) where
 
@@ -64,12 +65,23 @@ formatHtmlInline opts = wrapCode opts
 -- CSS.  See the documentation for 'formatHtmlInline' for information about how
 -- tokens are encoded.
 formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
-formatHtmlBlock opts ls =
+formatHtmlBlock = formatHtmlBlockFor Html5
+
+-- | Like 'formatHtmlBlock' but uses only attributes valid in HTML 4
+-- (so, @aria-hidden@ is not used in empty line number spans).
+formatHtml4Block :: FormatOptions -> [SourceLine] -> Html
+formatHtml4Block = formatHtmlBlockFor Html4
+
+data HtmlVersion = Html4 | Html5
+  deriving (Show, Eq)
+
+formatHtmlBlockFor :: HtmlVersion -> FormatOptions -> [SourceLine] -> Html
+formatHtmlBlockFor htmlVersion opts ls =
   H.div ! A.class_ (toValue "sourceCode") $
   H.pre ! A.class_ (toValue $ Text.unwords classes)
         $ wrapCode opts
         $ mconcat . intersperse (toHtml "\n")
-        $ zipWith (sourceLineToHtml opts) [startNum..] ls
+        $ zipWith (sourceLineToHtml htmlVersion opts) [startNum..] ls
   where  classes = Text.pack "sourceCode" :
                    [Text.pack "numberSource" | numberLines opts] ++
                    [x | x <- containerClasses opts
@@ -87,12 +99,12 @@ wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
 
 -- | Each line of source is wrapped in an (inline-block) anchor that makes
 -- subsequent per-line processing (e.g. adding line numnbers) possible.
-sourceLineToHtml :: FormatOptions -> LineNo -> SourceLine -> Html
-sourceLineToHtml opts lno cont =
+sourceLineToHtml :: HtmlVersion -> FormatOptions -> LineNo -> SourceLine -> Html
+sourceLineToHtml htmlVersion opts lno cont =
   H.span ! A.id lineNum
          $ do
            H.a ! A.href lineRef
-               ! (if numberLines opts
+               ! (if numberLines opts || htmlVersion == Html4
                      then mempty
                      else customAttribute (fromString "aria-hidden")
                            (fromString "true")) -- see jgm/pandoc#6352
