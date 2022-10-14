@@ -68,9 +68,9 @@ data Result e a = Success a
 
 deriving instance (Show a, Show e) => Show (Result e a)
 
-data TokenizerM a = TM { runTokenizerM :: TokenizerConfig
-                                       -> TokenizerState
-                                       -> (TokenizerState, Result String a) }
+newtype TokenizerM a = TM { runTokenizerM :: TokenizerConfig
+                                          -> TokenizerState
+                                          -> (TokenizerState, Result String a) }
 
 mapsnd :: (a -> b) -> (c, a) -> (c, b)
 mapsnd f (x, y) = (x, f y)
