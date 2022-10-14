@@ -121,7 +121,7 @@ instance MonadPlus TokenizerM where
 
 instance MonadReader TokenizerConfig TokenizerM where
   ask = TM (\c s -> (s, Success c))
-  local f (TM x) = TM (\c s -> x (f c) s)
+  local f (TM x) = TM (x . f)
 
 instance MonadState TokenizerState TokenizerM where
   get = TM (\_ s -> (s, Success s))
