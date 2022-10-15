@@ -23,7 +23,7 @@
    * QML
    * CoffeeScript (embedded)
 -->
-<language name="JavaScript" version="20" kateversion="5.53" section="Scripts" extensions="*.js;*.kwinscript;*.julius"
+<language name="JavaScript" version="22" kateversion="5.53" section="Scripts" extensions="*.js;*.mjs;*.cjs;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
 
@@ -2042,7 +2042,7 @@
 
   <general>
     <comments>
-      <comment name="singleLine" start="//" />
+      <comment name="singleLine" start="//" position="afterwhitespace"/>
       <comment name="multiLine" start="/*" end="*/" region="Comment" />
     </comments>
     <keywords casesensitive="1" />

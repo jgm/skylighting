@@ -14,15 +14,19 @@
   , ( NormalTok , " " )
   , ( KeywordTok , "do" )
   ]
-, [ ( NormalTok , "      {" )
+, [ ( NormalTok , "      " )
+  , ( FunctionTok , "{" )
   , ( VariableTok , ":rectangle" )
-  , ( NormalTok , ", w, h} " )
+  , ( NormalTok , ", w, h" )
+  , ( FunctionTok , "}" )
+  , ( NormalTok , " " )
   , ( OperatorTok , "->" )
   ]
 , [ ( NormalTok , "        " )
   , ( ConstantTok , "IO" )
   , ( OperatorTok , "." )
-  , ( NormalTok , "puts(" )
+  , ( NormalTok , "puts" )
+  , ( FunctionTok , "(" )
   , ( StringTok , "\"Area = " )
   , ( OtherTok , "#{" )
   , ( NormalTok , "w " )
@@ -30,18 +34,22 @@
   , ( NormalTok , " h" )
   , ( OtherTok , "}" )
   , ( StringTok , "\"" )
-  , ( NormalTok , ")" )
+  , ( FunctionTok , ")" )
   ]
-, [ ( NormalTok , "        area_loop()" ) ]
-, [ ( NormalTok , "      {" )
+, [ ( NormalTok , "        area_loop" ) , ( FunctionTok , "()" ) ]
+, [ ( NormalTok , "      " )
+  , ( FunctionTok , "{" )
   , ( VariableTok , ":circle" )
-  , ( NormalTok , ", r} " )
+  , ( NormalTok , ", r" )
+  , ( FunctionTok , "}" )
+  , ( NormalTok , " " )
   , ( OperatorTok , "->" )
   ]
 , [ ( NormalTok , "        " )
   , ( ConstantTok , "IO" )
   , ( OperatorTok , "." )
-  , ( NormalTok , "puts(" )
+  , ( NormalTok , "puts" )
+  , ( FunctionTok , "(" )
   , ( StringTok , "\"Area = " )
   , ( OtherTok , "#{" )
   , ( FloatTok , "3.14" )
@@ -52,9 +60,9 @@
   , ( NormalTok , " r" )
   , ( OtherTok , "}" )
   , ( StringTok , "\"" )
-  , ( NormalTok , ")" )
+  , ( FunctionTok , ")" )
   ]
-, [ ( NormalTok , "        area_loop()" ) ]
+, [ ( NormalTok , "        area_loop" ) , ( FunctionTok , "()" ) ]
 , [ ( NormalTok , "    " ) , ( KeywordTok , "end" ) ]
 , [ ( NormalTok , "  " ) , ( KeywordTok , "end" ) ]
 , [ ( KeywordTok , "end" ) ]

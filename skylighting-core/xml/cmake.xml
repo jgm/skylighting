@@ -25,7 +25,7 @@
 
 <language
     name="CMake"
-    version="39"
+    version="40"
     kateversion="5.0"
     section="Other"
     extensions="CMakeLists.txt;*.cmake;*.cmake.in"
@@ -3609,6 +3609,7 @@
     </list>
 
     <list name="deprecated-or-internal-variables">
+      <item>CMAKE_FILES_DIRECTORY</item>
       <item>CMAKE_HOME_DIRECTORY</item>
       <item>CMAKE_INTERNAL_PLATFORM_ABI</item>
       <item>CMAKE_NOT_USING_CONFIG_FLAGS</item>

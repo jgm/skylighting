@@ -8,7 +8,7 @@
 	R      : http://www.r-project.org/
 	RKWard : http://rkward.kde.org/
 	-->
-<language version="12" kateversion="5.0" name="R Script" section="Scientific" extensions="*.R;*.r;*.S;*.s;*.q" mimetype="" license="GPLv2">
+<language version="13" kateversion="5.0" name="R Script" section="Scientific" extensions="*.R;*.r;*.S;*.s;*.q" mimetype="" license="GPLv2">
 <highlighting>
 
 	<list name="controls">
@@ -129,6 +129,7 @@
 			<Detect2Chars attribute="Operator" context="operator_rhs" char="&amp;" char1="&amp;"/>
 			<StringDetect attribute="Operator" context="operator_rhs" String=":::"/>
 			<Detect2Chars attribute="Operator" context="operator_rhs" char=":" char1=":"/>
+			<Detect2Chars attribute="Operator" context="operator_rhs" char=":" char1="="/>
 			<AnyChar attribute="Operator" context="operator_rhs" String="+-*/&lt;&gt;=!|&amp;:^@$~"/>
 			<RangeDetect attribute="Operator" context="operator_rhs" char="%" char1="%"/>
 

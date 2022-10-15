@@ -11,8 +11,8 @@
 <language
     name="C++"
     section="Sources"
-    version="13"
-    kateversion="5.0"
+    version="15"
+    kateversion="5.79"
     indenter="cstyle"
     style="C++"
     mimetype="text/x-c++src;text/x-c++hdr;text/x-chdr"
@@ -2006,6 +2006,7 @@
     <item>QStringListModel</item>
     <item>QStringMatcher</item>
     <item>QStringRef</item>
+    <item>QStringTokenizer</item>
     <item>QStringView</item>
     <item>QStyle</item>
     <item>QStyledItemDelegate</item>
@@ -2387,10 +2388,6 @@
     </context>
 
     <context attribute="Qt Classes" lineEndContext="#pop" name="Qt5ClassMember">
-      <IncludeRules context="DetectNSEnd" />
-    </context>
-
-    <context lineEndContext="#pop" name="DetectNSEnd" attribute="Normal Text">
       <DetectIdentifier context="#stay" />
       <AnyChar context="#pop" String="&ns_punctuators;" lookAhead="true" />
     </context>
@@ -2408,7 +2405,7 @@
 
 <general>
   <comments>
-    <comment name="singleLine" start="//" />
+    <comment name="singleLine" start="//" position="afterwhitespace"/>
     <comment name="multiLine" start="/*" end="*/" />
   </comments>
   <keywords casesensitive="1" />

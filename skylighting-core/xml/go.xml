@@ -26,7 +26,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 -->
 
 
-<language name="Go" version="8" kateversion="5.0" section="Sources" indenter="cstyle" extensions="*.go" author="Miquel Sabaté (mikisabate@gmail.com)" license="GPLv2+">
+<language name="Go" version="9" kateversion="5.0" section="Sources" indenter="cstyle" extensions="*.go" author="Miquel Sabaté (mikisabate@gmail.com)" license="GPLv2+">
     <highlighting>
     <list name="keywords">
 <!-- Keywords have been taken from The Go Programming Language Specification -> Keywords section -->
@@ -171,7 +171,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
     </highlighting>
   <general>
     <comments>
-      <comment name="singleLine" start="//" />
+      <comment name="singleLine" start="//" position="afterwhitespace" />
       <comment name="multiLine" start="/*" end="*/" region="Comment"/>
     </comments>
     <keywords casesensitive="1" additionalDeliminator="'&quot;" />

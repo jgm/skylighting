@@ -170,7 +170,7 @@ main = do
            ] @=? tokenize defConfig cpp "ng_or"
 
       , testCase "c '\\0' (#82)" $ Right
-           [ [ (CharTok,"'\\0'") ]
+           [ [ (CharTok,"'"),(SpecialCharTok,"\\0"),(CharTok,"'") ]
            ] @=? tokenize defConfig c "'\\0'"
 
       , testCase "c very long integer (#81)" $ Right

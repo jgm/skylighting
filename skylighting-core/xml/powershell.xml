@@ -1,7 +1,7 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 <language
   name="PowerShell"
-  version="11"
+  version="12"
   kateversion="5.0"
   extensions="*.ps1;*.psm1;*.psd1"
   section="Scripts"
@@ -913,7 +913,7 @@
         <Detect2Chars attribute="Comment" context="#pop" char="#" char1="&gt;" endRegion="CommentRegion"/>
         <IncludeRules context="##Comments"/>
       </context>
-      <context attribute="Cmdlets" lineEndContext="#stay" name="Cmdlet">
+      <context attribute="Normal Text" lineEndContext="#stay" name="Cmdlet">
         <keyword attribute="Function" context="#stay" String="cmdlets"/>
       </context>
     </contexts>
@@ -924,9 +924,8 @@
       <itemData name="Data Type"    defStyleNum="dsDataType" spellChecking="false"/>
       <itemData name="String"       defStyleNum="dsString"/>
       <itemData name="String Char"  defStyleNum="dsChar" spellChecking="false"/>
-      <itemData name="HereString"       defStyleNum="dsVerbatimString"/>
+      <itemData name="HereString"   defStyleNum="dsVerbatimString"/>
       <itemData name="Comment"      defStyleNum="dsComment"/>
-      <itemData name="Cmdlets"      defStyleNum="dsBuiltIn" spellChecking="false"/>
       <itemData name="Symbol"       defStyleNum="dsOperator" spellChecking="false"/>
       <itemData name="Variable" defStyleNum="dsVariable" spellChecking="false"/>
       <itemData name="Special Variable" defStyleNum="dsVariable" bold="1" spellChecking="false"/>

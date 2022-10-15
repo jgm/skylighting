@@ -33,7 +33,7 @@
 
 <!-- org syntax spec: https://orgmode.org/worg/dev/org-syntax.html -->
 <!-- syntax highlight: https://docs.kde.org/stable5/en/kate/katepart/highlight.html -->
-<language name="Org Mode" version="3" kateversion="5.79" section="Markup" extensions="*.org" priority="15" author="Gary Wang" license="MIT">
+<language name="Org Mode" version="4" kateversion="5.79" section="Markup" extensions="*.org" priority="15" author="Gary Wang" license="MIT">
   <highlighting>
     <list name="org-todo-keywords-todo">
       <item>TODO</item>
@@ -60,7 +60,7 @@
         <RegExpr attribute="Normal Text: Link" String="&implicitlink;"/>
       </context>
       <context name="find-header" attribute="Normal Text" lineEndContext="#pop">
-        <RegExpr attribute="Keyword" context="parse-header" String="^(?:\*){1,}\s+(?:([A-Z]+)\s+){0,1}(?:(\[#(?:[A-Z\d]+)\])\s+){0,1}(.*)\s*(\[[\d/%]+\]){0,1}\s*$" column="0" lookAhead="true"/>
+        <RegExpr context="parse-header" String="^(?:\*){1,}\s+(?:([A-Z]+)\s+){0,1}(?:(\[#(?:[A-Z\d]+)\])\s+){0,1}(.*)\s*(\[[\d/%]+\]){0,1}\s*$" column="0" lookAhead="true"/>
       </context>
       <context name="parse-header" attribute="Heading" lineEndContext="#pop">
         <RegExpr attribute="Heading" String="(?:\*){1,}\s+" lookAhead="false"/>
@@ -122,7 +122,6 @@
       <itemData name="Underline Text" defStyleNum="dsNormal" underline="true"/>
       <itemData name="Italic Text" defStyleNum="dsNormal" italic="true"/>
       <itemData name="Strikethrough Text" defStyleNum="dsNormal" strikeOut="true"/>
-      <itemData name="Keyword" defStyleNum="dsBuiltIn" spellChecking="false"/>
       <itemData name="Keyword Done" defStyleNum="dsInformation" spellChecking="false"/>
       <itemData name="Keyword Todo" defStyleNum="dsAlert" spellChecking="false"/>
       <itemData name="Cookie: Priority" defStyleNum="dsInformation" spellChecking="false"/>

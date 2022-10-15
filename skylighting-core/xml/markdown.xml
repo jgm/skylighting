@@ -90,7 +90,7 @@
 <!ENTITY checkbox "\[[ x]\](?=\s)">
 ]>
 
-<language name="Markdown" version="21" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
+<language name="Markdown" version="22" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
   <highlighting>
     <contexts>
       <!-- Start of the Markdown document: find metadata or code block -->
@@ -314,7 +314,8 @@
       <context name="find-lang-fenced-code" attribute="Normal Text" lineEndContext="#pop">
         <!-- Apply syntax highlighting to fenced code blocks for some languages -->
         <RegExpr attribute="Fenced Code" context="#pop!code" String="&fcode;&end;"/>
-        <RegExpr attribute="Fenced Code" context="#pop!bash-code" String="&fcode;\s*(?:bash(?:rc|_profile|_login|_logout)?|shell|sh|zsh|profile|PKGBUILD|APKBUILD|ebuild|eclass|nix)&end;" insensitive="true"/>
+        <RegExpr attribute="Fenced Code" context="#pop!bash-code" String="&fcode;\s*(?:bash(?:rc|_profile|_login|_logout)?|shell|sh|profile|PKGBUILD|APKBUILD|ebuild|eclass|nix)&end;" insensitive="true"/>
+        <RegExpr attribute="Fenced Code" context="#pop!zsh-code" String="&fcode;\s*(?:zsh)&end;" insensitive="true"/>
         <RegExpr attribute="Fenced Code" context="#pop!cpp-code" String="&fcode;\s*(?:[ch]pp|[ch]\+\+|[ch]xx|h?cc|hh|cuh?|ino|pde|moc)&end;" insensitive="true"/>
         <RegExpr attribute="Fenced Code" context="#pop!csharp-code" String="&fcode;\s*(?:cs|csharp|c\#)&end;" insensitive="true"/>
         <RegExpr attribute="Fenced Code" context="#pop!cmake-code" String="&fcode;\s*(?:cmake|CMakeLists(?:\.txt)?)&end;" insensitive="true"/>
@@ -353,6 +354,10 @@
       <context attribute="Normal Text" lineEndContext="#stay" name="bash-code" fallthroughContext="Command##Bash">
         <IncludeRules context="code"/>
         <IncludeRules context="##Bash" includeAttrib="true"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="zsh-code" fallthroughContext="Command##Zsh">
+        <IncludeRules context="code"/>
+        <IncludeRules context="##Zsh" includeAttrib="true"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="cmake-code">
         <IncludeRules context="code"/>

@@ -77,7 +77,7 @@ Changes:
   <!ENTITY float "\b&LNUM;(\.(&LNUM;)?(&EXPONENT;)?|&EXPONENT;)|\.&LNUM;(&EXPONENT;)?">
 ]>
 
-<language name="PHP/PHP" indenter="cstyle" version="23" kateversion="5.53" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
+<language name="PHP/PHP" indenter="cstyle" version="24" kateversion="5.53" section="Scripts" extensions="" priority="5" mimetype="" hidden="true">
   <highlighting>
     <!-- https://php.watch/versions -->
     <!-- Based on 8.1 -->
@@ -11291,7 +11291,7 @@ Changes:
   </highlighting>
   <general>
     <comments>
-      <comment name="singleLine" start="//" />
+      <comment name="singleLine" start="//" position="afterwhitespace" />
       <comment name="multiLine" start="/*" end="*/" region="Comment" />
     </comments>
     <keywords casesensitive="0" weakDeliminator="" additionalDeliminator="@" />
