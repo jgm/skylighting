@@ -10,10 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         versions:
-          - ghc: '8.0.2'
-            cabal: '3.0'
-          - ghc: '8.2.2'
-            cabal: '3.0'
           - ghc: '8.4.4'
             cabal: '3.0'
           - ghc: '8.6.5'
@@ -33,6 +29,22 @@ jobs:
       run: |
         ghcup install ghc --set ${{ matrix.versions.ghc }}
         ghcup install cabal ${{ matrix.versions.cabal }}
+
+    - name: Cache cabal global package db
+      id:   cabal-global
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cabal
+        key: ${{ runner.os }}-${{ matrix.versions.ghc }}-${{ matrix.versions.cabal }}-cabal-global-${{ secrets.CACHE_VERSION }}
+
+    - name: Cache cabal work
+      id:   cabal-local
+      uses: actions/cache@v2
+      with:
+        path: |
+          dist-newstyle
+        key: ${{ runner.os }}-${{ matrix.versions.ghc }}-${{ matrix.versions.cabal }}-cabal-global-${{ secrets.CACHE_VERSION }}
 
     - name: Bootstrap
       run: |
@@ -77,22 +89,22 @@ jobs:
           stack test --jobs=1 --fast --flag skylighting:executable --ghc-options=-Werror
 
 
-  macos:
+# macos:
 
-    runs-on: macOS-latest
+#   runs-on: macOS-latest
 
-    steps:
-    - uses: actions/checkout@v1
-    - name: Install stack
-      run: |
-          curl -L https://get.haskellstack.org/stable/osx-x86_64.tar.gz -o stack.tar.gz
-          tar xzvf stack.tar.gz --strip-components=1 'stack*/stack'
-    - name: Bootstrap
-      run: |
-          ./stack install --fast --flag skylighting-core:executable skylighting-core
-          cd skylighting
-          ../stack exec skylighting-extract -- ../skylighting-core/xml
-    - name: Build and test
-      run: |
-          ./stack build --test --fast --flag skylighting:executable --dependencies-only
-          ./stack build --test --jobs=1 --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
+#   steps:
+#   - uses: actions/checkout@v1
+#   - name: Install stack
+#     run: |
+#         curl -L https://get.haskellstack.org/stable/osx-x86_64.tar.gz -o stack.tar.gz
+#         tar xzvf stack.tar.gz --strip-components=1 'stack*/stack'
+#   - name: Bootstrap
+#     run: |
+#         ./stack install --fast --flag skylighting-core:executable skylighting-core
+#         cd skylighting
+#         ../stack exec skylighting-extract -- ../skylighting-core/xml
+#   - name: Build and test
+#     run: |
+#         ./stack build --test --fast --flag skylighting:executable --dependencies-only
+#         ./stack build --test --jobs=1 --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
