@@ -1,5 +1,24 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.13.1
+
+  * `getCapture`: fail instead of throwing error if dynamic match not found.
+    I believe this is the intended behavior for StringDetect, judging
+    from examples in the KDE documentation.
+
+  * Update xml syntax definitions:
+    asn1, bash, c, cmake, cpp, cs, d, elixir, fortran-fixed, gcc, glsl,
+    go, html, java, javascript, lex, lua, markdown, mediawiki, noweb,
+    ocaml, orgmode, php, powershell, prolog, python, r, ruby, rust,
+    scheme, sql-postgresql, typescript, vhdl, xml, yacc, yaml, zsh
+
+  * Replace a lambda with pointfree notation (shaving off some RAM usage)
+    (0xd34df00d).
+
+  * Use `newtype` for `TokenizerM`, giving about 5-10% boost on benchmark
+    (0xd34df00d).
+
+
 ## 0.13
 
   * Update syntax definitions from upstream: bash, cmake, diff,
