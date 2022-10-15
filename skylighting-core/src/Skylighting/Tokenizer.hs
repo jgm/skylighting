@@ -536,7 +536,7 @@ regExpr dynamic re inp = do
   case matchRegex regex' inp of
         Just (matchedBytes, capts) -> do
           unless (null capts) $
-             modify $ \st -> st{ captures =
+            modify $ \st -> st{ captures =
                                   IntMap.map (toSlice inp) capts }
           takeChars (UTF8.length matchedBytes)
         _ -> mzero
@@ -585,7 +585,7 @@ getCapture :: Int -> TokenizerM Text
 getCapture capnum = do
   capts <- gets captures
   case IntMap.lookup capnum capts of
-     Nothing -> throwError $ "Capture " <> show capnum <> " not defined!"
+     Nothing -> mzero
      Just x  -> decodeBS x
 
 keyword :: KeywordAttr -> WordSet Text -> ByteString -> TokenizerM Text
