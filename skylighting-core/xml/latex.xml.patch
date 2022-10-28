@@ -1,0 +1,1631 @@
+--- latex.xml	2022-10-28 15:10:10.000000000 -0700
++++ latex.xml.2	2022-10-28 15:09:24.000000000 -0700
+@@ -1739,7 +1739,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!UnknownHighlightingBegin"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="UnknownHighlightingCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="UnknownHighlightingBegin"/>
+@@ -2016,7 +2016,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginABAP"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingABAPCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginABAP"/>
+@@ -2028,7 +2028,7 @@
+       </context>
+       <context name="HighlightingABAP" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##ABAP" includeAttrib="true"/>
++        <!--        <IncludeRules context="##ABAP" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingActionScript 2.0CodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -2045,7 +2045,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginActionScript 2.0"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingActionScript 2.0CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginActionScript 2.0"/>
+@@ -2074,7 +2074,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginAda"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingAdaCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginAda"/>
+@@ -2103,7 +2103,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginAgda"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingAgdaCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginAgda"/>
+@@ -2132,7 +2132,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginApache Configuration"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingApache ConfigurationCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginApache Configuration"/>
+@@ -2161,7 +2161,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginAutoHotKey"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingAutoHotKeyCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginAutoHotKey"/>
+@@ -2173,7 +2173,7 @@
+       </context>
+       <context name="HighlightingAutoHotKey" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##AutoHotKey" includeAttrib="true"/>
++        <!-- <IncludeRules context="##AutoHotKey" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingAWKCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -2190,7 +2190,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginAWK"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingAWKCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginAWK"/>
+@@ -2219,7 +2219,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginBash"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingBashCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginBash"/>
+@@ -2248,7 +2248,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginBibTeX"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingBibTeXCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginBibTeX"/>
+@@ -2277,7 +2277,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginBoo"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingBooCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginBoo"/>
+@@ -2306,7 +2306,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginC"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingCCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginC"/>
+@@ -2335,7 +2335,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginCMake"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingCMakeCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginCMake"/>
+@@ -2364,7 +2364,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginC#"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingC#CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginC#"/>
+@@ -2393,7 +2393,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginClojure"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingClojureCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginClojure"/>
+@@ -2422,7 +2422,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginCoffeeScript"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingCoffeeScriptCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginCoffeeScript"/>
+@@ -2451,7 +2451,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginCommon Lisp"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingCommon LispCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginCommon Lisp"/>
+@@ -2480,7 +2480,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginC++"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingC++CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginC++"/>
+@@ -2509,7 +2509,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginCSS"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingCSSCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginCSS"/>
+@@ -2538,7 +2538,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginD"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingDCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginD"/>
+@@ -2567,7 +2567,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginDart"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingDartCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginDart"/>
+@@ -2596,7 +2596,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPascal"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPascalCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPascal"/>
+@@ -2625,7 +2625,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginDiff"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingDiffCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginDiff"/>
+@@ -2654,7 +2654,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginDTD"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingDTDCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginDTD"/>
+@@ -2683,7 +2683,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginEiffel"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingEiffelCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginEiffel"/>
+@@ -2712,7 +2712,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginElixir"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingElixirCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginElixir"/>
+@@ -2741,7 +2741,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginElm"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingElmCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginElm"/>
+@@ -2770,7 +2770,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginEmail"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingEmailCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginEmail"/>
+@@ -2799,7 +2799,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginErlang"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingErlangCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginErlang"/>
+@@ -2828,7 +2828,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginFish"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingFishCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginFish"/>
+@@ -2840,7 +2840,7 @@
+       </context>
+       <context name="HighlightingFish" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Fish" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Fish" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingANS-Forth94CodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -2857,7 +2857,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginANS-Forth94"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingANS-Forth94CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginANS-Forth94"/>
+@@ -2869,7 +2869,7 @@
+       </context>
+       <context name="HighlightingANS-Forth94" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##ANS-Forth94" includeAttrib="true"/>
++        <!-- <IncludeRules context="##ANS-Forth94" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingFortran (Fixed Format)CodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -2886,7 +2886,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginFortran (Fixed Format)"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingFortran (Fixed Format)CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginFortran (Fixed Format)"/>
+@@ -2915,7 +2915,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginFortran (Free Format)"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingFortran (Free Format)CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginFortran (Free Format)"/>
+@@ -2944,7 +2944,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginGAP"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingGAPCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginGAP"/>
+@@ -2956,7 +2956,7 @@
+       </context>
+       <context name="HighlightingGAP" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##GAP" includeAttrib="true"/>
++        <!-- <IncludeRules context="##GAP" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingGodotCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -2973,7 +2973,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginGodot"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingGodotCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginGodot"/>
+@@ -2985,7 +2985,7 @@
+       </context>
+       <context name="HighlightingGodot" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Godot" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Godot" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingGLSLCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3002,7 +3002,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginGLSL"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingGLSLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginGLSL"/>
+@@ -3031,7 +3031,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginG-Code"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingG-CodeCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginG-Code"/>
+@@ -3043,7 +3043,7 @@
+       </context>
+       <context name="HighlightingG-Code" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##G-Code" includeAttrib="true"/>
++        <!-- <IncludeRules context="##G-Code" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingGnuplotCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3060,7 +3060,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginGnuplot"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingGnuplotCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginGnuplot"/>
+@@ -3072,7 +3072,7 @@
+       </context>
+       <context name="HighlightingGnuplot" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Gnuplot" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Gnuplot" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingGoCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3089,7 +3089,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginGo"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingGoCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginGo"/>
+@@ -3118,7 +3118,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginGroovy"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingGroovyCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginGroovy"/>
+@@ -3147,7 +3147,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginHaml"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingHamlCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginHaml"/>
+@@ -3159,7 +3159,7 @@
+       </context>
+       <context name="HighlightingHaml" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Haml" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Haml" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingHaskellCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3176,7 +3176,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginHaskell"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingHaskellCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginHaskell"/>
+@@ -3205,7 +3205,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginHaxe"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingHaxeCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginHaxe"/>
+@@ -3234,7 +3234,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginHTML"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingHTMLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginHTML"/>
+@@ -3263,7 +3263,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginIDL"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingIDLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginIDL"/>
+@@ -3275,7 +3275,7 @@
+       </context>
+       <context name="HighlightingIDL" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##IDL" includeAttrib="true"/>
++        <!-- <IncludeRules context="##IDL" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingIdrisCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3292,7 +3292,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginIdris"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingIdrisCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginIdris"/>
+@@ -3321,7 +3321,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginInform"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingInformCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginInform"/>
+@@ -3333,7 +3333,7 @@
+       </context>
+       <context name="HighlightingInform" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Inform" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Inform" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingINI FilesCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3350,7 +3350,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginINI Files"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingINI FilesCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginINI Files"/>
+@@ -3379,7 +3379,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginJ"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingJCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginJ"/>
+@@ -3408,7 +3408,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginJava"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingJavaCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginJava"/>
+@@ -3437,7 +3437,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginJavaScript"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingJavaScriptCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginJavaScript"/>
+@@ -3466,7 +3466,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginJCL"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingJCLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginJCL"/>
+@@ -3478,7 +3478,7 @@
+       </context>
+       <context name="HighlightingJCL" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##JCL" includeAttrib="true"/>
++        <!-- <IncludeRules context="##JCL" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingJSONCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3495,7 +3495,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginJSON"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingJSONCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginJSON"/>
+@@ -3524,7 +3524,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginJulia"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingJuliaCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginJulia"/>
+@@ -3553,7 +3553,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginKconfig"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingKconfigCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginKconfig"/>
+@@ -3565,7 +3565,7 @@
+       </context>
+       <context name="HighlightingKconfig" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Kconfig" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Kconfig" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingKotlinCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3582,7 +3582,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginKotlin"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingKotlinCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginKotlin"/>
+@@ -3611,7 +3611,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginLSL"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingLSLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginLSL"/>
+@@ -3623,7 +3623,7 @@
+       </context>
+       <context name="HighlightingLSL" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##LSL" includeAttrib="true"/>
++        <!-- <IncludeRules context="##LSL" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingLESSCSSCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3640,7 +3640,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginLESSCSS"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingLESSCSSCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginLESSCSS"/>
+@@ -3652,7 +3652,7 @@
+       </context>
+       <context name="HighlightingLESSCSS" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##LESSCSS" includeAttrib="true"/>
++        <!-- <IncludeRules context="##LESSCSS" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingLilyPondCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3669,7 +3669,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginLilyPond"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingLilyPondCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginLilyPond"/>
+@@ -3698,7 +3698,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginLiterate Haskell"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingLiterate HaskellCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginLiterate Haskell"/>
+@@ -3727,7 +3727,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginLLVM"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingLLVMCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginLLVM"/>
+@@ -3756,7 +3756,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginLogtalk"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingLogtalkCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginLogtalk"/>
+@@ -3768,7 +3768,7 @@
+       </context>
+       <context name="HighlightingLogtalk" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Logtalk" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Logtalk" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingLuaCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3785,7 +3785,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginLua"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingLuaCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginLua"/>
+@@ -3814,7 +3814,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginMakefile"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingMakefileCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginMakefile"/>
+@@ -3843,7 +3843,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginMako"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingMakoCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginMako"/>
+@@ -3855,7 +3855,7 @@
+       </context>
+       <context name="HighlightingMako" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Mako" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Mako" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingMarkdownCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3872,7 +3872,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginMarkdown"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingMarkdownCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginMarkdown"/>
+@@ -3901,7 +3901,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginMason"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingMasonCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginMason"/>
+@@ -3913,7 +3913,7 @@
+       </context>
+       <context name="HighlightingMason" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Mason" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Mason" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingMathematicaCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -3930,7 +3930,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginMathematica"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingMathematicaCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginMathematica"/>
+@@ -3959,7 +3959,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginMatlab"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingMatlabCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginMatlab"/>
+@@ -3988,7 +3988,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginMaxima"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingMaximaCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginMaxima"/>
+@@ -4017,7 +4017,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginMeson"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingMesonCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginMeson"/>
+@@ -4029,7 +4029,7 @@
+       </context>
+       <context name="HighlightingMeson" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Meson" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Meson" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingModelicaCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4046,7 +4046,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginModelica"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingModelicaCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginModelica"/>
+@@ -4058,7 +4058,7 @@
+       </context>
+       <context name="HighlightingModelica" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Modelica" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Modelica" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingModula-2CodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4075,7 +4075,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginModula-2"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingModula-2CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginModula-2"/>
+@@ -4104,7 +4104,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSQL (MySQL)"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSQL (MySQL)CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSQL (MySQL)"/>
+@@ -4133,7 +4133,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginNSIS"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingNSISCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginNSIS"/>
+@@ -4145,7 +4145,7 @@
+       </context>
+       <context name="HighlightingNSIS" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##NSIS" includeAttrib="true"/>
++        <!-- <IncludeRules context="##NSIS" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingIntel x86 (NASM)CodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4162,7 +4162,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginIntel x86 (NASM)"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingIntel x86 (NASM)CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginIntel x86 (NASM)"/>
+@@ -4191,7 +4191,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginNemerle"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingNemerleCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginNemerle"/>
+@@ -4203,7 +4203,7 @@
+       </context>
+       <context name="HighlightingNemerle" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Nemerle" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Nemerle" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingnesCCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4220,7 +4220,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginnesC"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingnesCCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginnesC"/>
+@@ -4232,7 +4232,7 @@
+       </context>
+       <context name="HighlightingnesC" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##nesC" includeAttrib="true"/>
++        <!-- <IncludeRules context="##nesC" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingNimCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4249,7 +4249,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginNim"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingNimCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginNim"/>
+@@ -4278,7 +4278,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginNix"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingNixCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginNix"/>
+@@ -4307,7 +4307,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginObjective-C"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingObjective-CCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginObjective-C"/>
+@@ -4336,7 +4336,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginObjective-C++"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingObjective-C++CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginObjective-C++"/>
+@@ -4365,7 +4365,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginObjective Caml"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingObjective CamlCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginObjective Caml"/>
+@@ -4394,7 +4394,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginOctave"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingOctaveCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginOctave"/>
+@@ -4423,7 +4423,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPerl"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPerlCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPerl"/>
+@@ -4452,7 +4452,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPHP/PHP"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPHP/PHPCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPHP/PHP"/>
+@@ -4481,7 +4481,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPig"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPigCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPig"/>
+@@ -4493,7 +4493,7 @@
+       </context>
+       <context name="HighlightingPig" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Pig" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Pig" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingPikeCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4510,7 +4510,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPike"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPikeCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPike"/>
+@@ -4539,7 +4539,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPony"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPonyCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPony"/>
+@@ -4551,7 +4551,7 @@
+       </context>
+       <context name="HighlightingPony" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Pony" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Pony" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingPostScriptCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4568,7 +4568,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPostScript"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPostScriptCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPostScript"/>
+@@ -4597,7 +4597,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPOV-Ray"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPOV-RayCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPOV-Ray"/>
+@@ -4626,7 +4626,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPowerShell"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPowerShellCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPowerShell"/>
+@@ -4655,7 +4655,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPraat"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPraatCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPraat"/>
+@@ -4667,7 +4667,7 @@
+       </context>
+       <context name="HighlightingPraat" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Praat" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Praat" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingPrologCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4684,7 +4684,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginProlog"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPrologCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginProlog"/>
+@@ -4713,7 +4713,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginProtobuf"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingProtobufCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginProtobuf"/>
+@@ -4742,7 +4742,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPug"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPugCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPug"/>
+@@ -4754,7 +4754,7 @@
+       </context>
+       <context name="HighlightingPug" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Pug" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Pug" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingPuppetCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4771,7 +4771,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPuppet"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPuppetCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPuppet"/>
+@@ -4783,7 +4783,7 @@
+       </context>
+       <context name="HighlightingPuppet" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Puppet" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Puppet" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingPythonCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4800,7 +4800,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginPython"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingPythonCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginPython"/>
+@@ -4829,7 +4829,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginQML"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingQMLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginQML"/>
+@@ -4858,7 +4858,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginRelaxNG-Compact"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingRelaxNG-CompactCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginRelaxNG-Compact"/>
+@@ -4887,7 +4887,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginRPM Spec"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingRPM SpecCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginRPM Spec"/>
+@@ -4899,7 +4899,7 @@
+       </context>
+       <context name="HighlightingRPM Spec" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##RPM Spec" includeAttrib="true"/>
++        <!-- <IncludeRules context="##RPM Spec" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingRacketCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4916,7 +4916,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginRacket"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingRacketCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginRacket"/>
+@@ -4928,7 +4928,7 @@
+       </context>
+       <context name="HighlightingRacket" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Racket" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Racket" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingREXXCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4945,7 +4945,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginREXX"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingREXXCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginREXX"/>
+@@ -4957,7 +4957,7 @@
+       </context>
+       <context name="HighlightingREXX" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##REXX" includeAttrib="true"/>
++        <!-- <IncludeRules context="##REXX" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingRuby/Rails/RHTMLCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -4974,7 +4974,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginRuby/Rails/RHTML"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingRuby/Rails/RHTMLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginRuby/Rails/RHTML"/>
+@@ -5003,7 +5003,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginreStructuredText"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingreStructuredTextCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginreStructuredText"/>
+@@ -5032,7 +5032,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginRuby"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingRubyCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginRuby"/>
+@@ -5061,7 +5061,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginRust"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingRustCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginRust"/>
+@@ -5090,7 +5090,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSML"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSMLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSML"/>
+@@ -5119,7 +5119,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSASS"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSASSCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSASS"/>
+@@ -5148,7 +5148,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginScala"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingScalaCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginScala"/>
+@@ -5177,7 +5177,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginScheme"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSchemeCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginScheme"/>
+@@ -5206,7 +5206,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginscilab"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingscilabCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginscilab"/>
+@@ -5235,7 +5235,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSCSS"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSCSSCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSCSS"/>
+@@ -5264,7 +5264,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginsed"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingsedCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginsed"/>
+@@ -5293,7 +5293,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSieve"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSieveCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSieve"/>
+@@ -5305,7 +5305,7 @@
+       </context>
+       <context name="HighlightingSieve" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Sieve" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Sieve" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingSmaliCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -5322,7 +5322,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSmali"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSmaliCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSmali"/>
+@@ -5334,7 +5334,7 @@
+       </context>
+       <context name="HighlightingSmali" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Smali" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Smali" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingSolidityCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -5351,7 +5351,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSolidity"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSolidityCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSolidity"/>
+@@ -5363,7 +5363,7 @@
+       </context>
+       <context name="HighlightingSolidity" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Solidity" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Solidity" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingSpiceCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -5380,7 +5380,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSpice"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSpiceCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSpice"/>
+@@ -5392,7 +5392,7 @@
+       </context>
+       <context name="HighlightingSpice" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Spice" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Spice" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingSQLCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -5409,7 +5409,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSQL"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSQLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSQL"/>
+@@ -5438,7 +5438,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginStan"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingStanCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginStan"/>
+@@ -5467,7 +5467,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginStata"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingStataCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginStata"/>
+@@ -5496,7 +5496,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSwift"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSwiftCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSwift"/>
+@@ -5525,7 +5525,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginSystemVerilog"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingSystemVerilogCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginSystemVerilog"/>
+@@ -5554,7 +5554,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginTOML"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingTOMLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginTOML"/>
+@@ -5583,7 +5583,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginTADS 3"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingTADS 3CodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginTADS 3"/>
+@@ -5595,7 +5595,7 @@
+       </context>
+       <context name="HighlightingTADS 3" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##TADS 3" includeAttrib="true"/>
++        <!-- <IncludeRules context="##TADS 3" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingTcl/TkCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -5612,7 +5612,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginTcl/Tk"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingTcl/TkCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginTcl/Tk"/>
+@@ -5641,7 +5641,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginTcsh"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingTcshCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginTcsh"/>
+@@ -5670,7 +5670,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginTerraform"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingTerraformCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginTerraform"/>
+@@ -5682,7 +5682,7 @@
+       </context>
+       <context name="HighlightingTerraform" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Terraform" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Terraform" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingLaTeXCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -5699,7 +5699,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginLaTeX"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingLaTeXCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginLaTeX"/>
+@@ -5728,7 +5728,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginTodo.txt"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingTodo.txtCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginTodo.txt"/>
+@@ -5740,7 +5740,7 @@
+       </context>
+       <context name="HighlightingTodo.txt" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Todo.txt" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Todo.txt" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingTypeScriptCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -5757,7 +5757,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginTypeScript"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingTypeScriptCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginTypeScript"/>
+@@ -5786,7 +5786,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginVala"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingValaCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginVala"/>
+@@ -5798,7 +5798,7 @@
+       </context>
+       <context name="HighlightingVala" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Vala" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Vala" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingVelocityCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -5815,7 +5815,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginVelocity"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingVelocityCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginVelocity"/>
+@@ -5827,7 +5827,7 @@
+       </context>
+       <context name="HighlightingVelocity" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##Velocity" includeAttrib="true"/>
++        <!-- <IncludeRules context="##Velocity" includeAttrib="true"/> -->
+       </context>
+ 
+       <context name="HighlightingVerilogCodeEnvS" attribute="Error" lineEndContext="#stay">
+@@ -5844,7 +5844,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginVerilog"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingVerilogCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginVerilog"/>
+@@ -5873,7 +5873,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginVHDL"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingVHDLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginVHDL"/>
+@@ -5902,7 +5902,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginXML"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingXMLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginXML"/>
+@@ -5931,7 +5931,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginx.org Configuration"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="Highlightingx.org ConfigurationCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginx.org Configuration"/>
+@@ -5960,7 +5960,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginxslt"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingxsltCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginxslt"/>
+@@ -5989,7 +5989,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginYAML"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingYAMLCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginYAML"/>
+@@ -6018,7 +6018,7 @@
+         <DetectIdentifier/>
+         <DetectChar char="}" attribute="Normal Text" context="#pop!HighlightingBeginYANG"/>
+         <IncludeRules context="FindComments"/>
+-        <RegExpr String="\&envname;" attribute="Macro" context="#stay"/>
++        <RegExpr String="\\&envname;" attribute="Macro" context="#stay"/>
+       </context>
+       <context name="HighlightingYANGCodeEnv" attribute="Normal Text" lineEndContext="#stay">
+         <DetectChar char="}" context="HighlightingBeginYANG"/>
+@@ -6030,7 +6030,7 @@
+       </context>
+       <context name="HighlightingYANG" attribute="Normal Text" lineEndContext="#stay">
+         <IncludeRules context="HighlightingCommon"/>
+-        <IncludeRules context="##YANG" includeAttrib="true"/>
++        <!-- <IncludeRules context="##YANG" includeAttrib="true"/> -->
+       </context>
+       <!-- end of mintedcode environment -->
+ 
