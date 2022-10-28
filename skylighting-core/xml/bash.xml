@@ -66,7 +66,7 @@
 
 <language
     name="Bash"
-    version="45"
+    version="46"
     kateversion="5.79"
     section="Scripts"
     extensions="*.sh;*.bash;*.ebuild;*.eclass;*.exlib;*.exheres-0;.bashrc;.bash_profile;.bash_login;.profile;PKGBUILD;APKBUILD"
@@ -581,6 +581,7 @@
         <RegExpr attribute="Function" context="#stay" String="&funcname;[ &tab;]*\(\)"/>
         <!-- Special case for `: << '#BLOCK-COMMENT' form of "multiline" comments-->
         <RegExpr attribute="Normal Text" context="PreHereDocMLComment" String="^:[ &tab;]+&lt;&lt;[ &tab;]*'#([^']+)'$" lookAhead="1" column="0"/>
+        <WordDetect attribute="Builtin" context="Coproc" String="coproc"/>
         <keyword attribute="Builtin" context="CommandArgs" String="builtins"/>
         <keyword attribute="Command" context="CommandArgs" String="unixcommands"/>
 
@@ -627,6 +628,18 @@
         <!-- stop a group command with } -->
         <RegExpr attribute="Keyword" context="#pop#pop" String="\}&eoexpr;" endRegion="group"/>
         <DetectChar context="#pop!Command" char="}" lookAhead="1"/>
+      </context>
+
+      <context attribute="Normal Text" lineEndContext="#pop" name="Coproc" fallthroughContext="#pop">
+        <DetectSpaces attribute="Normal Text"/>
+        <LineContinue attribute="Escape" context="#stay"/>
+        <RegExpr context="CoprocName" String="(\$?&varname;|\$\{&varname;\}|'&varname;'|&quot;(\$?&varname;|\$\{&varname;\}|[a-zA-Z0-9_])+&quot;)+(?=\s+\{($|\s))" lookAhead="1"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="CoprocName">
+        <DetectChar attribute="Keyword" context="#pop#pop!Group" char="{" beginRegion="group"/>
+        <DetectSpaces attribute="Normal Text"/>
+        <DetectIdentifier attribute="Normal Text"/>
+        <IncludeRules context="FindWord"/>
       </context>
 
       <context attribute="Command" lineEndContext="#pop" name="Command" fallthroughContext="#pop">
@@ -1267,13 +1280,13 @@
 
       <!-- VarBrace is called as soon as ${ or ${# are encoutered -->
       <context attribute="Variable" lineEndContext="#stay" name="VarBrace" fallthroughContext="#pop!VarError">
-        <DetectChar attribute="Variable" context="#pop" char="}"/>
+        <DetectChar attribute="Parameter Expansion" context="#pop" char="}"/>
         <DetectIdentifier attribute="Variable" context="#pop!CheckVarAlt"/>
         <AnyChar attribute="Variable" context="#pop!CheckVarAlt" String="*@?$!-"/>
         <Int attribute="Variable" context="#pop!CheckVarAlt" additionalDeliminator=":#%^,/@{}"/>
       </context>
       <context attribute="Error" lineEndContext="#stay" name="VarError">
-        <DetectChar attribute="Variable" context="#pop" char="}"/>
+        <DetectChar attribute="Parameter Expansion" context="#pop" char="}"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="CheckVarAlt" fallthroughContext="#pop!VarError">
         <DetectChar attribute="Parameter Expansion" context="#pop" char="}"/>
@@ -1297,7 +1310,7 @@
 
       <!-- called as soon as ${xxx: is encoutered -->
       <context attribute="Normal Text" lineEndContext="#stay" name="VarSub">
-        <DetectChar attribute="Variable" context="#pop" char="}"/>
+        <DetectChar attribute="Parameter Expansion" context="#pop" char="}"/>
         <!-- <Int> doesn't match :3 because : is a weakDeliminator -->
         <AnyChar attribute="Decimal" String="0123456789"/>
         <DetectChar attribute="Parameter Expansion Operator" context="#stay" char=":"/>

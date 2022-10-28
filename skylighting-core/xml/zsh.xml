@@ -77,7 +77,7 @@
         <!ENTITY int "(?:[0-9]++[_0-9]*+)">
         <!ENTITY exp "(?:[eE][-+]?&int;)">
 ]>
-<language name="Zsh" version="30" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
+<language name="Zsh" version="31" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
 
   <highlighting>
     <list name="keywords">
@@ -234,7 +234,7 @@
         <!-- start expression in single/double brackets -->
         <DetectChar context="MaybeBracketExpression" char="[" lookAhead="1"/>
         <!-- start a group command or BraceExpansion with { -->
-        <DetectChar attribute="Keyword" context="Group" char="{"/>
+        <DetectChar attribute="Keyword" context="Group" char="{" beginRegion="group"/>
 
         <!-- handle ` -->
         <DetectChar attribute="Backquote" context="CommandBackq" char="`"/>
@@ -257,6 +257,7 @@
         <!-- handle commands that have variable names as argument -->
         <keyword attribute="Builtin" context="VarName" String="builtins_var" lookAhead="1"/>
         <WordDetect attribute="Builtin" context="#stay" String="noglob"/>
+        <WordDetect attribute="Builtin" context="#stay" String="coproc"/>
         <!-- mark function definitions without function keyword -->
         <RegExpr attribute="Function" context="#stay" String="&funcname;[ &tab;]*\(\)"/>
         <keyword attribute="Builtin" context="CommandArgs" String="builtins"/>
@@ -298,7 +299,7 @@
 
       <!-- Group is called after a { is encountered -->
       <context attribute="Normal Text" lineEndContext="#stay" name="Group" fallthroughContext="Command">
-        <DetectChar attribute="Keyword" context="#pop!GroupEnd" char="}"/>
+        <DetectChar attribute="Keyword" context="#pop!GroupEnd" char="}" endRegion="group"/>
         <IncludeRules context="Start"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="GroupEnd" fallthroughContext="#pop!CommandArgs">
@@ -1057,7 +1058,7 @@
         <DetectChar attribute="Error" context="#pop" char="$"/>
       </context>
       <context attribute="Error" lineEndContext="#stay" name="VarError">
-        <DetectChar attribute="Variable" context="#pop" char="}"/>
+        <DetectChar attribute="Parameter Expansion" context="#pop" char="}"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="CheckVarAlt" fallthroughContext="#pop!VarError">
         <DetectChar attribute="Parameter Expansion" context="#pop" char="}"/>
@@ -1119,7 +1120,7 @@
 
       <!-- called as soon as ${xxx: is encoutered -->
       <context attribute="Normal Text" lineEndContext="#stay" name="VarSub">
-        <DetectChar attribute="Variable" context="#pop" char="}"/>
+        <DetectChar attribute="Parameter Expansion" context="#pop" char="}"/>
         <AnyChar context="VarOffset" String="0123456789" lookAhead="1"/>
         <AnyChar attribute="Operator" context="#stay" String="+-!~*/%&lt;>=&amp;^|"/>
         <DetectChar attribute="Parameter Expansion Operator" context="#stay" char=":"/>
@@ -1873,11 +1874,11 @@
       </context>
       <context attribute="Function" lineEndContext="#pop" name="FunctionNameStartMaybeBraceExpansion">
         <IncludeRules context="DispatchBraceExpansion"/>
-        <DetectChar attribute="Keyword" context="#pop#pop#pop!Group" char="{"/>
+        <DetectChar attribute="Keyword" context="#pop#pop#pop!Group" char="{" beginRegion="group"/>
       </context>
       <context attribute="Function" lineEndContext="#pop" name="FunctionNameMaybeBraceExpansion">
         <IncludeRules context="DispatchBraceExpansion"/>
-        <DetectChar attribute="Function" context="#pop!FunctionNameRecBrace" char="{"/>
+        <DetectChar attribute="Function" context="#pop!FunctionNameRecBrace" char="{" beginRegion="group"/>
       </context>
 
       <!-- Case is called after the case keyword is encoutered. We handle this because of

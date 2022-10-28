@@ -12,7 +12,7 @@
 
 <language
     name="Nix"
-    version="1"
+    version="2"
     kateversion="5.79"
     section="Scripts"
     extensions="*.nix"
@@ -56,9 +56,12 @@
                 <Detect2Chars char="|" char1="|" attribute="Operator" />
                 <Detect2Chars char="&amp;" char1="&amp;" attribute="Operator" />
                 <AnyChar String="+-*/?!" attribute="Operator" />
-                <RegExpr String="\b&ident;\s*:" context="Function" lookAhead="true" />
+                <RegExpr String="\b&ident;(?=\s*:)" context="Function" attribute="Identifier" />
+
+                <DetectIdentifier />
             </context>
             <context name="Single Expression" attribute="Normal Text" lineEndContext="#stay">
+                <DetectSpaces />
                 <IncludeRules context="Comment Rules" />
 
                 <keyword String="builtins" attribute="Builtin" />
@@ -68,8 +71,8 @@
                 <DetectChar char="[" attribute="Symbol" context="List" beginRegion="List" />
                 <DetectChar char="(" attribute="Symbol" context="Parentheses" />
                 <RegExpr String="[a-zA-Z0-9-_.]*(/[a-zA-Z0-9-_.]+)+" attribute="Path" />
-                <Int attribute="Int" />
                 <Float attribute="Float" />
+                <Int attribute="Int" />
                 <WordDetect String="true" attribute="Constant" />
                 <WordDetect String="false" attribute="Constant" />
                 <WordDetect String="null" attribute="Constant" />
@@ -91,10 +94,7 @@
             </context>
             <context name="Multi-Line Comment" attribute="Comment" lineEndContext="#stay">
                 <Detect2Chars char="*" char1="/" attribute="Comment" context="#pop" endRegion="Comment" />
-
-                <DetectSpaces attribute="Comment"/>
-                <IncludeRules context="##Comments"/>
-                <DetectIdentifier attribute="Comment" context="#stay" />
+                <IncludeRules context="Comment"/>
             </context>
 
             <context name="String" attribute="String" lineEndContext="#stay">
@@ -121,6 +121,7 @@
                 yet
             -->
             <context name="Any Brace" attribute="Normal Text" lineEndContext="#stay">
+                <DetectSpaces />
                 <DetectChar char="}" attribute="Symbol" context="#pop" endRegion="Set"/>
 
                 <WordDetect String="inherit" attribute="Keyword" context="Any Brace - Inherit" />
@@ -164,7 +165,6 @@
 
             <!-- include for sets and let expressions -->
             <context name="Set-Like" attribute="Normal Text" lineEndContext="#stay">
-                <WordDetect String="inherit" attribute="Keyword" context="Inherit" />
                 <DetectChar char="&quot;" attribute="String" context="String" />
                 <Detect2Chars char="'" char1="'" attribute="String" context="String2" />
                 <DetectChar char="=" attribute="Operator" context="Set Value" />
@@ -177,7 +177,9 @@
             </context>
 
             <context name="Set" attribute="Normal Text" lineEndContext="#stay">
+                <DetectSpaces />
                 <DetectChar char="}" attribute="Symbol" context="#pop" endRegion="Set" />
+                <WordDetect String="inherit" attribute="Keyword" context="Inherit" />
 
                 <IncludeRules context="Set-Like" />
             </context>
@@ -189,6 +191,7 @@
             </context>
 
             <context name="Set Expansion" attribute="Normal Text" lineEndContext="#stay">
+                <DetectSpaces />
                 <DetectChar char="}" attribute="Symbol" context="#pop" endRegion="Set"/>
 
                 <DetectChar char="," attribute="Symbol" />
@@ -212,16 +215,13 @@
 
             <context name="Function" attribute="Normal Text" lineEndContext="#stay">
                 <DetectChar char=":" attribute="Symbol" context="#pop" />
-
-                <RegExpr String="&ident;" attribute="Identifier" />
-
-                <IncludeRules context="Comment Rules" />
+                <DetectSpaces attribute="Normal Text" />
             </context>
 
             <context name="Let" attribute="Normal Text" lineEndContext="#stay">
+                <DetectSpaces />
                 <WordDetect String="in" attribute="Keyword" context="#pop" />
 
-                <RegExpr String="&ident;" attribute="Identifier" />
                 <IncludeRules context="Set-Like" />
             </context>
 

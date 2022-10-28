@@ -25,7 +25,7 @@
 
 <language
     name="CMake"
-    version="40"
+    version="42"
     kateversion="5.0"
     section="Other"
     extensions="CMakeLists.txt;*.cmake;*.cmake.in"
@@ -37,6 +37,7 @@
   <highlighting>
 
     <list name="commands">
+        <item>block</item>
         <item>break</item>
         <item>cmake_host_system_information</item>
         <item>cmake_language</item>
@@ -48,6 +49,7 @@
         <item>continue</item>
         <item>elseif</item>
         <item>else</item>
+        <item>endblock</item>
         <item>endforeach</item>
         <item>endfunction</item>
         <item>endif</item>
@@ -147,6 +149,14 @@
         <item>ctest_update</item>
         <item>ctest_upload</item>
     </list>
+    <list name="block_nargs">
+      <item>PROPAGATE</item>
+      <item>SCOPE_FOR</item>
+    </list>
+    <list name="block_sargs">
+      <item>POLICIES</item>
+      <item>VARIABLES</item>
+    </list>
     <list name="cmake_host_system_information_nargs">
       <item>ERROR_VARIABLE</item>
       <item>QUERY</item>
@@ -204,6 +214,7 @@
       <item>EVAL</item>
       <item>GET_CALL</item>
       <item>GET_CALL_IDS</item>
+      <item>GET_MESSAGE_LOG_LEVEL</item>
       <item>ID</item>
       <item>ID_VAR</item>
       <item>SET_DEPENDENCY_PROVIDER</item>
@@ -538,6 +549,7 @@
       <item>PATH_SUFFIXES</item>
       <item>REGISTRY_VIEW</item>
       <item>REQUIRED</item>
+      <item>VALIDATOR</item>
     </list>
     <list name="find_file_sargs">
       <item>32</item>
@@ -568,6 +580,7 @@
       <item>PATH_SUFFIXES</item>
       <item>REGISTRY_VIEW</item>
       <item>REQUIRED</item>
+      <item>VALIDATOR</item>
     </list>
     <list name="find_library_sargs">
       <item>32</item>
@@ -637,6 +650,7 @@
       <item>PATH_SUFFIXES</item>
       <item>REGISTRY_VIEW</item>
       <item>REQUIRED</item>
+      <item>VALIDATOR</item>
     </list>
     <list name="find_path_sargs">
       <item>32</item>
@@ -667,6 +681,7 @@
       <item>PATH_SUFFIXES</item>
       <item>REGISTRY_VIEW</item>
       <item>REQUIRED</item>
+      <item>VALIDATOR</item>
     </list>
     <list name="find_program_sargs">
       <item>32</item>
@@ -835,6 +850,9 @@
       <item>TRACE</item>
       <item>VERBOSE</item>
       <item>WARNING</item>
+    </list>
+    <list name="return_nargs">
+      <item>PROPAGATE</item>
     </list>
     <list name="separate_arguments_nargs">
       <item>NATIVE_COMMAND</item>
@@ -1027,6 +1045,7 @@
     </list>
     <list name="add_subdirectory_nargs">
       <item>EXCLUDE_FROM_ALL</item>
+      <item>SYSTEM</item>
     </list>
     <list name="add_test_nargs">
       <item>COMMAND</item>
@@ -1300,6 +1319,7 @@
       <item>cxx_std_17</item>
       <item>cxx_std_20</item>
       <item>cxx_std_23</item>
+      <item>cxx_std_26</item>
       <item>cxx_std_98</item>
       <item>cxx_strong_enums</item>
       <item>cxx_template_template_parameters</item>
@@ -1359,14 +1379,22 @@
       <item>TYPE</item>
     </list>
     <list name="try_compile_nargs">
+      <item>BINARY_DIR</item>
       <item>CMAKE_FLAGS</item>
       <item>COMPILE_DEFINITIONS</item>
       <item>COPY_FILE</item>
       <item>COPY_FILE_ERROR</item>
       <item>LINK_LIBRARIES</item>
       <item>LINK_OPTIONS</item>
+      <item>NO_CACHE</item>
       <item>OUTPUT_VARIABLE</item>
+      <item>PROJECT</item>
       <item>SOURCES</item>
+      <item>SOURCE_DIR</item>
+      <item>SOURCE_FROM_CONTENT</item>
+      <item>SOURCE_FROM_FILE</item>
+      <item>SOURCE_FROM_VAR</item>
+      <item>TARGET</item>
     </list>
     <list name="try_run_nargs">
       <item>ARGS</item>
@@ -1374,11 +1402,20 @@
       <item>COMPILE_DEFINITIONS</item>
       <item>COMPILE_OUTPUT_VARIABLE</item>
       <item>COMPILE_RESULT_VAR</item>
+      <item>COPY_FILE</item>
+      <item>COPY_FILE_ERROR</item>
       <item>LINK_LIBRARIES</item>
       <item>LINK_OPTIONS</item>
+      <item>NO_CACHE</item>
       <item>OUTPUT_VARIABLE</item>
+      <item>RUN_OUTPUT_STDERR_VARIABLE</item>
+      <item>RUN_OUTPUT_STDOUT_VARIABLE</item>
       <item>RUN_OUTPUT_VARIABLE</item>
       <item>RUN_RESULT_VAR</item>
+      <item>SOURCES</item>
+      <item>SOURCE_FROM_CONTENT</item>
+      <item>SOURCE_FROM_FILE</item>
+      <item>SOURCE_FROM_VAR</item>
       <item>WORKING_DIRECTORY</item>
     </list>
     <list name="ctest_build_nargs">
@@ -1912,6 +1949,7 @@
       <item>SVN_REVISION</item>
       <item>SVN_TRUST_CERT</item>
       <item>SVN_USERNAME</item>
+      <item>SYSTEM</item>
       <item>TIMEOUT</item>
       <item>TLS_CAINFO</item>
       <item>TLS_VERIFY</item>
@@ -2238,6 +2276,7 @@
       <item>BOOST_INCLUDEDIR</item>
       <item>BOOST_LIBRARYDIR</item>
       <item>BORLAND</item>
+      <item>BSD</item>
       <item>BUILD_SHARED_LIBS</item>
       <item>BUILD_TESTING</item>
       <item>BU_CHMOD_BUNDLE_ITEMS</item>
@@ -2480,6 +2519,8 @@
       <item>CMAKE_HIP_STANDARD</item>
       <item>CMAKE_HIP_STANDARD_REQUIRED</item>
       <item>CMAKE_HOST_APPLE</item>
+      <item>CMAKE_HOST_BSD</item>
+      <item>CMAKE_HOST_LINUX</item>
       <item>CMAKE_HOST_SOLARIS</item>
       <item>CMAKE_HOST_SYSTEM</item>
       <item>CMAKE_HOST_SYSTEM_NAME</item>
@@ -2594,6 +2635,7 @@
       <item>CMAKE_MODULE_LINKER_FLAGS_INIT</item>
       <item>CMAKE_MODULE_PATH</item>
       <item>CMAKE_MSVCIDE_RUN_PATH</item>
+      <item>CMAKE_MSVC_DEBUG_INFORMATION_FORMAT</item>
       <item>CMAKE_MSVC_RUNTIME_LIBRARY</item>
       <item>CMAKE_NETRC</item>
       <item>CMAKE_NETRC_FILE</item>
@@ -2688,6 +2730,7 @@
       <item>CMAKE_SYSTEM_VERSION</item>
       <item>CMAKE_Swift_LANGUAGE_VERSION</item>
       <item>CMAKE_Swift_MODULE_DIRECTORY</item>
+      <item>CMAKE_TASKING_TOOLSET</item>
       <item>CMAKE_THREAD_LIBS_INIT</item>
       <item>CMAKE_THREAD_PREFER_PTHREAD</item>
       <item>CMAKE_TOOLCHAIN_FILE</item>
@@ -2745,9 +2788,13 @@
       <item>CMAKE_XCODE_SCHEME_DISABLE_MAIN_THREAD_CHECKER</item>
       <item>CMAKE_XCODE_SCHEME_DYNAMIC_LIBRARY_LOADS</item>
       <item>CMAKE_XCODE_SCHEME_DYNAMIC_LINKER_API_USAGE</item>
+      <item>CMAKE_XCODE_SCHEME_ENABLE_GPU_API_VALIDATION</item>
       <item>CMAKE_XCODE_SCHEME_ENABLE_GPU_FRAME_CAPTURE_MODE</item>
+      <item>CMAKE_XCODE_SCHEME_ENABLE_GPU_SHADER_VALIDATION</item>
       <item>CMAKE_XCODE_SCHEME_ENVIRONMENT</item>
       <item>CMAKE_XCODE_SCHEME_GUARD_MALLOC</item>
+      <item>CMAKE_XCODE_SCHEME_LAUNCH_CONFIGURATION</item>
+      <item>CMAKE_XCODE_SCHEME_LAUNCH_MODE</item>
       <item>CMAKE_XCODE_SCHEME_MAIN_THREAD_CHECKER_STOP</item>
       <item>CMAKE_XCODE_SCHEME_MALLOC_GUARD_EDGES</item>
       <item>CMAKE_XCODE_SCHEME_MALLOC_SCRIBBLE</item>
@@ -2761,6 +2808,7 @@
       <item>CMAKE_XCODE_XCCONFIG</item>
       <item>CPACK_ABSOLUTE_DESTINATION_FILES</item>
       <item>CPACK_ARCHIVE_COMPONENT_INSTALL</item>
+      <item>CPACK_ARCHIVE_FILE_EXTENSION</item>
       <item>CPACK_ARCHIVE_FILE_NAME</item>
       <item>CPACK_ARCHIVE_THREADS</item>
       <item>CPACK_BUILD_SOURCE_DIRS</item>
@@ -2899,6 +2947,8 @@
       <item>CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL</item>
       <item>CPACK_NSIS_EXECUTABLE</item>
       <item>CPACK_NSIS_EXECUTABLES_DIRECTORY</item>
+      <item>CPACK_NSIS_EXECUTABLE_POST_ARGUMENTS</item>
+      <item>CPACK_NSIS_EXECUTABLE_PRE_ARGUMENTS</item>
       <item>CPACK_NSIS_EXTRA_INSTALL_COMMANDS</item>
       <item>CPACK_NSIS_EXTRA_PREINSTALL_COMMANDS</item>
       <item>CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS</item>
@@ -2943,6 +2993,8 @@
       <item>CPACK_NUGET_PACKAGE_TAGS</item>
       <item>CPACK_NUGET_PACKAGE_TITLE</item>
       <item>CPACK_NUGET_PACKAGE_VERSION</item>
+      <item>CPACK_OBJCOPY_EXECUTABLE</item>
+      <item>CPACK_OBJDUMP_EXECUTABLE</item>
       <item>CPACK_OUTPUT_CONFIG_FILE</item>
       <item>CPACK_PACKAGE_CHECKSUM</item>
       <item>CPACK_PACKAGE_DESCRIPTION</item>
@@ -2986,6 +3038,7 @@
       <item>CPACK_PRODUCTBUILD_KEYCHAIN_PATH</item>
       <item>CPACK_PRODUCTBUILD_RESOURCES_DIR</item>
       <item>CPACK_PROJECT_CONFIG_FILE</item>
+      <item>CPACK_READELF_EXECUTABLE</item>
       <item>CPACK_RESOURCE_FILE_LICENSE</item>
       <item>CPACK_RESOURCE_FILE_README</item>
       <item>CPACK_RESOURCE_FILE_WELCOME</item>
@@ -3251,7 +3304,7 @@
       <item>GDAL_LIBRARY</item>
       <item>GETTEXT_MSGFMT_EXECUTABLE</item>
       <item>GETTEXT_MSGMERGE_EXECUTABLE</item>
-      <item>GHS-MULTI</item>
+      <item>GHSMULTI</item>
       <item>GIF_LIBRARY</item>
       <item>GIT_EXECUTABLE</item>
       <item>GLEW_USE_STATIC_LIBS</item>
@@ -3306,6 +3359,7 @@
       <item>ICU_DEBUG</item>
       <item>ICU_MAKEFILE_INC</item>
       <item>ICU_PKGDATA_INC</item>
+      <item>IOS</item>
       <item>Iconv_IS_BUILT_IN</item>
       <item>Iconv_LIBRARY</item>
       <item>Intl_IS_BUILT_IN</item>
@@ -3339,6 +3393,7 @@
       <item>LIBXML2_XMLLINT_EXECUTABLE</item>
       <item>LIBXSLT_DEFINITIONS</item>
       <item>LIBXSLT_XSLTPROC_EXECUTABLE</item>
+      <item>LINUX</item>
       <item>LTTNGUST_HAS_TRACEF</item>
       <item>LTTNGUST_HAS_TRACELOG</item>
       <item>LUALATEX_COMPILER</item>
@@ -3627,7 +3682,9 @@
     </list>
 
     <list name="environment-variables">
+      <item>ADSP_ROOT</item>
       <item>CC</item>
+      <item>CCMAKE_COLORS</item>
       <item>CFLAGS</item>
       <item>CMAKE_APPBUNDLE_PATH</item>
       <item>CMAKE_APPLE_SILICON_PROCESSOR</item>
@@ -3658,18 +3715,27 @@
       <item>CUDACXX</item>
       <item>CUDAFLAGS</item>
       <item>CUDAHOSTCXX</item>
+      <item>CUDA_PATH</item>
       <item>CXX</item>
       <item>CXXFLAGS</item>
       <item>DASHBOARD_TEST_FROM_CTEST</item>
       <item>DESTDIR</item>
       <item>FC</item>
       <item>FFLAGS</item>
+      <item>HIPCXX</item>
+      <item>HIPFLAGS</item>
+      <item>ISPC</item>
+      <item>ISPCFLAGS</item>
       <item>LDFLAGS</item>
       <item>MACOSX_DEPLOYMENT_TARGET</item>
+      <item>OBJC</item>
+      <item>OBJCXX</item>
       <item>PATH</item>
       <item>QTIFWDIR</item>
       <item>RC</item>
       <item>RCFLAGS</item>
+      <item>SSL_CERT_DIR</item>
+      <item>SSL_CERT_FILE</item>
       <item>SWIFTC</item>
       <item>VERBOSE</item>
     </list>
@@ -3743,6 +3809,7 @@
       <item>RULE_LAUNCH_LINK</item>
       <item>SOURCE_DIR</item>
       <item>SUBDIRECTORIES</item>
+      <item>SYSTEM</item>
       <item>TESTS</item>
       <item>TEST_INCLUDE_FILE</item>
       <item>TEST_INCLUDE_FILES</item>
@@ -3836,6 +3903,7 @@
       <item>EXCLUDE_FROM_DEFAULT_BUILD</item>
       <item>EXPORT_COMPILE_COMMANDS</item>
       <item>EXPORT_NAME</item>
+      <item>EXPORT_NO_SYSTEM</item>
       <item>EXPORT_PROPERTIES</item>
       <item>EchoString</item>
       <item>FOLDER</item>
@@ -3925,6 +3993,7 @@
       <item>MACOSX_FRAMEWORK_INFO_PLIST</item>
       <item>MACOSX_RPATH</item>
       <item>MANUALLY_ADDED_DEPENDENCIES</item>
+      <item>MSVC_DEBUG_INFORMATION_FORMAT</item>
       <item>MSVC_RUNTIME_LIBRARY</item>
       <item>NAME</item>
       <item>NO_SONAME</item>
@@ -3964,6 +4033,7 @@
       <item>STATIC_LIBRARY_FLAGS</item>
       <item>STATIC_LIBRARY_OPTIONS</item>
       <item>SUFFIX</item>
+      <item>SYSTEM</item>
       <item>Swift_DEPENDENCIES_FILE</item>
       <item>Swift_MODULE_DIRECTORY</item>
       <item>Swift_MODULE_NAME</item>
@@ -4028,10 +4098,14 @@
       <item>XCODE_SCHEME_DISABLE_MAIN_THREAD_CHECKER</item>
       <item>XCODE_SCHEME_DYNAMIC_LIBRARY_LOADS</item>
       <item>XCODE_SCHEME_DYNAMIC_LINKER_API_USAGE</item>
+      <item>XCODE_SCHEME_ENABLE_GPU_API_VALIDATION</item>
       <item>XCODE_SCHEME_ENABLE_GPU_FRAME_CAPTURE_MODE</item>
+      <item>XCODE_SCHEME_ENABLE_GPU_SHADER_VALIDATION</item>
       <item>XCODE_SCHEME_ENVIRONMENT</item>
       <item>XCODE_SCHEME_EXECUTABLE</item>
       <item>XCODE_SCHEME_GUARD_MALLOC</item>
+      <item>XCODE_SCHEME_LAUNCH_CONFIGURATION</item>
+      <item>XCODE_SCHEME_LAUNCH_MODE</item>
       <item>XCODE_SCHEME_MAIN_THREAD_CHECKER_STOP</item>
       <item>XCODE_SCHEME_MALLOC_GUARD_EDGES</item>
       <item>XCODE_SCHEME_MALLOC_SCRIBBLE</item>
@@ -4504,7 +4578,8 @@
 
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal Text">
         <DetectSpaces/>
-        <WordDetect String="break" insensitive="true" attribute="Command" context="break_ctx" />
+        <WordDetect String="block" insensitive="true" attribute="Command" context="block_ctx" beginRegion="block" />
+        <WordDetect String="break" insensitive="true" attribute="Control Flow" context="break_ctx" />
         <WordDetect String="cmake_host_system_information" insensitive="true" attribute="Command" context="cmake_host_system_information_ctx" />
         <WordDetect String="cmake_language" insensitive="true" attribute="Command" context="cmake_language_ctx" />
         <WordDetect String="cmake_minimum_required" insensitive="true" attribute="Command" context="cmake_minimum_required_ctx" />
@@ -4512,14 +4587,15 @@
         <WordDetect String="cmake_path" insensitive="true" attribute="Command" context="cmake_path_ctx" />
         <WordDetect String="cmake_policy" insensitive="true" attribute="Command" context="cmake_policy_ctx" />
         <WordDetect String="configure_file" insensitive="true" attribute="Command" context="configure_file_ctx" />
-        <WordDetect String="continue" insensitive="true" attribute="Command" context="continue_ctx" />
-        <WordDetect String="elseif" insensitive="true" attribute="Command" context="elseif_ctx" />
-        <WordDetect String="else" insensitive="true" attribute="Command" context="else_ctx" />
-        <WordDetect String="endforeach" insensitive="true" attribute="Command" context="endforeach_ctx" endRegion="foreach" />
+        <WordDetect String="continue" insensitive="true" attribute="Control Flow" context="continue_ctx" />
+        <WordDetect String="elseif" insensitive="true" attribute="Control Flow" context="elseif_ctx" />
+        <WordDetect String="else" insensitive="true" attribute="Control Flow" context="else_ctx" />
+        <WordDetect String="endblock" insensitive="true" attribute="Command" context="endblock_ctx" endRegion="block" />
+        <WordDetect String="endforeach" insensitive="true" attribute="Control Flow" context="endforeach_ctx" endRegion="foreach" />
         <WordDetect String="endfunction" insensitive="true" attribute="Command" context="endfunction_ctx" endRegion="function" />
-        <WordDetect String="endif" insensitive="true" attribute="Command" context="endif_ctx" endRegion="if" />
+        <WordDetect String="endif" insensitive="true" attribute="Control Flow" context="endif_ctx" endRegion="if" />
         <WordDetect String="endmacro" insensitive="true" attribute="Command" context="endmacro_ctx" endRegion="macro" />
-        <WordDetect String="endwhile" insensitive="true" attribute="Command" context="endwhile_ctx" endRegion="while" />
+        <WordDetect String="endwhile" insensitive="true" attribute="Control Flow" context="endwhile_ctx" endRegion="while" />
         <WordDetect String="execute_process" insensitive="true" attribute="Command" context="execute_process_ctx" />
         <WordDetect String="file" insensitive="true" attribute="Command" context="file_ctx" />
         <WordDetect String="find_file" insensitive="true" attribute="Command" context="find_file_ctx" />
@@ -4527,13 +4603,13 @@
         <WordDetect String="find_package" insensitive="true" attribute="Command" context="find_package_ctx" />
         <WordDetect String="find_path" insensitive="true" attribute="Command" context="find_path_ctx" />
         <WordDetect String="find_program" insensitive="true" attribute="Command" context="find_program_ctx" />
-        <WordDetect String="foreach" insensitive="true" attribute="Command" context="foreach_ctx" beginRegion="foreach" />
+        <WordDetect String="foreach" insensitive="true" attribute="Control Flow" context="foreach_ctx" beginRegion="foreach" />
         <WordDetect String="function" insensitive="true" attribute="Command" context="function_ctx" beginRegion="function" />
         <WordDetect String="get_cmake_property" insensitive="true" attribute="Command" context="get_cmake_property_ctx" />
         <WordDetect String="get_directory_property" insensitive="true" attribute="Command" context="get_directory_property_ctx" />
         <WordDetect String="get_filename_component" insensitive="true" attribute="Command" context="get_filename_component_ctx" />
         <WordDetect String="get_property" insensitive="true" attribute="Command" context="get_property_ctx" />
-        <WordDetect String="if" insensitive="true" attribute="Command" context="if_ctx" beginRegion="if" />
+        <WordDetect String="if" insensitive="true" attribute="Control Flow" context="if_ctx" beginRegion="if" />
         <WordDetect String="include" insensitive="true" attribute="Command" context="include_ctx" />
         <WordDetect String="include_guard" insensitive="true" attribute="Command" context="include_guard_ctx" />
         <WordDetect String="list" insensitive="true" attribute="Command" context="list_ctx" />
@@ -4542,7 +4618,7 @@
         <WordDetect String="math" insensitive="true" attribute="Command" context="math_ctx" />
         <WordDetect String="message" insensitive="true" attribute="Command" context="message_ctx" />
         <WordDetect String="option" insensitive="true" attribute="Command" context="option_ctx" />
-        <WordDetect String="return" insensitive="true" attribute="Command" context="return_ctx" />
+        <WordDetect String="return" insensitive="true" attribute="Control Flow" context="return_ctx" />
         <WordDetect String="separate_arguments" insensitive="true" attribute="Command" context="separate_arguments_ctx" />
         <WordDetect String="set_directory_properties" insensitive="true" attribute="Command" context="set_directory_properties_ctx" />
         <WordDetect String="set_property" insensitive="true" attribute="Command" context="set_property_ctx" />
@@ -4551,7 +4627,7 @@
         <WordDetect String="string" insensitive="true" attribute="Command" context="string_ctx" />
         <WordDetect String="unset" insensitive="true" attribute="Command" context="unset_ctx" />
         <WordDetect String="variable_watch" insensitive="true" attribute="Command" context="variable_watch_ctx" />
-        <WordDetect String="while" insensitive="true" attribute="Command" context="while_ctx" beginRegion="while" />
+        <WordDetect String="while" insensitive="true" attribute="Control Flow" context="while_ctx" beginRegion="while" />
         <WordDetect String="add_compile_definitions" insensitive="true" attribute="Command" context="add_compile_definitions_ctx" />
         <WordDetect String="add_compile_options" insensitive="true" attribute="Command" context="add_compile_options_ctx" />
         <WordDetect String="add_custom_command" insensitive="true" attribute="Command" context="add_custom_command_ctx" />
@@ -4782,6 +4858,16 @@
         <RegExpr attribute="@Variable Substitution" context="@VarSubst" String="@&var_ref_re;@" lookAhead="true" />
         <RegExpr attribute="Error" context="#stay" String=".*" />
       </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="block_ctx">
+        <DetectChar attribute="Normal Text" context="block_ctx_op" char="(" />
+        <DetectChar attribute="Normal Text" context="#pop" char=")" />
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="block_ctx_op">
+        <DetectChar attribute="Normal Text" context="#pop" char=")" lookAhead="true" />
+        <keyword attribute="Named Args" context="#stay" String="block_nargs" />
+        <keyword attribute="Special Args" context="#stay" String="block_sargs" />
+        <IncludeRules context="User Function Args" />
+      </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="break_ctx">
         <DetectChar attribute="Normal Text" context="break_ctx_op" char="(" />
         <DetectChar attribute="Normal Text" context="#pop" char=")" />
@@ -4886,6 +4972,13 @@
         <DetectChar attribute="Normal Text" context="#pop" char=")" />
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="else_ctx_op">
+        <DetectChar attribute="Normal Text" context="#pop" char=")" lookAhead="true" />
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="endblock_ctx">
+        <DetectChar attribute="Normal Text" context="endblock_ctx_op" char="(" />
+        <DetectChar attribute="Normal Text" context="#pop" char=")" />
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="endblock_ctx_op">
         <DetectChar attribute="Normal Text" context="#pop" char=")" lookAhead="true" />
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="endforeach_ctx">
@@ -5165,6 +5258,8 @@
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="return_ctx_op">
         <DetectChar attribute="Normal Text" context="#pop" char=")" lookAhead="true" />
+        <keyword attribute="Named Args" context="#stay" String="return_nargs" />
+        <IncludeRules context="User Function Args" />
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="separate_arguments_ctx">
         <DetectChar attribute="Normal Text" context="separate_arguments_ctx_op" char="(" />
@@ -7498,7 +7593,7 @@
 
       <context attribute="Environment Variable Substitution" lineEndContext="#pop" name="EnvVarSubst">
         <keyword attribute="Standard Environment Variable" context="#stay" String="environment-variables" insensitive="false" />
-        <RegExpr attribute="Standard Environment Variable" context="#stay" String="\b(?:CMAKE_&var_ref_re;_COMPILER_LAUNCHER|ASM&var_ref_re;FLAGS|ASM&var_ref_re;|&var_ref_re;_ROOT|&var_ref_re;_DIR)\b" />
+        <RegExpr attribute="Standard Environment Variable" context="#stay" String="\b(?:CMAKE_&var_ref_re;_LINKER_LAUNCHER|CMAKE_&var_ref_re;_COMPILER_LAUNCHER|ASM&var_ref_re;FLAGS|ASM&var_ref_re;|&var_ref_re;_ROOT|&var_ref_re;_DIR)\b" />
         <DetectIdentifier />
         <IncludeRules context="Detect Variable Substitutions" />
         <DetectChar attribute="Environment Variable Substitution" context="#pop" char="}" />
@@ -7634,6 +7729,7 @@
       <itemData name="Normal Text" defStyleNum="dsNormal" spellChecking="false" />
       <itemData name="Comment" defStyleNum="dsComment" spellChecking="true" />
       <itemData name="Command" defStyleNum="dsKeyword" spellChecking="false" />
+      <itemData name="Control Flow" defStyleNum="dsControlFlow" spellChecking="false" />
       <itemData name="CMake Provided Function/Macro" defStyleNum="dsFunction" bold="true" spellChecking="false" />
       <itemData name="User Function/Macro"  defStyleNum="dsFunction" spellChecking="false" />
       <itemData name="Property" defStyleNum="dsOthers" spellChecking="false" />

@@ -1,9 +1,9 @@
-[ [ ( KeywordTok , "if" )
+[ [ ( ControlFlowTok , "if" )
   , ( NormalTok , "(CMARK_TESTS and CMARK_SHARED)" )
   ]
 , [ ( NormalTok , "      " )
   , ( KeywordTok , "add_subdirectory" )
   , ( NormalTok , "(api_test)" )
   ]
-, [ ( KeywordTok , "endif" ) , ( NormalTok , "()" ) ]
+, [ ( ControlFlowTok , "endif" ) , ( NormalTok , "()" ) ]
 ]
