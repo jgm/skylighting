@@ -1,0 +1,12 @@
+--- isocpp.xml.2	2022-10-28 15:30:42.000000000 -0700
++++ isocpp.xml	2022-10-28 15:30:47.000000000 -0700
+@@ -445,8 +445,8 @@
+       </context>
+ 
+       <context name="Number" attribute="Normal Text" lineEndContext="#pop" fallthroughContext="#pop">
+-        <WordDetect attribute="Decimal" context="IntSuffix" String="0" weakDeliminator="."/>
+         <RegExpr attribute="Float" context="FloatSuffix" String="\.&int;&exp_float;?|0[xX](?:\.&hex_int;&exp_hexfloat;?|&hex_int;(?:&exp_hexfloat;|\.&hex_int;?&exp_hexfloat;?))|&int;(?:&exp_float;|\.&int;?&exp_float;?)" />
++        <WordDetect attribute="Decimal" context="IntSuffix" String="0" weakDeliminator="."/>
+         <IncludeRules context="Integer" />
+       </context>
+ 
