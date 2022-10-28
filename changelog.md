@@ -1,5 +1,16 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.13.1.1
+
+  * Add dart, purescript syntax definitions.
+
+  * Update syntax definitions for isocpp, latex, alert, bash,
+    cmake, nix, sql-postgresql, vhdl, zsh.
+
+  * Remove obsoleote patch for lua.xml.
+
+  * Add patches for latex.xml and isocpp.xml.
+
 ## 0.13.1
 
   * `getCapture`: fail instead of throwing error if dynamic match not found.
