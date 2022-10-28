@@ -154,6 +154,7 @@ library
                        Skylighting.Syntax.Protobuf
                        Skylighting.Syntax.Pure
                        Skylighting.Syntax.Purebasic
+                       Skylighting.Syntax.Purescript
                        Skylighting.Syntax.Python
                        Skylighting.Syntax.Qml
                        Skylighting.Syntax.R
