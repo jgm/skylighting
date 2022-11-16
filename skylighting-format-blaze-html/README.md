@@ -1,5 +1,5 @@
 # skylighting-format-ansi
 
 This package provides functions to render syntax-highlighting
-as ANSI text.
+as HTML using the (blaze-html)[https://hackage.haskell.org/package/blaze-html] HTML combinator library for Haskell.
 
