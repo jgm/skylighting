@@ -1,5 +1,15 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.13.1.2
+
+  * Update syntax definitions for c, cmake, commonmlisp, css, go, ini, isocpp,
+    javascript, json, powershell, python, rust, sass, scss, toml, xml.
+
+  * Associate regex captures with a context. This is necessary for proper
+    implementation of the KDE syntax highlighting algorithm.  Captures are
+    only available within the context to which the match creating the
+    capture switches. (Closes #160.)
+
 ## 0.13.1.1
 
   * Add dart, purescript syntax definitions.
