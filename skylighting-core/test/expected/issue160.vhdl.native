@@ -1,0 +1,16 @@
+[ [ ( ControlFlowTok , "architecture" )
+  , ( NormalTok , " " )
+  , ( DecValTok , "arch" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "of" )
+  , ( NormalTok , " " )
+  , ( FunctionTok , "device" )
+  , ( NormalTok , " " )
+  , ( KeywordTok , "is" )
+  ]
+, [ ( ControlFlowTok , "begin" ) ]
+, [ ( NormalTok , "    " ) , ( SpecialCharTok , "process" ) ]
+, [ ( NormalTok , "    " ) , ( SpecialCharTok , "begin" ) ]
+, [ ( NormalTok , "    " ) , ( SpecialCharTok , "end process;" ) ]
+, [ ( ControlFlowTok , "end arch;" ) ]
+]

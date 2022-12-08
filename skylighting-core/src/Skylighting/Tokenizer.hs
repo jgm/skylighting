@@ -40,7 +40,11 @@ import Data.List.NonEmpty (NonEmpty((:|)), (<|), toList)
 import Data.Semigroup
 #endif
 
-newtype ContextStack = ContextStack{ unContextStack :: NonEmpty Context }
+newtype Captures = Captures{ unCaptures :: IntMap.IntMap ByteString }
+  deriving (Show)
+
+newtype ContextStack =
+  ContextStack{ unContextStack :: NonEmpty (Context, Captures) }
   deriving (Show)
 
 data TokenizerState = TokenizerState{
@@ -48,7 +52,7 @@ data TokenizerState = TokenizerState{
   , endline             :: Bool
   , prevChar            :: Char
   , contextStack        :: ContextStack
-  , captures            :: IntMap.IntMap ByteString
+  , captures            :: Captures
   , column              :: Int
   , lineContinuation    :: Bool
   , firstNonspaceColumn :: Maybe Int
@@ -148,14 +152,14 @@ tokenize config syntax inp =
     action = mapM tokenizeLine (zip (BS.lines (encodeUtf8 inp)) [1..])
     eitherStack = case lookupContext (sStartingContext syntax)
                          (resolveKeywords (syntaxMap config) syntax) of
-                    Just c  -> Right $ ContextStack (c :| [])
+                    Just c  -> Right $ ContextStack ((c, Captures mempty) :| [])
                     Nothing -> Left "No starting context specified"
     startingState stack =
       TokenizerState{ input = BS.empty
                     , endline = Text.null inp
                     , prevChar = '\n'
                     , contextStack = stack
-                    , captures = mempty
+                    , captures = Captures mempty
                     , column = 0
                     , lineContinuation = False
                     , firstNonspaceColumn = Nothing
@@ -172,7 +176,7 @@ infoContextStack = do
   tr <- asks traceOutput
   when tr $ do
     ContextStack stack <- gets contextStack
-    info $ "CONTEXT STACK " ++ show (map cName $ toList stack)
+    info $ "CONTEXT STACK " ++ show (map (cName . fst) $ toList stack)
 
 popContextStack :: TokenizerM ()
 popContextStack = do
@@ -187,12 +191,13 @@ pushContextStack :: Context -> TokenizerM ()
 pushContextStack cont = do
   modify (\st -> st{ contextStack =
                       ContextStack
-                       ((cont <|) . unContextStack $ contextStack st) } )
+                       (((cont, Captures mempty) <|) . unContextStack
+                         $ contextStack st) } )
   infoContextStack
 
 currentContext :: TokenizerM Context
 currentContext = do
-  ContextStack (c :| _) <- gets contextStack
+  ContextStack ((c,_) :| _) <- gets contextStack
   return c
 
 doContextSwitch :: ContextSwitch -> TokenizerM ()
@@ -205,6 +210,28 @@ doContextSwitch (Push (!syn,!c)) = do
 
 doContextSwitches :: [ContextSwitch] -> TokenizerM ()
 doContextSwitches = mapM_ doContextSwitch
+
+addCaptures :: TokenizerM ()
+addCaptures = do
+  capts <- gets captures
+  if IntMap.null (unCaptures capts)
+     then return ()
+     else do
+       ContextStack ((c,_) :| cs) <- gets contextStack
+       info $ "Adding captures to " <> show (cName c) <> ": " <> show capts
+       modify $ \st -> st{ contextStack = ContextStack ((c,capts) :| cs) }
+
+getCapture :: Int -> TokenizerM Text
+getCapture capnum = do
+  ContextStack ((_,Captures capts) :| _) <- gets contextStack
+  info $ "Retrieving capture " <> show capnum
+  res <- case IntMap.lookup capnum capts of
+          Nothing -> do
+            info "Not found"
+            mzero
+          Just x  -> decodeBS x
+  info $ "Got " <> show res
+  return res
 
 lookupContext :: Text -> Syntax -> Maybe Context
 lookupContext name syntax | Text.null name =
@@ -284,6 +311,9 @@ tryRule rule inp = do
                  then Just <$> get -- needed for lookahead rules
                  else return Nothing
 
+  -- reset regex captures
+  modify $ \st -> st{ captures = Captures mempty }
+
   let attr = rAttribute rule
   mbtok <- case rMatcher rule of
                 DetectChar c -> withAttr attr $ detectChar (rDynamic rule) c inp
@@ -340,7 +370,10 @@ tryRule rule inp = do
 
   info $ takeWhile (/=' ') (show (rMatcher rule)) ++ " MATCHED " ++ show mbtok'
   doContextSwitches (rContextSwitch rule)
+  -- Add any captures to the context on top of the stack
+  addCaptures
   return mbtok'
+
 
 withAttr :: TokenType -> TokenizerM Text -> TokenizerM (Maybe Token)
 withAttr tt p = do
@@ -424,6 +457,7 @@ includeRules mbattr (syn, con) inp = do
            Text.unpack con ++ "##" ++ Text.unpack syn
        Just c   -> do
          mbtok <- msum (map (\r -> tryRule r inp) (cRules c))
+         modify $ \st -> st{ captures = Captures mempty }
          return $ case (mbtok, mbattr) of
                     (Just (NormalTok, xs), Just attr) -> Just (attr, xs)
                     _                                 -> mbtok
@@ -536,7 +570,7 @@ regExpr dynamic re inp = do
   case matchRegex regex' inp of
         Just (matchedBytes, capts) -> do
           unless (null capts) $
-            modify $ \st -> st{ captures =
+            modify $ \st -> st{ captures = Captures $
                                   IntMap.map (toSlice inp) capts }
           takeChars (UTF8.length matchedBytes)
         _ -> mzero
@@ -580,13 +614,6 @@ subDynamic (AssertPositive dir r) =
 subDynamic (AssertNegative dir r) =
   AssertNegative dir <$> subDynamic r
 subDynamic x = return x
-
-getCapture :: Int -> TokenizerM Text
-getCapture capnum = do
-  capts <- gets captures
-  case IntMap.lookup capnum capts of
-     Nothing -> mzero
-     Just x  -> decodeBS x
 
 keyword :: KeywordAttr -> WordSet Text -> ByteString -> TokenizerM Text
 keyword kwattr kws inp = do
