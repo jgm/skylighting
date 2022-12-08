@@ -34,7 +34,7 @@ Changelog:
 
 -->
 
-<language name="SCSS" version="13" kateversion="5.53" section="Markup" extensions="*.scss" indenter="cstyle" mimetype="text/css" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
+<language name="SCSS" version="14" kateversion="5.53" section="Markup" extensions="*.scss" indenter="cstyle" mimetype="text/css" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
 
     <highlighting>
         <list name="properties">
@@ -42,36 +42,44 @@ Changelog:
         </list>
 
         <list name="sub-properties">
+            <item>action</item>
             <item>adjust</item>
             <item>after</item>
             <item>align-all</item>
-            <item>align</item>
             <item>align-last</item>
+            <item>align</item>
             <item>alternates</item>
             <item>anchor</item>
             <item>area</item>
             <item>areas</item>
+            <item>as</item>
             <item>attachment</item>
             <item>auto-columns</item>
             <item>auto-flow</item>
             <item>auto-rows</item>
+            <item>balance</item>
             <item>baseline</item>
             <item>basis</item>
             <item>before</item>
+            <item>behavior-block</item>
+            <item>behavior-inlie</item>
+            <item>behavior-x</item>
+            <item>behavior-y</item>
+            <item>behavior</item>
             <item>bidi</item>
             <item>blend-mode</item>
             <item>block-color</item>
             <item>block-end-color</item>
-            <item>block-end</item>
             <item>block-end-style</item>
             <item>block-end-width</item>
-            <item>block</item>
+            <item>block-end</item>
             <item>block-start-color</item>
-            <item>block-start</item>
             <item>block-start-style</item>
             <item>block-start-width</item>
+            <item>block-start</item>
             <item>block-style</item>
             <item>block-width</item>
+            <item>block</item>
             <item>border-mode</item>
             <item>border-outset</item>
             <item>border-repeat</item>
@@ -82,6 +90,8 @@ Changelog:
             <item>bottom-right-radius</item>
             <item>bottom-style</item>
             <item>bottom-width</item>
+            <item>boundary-detection</item>
+            <item>boundary-expansion</item>
             <item>boundary</item>
             <item>box</item>
             <item>break</item>
@@ -90,39 +100,47 @@ Changelog:
             <item>change</item>
             <item>character</item>
             <item>chars</item>
+            <item>clamp</item>
+            <item>clip-margin</item>
             <item>collapse</item>
+            <item>color-adjust</item>
             <item>column-end</item>
-            <item>column</item>
             <item>column-start</item>
+            <item>column</item>
             <item>combine-upright</item>
             <item>composite</item>
+            <item>contain</item>
             <item>count</item>
             <item>decoration-break</item>
             <item>decoration-color</item>
-            <item>decoration</item>
             <item>decoration-line</item>
+            <item>decoration-skip-box</item>
             <item>decoration-skip-ink</item>
+            <item>decoration-skip-inset</item>
+            <item>decoration-skip-self</item>
+            <item>decoration-skip-spaces</item>
             <item>decoration-skip</item>
             <item>decoration-style</item>
+            <item>decoration-thickness</item>
             <item>decoration-width</item>
+            <item>decoration</item>
             <item>defer</item>
             <item>delay</item>
+            <item>detection</item>
             <item>distance</item>
             <item>down</item>
             <item>duration</item>
             <item>during</item>
             <item>east-asian</item>
-            <item>emoji</item>
-            <item>emphasis-color</item>
-            <item>emphasis</item>
-            <item>emphasis-position</item>
-            <item>emphasis-skip</item>
-            <item>emphasis-style</item>
-            <item>end-color</item>
-            <item>end</item>
+            <item>edge</item>
+            <item>end-end-radius</item>
+            <item>end-radius</item>
+            <item>end-start-radius</item>
             <item>end-style</item>
             <item>end-width</item>
+            <item>end</item>
             <item>events</item>
+            <item>expansion</item>
             <item>family</item>
             <item>feature-settings</item>
             <item>fill-mode</item>
@@ -132,11 +150,11 @@ Changelog:
             <item>fragment</item>
             <item>from</item>
             <item>function</item>
+            <item>group-align</item>
             <item>grow</item>
             <item>gutter</item>
             <item>header</item>
             <item>height-step</item>
-            <item>image</item>
             <item>image-outset</item>
             <item>image-repeat</item>
             <item>image-slice</item>
@@ -144,24 +162,28 @@ Changelog:
             <item>image-threshold</item>
             <item>image-transform</item>
             <item>image-width</item>
+            <item>image</item>
             <item>increment</item>
             <item>indent</item>
+            <item>ink</item>
             <item>inline-color</item>
             <item>inline-end-color</item>
-            <item>inline-end</item>
             <item>inline-end-style</item>
             <item>inline-end-width</item>
-            <item>inline</item>
+            <item>inline-end</item>
             <item>inline-start-color</item>
-            <item>inline-start</item>
             <item>inline-start-style</item>
             <item>inline-start-width</item>
+            <item>inline-start</item>
             <item>inline-style</item>
             <item>inline-width</item>
+            <item>inline</item>
             <item>insert</item>
             <item>inside</item>
             <item>interpolation-filters</item>
             <item>into</item>
+            <item>intrinsic-block-size</item>
+            <item>intrinsic-sizing</item>
             <item>items</item>
             <item>iteration-count</item>
             <item>justify</item>
@@ -177,8 +199,8 @@ Changelog:
             <item>left-style</item>
             <item>left-width</item>
             <item>letter-align</item>
-            <item>letter</item>
             <item>letter-wrap</item>
+            <item>letter</item>
             <item>level</item>
             <item>ligatures</item>
             <item>limit-chars</item>
@@ -194,18 +216,24 @@ Changelog:
             <item>min-size</item>
             <item>mode</item>
             <item>name</item>
+            <item>navigation-action</item>
+            <item>navigation-contain</item>
+            <item>navigation-function</item>
             <item>numeral</item>
             <item>numeric</item>
             <item>optical-sizing</item>
-            <item>orientation</item>
+            <item>order</item>
             <item>orientation-vertical</item>
+            <item>orientation</item>
             <item>origin</item>
             <item>outset</item>
             <item>outside</item>
+            <item>overhang</item>
             <item>override</item>
             <item>palette</item>
             <item>path</item>
             <item>pattern</item>
+            <item>pitch</item>
             <item>play-state</item>
             <item>point</item>
             <item>policy</item>
@@ -214,6 +242,7 @@ Changelog:
             <item>radius</item>
             <item>range</item>
             <item>rate</item>
+            <item>ratio</item>
             <item>reference</item>
             <item>rendering</item>
             <item>repeat</item>
@@ -223,16 +252,16 @@ Changelog:
             <item>right-radius</item>
             <item>right-style</item>
             <item>right-width</item>
-            <item>rotate</item>
             <item>round</item>
             <item>row-end</item>
+            <item>row-start</item>
             <item>row</item>
             <item>rows</item>
-            <item>row-start</item>
             <item>rule-color</item>
-            <item>rule</item>
             <item>rule-style</item>
             <item>rule-width</item>
+            <item>rule</item>
+            <item>scheme</item>
             <item>segment</item>
             <item>select</item>
             <item>self</item>
@@ -244,38 +273,57 @@ Changelog:
             <item>shrink</item>
             <item>side</item>
             <item>size-adjust</item>
+            <item>size</item>
             <item>sizing</item>
+            <item>skip-box</item>
             <item>skip-ink</item>
+            <item>skip-inset</item>
+            <item>skip-self</item>
+            <item>skip-spaces</item>
             <item>skip</item>
             <item>slice</item>
+            <item>small-caps</item>
+            <item>snap-align</item>
+            <item>snap-stop</item>
+            <item>snap-type</item>
             <item>snap</item>
             <item>source</item>
             <item>space-collapse</item>
-            <item>space</item>
             <item>space-trim</item>
+            <item>space</item>
+            <item>spaces</item>
             <item>spacing</item>
             <item>span</item>
             <item>speed</item>
             <item>start-color</item>
-            <item>start</item>
+            <item>start-end-radius</item>
+            <item>start-radius</item>
+            <item>start-start-radius</item>
             <item>start-style</item>
             <item>start-width</item>
+            <item>start</item>
             <item>state</item>
             <item>step-align</item>
             <item>step-insert</item>
-            <item>step</item>
             <item>step-round</item>
             <item>step-size</item>
+            <item>step</item>
+            <item>stop</item>
+            <item>stress</item>
             <item>stretch</item>
             <item>style-image</item>
-            <item>style</item>
             <item>style-position</item>
             <item>style-type</item>
+            <item>style</item>
+            <item>synthesis-small-caps</item>
+            <item>synthesis-style</item>
+            <item>synthesis-weight</item>
             <item>synthesis</item>
             <item>template-areas</item>
             <item>template-columns</item>
-            <item>template</item>
             <item>template-rows</item>
+            <item>template</item>
+            <item>thickness</item>
             <item>threshold</item>
             <item>through</item>
             <item>timing-function</item>
@@ -294,10 +342,10 @@ Changelog:
             <item>variant-caps</item>
             <item>variant-east-asian</item>
             <item>variant-emoji</item>
-            <item>variant</item>
             <item>variant-ligatures</item>
             <item>variant-numeric</item>
             <item>variant-position</item>
+            <item>variant</item>
             <item>variation-settings</item>
             <item>vertical</item>
             <item>weight</item>
@@ -451,55 +499,28 @@ Changelog:
             <item>@while</item>
         </list>
 
-        <list name="inline and nested at-rules">
-            <!-- CSS: inline -->
-            <!-- SCSS: inline or block -->
-            <item>@include</item>
-        </list>
+        <list name="other at-rules">
+            <include>other at-rules##CSS</include>
 
-        <list name="@extend">
-            <item>@extend</item>
-        </list>
-
-        <list name="@if">
-            <item>@if</item>
-        </list>
-
-        <list name="@else">
+            <!-- scss -->
             <item>@else</item>
-        </list>
-
-        <list name="@mixin">
-            <item>@mixin</item>
+            <item>@extend</item>
             <item>@function</item>
-        </list>
-
-        <list name="@viewport">
-            <item>@viewport</item>
+            <item>@if</item>
+            <item>@include</item>
+            <item>@mixin</item>
         </list>
 
         <list name="within-@viewport">
             <include>within-@viewport##CSS</include>
         </list>
 
-        <list name="@page">
-            <item>@page</item>
-        </list>
-
         <list name="within-@page">
             <include>within-@page##CSS</include>
         </list>
 
-        <list name="@font-face">
-            <item>@font-face</item>
-        </list>
-
         <list name="within-@font-face">
             <include>within-@font-face##CSS</include>
-        </list>
-
-        <list name="@keyframes">
-            <item>@keyframes</item>
         </list>
 
         <list name="within-@keyframes">
@@ -579,8 +600,6 @@ Changelog:
                 <IncludeRules context="FindStrings" />
                 <IncludeRules context="FindFunctions" />
                 <IncludeRules context="FindValues" />
-                <!-- auto-completion only -->
-                <keyword attribute="Normal Text" context="#stay" String="functions" />
             </context>
 
             <context name="InterpolationMaybeProperty" attribute="Normal Text" lineEndContext="#stay">
@@ -589,8 +608,6 @@ Changelog:
                 <IncludeRules context="FindStrings" />
                 <IncludeRules context="FindFunctions" />
                 <IncludeRules context="FindValues" />
-                <!-- auto-completion only -->
-                <keyword attribute="Normal Text" context="#stay" String="functions" />
             </context>
 
             <context name="MaybeProperty" attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop">
@@ -626,7 +643,7 @@ Changelog:
             </context>
 
             <context name="FindUnits" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-                <RegExpr attribute="Unit" context="#pop" String="(%|(em|ex|cap|ch|ic|rem|lh|rlh|vw|vh|vi|vb|vmin|vmax|cm|mm|Q|in|pc|pt|px|deg|rad|grad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx|x)\b)" />
+                <RegExpr attribute="Unit" context="#pop" String="(%|(em|ex|cap|ch|ic|rem|lh|rlh|vw|vh|vi|vb|vmin|vmax|cm|mm|Q|in|pc|pt|px|deg|rad|grad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx|x|fr)\b)" />
             </context>
 
             <!-- find strings // "some words" 'some words' -->
@@ -657,15 +674,18 @@ Changelog:
             <context name="SelectAtRule" attribute="At Rule" lineEndContext="#pop">
                 <keyword attribute="At Rule" context="#pop!NestedAtRule" String="nested at-rules" />
                 <keyword attribute="At Rule" context="#pop!AtRule" String="at-rules" />
-                <keyword attribute="At Rule" context="#pop!UnknownAtRule" String="inline and nested at-rules" />
-                <keyword attribute="At Rule" context="#pop!@extend" String="@extend" />
-                <keyword attribute="At Rule" context="#pop!@mixin" String="@mixin" />
-                <keyword attribute="At Rule" context="#pop!@keyframes" String="@keyframes" />
-                <keyword attribute="At Rule" context="#pop!@viewport" String="@viewport" />
-                <keyword attribute="At Rule" context="#pop!@font-face" String="@font-face" />
-                <keyword attribute="At Rule" context="#pop!@if" String="@if" />
-                <keyword attribute="At Rule" context="#pop!@else" String="@else" />
-                <keyword attribute="At Rule" context="#pop!@page" String="@page" />
+                <!-- CSS: inline -->
+                <!-- SCSS: inline or block -->
+                <WordDetect attribute="At Rule" context="#pop!UnknownAtRule" String="@include" />
+                <WordDetect attribute="At Rule" context="#pop!@extend" String="@extend" />
+                <WordDetect attribute="At Rule" context="#pop!@mixin" String="@mixin" />
+                <WordDetect attribute="At Rule" context="#pop!@mixin" String="@function" />
+                <WordDetect attribute="At Rule" context="#pop!@keyframes" String="@keyframes" />
+                <WordDetect attribute="At Rule" context="#pop!@viewport" String="@viewport" />
+                <WordDetect attribute="At Rule" context="#pop!@font-face" String="@font-face" />
+                <WordDetect attribute="At Rule" context="#pop!@if" String="@if" />
+                <WordDetect attribute="At Rule" context="#pop!@else" String="@else" />
+                <WordDetect attribute="At Rule" context="#pop!@page" String="@page" />
                 <RegExpr attribute="At Rule" context="#pop!UnknownAtRule" String="@[a-zA-Z0-9\-_]+\b" />
             </context>
 
@@ -677,8 +697,6 @@ Changelog:
                 <IncludeRules context="FindFunctions" />
                 <IncludeRules context="FindValues" />
                 <AnyChar attribute="Operator" context="#stay" String="=!&lt;&gt;" />
-                <!-- auto-completion only -->
-                <keyword attribute="Normal Text" context="#stay" String="functions" />
             </context>
 
             <context name="@else" attribute="Error" lineEndContext="#stay">
@@ -808,8 +826,6 @@ Changelog:
                 <RegExpr attribute="Property" context="#stay" String="[A-Za-z_-]+(?=\s*:)" />
                 <keyword attribute="Value" context="#stay" String="medias" />
                 <IncludeRules context="FindValues" />
-                <!-- auto-completion only -->
-                <keyword attribute="Normal Text" context="#stay" String="functions" />
             </context>
 
             <context name="SelectorAttr" attribute="Selector Attribute" lineEndContext="#stay">
@@ -873,8 +889,6 @@ Changelog:
                 <DetectChar attribute="Normal Text" context="#pop" char="}" endRegion="ruleset" />
                 <RegExpr attribute="Property" context="Rule" String="[A-Za-z_-]+\s*:($|[/{\s0-9$&quot;'])" lookAhead="true" />
                 <IncludeRules context="Base" />
-                <!-- auto-completion only, includes by a previous rule -->
-                <keyword attribute="Normal Text" context="#stay" String="properties" />
             </context>
 
             <context name="Rule" attribute="Normal Text" lineEndContext="#stay">
@@ -900,8 +914,6 @@ Changelog:
                 <IncludeRules context="FindStrings" />
                 <IncludeRules context="FindFunctions" />
                 <IncludeRules context="FindValues" />
-                <!-- auto-completion only -->
-                <keyword attribute="Normal Text" context="#stay" String="functions" />
             </context>
 
             <context name="SubRule" attribute="Normal Text" lineEndContext="#stay">
@@ -913,9 +925,6 @@ Changelog:
                 <Detect2Chars attribute="Interpolation" context="InterpolationMaybeProperty" char="#" char1="{" />
                 <DetectIdentifier />
                 <AnyChar attribute="Error" context="#stay" String="*>+~|.#" />
-                <!-- auto-completion only, includes by previous rule -->
-                <keyword attribute="Normal Text" context="#stay" String="properties" />
-                <keyword attribute="Normal Text" context="#stay" String="sub-properties" />
             </context>
 
             <context name="Function" attribute="Normal Text" lineEndContext="#stay">
@@ -953,8 +962,6 @@ Changelog:
                 <IncludeRules context="FindFunctions" />
                 <IncludeRules context="FindValues" />
                 <RegExpr attribute="Operator" context="#stay" String="[-](?=$|[ \t(,;])|[+](?=$|[^0-9)])|[/*]" />
-                <!-- auto-completion only -->
-                <keyword attribute="Normal Text" context="#stay" String="functions" />
             </context>
 
             <context name="FunctionUrl" attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="UrlValue">

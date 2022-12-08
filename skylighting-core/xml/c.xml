@@ -9,13 +9,13 @@
     <!ENTITY symbols ":!&#37;&amp;()+,-/.*&lt;=&gt;?[]|~^;">
 
     <!-- printf-like format strings conversion specifiers -->
-    <!ENTITY printf_like "&#37;[-+ #0]*+(?:[0-9]++|\*)?(?:\.(?:[0-9]++|\*))?(?:(?:hh|ll|[hljzt])?[dioxXubn]|wf?(?:[0-9]{0,4})[oxXub]|(?:DD|[lLHD])?[fFeEaAgG]|l?[cs]|[p&#37;])">
+    <!ENTITY printf_like "&#37;[-+ #0]*+(?:[0-9]++|\*)?(?:\.(?:[0-9]++|\*))?(?:(?:hh|ll|[hljzt]|wf?(?:8|16|32|64))?[dioxXubn]|(?:DD|[lLHD])?[fFeEaAgG]|l?[cs]|[p&#37;])">
 
     <!ENTITY ispphash "(?:#|&#37;\:|\?\?=)">
     <!ENTITY pphash "&ispphash;\s*">
 ]>
 <language name="C" section="Sources"
-          version="16" kateversion="5.79"
+          version="17" kateversion="5.79"
           indenter="cstyle"
           extensions="*.c;*.C;*.h"
           mimetype="text/x-csrc;text/x-c++src;text/x-chdr"

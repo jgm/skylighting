@@ -23,7 +23,7 @@
    * QML
    * CoffeeScript (embedded)
 -->
-<language name="JavaScript" version="22" kateversion="5.53" section="Scripts" extensions="*.js;*.mjs;*.cjs;*.kwinscript;*.julius"
+<language name="JavaScript" version="23" kateversion="5.53" section="Scripts" extensions="*.js;*.mjs;*.cjs;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
 
@@ -1075,7 +1075,6 @@
       <item>port</item>
       <item>prefix</item>
       <item>previous</item>
-      <item>previousDibling</item>
       <item>product</item>
       <item>productSub</item>
       <item>profile</item>

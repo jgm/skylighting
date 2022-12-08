@@ -38,7 +38,9 @@
   ]
 , [ ( NormalTok , "          (bs (" )
   , ( KeywordTok , "remove-if-not" )
-  , ( NormalTok , " #'(" )
+  , ( NormalTok , " " )
+  , ( OperatorTok , "#'" )
+  , ( NormalTok , "(" )
   , ( KeywordTok , "lambda" )
   , ( NormalTok , " (b) " )
   ]
@@ -46,12 +48,16 @@
   , ( KeywordTok , "find" )
   , ( NormalTok , " c b " )
   , ( BuiltInTok , ":test" )
-  , ( NormalTok , " #'char-equal))" )
+  , ( NormalTok , " " )
+  , ( OperatorTok , "#'" )
+  , ( NormalTok , "char-equal))" )
   ]
 , [ ( NormalTok , "                             blocks)))" ) ]
 , [ ( NormalTok , "         (" )
   , ( KeywordTok , "some" )
-  , ( NormalTok , " #'identity " )
+  , ( NormalTok , " " )
+  , ( OperatorTok , "#'" )
+  , ( NormalTok , "identity " )
   ]
 , [ ( NormalTok , "               (" )
   , ( KeywordTok , "loop" )

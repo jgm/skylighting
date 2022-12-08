@@ -11,7 +11,7 @@
     <!ENTITY punctuators ":&ns_punctuators;">
 
     <!-- printf-like format strings conversion specifiers -->
-    <!ENTITY printf_like "&#37;[-+ #0]*+(?:[0-9]++|\*)?(?:\.(?:[0-9]++|\*))?(?:(?:hh|ll|[hljzt])?[dioxXubn]|wf?(?:[0-9]{0,4})[oxXub]|(?:DD|[lLHD])?[fFeEaAgG]|l?[cs]|[p&#37;])">
+    <!ENTITY printf_like "&#37;[-+ #0]*+(?:[0-9]++|\*)?(?:\.(?:[0-9]++|\*))?(?:(?:hh|ll|[hljzt]|wf?(?:8|16|32|64))?[dioxXubn]|(?:DD|[lLHD])?[fFeEaAgG]|l?[cs]|[p&#37;])">
     <!-- https://en.cppreference.com/w/cpp/utility/format/formatter#Standard_format_specification -->
     <!ENTITY format_like "\{\{|\}\}|\{[0-9]*(?::(?:[^{}]?[&lt;&gt;^])?[-+ #0]*(?:[0-9]+|\{[0-9]*\})?(?:\.(?:[0-9]+|\{[0-9]*\}))?L?[sbBcdoxXaAeEfFgGp]?)?\}">
 
@@ -35,7 +35,7 @@
 <language
     name="ISO C++"
     section="Sources"
-    version="27"
+    version="28"
     kateversion="5.79"
     indenter="cstyle"
     style="C++"
