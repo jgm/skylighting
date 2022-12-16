@@ -42,6 +42,7 @@ data Flag = Sty String
           deriving (Eq, Show)
 
 data HighlightFormat = FormatANSI
+                     | FormatConTeXt
                      | FormatHtml
                      | FormatLaTeX
                      | FormatNative
@@ -60,7 +61,7 @@ options =
   ,Option ['f']
           ["format"]
           (ReqArg Format "FORMAT")
-          "output format (ansi|html|latex|native)"
+          "output format (ansi|context|html|latex|native)"
   ,Option ['r']
           ["fragment"]
           (NoArg Fragment)
@@ -143,6 +144,7 @@ formatOf :: [Flag] -> IO HighlightFormat
 formatOf [] = return FormatANSI  -- default
 formatOf (Format s : _) = case map toLower s of
                             "ansi"   -> return FormatANSI
+                            "context"-> return FormatConTeXt
                             "html"   -> return FormatHtml
                             "latex"  -> return FormatLaTeX
                             "native" -> return FormatNative
@@ -244,6 +246,7 @@ main = do
 
   case format of
        FormatANSI   -> hlANSI highlightOpts style sourceLines
+       FormatConTeXt-> hlConTeXt fragment fname highlightOpts style sourceLines
        FormatHtml   -> hlHtml fragment fname highlightOpts style sourceLines
        FormatLaTeX  -> hlLaTeX fragment fname highlightOpts style sourceLines
        FormatNative -> putStrLn $ ppShow sourceLines
@@ -295,3 +298,23 @@ hlLaTeX frag fname opts sty sourceLines =
         macros = styleToLaTeX sty
         pageTitle = "\\title{" <> Text.pack fname <> "}\n"
 
+hlConTeXt :: Bool               -- ^ Fragment
+          -> FilePath           -- ^ Filename
+          -> FormatOptions
+          -> Style
+          -> [SourceLine]
+          -> IO ()
+hlConTeXt frag fname opts sty sourceLines =
+ if frag
+    then Text.putStrLn fragment
+    else Text.putStrLn $ Text.unlines
+         [ macros
+         , "\\starttext"
+         , pageTitle
+         , fragment
+         , "\\stoptext"
+         ]
+  where fragment = formatConTeXtBlock opts sourceLines
+        macros = styleToConTeXt sty
+        pageTitle = "\\startalignment[middle]\n" <>
+                    "{\\tfd " <> Text.pack fname <> "}\n\\stopalignment"

@@ -44,6 +44,7 @@ library
                        , skylighting-core:Skylighting.Tokenizer
                        , skylighting-format-ansi:Skylighting.Format.ANSI
                        , skylighting-format-blaze-html:Skylighting.Format.HTML
+                       , skylighting-format-context:Skylighting.Format.ConTeXt
                        , skylighting-format-latex:Skylighting.Format.LaTeX
   other-modules:
                        Skylighting.Syntax.Abc
@@ -201,6 +202,7 @@ library
   build-depends:       base >= 4.8 && < 5.0,
                        skylighting-core == 0.13.1.2,
                        skylighting-format-ansi >= 0.1 && < 0.2,
+                       skylighting-format-context >= 0.1 && < 0.2,
                        skylighting-format-latex >= 0.1 && < 0.2,
                        skylighting-format-blaze-html >= 0.1 && < 0.2,
                        containers,
