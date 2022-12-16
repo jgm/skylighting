@@ -9,8 +9,8 @@ a Haskell syntax highlighting library with support for KDE XML syntax
 highlighting descriptions.
 
 Formatters are no longer included in this package: see
-`skylighting-format-ansi`, `skylighting-format-blaze-html`, and
-`skylighting-format-latex`.
+`skylighting-format-ansi`, `skylighting-format-blaze-html`,
+`skylighting-format-context`, and `skylighting-format-latex`.
 
 For details on how to use this package, see the Haddock documentation and
 the [Skylighting README](https://github.com/jgm/skylighting/blob/master/skylighting/README.md).

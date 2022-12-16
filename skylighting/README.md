@@ -21,10 +21,12 @@ This project is divided up into five packages:
   rendering skylighting tokens as colored ANSI text.
 * `skylighting-format-blaze-html`: this provides formatters for
   rendering skylighting tokens as HTML, using the `blaze-html` library.
+* `skylighting-format-context`: this provides formatters for
+   rendering skylighting tokens as ConTeXt.
 * `skylighting-format-latex`: this provides formatters for
   rendering skylighting tokens as LaTeX.
 * `skylighting`: this exposes the `skylighting-core` API and
-   ANSI, HTML, and LaTeX formatters, and also
+   ANSI, HTML, ConTeXt, and LaTeX formatters, and also
    provides bundled Haskell parser modules derived from the XML
    descriptions in the `core` package. This package is entirely licensed
    under the GPL.

@@ -14,6 +14,7 @@ module Skylighting
   , module Skylighting.Regex
   , module Skylighting.Styles
   , module Skylighting.Format.ANSI
+  , module Skylighting.Format.ConTeXt
   , module Skylighting.Format.HTML
   , module Skylighting.Format.LaTeX
   , module Skylighting.Loader
@@ -23,6 +24,7 @@ where
 
 import Skylighting.Core
 import Skylighting.Format.ANSI
+import Skylighting.Format.ConTeXt
 import Skylighting.Format.HTML
 import Skylighting.Format.LaTeX
 import Skylighting.Parser

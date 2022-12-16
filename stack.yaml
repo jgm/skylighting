@@ -3,6 +3,7 @@ packages:
 - skylighting
 - skylighting-format-ansi
 - skylighting-format-blaze-html
+- skylighting-format-context
 - skylighting-format-latex
 extra-deps: []
 resolver: lts-18.10
