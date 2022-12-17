@@ -27,8 +27,7 @@ library
                        text,
                        containers,
                        binary,
-                       ansi-terminal >= 0.7,
-                       colour >= 2.0
+                       ansi-terminal >= 0.7
   hs-source-dirs:      src
   ghc-prof-options:    -fprof-auto-exported
   default-language:    Haskell2010
