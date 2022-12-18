@@ -1,5 +1,11 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.13.2
+
+  * Support ConTeXt output via skylighting-format-context (Albert Krewinkel).
+
+  * Update syntax definitions for markdown, nim, javascript.
+
 ## 0.13.1.2
 
   * Update syntax definitions for c, cmake, commonmlisp, css, go, ini, isocpp,
