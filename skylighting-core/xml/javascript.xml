@@ -23,7 +23,7 @@
    * QML
    * CoffeeScript (embedded)
 -->
-<language name="JavaScript" version="23" kateversion="5.53" section="Scripts" extensions="*.js;*.mjs;*.cjs;*.kwinscript;*.julius"
+<language name="JavaScript" version="24" kateversion="5.53" section="Scripts" extensions="*.js;*.mjs;*.cjs;*.kwinscript;*.julius"
           mimetype="text/x-javascript;application/x-javascript;application/javascript;text/javascript" indenter="cstyle"
           author="Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)" license="">
 
@@ -60,6 +60,8 @@
       <item>typeof</item>
       <item>var</item>
       <item>void</item>
+      <item>set</item>
+      <item>get</item>
     </list>
     <list name="reserved">
       <item>async</item>
