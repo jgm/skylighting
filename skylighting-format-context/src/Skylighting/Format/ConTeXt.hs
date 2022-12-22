@@ -46,16 +46,16 @@ escapeConTeXt :: Text -> Text
 escapeConTeXt = Text.concatMap escapeConTeXtChar
   where escapeConTeXtChar c =
          case c of
-           '\\' -> "\\letterbackslash "
-           '{'  -> "\\letteropenbrace "
-           '}'  -> "\\letterclosebrace "
-           '|'  -> "\\letterbar "
-           '$'  -> "\\letterdollar "
-           '_'  -> "\\letterunderscore "
-           '%'  -> "\\letterpercent "
-           '#'  -> "\\letterhash "
-           '/'  -> "\\letterslash "
-           '~'  -> "\\lettertilde "
+           '\\' -> "\\letterbackslash{}"
+           '{'  -> "\\letteropenbrace{}"
+           '}'  -> "\\letterclosebrace{}"
+           '|'  -> "\\letterbar{}"
+           '$'  -> "\\letterdollar{}"
+           '_'  -> "\\letterunderscore{}"
+           '%'  -> "\\letterpercent{}"
+           '#'  -> "\\letterhash{}"
+           '/'  -> "\\letterslash{}"
+           '~'  -> "\\lettertilde{}"
            _    -> Text.singleton c
 
 -- ConTeXt
