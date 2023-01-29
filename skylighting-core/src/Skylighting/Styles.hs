@@ -148,41 +148,266 @@ pygments = Style{
 
 -- | Style based on pygments's tango colors.
 tango :: Style
-tango = Style{
-    backgroundColor = color 0xf8f8f8
+tango = Style
+  { tokenStyles =
+      Map.fromList
+        [ ( KeywordTok
+          , TokenStyle
+              { tokenColor = Just (RGB 32 74 135)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( DataTypeTok
+          , TokenStyle
+              { tokenColor = Just (RGB 32 74 135)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( DecValTok
+          , TokenStyle
+              { tokenColor = Just (RGB 0 0 207)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( BaseNTok
+          , TokenStyle
+              { tokenColor = Just (RGB 0 0 207)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( FloatTok
+          , TokenStyle
+              { tokenColor = Just (RGB 0 0 207)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( ConstantTok
+          , TokenStyle
+              { tokenColor = Just (RGB 143 89 2)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( CharTok
+          , TokenStyle
+              { tokenColor = Just (RGB 78 154 6)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( SpecialCharTok
+          , TokenStyle
+              { tokenColor = Just (RGB 206 92 0)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( StringTok
+          , TokenStyle
+              { tokenColor = Just (RGB 78 154 6)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( VerbatimStringTok
+          , TokenStyle
+              { tokenColor = Just (RGB 78 154 6)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( SpecialStringTok
+          , TokenStyle
+              { tokenColor = Just (RGB 78 154 6)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( ImportTok
+          , TokenStyle
+              { tokenColor = Nothing
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( CommentTok
+          , TokenStyle
+              { tokenColor = Just (RGB 143 89 2)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = True
+              , tokenUnderline = False
+              }
+          )
+        , ( DocumentationTok
+          , TokenStyle
+              { tokenColor = Just (RGB 143 89 2)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = True
+              , tokenUnderline = False
+              }
+          )
+        , ( AnnotationTok
+          , TokenStyle
+              { tokenColor = Just (RGB 143 89 2)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = True
+              , tokenUnderline = False
+              }
+          )
+        , ( CommentVarTok
+          , TokenStyle
+              { tokenColor = Just (RGB 143 89 2)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = True
+              , tokenUnderline = False
+              }
+          )
+        , ( OtherTok
+          , TokenStyle
+              { tokenColor = Just (RGB 143 89 2)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( FunctionTok
+          , TokenStyle
+              { tokenColor = Just (RGB 32 74 135)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( VariableTok
+          , TokenStyle
+              { tokenColor = Just (RGB 0 0 0)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( ControlFlowTok
+          , TokenStyle
+              { tokenColor = Just (RGB 32 74 135)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( OperatorTok
+          , TokenStyle
+              { tokenColor = Just (RGB 206 92 0)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( ExtensionTok
+          , TokenStyle
+              { tokenColor = Nothing
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( PreprocessorTok
+          , TokenStyle
+              { tokenColor = Just (RGB 143 89 2)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = True
+              , tokenUnderline = False
+              }
+          )
+        , ( AttributeTok
+          , TokenStyle
+              { tokenColor = Just (RGB 32 74 135)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( InformationTok
+          , TokenStyle
+              { tokenColor = Just (RGB 143 89 2)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = True
+              , tokenUnderline = False
+              }
+          )
+        , ( WarningTok
+          , TokenStyle
+              { tokenColor = Just (RGB 143 89 2)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = True
+              , tokenUnderline = False
+              }
+          )
+        , ( AlertTok
+          , TokenStyle
+              { tokenColor = Just (RGB 239 41 41)
+              , tokenBackground = Nothing
+              , tokenBold = False
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        , ( ErrorTok
+          , TokenStyle
+              { tokenColor = Just (RGB 164 0 0)
+              , tokenBackground = Nothing
+              , tokenBold = True
+              , tokenItalic = False
+              , tokenUnderline = False
+              }
+          )
+        ]
   , defaultColor = Nothing
-  , lineNumberColor = color 0xaaaaaa
+  , backgroundColor = Just (RGB 248 248 248)
+  , lineNumberColor = Just (RGB 170 170 170)
   , lineNumberBackgroundColor = Nothing
-  , tokenStyles = Map.fromList
-    [ (KeywordTok, defStyle{ tokenColor = color 0x204a87, tokenBold = True })
-    , (DataTypeTok, defStyle{ tokenColor = color 0x204a87 })
-    , (DecValTok, defStyle{ tokenColor = color 0x0000cf })
-    , (BaseNTok, defStyle{ tokenColor = color 0x0000cf })
-    , (FloatTok, defStyle{ tokenColor = color 0x0000cf })
-    , (CharTok, defStyle{ tokenColor = color 0x4e9a06 })
-    , (StringTok, defStyle{ tokenColor = color 0x4e9a06 })
-    , (CommentTok, defStyle{ tokenColor = color 0x8f5902, tokenItalic = True })
-    , (OtherTok, defStyle{ tokenColor = color 0x8f5902 })
-    , (AlertTok, defStyle{ tokenColor = color 0xef2929 })
-    , (FunctionTok, defStyle{ tokenColor = color 0x000000 })
-    , (ErrorTok, defStyle{ tokenColor = color 0xa40000, tokenBold = True })
-    , (WarningTok, defStyle{ tokenColor = color 0x8f5902, tokenItalic = True,tokenBold = True })
-    , (ConstantTok, defStyle{ tokenColor = color 0x000000 })
-    , (SpecialCharTok, defStyle{ tokenColor = color 0x000000 })
-    , (VerbatimStringTok, defStyle{ tokenColor = color 0x4e9a06 })
-    , (SpecialStringTok, defStyle{ tokenColor = color 0x4e9a06 })
-    , (ImportTok, defStyle)
-    , (VariableTok, defStyle{ tokenColor = color 0x000000 })
-    , (ControlFlowTok, defStyle{ tokenColor = color 0x204a87, tokenBold = True })
-    , (OperatorTok, defStyle{ tokenColor = color 0xce5c00, tokenBold = True })
-    , (PreprocessorTok, defStyle{ tokenColor = color 0x8f5902, tokenItalic = True} )
-    , (ExtensionTok, defStyle)
-    , (AttributeTok, defStyle{ tokenColor = color 0xc4a000 })
-    , (DocumentationTok, defStyle{ tokenColor = color 0x8f5902, tokenItalic = True, tokenBold = True })
-    , (AnnotationTok, defStyle{ tokenColor = color 0x8f5902, tokenItalic = True,tokenBold = True })
-    , (CommentVarTok, defStyle{ tokenColor = color 0x8f5902, tokenItalic = True,tokenBold = True })
-    , (InformationTok, defStyle{ tokenColor = color 0x8f5902, tokenItalic = True,tokenBold = True })
-    ]
   }
 
 -- | Style based on ultraviolet's espresso_libre.css (dark background).
