@@ -1,5 +1,13 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.13.2.1
+
+  * Update tango style for new token types (#164). The original
+    tango style didn't have colors defined for many token types
+    that have been added since it was added.  This commit
+    updates the style to support them. Thanks to @danbraswell
+    for providing the values needed.
+
 ## 0.13.2
 
   * Support ConTeXt output via skylighting-format-context (Albert Krewinkel).
