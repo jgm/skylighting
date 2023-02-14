@@ -1,6 +1,6 @@
 cabal-version:       >=1.10
 name:                skylighting-format-context
-version:             0.1.0.1
+version:             0.1.0.2
 synopsis:            ConTeXt formatter for skylighting syntax highlighting
                      library
 description:         This module allows tokens produced by skylighting-core
