@@ -40,7 +40,12 @@ tokenToConTeXt :: Token -> Text
 tokenToConTeXt (NormalTok, txt)
   | Text.all isSpace txt = escapeConTeXt txt
 tokenToConTeXt (toktype, txt)   = "/BTEX\\" <>
-  (Text.pack (show toktype) <> "{" <> escapeConTeXt txt <> "}/ETEX")
+  (Text.pack (show toktype) <> "{" <> fixSpaces (escapeConTeXt txt) <> "}/ETEX")
+ where
+  -- Always place the second of two consecutive spaces in a group. The
+  -- ConTeXt parser would otherwise collapse all spaces into a single
+  -- space.
+  fixSpaces = Text.replace "  " " { }"
 
 escapeConTeXt :: Text -> Text
 escapeConTeXt = Text.concatMap escapeConTeXtChar
