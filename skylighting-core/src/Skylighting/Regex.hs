@@ -34,7 +34,7 @@ import Text.Read hiding (get)
 data RE = RE'{
     _reString        :: BS.ByteString
   , _reCaseSensitive :: Bool
-  , reCompiled'      :: Either String Regex
+  , _reCompiled      :: Either String Regex
 } deriving Typeable
 
 -- We define a smart constructor which also holds the compiled regex, to avoid
@@ -110,4 +110,4 @@ decodeFromText :: (Monad m, MonadFail m) => Text.Text -> m BS.ByteString
 decodeFromText = either fail return . Base64.decode . TE.encodeUtf8
 
 compileRE :: RE -> Either String Regex
-compileRE = reCompiled'
+compileRE = _reCompiled
