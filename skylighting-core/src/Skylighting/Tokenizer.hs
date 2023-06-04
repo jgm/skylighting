@@ -56,7 +56,6 @@ data TokenizerState = TokenizerState{
   , column              :: Int
   , lineContinuation    :: Bool
   , firstNonspaceColumn :: Maybe Int
-  , compiledRegexes     :: Map.Map RE Regex
 }
 
 -- | Configuration options for 'tokenize'.
@@ -163,7 +162,6 @@ tokenize config syntax inp =
                     , column = 0
                     , lineContinuation = False
                     , firstNonspaceColumn = Nothing
-                    , compiledRegexes = Map.empty
                     }
 
 info :: String -> TokenizerM ()
@@ -552,18 +550,11 @@ regExpr dynamic re inp = do
   -- return $! traceShowId $! (reStr, inp)
   let reStr = reString re
   when (BS.take 2 reStr == "\\b") $ wordBoundary inp
-  compiledREs <- gets compiledRegexes
-  regex <- case Map.lookup re compiledREs of
-              Nothing -> do
-                cre <- case compileRegex (reCaseSensitive re) reStr of
-                         Right r  -> return r
-                         Left e   -> throwError $
-                           "Error compiling regex " ++
-                            UTF8.toString reStr ++ ": " ++ e
-                modify $ \st -> st{ compiledRegexes =
-                      Map.insert re cre (compiledRegexes st) }
-                return cre
-              Just cre -> return cre
+  regex <- case compileRE re of
+            Right r  -> return r
+            Left e   -> throwError $
+              "Error compiling regex " ++
+              UTF8.toString reStr ++ ": " ++ e
   regex' <- if dynamic
                then subDynamic regex
                else return regex
