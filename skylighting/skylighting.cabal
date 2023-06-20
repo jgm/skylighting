@@ -91,6 +91,7 @@ library
                        Skylighting.Syntax.FortranFixed
                        Skylighting.Syntax.FortranFree
                        Skylighting.Syntax.Fsharp
+                       Skylighting.Syntax.Gap
                        Skylighting.Syntax.Gcc
                        Skylighting.Syntax.Glsl
                        Skylighting.Syntax.Gnuassembler
