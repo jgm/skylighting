@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd"
+<!DOCTYPE language
 [
   <!-- https://www.w3.org/TR/CSS22/syndata.html#tokenization -->
   <!ENTITY nmstart "[_a-zA-Z]|(\\[0-9a-fA-F]{1,6})|(\\[^\n\r\f0-9a-fA-F])">
   <!ENTITY nmchar  "[_a-zA-Z0-9-]|(\\[0-9a-fA-F]{1,6})|(\\[^\n\r\f0-9a-fA-F])">
 ]>
 
-<language name="SASS" version="6" kateversion="5.53" section="Markup" extensions="*.sass" indenter="cstyle" mimetype="text/css" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT" priority="5">
+<language name="SASS" version="7" kateversion="5.53" section="Markup" extensions="*.sass" indenter="cstyle" mimetype="text/css" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT" priority="5">
 
     <highlighting>
         <list name="properties">
@@ -34,7 +34,7 @@
             <context name="Base" attribute="Normal Text" lineEndContext="#stay">
                 <IncludeRules context="FindCommentsColumn0" />
                 <IncludeRules context="FindComments" />
-                <RegExpr attribute="Property" context="Rule" String="^\s*[-_A-Za-z]+(/\*.*\*/)?\s*(?=:(\s|$))" lookAhead="true" column="0" />
+                <RegExpr attribute="Property" context="Rule" String="^\s*[-_A-Za-z]+(/\*.*\*/)?\s*(?=:(\s|$))" lookAhead="true" column="0" minimal="true" />
                 <DetectSpaces />
                 <DetectChar attribute="At Rule" context="@mixin" char="=" firstNonSpace="true" />
                 <DetectChar attribute="At Rule" context="AtRule" char="+" firstNonSpace="true" />

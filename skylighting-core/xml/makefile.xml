@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd">
+<!DOCTYPE language>
 <!-- Makefile syntaxfile v0.9 by Per Wigren <wigren@home.se> -->
 <!-- Modified by Joseph Wenninger <jowenn@kde.org> -->
 <!-- Modified by Rui Santana <santana.rui@gmail.com> -->
@@ -12,14 +12,18 @@
 <!-- v10 by Peter J. Mello <admin@petermello.net>
      Add recognition of POSIX 2013 '::=' operator for variable assignment -->
 <language name="Makefile" section="Other"
-          version="13" kateversion="5.0"
+          version="14" kateversion="5.0"
           extensions="GNUmakefile;Makefile;makefile;GNUmakefile.*;Makefile.*;makefile.*;*.mk"
           mimetype="text/x-makefile" priority="11"
           author="Per Wigren (wigren@home.se)" license="">
+
+  <!-- https://www.gnu.org/software/make/manual/make.pdf -->
+
   <highlighting>
-    <list name = "keywords" >
+    <list name="keywords" >
       <item>include</item>
       <item>-include</item>
+      <item>override</item>
       <item>define</item>
       <item>endef</item>
     </list>
@@ -177,9 +181,9 @@
         <keyword attribute="ControlFlow" String="gmake_else_keywords" context="gmake_else" endRegion="gmake_if" beginRegion="gmake_if" firstNonSpace="true"/>
         <keyword attribute="ControlFlow" String="gmake_endif_keywords" context="#stay" endRegion="gmake_if"/>
 
+        <RegExpr attribute="Variable" context="assign" String="(([+!?](?!=))?[^:#=\s+!?]*)++(?=\s*([+!?]|::?:?)?=)"/>
         <keyword attribute="Keyword"  context="#stay" String="keywords"/>
         <keyword attribute="Keyword"  context="bmake_other_stmts" String="bmake_other_stmts" firstNonSpace="true"/>
-        <RegExpr attribute="Variable" context="assign" String="[^\s+:?+]*\s*(?=::=|:=|=|\+=|\?=)"/>
         <keyword attribute="SpecialTarget" context="bmake_special_target" String="bmake_special_targets" firstNonSpace="true"/>
         <RegExpr attribute="SpecialTarget" context="prereq" String="\.PATH\.[^:]*:" firstNonSpace="true"/>
         <keyword attribute="Keyword" context="bmake_include" String="bmake_include_stmt" firstNonSpace="true"/>
@@ -277,6 +281,25 @@
         <Detect2Chars attribute="Special" context="#stay" char="\" char1="#"/>
         <Detect2Chars attribute="Special" context="#stay" char="\" char1="\"/>
         <DetectChar attribute="Comment" context="Comment" char="#"/>
+        <DetectChar attribute="Operator" context="inline-rule" char=";"/>
+      </context>
+
+      <context name="inline-rule" attribute="Normal" lineEndContext="#pop!rule" fallthroughContext="#pop!inline-rule-cmd" fallthrough="1">
+        <DetectSpaces/>
+        <LineContinue attribute="Operator" context="#stay"/>
+        <AnyChar attribute="Operator" context="silent" String="@-"/>
+      </context>
+      <context name="inline-rule-cmd" attribute="Normal" lineEndContext="#pop!rule">
+        <DetectSpaces/>
+        <DetectIdentifier/>
+        <DetectChar attribute="String" context="string&quot;" char="&quot;"/>
+        <DetectChar attribute="String" context="string'" char="'"/>
+        <DetectChar attribute="Operator" context="dollar" char="$"/>
+        <Detect2Chars attribute="Special" context="#stay" char="\" char1="#"/>
+        <Detect2Chars attribute="Special" context="#stay" char="\" char1="\"/>
+        <AnyChar attribute="Operator" context="silent" String="@-" firstNonSpace="1"/>
+        <DetectChar attribute="Comment" context="Comment" char="#"/>
+        <LineContinue attribute="Operator" context="#stay"/>
       </context>
 
       <context name="rule" attribute="Normal" lineEndContext="#stay">
@@ -321,6 +344,7 @@
       </context>
 
       <context name="assign" attribute="Operator" lineEndContext="#pop">
+        <DetectSpaces attribute="Normal"/>
         <DetectChar attribute="Operator" context="value" char="="/>
       </context>
 
@@ -328,7 +352,8 @@
         <LineContinue attribute="Operator"/>
         <DetectChar attribute="Operator" context="dollar" char="$"/>
         <RegExpr attribute="Special" context="#pop#pop" String="@[-_\d\w]*@"/>
-        <DetectChar attribute="Operator" char=";" context="#pop#pop"/>
+        <Detect2Chars attribute="String" char="\" char1="#"/>
+        <DetectChar attribute="Comment" context="#pop#pop!Comment" char="#"/>
       </context>
 
       <context name="dollar" attribute="Operator" lineEndContext="#pop">
@@ -454,6 +479,7 @@
         <DetectChar attribute="Operator" char=")" context="#pop#pop#pop"/>
         <DetectChar attribute="Operator" context="dollar" char="$"/>
         <DetectChar attribute="Keyword" context="#stay" char=","/>
+        <DetectChar attribute="String" context="string&quot;" char="&quot;"/>
         <DetectChar attribute="String" context="string'" char="'"/>
       </context>
 
@@ -461,6 +487,7 @@
         <DetectChar attribute="Operator" char="}" context="#pop#pop#pop"/>
         <DetectChar attribute="Operator" context="dollar" char="$"/>
         <DetectChar attribute="Keyword" context="#stay" char=","/>
+        <DetectChar attribute="String" context="string&quot;" char="&quot;"/>
         <DetectChar attribute="String" context="string'" char="'"/>
       </context>
 

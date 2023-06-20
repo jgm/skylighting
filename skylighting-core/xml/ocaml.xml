@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Kate syntax highlighting for Objective Caml version 4.02 in the standard and revised syntaxes, with Ocamldoc comments. -->
 
-<!DOCTYPE language SYSTEM "language.dtd"
+<!DOCTYPE language
 [
 <!-- Regular expresion constants: -->
 <!ENTITY LOWER  "a-z\300-\326\330-\337">         <!-- Lowercase Latin-1 letters. -->

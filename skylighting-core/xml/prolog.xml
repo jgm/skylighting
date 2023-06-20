@@ -29,7 +29,7 @@
  * Boston, MA  02110-1301, USA.                                       *
  **********************************************************************
 -->
-<!DOCTYPE language SYSTEM "language.dtd"
+<!DOCTYPE language
 [<!-- [Regular Expressions, Character Classes & Important Tokens]
 E.g. the dot "." has so many different meanings (i.e. in an RegExpr 'any char',
 'fullstop' of a clause, etc. pp.) that I decided it's usefull to write these out

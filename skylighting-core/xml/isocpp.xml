@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd"
+<!DOCTYPE language
 [
     <!ENTITY int "(?:[0-9](?:'?[0-9]++)*+)">
     <!ENTITY hex_int "(?:[0-9A-Fa-f](?:'?[0-9A-Fa-f]++)*+)">

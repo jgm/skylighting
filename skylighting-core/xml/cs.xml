@@ -1,4 +1,4 @@
-<!DOCTYPE language SYSTEM "language.dtd">
+<!DOCTYPE language>
 <language name="C#" version="13" kateversion="5.0" section="Sources" extensions="*.cs;*.ashx" mimetype="text/x-csharp-src;text/x-csharp-hde" indenter="cstyle" style="C++">
   <highlighting>
     <list name="keywords">

@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<!DOCTYPE language SYSTEM "language.dtd" [
+<!DOCTYPE language [
   <!ENTITY tab "&#9;">
   <!ENTITY url          "(http:|https:|ftp:|mailto:)[^]| ]*(?=$|[]|\s])">
   <!ENTITY htmlTagName  "(?![0-9])[\w_:][\w.:_-]*">

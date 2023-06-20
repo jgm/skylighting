@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd"
+<!DOCTYPE language
 [
     <!ENTITY bullet "&#xd7;">
     <!ENTITY envname "[a-zA-Z]+\*?">
 ]>
-<language name="LaTeX" version="20" section="Markup" kateversion="5.79" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
+<language name="LaTeX" version="21" section="Markup" kateversion="5.79" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
   <highlighting>
     <!-- NOTE: Keywords of kind "\something" do not need a delimiter before "\".
          Using a DetectChar rule with lookAhead to detect "\" at the beginning
@@ -3449,7 +3449,7 @@
       </context>
       <context name="HighlightingJavaScript" attribute="Normal Text" lineEndContext="#stay">
         <IncludeRules context="HighlightingCommon"/>
-        <IncludeRules context="##JavaScript" includeAttrib="true"/>
+        <IncludeRules context="Normal##JavaScript" includeAttrib="true"/>
       </context>
 
       <context name="HighlightingJCLCodeEnvS" attribute="Error" lineEndContext="#stay">
@@ -4841,7 +4841,7 @@
       </context>
       <context name="HighlightingQML" attribute="Normal Text" lineEndContext="#stay">
         <IncludeRules context="HighlightingCommon"/>
-        <IncludeRules context="##QML" includeAttrib="true"/>
+        <IncludeRules context="Normal##QML" includeAttrib="true"/>
       </context>
 
       <context name="HighlightingRelaxNG-CompactCodeEnvS" attribute="Error" lineEndContext="#stay">
@@ -5769,7 +5769,7 @@
       </context>
       <context name="HighlightingTypeScript" attribute="Normal Text" lineEndContext="#stay">
         <IncludeRules context="HighlightingCommon"/>
-        <IncludeRules context="##TypeScript" includeAttrib="true"/>
+        <IncludeRules context="Normal##TypeScript" includeAttrib="true"/>
       </context>
 
       <context name="HighlightingValaCodeEnvS" attribute="Error" lineEndContext="#stay">

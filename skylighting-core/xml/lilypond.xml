@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd" [
+<!DOCTYPE language [
   <!ENTITY b "(?![A-Za-z])">
   <!ENTITY rest "\b[srR]&b;">
   <!ENTITY pitch "\b([a-h]((iss){1,2}|(ess){1,2}|(is){1,2}|(es){1,2}|(sharp){1,2}|(flat){1,2}|ss?|ff?)?|(do|re|mi|fa|sol|la|si)(dd?|bb?|ss?|kk?)?|q)('+|,+|&b;)">

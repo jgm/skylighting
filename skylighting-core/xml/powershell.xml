@@ -1,4 +1,4 @@
-<!DOCTYPE language SYSTEM "language.dtd">
+<!DOCTYPE language>
 <language
   name="PowerShell"
   version="13"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd"
+<!DOCTYPE language
 [
-	<!ENTITY identifier     "[a-zA-Z_$[:^ascii:]][\w$[:^ascii:]]*">
+	<!ENTITY identifier     "[a-zA-Z_$[:^ascii:]][\w$[:^ascii:]]*+">
 	<!ENTITY numSuffix      "(?=n?(?:[^\w]|$))">
 	<!ENTITY objectOp       "[\?!]?">
 	<!ENTITY objectPoint    "\s*&objectOp;\.">
@@ -61,7 +61,7 @@
 -->
 
 <language name="TypeScript"
-          version="15"
+          version="16"
           kateversion="5.53"
           section="Scripts"
           extensions="*.ts;*.mts;*.cts"

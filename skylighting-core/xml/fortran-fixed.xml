@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd" [
+<!DOCTYPE language [
   <!-- Integers with optional kind specifier -->
   <!ENTITY integer "\b[0-9]++(?:[_](?:[0-9]++|[a-zA-Z][\w_]*))?">
   <!-- Integers in binary, octal and hexadecimal notations -->

@@ -38,7 +38,7 @@
 <!-- $LastChangedRevision: 10 $                                             -->
 <!--                                                                       -->
 <!--***********************************************************************-->
-<!DOCTYPE language SYSTEM "language.dtd">
+<!DOCTYPE language>
 <language name="SystemVerilog" version="11" kateversion="5.0" section="Hardware" extensions="*.sv;*.svh" mimetype="text/x-systemverilog-src" author="Sean O'Boyle (seanoboyle@intelligentdv.com)" license="GPLv3+">
   <highlighting>
     <list name="key_deprecated">

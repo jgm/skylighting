@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd"
+<!DOCTYPE language
 [
   <!ENTITY identifier "[a-zA-Z_$][\w$]*">
 ]>
 <!-- Author: Milian Wolff <mail@milianw.de> -->
-<language name="QML" version="9" kateversion="5.53" section="Scripts" extensions="*.qml;*.qmltypes"
+<language name="QML" version="11" kateversion="5.53" section="Scripts" extensions="*.qml;*.qmltypes"
           mimetype="text/x-qml;application/x-qml" indenter="cstyle"
           author="Milian Wolff (mail@milianw.de)" license="MIT">
   <highlighting>
@@ -88,7 +88,9 @@
     </list>
     <!-- keywords not part of JavaScript -->
     <list name="extra-keywords">
+      <item>pragma</item>
       <item>readonly</item>
+      <item>required</item>
     </list>
     <list name="types">
       <!-- see: http://doc.trolltech.com/4.7-snapshot/qml-extending-types.html -->
@@ -104,6 +106,14 @@
       <item>variant</item>
     </list>
     <contexts>
+      <!-- Shebang: ("#!") Detect shebang and fallthrough to Normal -->
+      <!-- Based on the similar clause from prolog.xml.
+           This uses "lineEmptyContext" & "lineEndContext" to force the highlight only on the first line. -->
+      <context name="Shebang" attribute="Normal Text" lineEndContext="Normal" lineEmptyContext="Normal" fallthrough="true" fallthroughContext="Normal">
+        <Detect2Chars column="0" char="#" char1="!" context="Shebang Line" attribute="Shebang" />
+      </context>
+      <context name="Shebang Line" attribute="Shebang" lineEndContext="#pop!Normal" />
+
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
         <DetectSpaces/>
         <WordDetect attribute="Import" context="Import" String="import"/>
@@ -173,6 +183,7 @@
       <itemData name="String"       defStyleNum="dsString" />
       <itemData name="Objects"      defStyleNum="dsExtension" bold="0" spellChecking="false" />
       <itemData name="Symbol"       defStyleNum="dsOperator" spellChecking="false" />
+      <itemData name="Shebang"      defStyleNum="dsComment" spellChecking="false" />
     </itemDatas>
   </highlighting>
   <general>

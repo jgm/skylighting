@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd" [
+<!DOCTYPE language [
   <!ENTITY hexfloat "0[xX][\da-fA-F_]*(?:\.[\da-fA-F_]*)?[pP][-+]?\d[\d_]*[fFL]?i?">
   <!-- Float starting with a dot is matched in main context -->
   <!-- All floats except integers -->

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd">
+<!DOCTYPE language>
 <!-- Oracle10g SQL and PL/SQL syntax - ANSI SQL 2003 superset -->
 <!-- This file is maintained by Anders Lund <anders@alweb.dk> since 2005-11-06
      v3 fix comments by Gene Thomas <gene@genethomas.com>

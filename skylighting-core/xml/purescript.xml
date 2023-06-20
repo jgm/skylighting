@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd">
+<!DOCTYPE language>
 <language name="PureScript" version="1" kateversion="5.53" section="Sources" extensions="*.purs" author="Gleb Popov (6yearold@gmail.com)" license="BSD3" indenter="haskell" style="haskell">
   <highlighting>
   <contexts>

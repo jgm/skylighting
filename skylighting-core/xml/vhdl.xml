@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd" [
+<!DOCTYPE language [
   <!ENTITY varname  "[A-Za-z_][A-Za-z0-9_]*">
   <!ENTITY identifier "(?:\b&varname;\b|\\[^\\]*\\)">
   <!ENTITY designator "(?:\b&varname;\b|\\[^\\]*\\|&quot;[^&quot;]*&quot;)">

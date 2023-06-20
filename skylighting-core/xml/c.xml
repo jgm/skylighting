@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd"
+<!DOCTYPE language
 [
     <!ENTITY int "(?:[0-9](?:'?[0-9]++)*+)">
     <!ENTITY hex_int "(?:[0-9A-Fa-f](?:'?[0-9A-Fa-f]++)*+)">
@@ -15,7 +15,7 @@
     <!ENTITY pphash "&ispphash;\s*">
 ]>
 <language name="C" section="Sources"
-          version="17" kateversion="5.79"
+          version="18" kateversion="5.79"
           indenter="cstyle"
           extensions="*.c;*.C;*.h"
           mimetype="text/x-csrc;text/x-c++src;text/x-chdr"
@@ -45,14 +45,19 @@
     </list>
 
     <list name="keywords">
+      <item>alignas</item> <!-- C23 -->
+      <item>alignof</item> <!-- C23 -->
       <item>auto</item>
       <item>constexpr</item> <!-- C23 -->
       <item>enum</item>
       <item>extern</item>
+      <item>false</item> <!-- C23 -->
       <item>inline</item>
       <item>nullptr</item> <!-- C23 -->
       <item>sizeof</item>
+      <item>static_assert</item> <!-- C23 -->
       <item>struct</item>
+      <item>true</item> <!-- C23 -->
       <item>typedef</item>
       <item>typeof</item> <!-- C23 -->
       <item>typeof_unqual</item> <!-- C23 -->
@@ -77,22 +82,18 @@
     </list>
 
     <list name="types">
+      <item>bool</item> <!-- C23 -->
       <item>char</item>
       <item>char16_t</item>
       <item>char32_t</item>
-      <item>const</item>
       <item>double</item>
       <item>float</item>
       <item>int</item>
       <item>long</item>
-      <item>register</item>
-      <item>restrict</item>
       <item>short</item>
       <item>signed</item>
-      <item>static</item>
       <item>unsigned</item>
       <item>void</item>
-      <item>volatile</item>
       <item>int8_t</item>
       <item>int16_t</item>
       <item>int32_t</item>
@@ -127,12 +128,12 @@
       <item>ptrdiff_t</item>
       <item>sig_atomic_t</item>
       <item>wint_t</item>
-      <item>_BitInt</item>
+      <item>_BitInt</item> <!-- C23 -->
       <item>_Bool</item>
       <item>bool</item>
-      <item>_Decimal32</item>
-      <item>_Decimal64</item>
-      <item>_Decimal128</item>
+      <item>_Decimal32</item> <!-- C23 -->
+      <item>_Decimal64</item> <!-- C23 -->
+      <item>_Decimal128</item> <!-- C23 -->
       <item>_Complex</item>
       <item>complex</item>
       <item>_Imaginary</item>
@@ -143,6 +144,14 @@
       <item>fpos_t</item>
       <item>time_t</item>
       <item>max_align_t</item>
+
+      <!-- modifiers -->
+      <item>const</item>
+      <item>register</item>
+      <item>restrict</item>
+      <item>static</item>
+      <item>thread_local</item> <!-- C23 -->
+      <item>volatile</item>
     </list>
 
     <list name="preprocessor">
@@ -483,7 +492,7 @@
       <context name="IntSuffix" attribute="Error" lineEndContext="#pop#pop" fallthroughContext="NumericSuffixError">
         <DetectChar attribute="Error" context="#stay" char="'" />
         <!-- https://en.cppreference.com/w/c/language/integer_constant#The_type_of_the_integer_constant -->
-        <RegExpr attribute="Standard Suffix" context="NumericSuffixError" String="([Uu](LL?|ll?)?|(LL?|ll?)[Uu]?|wb|WB)\b"/>
+        <RegExpr attribute="Standard Suffix" context="NumericSuffixError" String="([Uu](LL?|ll?|wb|WB)?|(LL?|ll?|wb|WB)[Uu]?)\b"/>
       </context>
 
       <context name="FloatSuffix" attribute="Error" lineEndContext="#pop#pop" fallthroughContext="NumericSuffixError">
