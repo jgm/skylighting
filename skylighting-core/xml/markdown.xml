@@ -339,7 +339,6 @@
         <RegExpr attribute="Fenced Code" context="#pop!python-code" String="&fcode;\s*(?:python[23]?|py[23w]?|[rc]py|sconstruct|gypi?)&end;" insensitive="true" beginRegion="code-block"/>
         <RegExpr attribute="Fenced Code" context="#pop!qml-code" String="&fcode;\s*qml(?:types)?&end;" insensitive="true" beginRegion="code-block"/>
         <RegExpr attribute="Fenced Code" context="#pop!r-code" String="&fcode;\s*(?:r|rprofile|rscript)&end;" insensitive="true" beginRegion="code-block"/>
-        <RegExpr attribute="Fenced Code" context="#pop!raku-code" String="&fcode;\s*(?:raku(?:mod|doc|test)?|perl6|p[lm]?6|pod6|nqp)&end;" insensitive="true" beginRegion="code-block"/>
         <RegExpr attribute="Fenced Code" context="#pop!rest-code" String="&fcode;\s*(?:rst|rest|restructuredtext)&end;" insensitive="true" beginRegion="code-block"/> <!-- Included in the CMake definition -->
         <RegExpr attribute="Fenced Code" context="#pop!ruby-code" String="&fcode;\s*(?:ruby|rbx?|rjs|rake|f?cgi|gemspec|irbrc|ru|prawn|Appraisals|(?:Rake|Cap|Chef|Gem|Guard|Hobo|Vagrant||Rant|Berks|Thor|Puppet)file|rxml|(?:xml|js)\.erb)&end;" insensitive="true" beginRegion="code-block"/>
         <RegExpr attribute="Fenced Code" context="#pop!rust-code" String="&fcode;\s*(?:rust|rs)&end;" insensitive="true" beginRegion="code-block"/>
