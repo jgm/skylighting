@@ -1,5 +1,24 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.13.3
+
+  * Add gap language (#167).
+
+  * Update syntax definitions.
+
+  * Add patches for agda.xml and dtd.xml, to wor around a bug in xml-conduit:
+    https://github.com/snoyberg/xml/pull/187
+
+  * Store compiled regexes in RE (#166, Jonathan Coates).
+    This changes the RE type to (lazily) compile the regex when constructed,
+    rather than in the tokenizer. This allows us to avoid re-compiling
+    regexes for each separate tokenize call, instead sharing them globally.
+    We try to hide the internals of this, exposing the previous interface
+    `(RE { reString, reCaseSensitive })` with pattern synonyms.
+
+  * ConTeXt: fix handling of spaces in non-normal tokens (Albert Krewinkel).
+    This ensures that multiple spaces won't be collapsed into a single space.
+
 ## 0.13.2.1
 
   * Update tango style for new token types (#164). The original
