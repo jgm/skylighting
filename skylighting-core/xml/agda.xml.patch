@@ -1,0 +1,11 @@
+diff --git a/skylighting-core/xml/agda.xml b/skylighting-core/xml/agda.xml
+index 194aae5..e15777b 100644
+--- a/skylighting-core/xml/agda.xml
++++ b/skylighting-core/xml/agda.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<!DOCTYPE language[
++<!DOCTYPE language [
+   <!ENTITY charsdelim "_;.&#34;(){}@">
+   <!ENTITY wordsep "(?=[&charsdelim;]|\s|$)">
+ ]>
