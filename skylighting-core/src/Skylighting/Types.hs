@@ -221,7 +221,7 @@ data TokenType = KeywordTok
                | AlertTok
                | ErrorTok
                | NormalTok
-               deriving (Read, Show, Eq, Ord, Enum, Data, Typeable, Generic)
+               deriving (Read, Show, Eq, Ord, Enum, Bounded, Data, Typeable, Generic)
 
 instance Binary TokenType
 
