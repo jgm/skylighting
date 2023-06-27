@@ -1,5 +1,9 @@
 # Revision history for skylighting and skylighting-core
 
+## master
+
+  * Add `Bounded` instance for `TokenType`.
+
 ## 0.13.3
 
   * Add gap language (#167).
@@ -953,4 +957,3 @@
 ## 0.1.0.0  -- 2016-12-23
 
   * Initial release
-
