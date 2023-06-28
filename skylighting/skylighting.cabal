@@ -78,6 +78,7 @@ library
                        Skylighting.Syntax.Diff
                        Skylighting.Syntax.Djangotemplate
                        Skylighting.Syntax.Dockerfile
+                       Skylighting.Syntax.Dosbat
                        Skylighting.Syntax.Dot
                        Skylighting.Syntax.Doxygen
                        Skylighting.Syntax.Doxygenlua
