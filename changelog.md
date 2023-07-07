@@ -1,8 +1,18 @@
 # Revision history for skylighting and skylighting-core
 
-## master
+## 0.13.4
 
-  * Add `Bounded` instance for `TokenType`.
+  * Add `dosbat` syntax (MS DOS batch file) (#169).
+
+  * Derive `Bounded` Instance for `TokenType` (#168, Pavan Pikhi).
+    Add `Bounded` to the derived instances for the `TokenType` type. This
+    allows consumers to use `[minBound .. maxBound]` to generate a list of
+    all token types when writing a `Style`.
+
+  * Require xml-conduit >= 1.9.1.3. This fixes a bug that prevents
+    parsing certain DOCTYPE declarations, e.g. in `agda.xml`.
+
+  * Updated `cmake` syntax definition.
 
 ## 0.13.3
 
