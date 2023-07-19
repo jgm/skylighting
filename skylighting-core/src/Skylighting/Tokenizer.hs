@@ -666,8 +666,7 @@ parseInt inp = do
 pDec :: A.Parser ()
 pDec = do
   mbMinus
-  _ <- A.takeWhile1 (A.inClass "0-9")
-  guardWordBoundary
+  void $ A.takeWhile1 (A.inClass "0-9")
 
 parseOct :: ByteString -> TokenizerM Text
 parseOct inp = do
@@ -682,7 +681,7 @@ pOct = do
   _ <- A.char '0'
   _ <- A.satisfy (A.inClass "Oo")
   _ <- A.takeWhile1 (A.inClass "0-7")
-  guardWordBoundary
+  return ()
 
 parseHex :: ByteString -> TokenizerM Text
 parseHex inp = do
@@ -697,14 +696,7 @@ pHex = do
   _ <- A.char '0'
   _ <- A.satisfy (A.inClass "Xx")
   _ <- A.takeWhile1 (A.inClass "0-9a-fA-F")
-  guardWordBoundary
-
-guardWordBoundary :: A.Parser ()
-guardWordBoundary = do
-  mbw <- A.peekChar
-  case mbw of
-       Just c  ->  guard $ isWordBoundary '0' c
-       Nothing -> return ()
+  return ()
 
 mbMinus :: A.Parser ()
 mbMinus = (() <$ A.char '-') <|> return ()
