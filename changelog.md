@@ -1,5 +1,14 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.13.4.1
+
+  * Update syntax definitions: ada, bash, cmake, css, html, isocpp, java,
+    javascript, kotlin, latex, makefile, markdown, php, python, qml, r,
+    sass, scss, typescript, zsh.
+
+  * Don't require word boundary at end of Int, Float, HlCHex, HlCOct (#170).
+    KDE does not.  This fixes things like `7L` in R.
+
 ## 0.13.4
 
   * Add `dosbat` syntax (MS DOS batch file) (#169).
