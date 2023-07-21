@@ -77,7 +77,7 @@
         <!ENTITY int "(?:[0-9]++[_0-9]*+)">
         <!ENTITY exp "(?:[eE][-+]?&int;)">
 ]>
-<language name="Zsh" version="31" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
+<language name="Zsh" version="32" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
 
   <highlighting>
     <list name="keywords">
@@ -844,7 +844,11 @@
         <Detect2Chars attribute="Redirection" context="#pop"  char="&lt;" char1="&lt;"/><!-- always met -->
       </context>
 
-      <context attribute="Normal Text" lineEndContext="#pop" name="HereDocRemainder" fallthroughContext="Command">
+      <context attribute="Normal Text" lineEndContext="#pop" name="HereDocRemainder" fallthroughContext="CommandArg">
+        <AnyChar context="ZshOneLine" String="&amp;|;`" lookAhead="1"/>
+        <IncludeRules context="CommandArgs"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#pop" name="ZshOneLine" fallthroughContext="Command">
         <IncludeRules context="Start"/>
       </context>
 
@@ -853,7 +857,7 @@
       </context>
 
       <context attribute="Here Doc" lineEndContext="#stay" name="HereDocNQ" dynamic="1" fallthroughContext="HereDocSubstitutions">
-        <RegExpr attribute="Redirection" context="#pop#pop" String="^%1$" dynamic="1" column="0"/>
+        <IncludeRules context="HereDocQ" />
       </context>
 
       <context attribute="Here Doc" lineEndContext="#stay" name="HereDocIQ" dynamic="1" fallthroughContext="HereDocText">
@@ -861,27 +865,32 @@
       </context>
 
       <context attribute="Here Doc" lineEndContext="#stay" name="HereDocINQ" dynamic="1" fallthroughContext="HereDocSubstitutions">
-        <RegExpr attribute="Redirection" context="#pop#pop" String="^\t*%1$" dynamic="1" column="0"/>
+        <IncludeRules context="HereDocIQ" />
+      </context>
+
+      <context attribute="Here Doc" lineEndContext="#stay" name="HereDocCmd">
+        <!-- Only if the redirect is before the command, but as this is too complicated,
+             check if the redirect is at the beginning of the line. -->
+        <StringDetect attribute="Redirection" context="ZshOneLine" String="%1" dynamic="true" firstNonSpace="1"/>
+        <StringDetect attribute="Redirection" context="HereDocRemainder" String="%1" dynamic="true"/>
       </context>
 
       <context attribute="Here Doc" lineEndContext="#stay" name="HereDocQCmd" dynamic="1" fallthroughContext="HereDocText">
-        <StringDetect attribute="Redirection" context="HereDocRemainder" String="%1" dynamic="1"/>
+        <IncludeRules context="HereDocCmd"/>
         <RegExpr attribute="Redirection" context="#pop#pop" String="^%2$" dynamic="1" column="0"/>
       </context>
 
       <context attribute="Here Doc" lineEndContext="#stay" name="HereDocNQCmd" dynamic="1" fallthroughContext="HereDocSubstitutions">
-        <StringDetect attribute="Redirection" context="HereDocRemainder" String="%1" dynamic="1"/>
-        <RegExpr attribute="Redirection" context="#pop#pop" String="^%2$" dynamic="1" column="0"/>
+        <IncludeRules context="HereDocQCmd"/>
       </context>
 
       <context attribute="Here Doc" lineEndContext="#stay" name="HereDocIQCmd" dynamic="1" fallthroughContext="HereDocText">
-        <StringDetect attribute="Redirection" context="HereDocRemainder" String="%1" dynamic="1"/>
+        <IncludeRules context="HereDocCmd"/>
         <RegExpr attribute="Redirection" context="#pop#pop" String="^\t*%2$" dynamic="1" column="0"/>
       </context>
 
       <context attribute="Here Doc" lineEndContext="#stay" name="HereDocINQCmd" dynamic="1" fallthroughContext="HereDocSubstitutions">
-        <StringDetect attribute="Redirection" context="HereDocRemainder" String="%1" dynamic="1"/>
-        <RegExpr attribute="Redirection" context="#pop#pop" String="^\t*%2$" dynamic="1" column="0"/>
+        <IncludeRules context="HereDocIQCmd"/>
       </context>
 
       <context attribute="Here Doc" lineEndContext="#pop" name="HereDocText">

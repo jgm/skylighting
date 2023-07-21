@@ -8,7 +8,7 @@
 	R      : http://www.r-project.org/
 	RKWard : http://rkward.kde.org/
 	-->
-<language version="13" kateversion="5.0" name="R Script" section="Scientific" extensions="*.R;*.r;*.S;*.s;*.q" mimetype="" license="GPLv2">
+<language version="14" kateversion="5.0" name="R Script" section="Scientific" extensions="*.R;*.r;*.S;*.s;*.q" mimetype="" license="GPLv2">
 <highlighting>
 
 	<list name="controls">
@@ -85,6 +85,10 @@
 			<AnyChar attribute="Error" context="#stay" String="*/&lt;&gt;=|&amp;:^@$~"/>
 		</context>
 
+		<context attribute="Numeric Suffix" lineEndContext="#pop" name="NumericSuffix" fallthrough="true" fallthroughContext="#pop">
+			<AnyChar attribute="Numeric Suffix" context="#pop" String="Li"/>
+		</context>
+
 		<context attribute="Normal Text" lineEndContext="#stay" name="FindComments">
 			<Detect2Chars attribute="Headline" context="Headline" char="#" char1="#"/>
 			<DetectChar attribute="Comment" context="Comment" char="#"/>
@@ -108,7 +112,7 @@
 			<keyword attribute="Control Structure" context="#stay" String="controls"/>
 			<keyword attribute="Reserved Words" context="#stay" String="words"/>
 			<Float attribute="Float" context="#stay"/>
-			<Int attribute="Int" context="#stay"/>
+			<Int attribute="Int" context="NumericSuffix"/>
 			<RegExpr attribute="Keyword" context="#stay" String="[a-zA-Z_]+[a-zA-Z_\.0-9]*(?=[\s]*[(])|\.[a-zA-Z_\.]+[a-zA-Z_\.0-9]*(?=[\s]*[(])"/>
 			<DetectChar attribute="Symbol" context="parenthesis" char="("/>
 
@@ -156,6 +160,7 @@
 		<itemData name="String Char"  defStyleNum="dsSpecialChar" spellChecking="false"/>
 		<itemData name="Float" defStyleNum="dsFloat" spellChecking="false"/>
 		<itemData name="Int" defStyleNum="dsDecVal" spellChecking="false"/>
+		<itemData name="Numeric Suffix" defStyleNum="dsDataType" spellChecking="false"/>
 	</itemDatas>
 </highlighting>
 

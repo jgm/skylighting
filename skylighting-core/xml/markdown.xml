@@ -90,7 +90,7 @@
 <!ENTITY checkbox "\[[ x]\](?=\s)">
 ]>
 
-<language name="Markdown" version="26" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" mimetype="text/markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
+<language name="Markdown" version="27" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" mimetype="text/markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
   <highlighting>
     <contexts>
       <!-- Start of the Markdown document: find metadata or code block -->
@@ -526,8 +526,7 @@
         <RegExpr context="find-html-block" String="&lt;/?&htmlname;(?:[\s&gt;]|/&gt;|$)" lookAhead="true"/>
       </context>
       <context name="find-html-block" attribute="Normal Text" lineEndContext="#pop" fallthroughContext="#pop">
-        <IncludeRules context="FindSpecialHTMLTags##HTML"/>
-        <IncludeRules context="FindHTMLTags##HTML"/>
+        <IncludeRules context="FindElements##HTML"/>
       </context>
 
       <!-- Links and email: <https://example.com>, <example@kde.org> -->

@@ -25,8 +25,8 @@
 
 <language
     name="CMake"
-    version="46"
-    kateversion="5.0"
+    version="47"
+    kateversion="5.62"
     section="Other"
     extensions="CMakeLists.txt;*.cmake;*.cmake.in"
     style="CMake"
@@ -4083,12 +4083,10 @@
       <item>UPPER_CASE</item>
       <item>MAKE_C_IDENTIFIER</item>
       <item>IN_LIST</item>
-      <item>LIST</item>
       <item>JOIN</item>
       <item>REMOVE_DUPLICATES</item>
       <item>FILTER</item>
       <item>PATH_EQUAL</item>
-      <item>PATH</item>
       <item>SHELL_PATH</item>
       <item>CONFIG</item>
       <item>OUTPUT_CONFIG</item>
@@ -4159,6 +4157,56 @@
       <item>ANGLE-R</item>
       <item>COMMA</item>
       <item>SEMICOLON</item>
+    </list>
+    <list name="genex-LIST-subcommands">
+      <item>LENGTH</item>
+      <item>GET</item>
+      <item>SUBLIST</item>
+      <item>FIND</item>
+      <item>JOIN</item>
+      <item>APPEND</item>
+      <item>PREPEND</item>
+      <item>INSERT</item>
+      <item>POP_BACK</item>
+      <item>POP_FRONT</item>
+      <item>REMOVE_ITEM</item>
+      <item>REMOVE_AT</item>
+      <item>REMOVE_DUPLICATES</item>
+      <item>FILTER</item>
+      <item>TRANSFORM</item>
+      <item>FRANSFORM</item>
+      <item>REVERSE</item>
+      <item>SORT</item>
+    </list>
+    <list name="genex-PATH-subcommands">
+      <item>HAS_ROOT_NAME</item>
+      <item>HAS_ROOT_DIRECTORY</item>
+      <item>HAS_ROOT_PATH</item>
+      <item>HAS_FILENAME</item>
+      <item>HAS_EXTENSION</item>
+      <item>HAS_STEM</item>
+      <item>HAS_RELATIVE_PART</item>
+      <item>HAS_PARENT_PATH</item>
+      <item>IS_ABSOLUTE</item>
+      <item>IS_RELATIVE</item>
+      <item>IS_PREFIX</item>
+      <item>GET_ROOT_NAME</item>
+      <item>GET_ROOT_DIRECTORY</item>
+      <item>GET_ROOT_PATH</item>
+      <item>GET_FILENAME</item>
+      <item>GET_EXTENSION</item>
+      <item>GET_STEM</item>
+      <item>GET_RELATIVE_PART</item>
+      <item>GET_PARENT_PATH</item>
+      <item>CMAKE_PATH</item>
+      <item>APPEND</item>
+      <item>REMOVE_FILENAME</item>
+      <item>REPLACE_FILENAME</item>
+      <item>REMOVE_EXTENSION</item>
+      <item>REPLACE_EXTENSION</item>
+      <item>NORMAL_PATH</item>
+      <item>RELATIVE_PATH</item>
+      <item>ABSOLUTE_PATH</item>
     </list>
 
     <list name="standard-modules">
@@ -6650,9 +6698,21 @@
         <DetectChar attribute="Comment" context="Comment" char="#"/>
         <DetectChar attribute="Generator Expression" context="#pop" char="&gt;"/>
         <keyword attribute="Generator Expression Keyword" context="#stay" String="generator-expressions" insensitive="false"/>
+        <WordDetect String="LIST" attribute="Generator Expression Keyword" context="genex_LIST_ctx"/>
+        <WordDetect String="PATH" attribute="Generator Expression Keyword" context="genex_PATH_ctx"/>
         <IncludeRules context="Detect Aliased Targets"/>
         <IncludeRules context="Detect Variable Substitutions"/>
         <DetectIdentifier/>
+      </context>
+      <context attribute="Generator Expression" lineEndContext="#stay" name="genex_LIST_ctx" fallthroughContext="#pop">
+        <DetectChar char=":" context="#stay"/>
+        <DetectSpaces/>
+        <keyword attribute="Generator Expression Sub-Command" context="#pop" String="genex-LIST-subcommands" insensitive="false"/>
+      </context>
+      <context attribute="Generator Expression" lineEndContext="#stay" name="genex_PATH_ctx" fallthroughContext="#pop">
+        <DetectChar char=":" context="#stay"/>
+        <DetectSpaces/>
+        <keyword attribute="Generator Expression Sub-Command" context="#pop" String="genex-PATH-subcommands" insensitive="false"/>
       </context>
 
     </contexts>
@@ -6683,6 +6743,7 @@
       <itemData name="Environment Variable Substitution" defStyleNum="dsFloat" spellChecking="false"/>
       <itemData name="Standard Environment Variable" defStyleNum="dsFloat" spellChecking="false"/>
       <itemData name="Generator Expression Keyword" defStyleNum="dsKeyword" color="#b84040" selColor="#b84040" spellChecking="false"/>
+      <itemData name="Generator Expression Sub-Command" defStyleNum="dsKeyword" color="#c05050" selColor="#c05050" spellChecking="false"/>
       <itemData name="Generator Expression" defStyleNum="dsOthers" color="#b86050" selColor="#b86050" spellChecking="false"/>
       <itemData name="Standard Module" defStyleNum="dsImport" spellChecking="false"/>
       <itemData name="Deprecated Module" defStyleNum="dsImport" spellChecking="false"/>

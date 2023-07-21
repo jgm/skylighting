@@ -4,6 +4,7 @@
   <!-- https://www.w3.org/TR/CSS22/syndata.html#tokenization -->
   <!ENTITY nmstart "[_a-zA-Z]|(\\[0-9a-fA-F]{1,6})|(\\[^\n\r\f0-9a-fA-F])">
   <!ENTITY nmchar  "[_a-zA-Z0-9-]|(\\[0-9a-fA-F]{1,6})|(\\[^\n\r\f0-9a-fA-F])">
+  <!ENTITY ident   "[-]?(&nmstart;)(&nmchar;)*">
 ]>
 
 <!--
@@ -38,7 +39,7 @@ Changelog:
 
 -->
 
-<language name="CSS" version="14" kateversion="5.53" section="Markup" extensions="*.css" indenter="cstyle" mimetype="text/css" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
+<language name="CSS" version="15" kateversion="5.53" section="Markup" extensions="*.css" indenter="cstyle" mimetype="text/css" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
     <!-- https://www.w3.org/Style/CSS/current-work -->
 
     <highlighting>
@@ -779,7 +780,6 @@ Changelog:
             <item>justify</item>
             <item>konq-center</item>
             <item>disc</item>
-            <item>circle</item>
             <item>square</item>
             <item>box</item>
             <item>decimal</item>
@@ -903,6 +903,73 @@ Changelog:
             <item>-epub-hyphens</item>
             <item>contain</item>
             <item>cover</item>
+
+            <!-- cursor -->
+            <item>pointer</item>
+            <item>default</item>
+            <item>context-menu</item>
+            <item>help</item>
+            <item>pointer</item>
+            <item>progress</item>
+            <item>wait</item>
+            <item>cell</item>
+            <item>crosshair</item>
+            <item>text</item>
+            <item>vertical-text</item>
+            <item>alias</item>
+            <item>copy</item>
+            <item>move</item>
+            <item>no-drop</item>
+            <item>not-allowed</item>
+            <item>grab</item>
+            <item>grabbing</item>
+            <item>all-scroll</item>
+            <item>col-resize</item>
+            <item>row-resize</item>
+            <item>n-resize</item>
+            <item>e-resize</item>
+            <item>s-resize</item>
+            <item>w-resize</item>
+            <item>ne-resize</item>
+            <item>nw-resize</item>
+            <item>se-resize</item>
+            <item>sw-resize</item>
+            <item>ew-resize</item>
+            <item>ns-resize</item>
+            <item>nesw-resize</item>
+            <item>nwse-resize</item>
+            <item>zoom-in</item>
+            <item>zoom-out</item>
+
+            <!-- contain -->
+            <item>none</item>
+            <item>strict</item>
+            <item>content</item>
+            <item>size</item>
+            <item>inline-size</item>
+            <item>layout</item>
+            <item>style</item>
+            <item>paint</item>
+
+            <!-- scroll-snap-type -->
+            <item>mandatory</item>
+            <item>proximity</item>
+
+            <!-- text-orientation -->
+            <item>mixed</item>
+            <item>upright</item>
+            <item>sideways</item>
+            <item>sideways-right</item>
+            <item>use-glyph-orientation</item>
+
+            <!-- shape-outside, clip-path, text-emphasis -->
+            <item>filled</item>
+            <item>open</item>
+            <item>dot</item>
+            <item>circle</item>
+            <item>double-circle</item>
+            <item>triangle</item>
+            <item>sesame</item>
 
             <!-- display -->
             <!-- https://developer.mozilla.org/fr/docs/Web/CSS/display -->
@@ -1195,6 +1262,7 @@ Changelog:
             <item>oklab</item>
             <item>oklch</item>
             <item>color</item>
+            <item>color-mix</item>
 
             <!-- CSS4 -->
             <item>toggle</item>
@@ -1390,6 +1458,7 @@ Changelog:
             <item>lang</item>
             <item>last-child</item>
             <item>last-of-type</item>
+            <item>left</item>
             <item>link</item>
             <item>not</item>
             <item>nth-child</item>
@@ -1404,6 +1473,7 @@ Changelog:
             <item>read-only</item>
             <item>read-write</item>
             <item>required</item>
+            <item>right</item>
             <item>root</item>
             <item>scope</item>
             <item>target</item>
@@ -1522,9 +1592,9 @@ Changelog:
                 <DetectChar attribute="Selector Attribute" context="SelectorAttr" char="[" />
                 <DetectChar attribute="Separator Symbol" context="#stay" char="," />
                 <AnyChar attribute="Operator" context="#stay" String="*>+~|" />
-                <RegExpr attribute="Selector Id" context="#stay" String="#[-]?(&nmstart;)(&nmchar;)*" />
+                <RegExpr attribute="Selector Id" context="#stay" String="#&ident;" />
                 <RegExpr attribute="Selector Class" context="#stay" String="\.([a-zA-Z0-9\-_]|[\x80-\xFF]|\\[0-9A-Fa-f]{1,6})*" />
-                <RegExpr attribute="Selector Tag" context="#stay" String="[-]?(&nmstart;)(&nmchar;)*" />
+                <RegExpr attribute="Selector Tag" context="#stay" String="&ident;" />
             </context>
 
             <!-- find functions // rgba(255,255,255,0.75) -->
@@ -1540,7 +1610,7 @@ Changelog:
                 <keyword attribute="Color" context="#stay" String="colors" />
                 <RegExpr attribute="Color" context="#stay" String="#([0-9A-Fa-f]{3,4}){1,2}\b" />
                 <RegExpr attribute="Number" context="FindUnits" String="[-+]?([0-9]+(\.[0-9]+)?|\.[0-9]+)([eE][+-]?[0-9]+)?(?![-+])" />
-                <RegExpr attribute="Normal Text" context="#stay" String="[-]?(&nmstart;)(&nmchar;)*" />
+                <RegExpr attribute="Normal Text" context="#stay" String="&ident;" />
             </context>
 
             <context name="Annotation" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
@@ -1549,8 +1619,8 @@ Changelog:
 
             <context name="FindUnits" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
                 <!-- https://drafts.csswg.org/css-values-4/#lengths -->
-                <!-- https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units -->
-                <RegExpr attribute="Unit" context="#stay" String="(%|(em|ex|cap|ch|ic|rem|lh|rlh|vw|vh|vi|vb|vmin|vmax|cm|mm|Q|in|pc|pt|px|deg|rad|grad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx|x|fr)\b)(?![-+])" />
+                <!-- https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units -->
+                <RegExpr attribute="Unit" context="#stay" String="(%|(em|ex|cap|ch|ic|rem|lh|rlh|vw|vh|vi|vb|vmin|vmax|cqw|cqh|cqi|cqb|cqmin|cqmax|cm|mm|Q|in|pc|pt|px|deg|rad|grad|turn|s|ms|Hz|kHz|fr|dpi|dpcm|dppx|x)\b)(?![-+])" />
             </context>
 
             <!-- find strings // "some words" 'some words' -->

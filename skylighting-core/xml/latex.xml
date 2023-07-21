@@ -4,7 +4,7 @@
     <!ENTITY bullet "&#xd7;">
     <!ENTITY envname "[a-zA-Z]+\*?">
 ]>
-<language name="LaTeX" version="21" section="Markup" kateversion="5.79" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
+<language name="LaTeX" version="22" section="Markup" kateversion="5.79" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
   <highlighting>
     <!-- NOTE: Keywords of kind "\something" do not need a delimiter before "\".
          Using a DetectChar rule with lookAhead to detect "\" at the beginning
@@ -3824,7 +3824,7 @@
         <DetectSpaces/>
         <RegExpr String=".+" attribute="Error" context="#stay"/>
       </context>
-      <context name="HighlightingMakefile" attribute="Normal Text" lineEndContext="#stay">
+      <context name="HighlightingMakefile" attribute="Normal Text" lineEndContext="#stay" fallthroughContext="strings_and_vars##Makefile">
         <IncludeRules context="HighlightingCommon"/>
         <IncludeRules context="##Makefile" includeAttrib="true"/>
       </context>

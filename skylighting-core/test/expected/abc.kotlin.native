@@ -87,12 +87,12 @@
   , ( OperatorTok , ")" )
   ]
 , []
-, [ ( NormalTok , "/*" ) ]
-, [ ( NormalTok
+, [ ( CommentTok , "/*" ) ]
+, [ ( CommentTok
     , " *  Not the most elegant way but interesting from an highlighting perspective ;)"
     )
   ]
-, [ ( NormalTok , " */" ) ]
+, [ ( CommentTok , " */" ) ]
 , [ ( KeywordTok , "public" )
   , ( NormalTok , " " )
   , ( KeywordTok , "class" )

@@ -178,7 +178,8 @@ main = do
            ] @=? tokenize defConfig c "1111111111111111111111"
 
       , testCase "Chinese characters in HTML (#110)" $ Right
-          [ [ ( NormalTok , "\35797\65306" ) , ( KeywordTok , "<a>" ) ]
+          [ [ ( NormalTok , "\35797\65306" ) , ( DataTypeTok , "<" ) ,
+              ( KeywordTok , "a" ) , ( DataTypeTok , ">" ) ]
           ] @=? tokenize defConfig html "试：<a>"
 
       , testCase "Bash closing brace (#119)" $ Right

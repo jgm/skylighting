@@ -34,7 +34,7 @@ Changelog:
 
 -->
 
-<language name="SCSS" version="14" kateversion="5.53" section="Markup" extensions="*.scss" indenter="cstyle" mimetype="text/css" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
+<language name="SCSS" version="15" kateversion="5.53" section="Markup" extensions="*.scss" indenter="cstyle" mimetype="text/css" author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
 
     <highlighting>
         <list name="properties">
@@ -643,7 +643,7 @@ Changelog:
             </context>
 
             <context name="FindUnits" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-                <RegExpr attribute="Unit" context="#pop" String="(%|(em|ex|cap|ch|ic|rem|lh|rlh|vw|vh|vi|vb|vmin|vmax|cm|mm|Q|in|pc|pt|px|deg|rad|grad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx|x|fr)\b)" />
+                <RegExpr attribute="Unit" context="#pop" String="(%|(em|ex|cap|ch|ic|rem|lh|rlh|vw|vh|vi|vb|vmin|vmax|cqw|cqh|cqi|cqb|cqmin|cqmax|cm|mm|Q|in|pc|pt|px|deg|rad|grad|turn|s|ms|Hz|kHz|fr|dpi|dpcm|dppx|x)\b)" />
             </context>
 
             <!-- find strings // "some words" 'some words' -->
