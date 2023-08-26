@@ -74,6 +74,7 @@ library
                        Skylighting.Syntax.Curry
                        Skylighting.Syntax.D
                        Skylighting.Syntax.Dart
+                       Skylighting.Syntax.Debiancontrol
                        Skylighting.Syntax.Default
                        Skylighting.Syntax.Diff
                        Skylighting.Syntax.Djangotemplate
