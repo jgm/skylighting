@@ -1,5 +1,12 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.14
+
+  * Add rWeakDeliminators field to Rule. [API change]
+
+  * Make WordDetect sensitive to weakDeliminator. This fixes
+    parsing of floats beginning with '0.' in C (#174).
+
 ## 0.13.4.1
 
   * Update syntax definitions: ada, bash, cmake, css, html, isocpp, java,
