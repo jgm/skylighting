@@ -334,7 +334,8 @@ tryRule rule inp = do
                                     stringDetect (rDynamic rule) (rCaseSensitive rule)
                                                  s inp
                 WordDetect s -> withAttr attr $
-                                    wordDetect (rCaseSensitive rule) s inp
+                                    wordDetect (rCaseSensitive rule)
+                                      (rWeakDeliminators rule) s inp
                 LineContinue -> withAttr attr $ lineContinue inp
                 DetectSpaces -> withAttr attr $ detectSpaces inp
                 DetectIdentifier -> withAttr attr $ detectIdentifier inp
@@ -380,9 +381,9 @@ withAttr tt p = do
      then return Nothing
      else return $ Just (tt, res)
 
-wordDetect :: Bool -> Text -> ByteString -> TokenizerM Text
-wordDetect caseSensitive s inp = do
-  wordBoundary inp
+wordDetect :: Bool -> Set.Set Char -> Text -> ByteString -> TokenizerM Text
+wordDetect caseSensitive weakDelims s inp = do
+  wordBoundary weakDelims inp
   t <- decodeBS $ UTF8.take (Text.length s) inp
   -- we assume here that the case fold will not change length,
   -- which is safe for ASCII keywords and the like...
@@ -395,7 +396,7 @@ wordDetect caseSensitive s inp = do
   let d = case UTF8.uncons rest of
                Nothing    -> '\n'
                Just (x,_) -> x
-  guard $ isWordBoundary c d
+  guard $ isWordBoundary weakDelims c d
   takeChars (Text.length t)
 
 stringDetect :: Bool -> Bool -> Text -> ByteString -> TokenizerM Text
@@ -549,7 +550,7 @@ regExpr :: Bool -> RE -> ByteString -> TokenizerM Text
 regExpr dynamic re inp = do
   -- return $! traceShowId $! (reStr, inp)
   let reStr = reString re
-  when (BS.take 2 reStr == "\\b") $ wordBoundary inp
+  when (BS.take 2 reStr == "\\b") $ wordBoundary mempty inp
   regex <- case compileRE re of
             Right r  -> return r
             Left e   -> throwError $
@@ -569,16 +570,18 @@ regExpr dynamic re inp = do
 toSlice :: ByteString -> (Int, Int) -> ByteString
 toSlice bs (off, len) = BS.take len $ BS.drop off bs
 
-wordBoundary :: ByteString -> TokenizerM ()
-wordBoundary inp = do
+wordBoundary :: Set.Set Char -> ByteString -> TokenizerM ()
+wordBoundary weakDelims inp = do
   case UTF8.uncons inp of
        Nothing -> return ()
        Just (d, _) -> do
          c <- gets prevChar
-         guard $ isWordBoundary c d
+         guard $ isWordBoundary weakDelims c d
 
-isWordBoundary :: Char -> Char -> Bool
-isWordBoundary c d = isWordChar c /= isWordChar d
+isWordBoundary :: Set.Set Char -> Char -> Char -> Bool
+isWordBoundary weakDelims c d =
+  (isWordChar c || c `Set.member` weakDelims) /=
+  (isWordChar d || d `Set.member` weakDelims)
 
 decodeBS :: ByteString -> TokenizerM Text
 decodeBS bs = case decodeUtf8' bs of
@@ -658,7 +661,7 @@ pCChar = do
 
 parseInt :: ByteString -> TokenizerM Text
 parseInt inp = do
-  wordBoundary inp
+  wordBoundary mempty inp
   case A.parseOnly (A.match (pHex <|> pOct <|> pDec)) inp of
        Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
@@ -670,7 +673,7 @@ pDec = do
 
 parseOct :: ByteString -> TokenizerM Text
 parseOct inp = do
-  wordBoundary inp
+  wordBoundary mempty inp
   case A.parseOnly (A.match pHex) inp of
        Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
@@ -685,7 +688,7 @@ pOct = do
 
 parseHex :: ByteString -> TokenizerM Text
 parseHex inp = do
-  wordBoundary inp
+  wordBoundary mempty inp
   case A.parseOnly (A.match pHex) inp of
        Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
@@ -706,7 +709,7 @@ mbPlusMinus = () <$ A.satisfy (A.inClass "+-") <|> return ()
 
 parseFloat :: ByteString -> TokenizerM Text
 parseFloat inp = do
-  wordBoundary inp
+  wordBoundary mempty inp
   case A.parseOnly (A.match pFloat) inp of
        Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r)  -- assumes all ascii

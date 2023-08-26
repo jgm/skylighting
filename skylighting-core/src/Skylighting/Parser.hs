@@ -227,6 +227,7 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
   let str' = getAttrValue "String" el
   let insensitive = vBool (not casesensitive) $ getAttrValue "insensitive" el
   let includeAttrib = vBool False $ getAttrValue "includeAttrib" el
+  let weakDelim = Set.fromList $ T.unpack $ getAttrValue "weakDeliminator" el
   let lookahead = vBool False $ getAttrValue "lookAhead" el
   let firstNonSpace = vBool False $ getAttrValue "firstNonSpace" el
   let column' = getAttrValue "column" el
@@ -277,6 +278,7 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
                        then M.lookup cattr itemdatas
                        else M.lookup attribute itemdatas
                , rIncludeAttribute = includeAttrib
+               , rWeakDeliminators = weakDelim
                , rDynamic = dynamic
                , rCaseSensitive = not insensitive
                , rChildren = children

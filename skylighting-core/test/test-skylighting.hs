@@ -195,6 +195,16 @@ main = do
              @=? tokenize defConfig bash
                      "f() {\n    echo > f\n}\n"
 
+      , testCase "C floating-point literal (#174)" $ Right
+          [ [ ( DataTypeTok , "double")
+            , ( NormalTok , " x " )
+            , ( OperatorTok , "=" )
+            , ( NormalTok , " " )
+            , ( FloatTok , "0.5")
+            , ( OperatorTok , ";" ) ] ]
+             @=? tokenize defConfig c
+                     "double x = 0.5;\n"
+
       ]
     ]
 
