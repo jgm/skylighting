@@ -2,7 +2,7 @@
 <!DOCTYPE language>
 <language name="Stan"
           section="Scientific"
-          version="5"
+          version="6"
           kateversion="5.0"
           indenter="cstyle"
           extensions="*.stan;*.stanfunctions"
@@ -72,7 +72,7 @@
         <DetectChar attribute="String" context="String" char="&quot;" />
         <RegExpr attribute="Assignment" context="#stay" String="([+-]?=|\.?[*/]=)" />
         <RegExpr attribute="Operator" context="#stay" String="(:|\?|\|\||&amp;&amp;|==|!=|&lt;=?|&gt;=?|\+|-|\.?\*|\.?/|%|\\|'|^)" />
-        <RegExpr attribute="Punctuation" context="#stay" String="[[\]()]" />
+        <AnyChar attribute="Punctuation" context="#stay" String="[]()" />
       </context>
       <context attribute="String" lineEndContext="#stay" name="String">
         <DetectChar attribute="String" context="#pop" char="&quot;"/>

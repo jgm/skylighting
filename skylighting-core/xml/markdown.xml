@@ -72,6 +72,10 @@
 <!ENTITY linebreakregex "  $">
 <!-- strikethrough text, pandoc style -->
 <!ENTITY strikeoutregex "[~]{2}[^~](?:.*[^~])?[~]{2}">
+<!-- highlight text -->
+<!ENTITY highlightregex "[=]{2}[^=](?:.*[^=])?[=]{2}">
+<!-- emoji -->
+<!ENTITY emojiregex ":([-+]1|\w+):">
 <!-- start of fenced code block -->
 <!ENTITY fcode "(`{3,}|~{3,})">
 <!-- end of line & empty line -->
@@ -90,7 +94,7 @@
 <!ENTITY checkbox "\[[ x]\](?=\s)">
 ]>
 
-<language name="Markdown" version="27" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" mimetype="text/markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
+<language name="Markdown" version="29" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" mimetype="text/markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
   <highlighting>
     <contexts>
       <!-- Start of the Markdown document: find metadata or code block -->
@@ -137,15 +141,28 @@
         <DetectChar context="find-strong-normal" char="*" lookAhead="true"/>
         <DetectChar context="find-emphasis-normal" char="_" lookAhead="true"/>
         <RegExpr attribute="Strikethrough Text" minimal="true" String="&strikeoutregex;"/>
+        <RegExpr attribute="Highlight Text" minimal="true" String="&highlightregex;"/>
         <!-- Common -->
         <IncludeRules context="inc"/>
         <RegExpr attribute="Normal Text: Link" String="&implicitlink;"/>
+        <!-- Table -->
+        <DetectChar attribute="Table" char="|" context="table" firstNonSpace="true" lookAhead="1"/>
       </context>
       <!-- Find indented code blocks. These are only allowed after an empty line or on the first line -->
       <context name="find-code-block" attribute="Normal Text" lineEndContext="#stay" lineEmptyContext="#stay" fallthroughContext="#pop">
         <RegExpr attribute="Code" String="^&indentedcodeblock;" column="0"/>
         <RegExpr attribute="Normal Text" String="&end;" />
         <RegExpr attribute="Comment" context="comment" String="^\s*&startcomment;|\s*&startcomment;(?=.*&endcomment;)" beginRegion="comment"/>
+      </context>
+
+      <!-- Table in Normal Text Document -->
+      <context name="table" attribute="Normal Text" lineEndContext="#pop" lineEmptyContext="#pop!find-code-block">
+        <IncludeRules context="find-table-element"/>
+        <IncludeRules context="Normal Text"/>
+      </context>
+
+      <context name="find-table-element" attribute="Normal Text" lineEndContext="#pop">
+        <RegExpr attribute="Table" String="(\|(\s*:?---+:?)?)++"/>
       </context>
 
       <context name="find-header" attribute="Normal Text" lineEndContext="#pop">
@@ -207,6 +224,7 @@
         <RegExpr attribute="Normal Text" context="#pop!find-code-block" String="&emptyline;" column="0"/>
         <StringDetect attribute="Comment" context="#pop!find-code-block" String="&startcomment;" column="0" lookAhead="true"/>
         <IncludeRules context="default-blockquote-2"/>
+        <IncludeRules context="find-table-element"/>
       </context>
       <!-- Blockquote within a list -->
       <context name="blockquote-list" attribute="Blockquote: Normal Text" lineEndContext="#stay" lineEmptyContext="#pop">
@@ -226,6 +244,7 @@
         <!-- Strong, emphasis, strong-emphasis and strikethrough text -->
         <AnyChar context="find-strong-emphasis-blockquote" String="*_" lookAhead="true"/>
         <RegExpr attribute="Blockquote: Strikethrough Text" minimal="true" String="&strikeoutregex;"/>
+        <RegExpr attribute="Blockquote: Highlight Text" minimal="true" String="&highlightregex;"/>
         <!-- Common -->
         <IncludeRules context="inc"/>
         <RegExpr attribute="Blockquote: Link" String="&implicitlink;"/>
@@ -254,6 +273,8 @@
         <RegExpr context="#pop" String="^\s*\S" column="0" lookAhead="true"/>
         <!-- Highlight checkbox at the start of the item (task list) -->
         <RegExpr attribute="List: Checkbox" context="content-list" String="\s*&checkbox;"/>
+        <!-- Highlight checkbox at the start of the item (task list) -->
+        <RegExpr attribute="Table" context="content-list-table" String="\s*\|"/>
       </context>
       <!-- 1. numlist (one digit) -->
       <context name="numlist" attribute="List: Normal Text" lineEndContext="#stay" fallthroughContext="content-list">
@@ -284,13 +305,14 @@
            to check the indentation of the text and determine if the content of the list ends. -->
       <context name="content-list" attribute="List: Normal Text" lineEndContext="#stay" lineEmptyContext="#pop">
         <RegExpr context="#pop" String="&emptyline;" column="0"/>
-        <!-- Blockquote and horzontal rule (check indentation) -->
+        <!-- Blockquote and horizontal rule (check indentation) -->
         <RegExpr context="#pop" String="^\s*(?:&gt;|&rulerregex;)" column="0" lookAhead="true"/>
         <!-- End with header or new list/numlist -->
         <RegExpr context="#pop#pop" String="^(?:\s*(?:&listbullet;|[\d]+\.)\s|#{1,6}\s)" column="0" lookAhead="true"/>
         <!-- Strong, emphasis, strong-emphasis and strikethrough text -->
         <AnyChar context="find-strong-emphasis-list" String="*_" lookAhead="true"/>
         <RegExpr attribute="List: Strikethrough Text" minimal="true" String="&strikeoutregex;"/>
+        <RegExpr attribute="List: Highlight Text" minimal="true" String="&highlightregex;"/>
         <!-- Common -->
         <IncludeRules context="inc"/>
         <RegExpr attribute="List: Link" String="&implicitlink;"/>
@@ -301,6 +323,12 @@
         <RegExpr attribute="List: Strong-Emphasis Text" context="#pop" minimal="true" String="&strongemphasisregex_ast;|&strongemphasisregex_und;"/>
         <RegExpr attribute="List: Emphasis Text" context="#pop" minimal="true" String="&emphasisregex_ast;|&emphasisregex_und;"/>
         <AnyChar attribute="List: Normal Text" context="#pop" String="*_"/>
+      </context>
+
+      <!-- Table in List -->
+      <context name="content-list-table" attribute="List: Normal Text" lineEndContext="#stay" lineEmptyContext="#pop">
+        <IncludeRules context="find-table-element"/>
+        <IncludeRules context="content-list"/>
       </context>
 
       <!-- Comments -->
@@ -455,6 +483,10 @@
         <IncludeRules context="code"/>
         <IncludeRules context="##R Script" includeAttrib="true"/>
       </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="raku-code" fallthroughContext="term##Raku">
+        <IncludeRules context="code"/>
+        <IncludeRules context="base##Raku" includeAttrib="true"/>
+      </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="rest-code">
         <IncludeRules context="code"/>
         <IncludeRules context="##reStructuredText" includeAttrib="true"/>
@@ -500,6 +532,8 @@
         <RegExpr attribute="Reference Image" String="&refimageregex;"/>
         <RegExpr attribute="Auto-Link" context="autolink" String="&autolinkregex;" lookAhead="true"/>
         <RegExpr attribute="Mailto-Link" context="mailtolink" String="&mailtolinkregex;"/>
+        <!-- Emoji -->
+        <RegExpr attribute="Emoji" String="&emojiregex;"/>
         <!-- Line Break -->
         <RegExpr attribute="Line Break" minimal="true" String="&linebreakregex;"/>
         <!-- Backslash Escapes -->
@@ -518,6 +552,7 @@
         <Detect2Chars attribute="Backslash Escape" char="\" char1="-"/>
         <Detect2Chars attribute="Backslash Escape" char="\" char1="."/>
         <Detect2Chars attribute="Backslash Escape" char="\" char1="!"/>
+        <Detect2Chars attribute="Backslash Escape" char="\" char1="|"/>
         <Detect2Chars attribute="Backslash Escape" char="\" char1="&lt;"/>
         <Detect2Chars attribute="Backslash Escape" char="\" char1="&gt;"/>
         <Detect2Chars attribute="Backslash Escape" char="\" char1="&amp;"/>
@@ -600,6 +635,7 @@
       <itemData name="Strong Text" defStyleNum="dsNormal" bold="true"/>
       <itemData name="Strong-Emphasis Text" defStyleNum="dsNormal" italic="true" bold="true"/>
       <itemData name="Strikethrough Text" defStyleNum="dsNormal" strikeOut="true"/>
+      <itemData name="Highlight Text" defStyleNum="dsAlert"/>
       <itemData name="Normal Text: Link" defStyleNum="dsNormal" underline="true" spellChecking="false"/>
       <itemData name="Horizontal Rule" defStyleNum="dsNormal" bold="true" spellChecking="false"/>
       <itemData name="Line Break" defStyleNum="dsNormal" underline="true" color="#999999" spellChecking="false"/>
@@ -615,6 +651,7 @@
       <itemData name="Blockquote: Strong Text" defStyleNum="dsAttribute" bold="true"/>
       <itemData name="Blockquote: Strong-Emphasis Text" defStyleNum="dsAttribute" italic="true" bold="true"/>
       <itemData name="Blockquote: Strikethrough Text" defStyleNum="dsAttribute" strikeOut="true"/>
+      <itemData name="Blockquote: Highlight Text" defStyleNum="dsAlert"/>
       <itemData name="Blockquote: Link" defStyleNum="dsAttribute" underline="true" spellChecking="false"/>
       <itemData name="List" defStyleNum="dsSpecialString" bold="1" spellChecking="false"/>
       <itemData name="Number List" defStyleNum="dsSpecialString" spellChecking="false"/>
@@ -623,11 +660,14 @@
       <itemData name="List: Strong Text" defStyleNum="dsNormal" bold="true"/>
       <itemData name="List: Strong-Emphasis Text" defStyleNum="dsNormal" italic="true" bold="true"/>
       <itemData name="List: Strikethrough Text" defStyleNum="dsNormal" strikeOut="true"/>
+      <itemData name="List: Highlight Text" defStyleNum="dsAlert"/>
       <itemData name="List: Link" defStyleNum="dsNormal" underline="true" spellChecking="false"/>
       <itemData name="List: Checkbox" defStyleNum="dsVariable" spellChecking="false"/>
       <itemData name="Comment" defStyleNum="dsComment"/>
       <itemData name="Code" defStyleNum="dsInformation"/>
       <itemData name="Fenced Code" defStyleNum="dsInformation" spellChecking="false"/>
+      <itemData name="Table" defStyleNum="dsPreprocessor"/>
+      <itemData name="Emoji" defStyleNum="dsSpecialChar" spellChecking="false"/>
       <itemData name="Auto-Link" defStyleNum="dsOthers" spellChecking="false"/>
       <itemData name="Link" defStyleNum="dsOthers" underline="true" spellChecking="false"/>
       <itemData name="Mailto-Link" defStyleNum="dsOthers" spellChecking="false"/>

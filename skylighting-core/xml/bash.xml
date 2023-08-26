@@ -66,7 +66,7 @@
 
 <language
     name="Bash"
-    version="49"
+    version="50"
     kateversion="5.79"
     section="Scripts"
     extensions="*.sh;*.bash;*.ebuild;*.eclass;*.exlib;*.exheres-0;.bashrc;.bash_profile;.bash_login;.profile;PKGBUILD;APKBUILD"
@@ -1268,6 +1268,7 @@
 
       <!-- VarBraceStart is called as soon as ${ is encoutered -->
       <context attribute="Variable" lineEndContext="#pop!VarBrace" name="VarBraceStart" fallthroughContext="#pop!VarBrace">
+        <StringDetect context="#pop!VarBrace" String="!}" lookAhead="1"/>
         <DetectChar attribute="Parameter Expansion Operator" context="#pop!VarBracePrefix" char="!"/>
         <DetectChar attribute="Parameter Expansion Operator" context="#pop!VarBrace" char="#"/>
       </context>
@@ -1277,6 +1278,7 @@
         <DetectIdentifier attribute="Variable" context="#pop!VarBracePrefixSuffix"/>
         <Int attribute="Variable" context="#pop!VarBracePrefixSuffix"/>
         <AnyChar attribute="Parameter Expansion Operator" context="#pop!VarBracePrefixSharp" String="@*#"/>
+        <DetectChar attribute="Parameter Expansion" context="#pop" char="}"/>
       </context>
       <context attribute="Variable" lineEndContext="#pop" name="VarBracePrefixSuffix" fallthroughContext="#pop!VarError">
         <DetectChar attribute="Parameter Expansion" context="#pop" char="}"/>

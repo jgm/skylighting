@@ -5,7 +5,7 @@
 	<!ENTITY attributeName "[A-Za-z_:*#\(\[][\)\]\w.:_-]*">
 	<!ENTITY entref        "&amp;(?:#[0-9]+|#[xX][0-9A-Fa-f]+|&name;);">
 ]>
-<language name="HTML" version="16" kateversion="5.53" section="Markup" extensions="*.htm;*.html;*.shtml;*.shtm;*.aspx" mimetype="text/html"  author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
+<language name="HTML" version="17" kateversion="5.53" section="Markup" extensions="*.htm;*.html;*.shtml;*.shtm;*.aspx" mimetype="text/html"  author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
 
 <highlighting>
 <contexts>
@@ -96,8 +96,8 @@
   </context>
 
   <context name="FindAttributes" attribute="Other Text" lineEndContext="#stay">
-    <RegExpr attribute="Attribute" context="#stay" String="^&attributeName;|\s+&attributeName;" />
     <DetectChar attribute="Attribute Separator" context="Value" char="=" />
+    <RegExpr attribute="Attribute" context="#stay" String="(^|\s+)&attributeName;(\s+&attributeName;)*\s*|\s+" />
   </context>
 
   <context name="FindDTDRules" attribute="Other Text" lineEndContext="#stay">
@@ -153,11 +153,10 @@
     <IncludeRules context="FindPEntityRefs" />
   </context>
 
-  <context name="El Open" attribute="Other Text" lineEndContext="#stay">
+  <context name="El Open" attribute="Error" lineEndContext="#stay">
     <Detect2Chars attribute="Element Symbols" context="#pop" char="/" char1="&gt;" />
     <DetectChar attribute="Element Symbols" context="#pop" char="&gt;" />
     <IncludeRules context="FindAttributes" />
-    <RegExpr attribute="Error" context="#stay" String="\S" />
   </context>
 
   <context name="El Close" attribute="Other Text" lineEndContext="#stay">
@@ -165,11 +164,10 @@
     <RegExpr attribute="Error" context="#stay" String="\S" />
   </context>
 
-  <context name="CSS" attribute="Other Text" lineEndContext="#stay">
+  <context name="CSS" attribute="Error" lineEndContext="#stay">
     <Detect2Chars attribute="Element Symbols" context="#pop" char="/" char1="&gt;" endRegion="style" />
     <DetectChar attribute="Element Symbols" context="CSS content" char="&gt;" />
     <IncludeRules context="FindAttributes" />
-    <RegExpr attribute="Error" context="#stay" String="\S" />
   </context>
 
   <context name="CSS content" attribute="Other Text" lineEndContext="#stay">
@@ -180,15 +178,15 @@
     <DetectIdentifier attribute="Element" context="#pop#pop#pop!El Close" endRegion="style" />
   </context>
 
-  <context name="JS" attribute="Other Text" lineEndContext="#stay">
+  <context name="JS" attribute="Error" lineEndContext="#stay">
     <RegExpr attribute="Attribute" context="Script-Type" String="(?:\s+|^)type(?=\=|\s|$)" insensitive="true"/>
     <DetectChar attribute="Element Symbols" context="JS content" char="&gt;" />
     <IncludeRules context="DefaultJS" />
   </context>
   <context name="DefaultJS" attribute="Other Text" lineEndContext="#stay">
     <Detect2Chars attribute="Element Symbols" context="#pop" char="/" char1="&gt;" endRegion="script" />
-    <IncludeRules context="FindAttributes" />
-    <RegExpr attribute="Error" context="#stay" String="\S" />
+    <DetectChar attribute="Attribute Separator" context="Value" char="=" />
+    <RegExpr attribute="Attribute" context="#stay" String="(^|\s+)&attributeName;|\s+" />
   </context>
 
   <context name="JS content" attribute="Other Text" lineEndContext="#stay">
@@ -220,8 +218,11 @@
   </context>
 
   <context name="Value NQ" attribute="Other Text" lineEndContext="#pop#pop" fallthrough="true" fallthroughContext="#pop#pop">
+    <!-- '{' and '}' are valid, but used with twig -->
+    <RegExpr attribute="Value" String="[^&gt;&lt;&quot;&apos;&amp;\s=`{}]+" />
     <IncludeRules context="FindEntityRefs" />
-    <RegExpr attribute="Value" context="#stay" String="/(?!&gt;)|[^/&gt;&lt;&quot;&apos;\s]" />
+    <AnyChar attribute="Error" String="&quot;&apos;`=" />
+    <AnyChar attribute="Value" String="{}" />
   </context>
 
   <context name="Value DQ" attribute="Value" lineEndContext="#stay">
@@ -267,7 +268,7 @@
     <StringDetect attribute="Value" context="#pop#pop!Script HTML template" String="&apos;text/html&apos;"/>
   </context>
 
-  <context name="JSX" attribute="Other Text" lineEndContext="#stay">
+  <context name="JSX" attribute="Error" lineEndContext="#stay">
     <DetectChar attribute="Element Symbols" context="JSX content" char="&gt;" />
     <IncludeRules context="DefaultJS" />
   </context>
@@ -276,7 +277,7 @@
     <IncludeRules context="Normal##JavaScript React (JSX)" includeAttrib="true"/>
   </context>
 
-  <context name="TypeScript" attribute="Other Text" lineEndContext="#stay">
+  <context name="TypeScript" attribute="Error" lineEndContext="#stay">
     <DetectChar attribute="Element Symbols" context="TypeScript content" char="&gt;" />
     <IncludeRules context="DefaultJS" />
   </context>
@@ -285,7 +286,7 @@
     <IncludeRules context="Normal##TypeScript" includeAttrib="true"/>
   </context>
 
-  <context name="MustacheJS" attribute="Other Text" lineEndContext="#stay">
+  <context name="MustacheJS" attribute="Error" lineEndContext="#stay">
     <DetectChar attribute="Element Symbols" context="MustacheJS content" char="&gt;" />
     <IncludeRules context="DefaultJS" />
   </context>
@@ -296,7 +297,7 @@
     <IncludeRules context="Base##Mustache/Handlebars (HTML)" includeAttrib="true"/>
   </context>
 
-  <context name="Script HTML template" attribute="Other Text" lineEndContext="#stay">
+  <context name="Script HTML template" attribute="Error" lineEndContext="#stay">
     <DetectChar attribute="Element Symbols" context="Script HTML template content" char="&gt;" />
     <IncludeRules context="DefaultJS" />
   </context>
@@ -318,7 +319,7 @@
   <itemData name="Element" defStyleNum="dsKeyword" spellChecking="false" />
   <itemData name="Element Symbols" defStyleNum="dsDataType" spellChecking="false" />
   <itemData name="Attribute" defStyleNum="dsOthers" spellChecking="false" />
-  <itemData name="Attribute Separator" defStyleNum="dsOthers" spellChecking="false" />
+  <itemData name="Attribute Separator" defStyleNum="dsOperator" spellChecking="false" />
   <itemData name="Value" defStyleNum="dsString" spellChecking="false" />
   <itemData name="EntityRef" defStyleNum="dsDecVal" spellChecking="false" />
   <itemData name="PEntityRef" defStyleNum="dsDecVal" spellChecking="false" />
