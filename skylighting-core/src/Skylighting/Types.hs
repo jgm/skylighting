@@ -312,6 +312,10 @@ instance ToColor String where
      case reads ['(','0','x',r1,r2,',','0','x',g1,g2,',','0','x',b1,b2,')'] of
            ((r,g,b),_) : _ -> Just $ RGB r g b
            _               -> Nothing
+  toColor ['#',_,_,r1,r2,g1,g2,b1,b2] = -- ARGB format, we just ignore the A
+     case reads ['(','0','x',r1,r2,',','0','x',g1,g2,',','0','x',b1,b2,')'] of
+           ((r,g,b),_) : _ -> Just $ RGB r g b
+           _               -> Nothing
   toColor _        = Nothing
 
 instance ToColor Int where
