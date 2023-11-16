@@ -21,6 +21,9 @@ import Control.Monad.State.Strict
 import Data.Semigroup ((<>))
 #endif
 
+-- I believe the Regex engine used in KatePart is Qt's.
+-- It is described here: https://doc.qt.io/qt-6/qregexp.html
+
 -- | Compile a UTF-8 encoded ByteString as a Regex.  If the first
 -- parameter is True, then the Regex will be case sensitive.
 compileRegex :: Bool -> ByteString -> Either String Regex
