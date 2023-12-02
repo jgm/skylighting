@@ -156,16 +156,12 @@ exec cgs dir (Subroutine i) =
 
 atWordBoundary :: Match -> Bool
 atWordBoundary m =
-  case matchOffset m of
-    0 -> True
-    n | n == B.length (matchBytes m) -> True
-      | otherwise ->
-           case lastCharOffset (matchBytes m) (matchOffset m) of
-             Nothing  -> True
-             Just off ->
-               case U.toString (B.drop off (matchBytes m)) of
-                 (cur:next:_) -> isWordChar cur /= isWordChar next
-                 _            -> True
+  case lastCharOffset (matchBytes m) (matchOffset m) of
+    Nothing  -> True
+    Just off ->
+      case U.toString (B.drop off (matchBytes m)) of
+        (cur:next:_) -> isWordChar cur /= isWordChar next
+        _ -> True
 
 lastCharOffset :: ByteString -> Int -> Maybe Int
 lastCharOffset _ 0 = Nothing
