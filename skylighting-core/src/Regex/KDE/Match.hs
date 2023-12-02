@@ -163,11 +163,9 @@ atWordBoundary m =
            case lastCharOffset (matchBytes m) (matchOffset m) of
              Nothing  -> True
              Just off ->
-               case U.toString (B.drop (off - 1) (matchBytes m)) of
-                 (prev:cur:next:_) ->
-                   (isWordChar cur /= isWordChar next) ||
-                   (isWordChar cur /= isWordChar prev)
-                 _ -> True
+               case U.toString (B.drop off (matchBytes m)) of
+                 (cur:next:_) -> isWordChar cur /= isWordChar next
+                 _            -> True
 
 lastCharOffset :: ByteString -> Int -> Maybe Int
 lastCharOffset _ 0 = Nothing
