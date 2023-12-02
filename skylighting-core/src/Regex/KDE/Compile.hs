@@ -270,12 +270,19 @@ pRegexCharClass = do
             "Lt" -> (== TitlecaseLetter)
             "Lm" -> (== ModifierLetter)
             "Lo" -> (== OtherLetter)
+            "L" -> (\c -> c == UppercaseLetter || c == LowercaseLetter ||
+                          c == TitlecaseLetter || c == ModifierLetter ||
+                          c == OtherLetter)
             "Mn" -> (== NonSpacingMark)
             "Mc" -> (== SpacingCombiningMark)
             "Me" -> (== EnclosingMark)
+            "M" -> (\c -> c == NonSpacingMark || c == SpacingCombiningMark ||
+                          c == EnclosingMark)
             "Nd" -> (== DecimalNumber)
             "Nl" -> (== LetterNumber)
             "No" -> (== OtherNumber)
+            "N" -> (\c -> c == DecimalNumber || c == LetterNumber ||
+                          c == OtherNumber)
             "Pc" -> (== ConnectorPunctuation)
             "Pd" -> (== DashPunctuation)
             "Ps" -> (== OpenPunctuation)
@@ -283,18 +290,28 @@ pRegexCharClass = do
             "Pi" -> (== InitialQuote)
             "Pf" -> (== FinalQuote)
             "Po" -> (== OtherPunctuation)
+            "P" -> (\c -> c == ConnectorPunctuation || c == DashPunctuation ||
+                          c == OpenPunctuation || c == ClosePunctuation ||
+                          c == InitialQuote || c == FinalQuote ||
+                          c == OtherPunctuation)
             "Sm" -> (== MathSymbol)
             "Sc" -> (== CurrencySymbol)
             "Sk" -> (== ModifierSymbol)
             "So" -> (== OtherSymbol)
+            "S" -> (\c -> c == MathSymbol || c == CurrencySymbol ||
+                          c == ModifierSymbol || c == OtherSymbol)
             "Zs" -> (== Space)
             "Zl" -> (== LineSeparator)
             "Zp" -> (== ParagraphSeparator)
+            "Z" -> (\c -> c == Space || c == LineSeparator ||
+                          c == ParagraphSeparator)
             "Cc" -> (== Control)
             "Cf" -> (== Format)
             "Cs" -> (== Surrogate)
             "Co" -> (== PrivateUse)
             "Cn" -> (== NotAssigned)
+            "C" -> (\c -> c == Control || c == Format || c == Surrogate ||
+                          c == PrivateUse || c == NotAssigned)
             _    -> (const False)) . generalCategory
   brack <- option [] $ [(==']')] <$ char ']'
   fs <- many (getEscapedClass <|> getPosixClass <|> getCRange <|> getCClass)
