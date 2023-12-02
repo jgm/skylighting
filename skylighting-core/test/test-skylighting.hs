@@ -336,6 +336,9 @@ regexTests =
   , ("(?|(abc)|(def))", "abc", Just ("abc", [(1,"abc")]))
   , ("(?|(abc)|(def))", "def", Just ("def", [(1,"def")]))
   , ("(?:(abc)|(def))", "def", Just ("def", [(2,"def")]))
+  , ("((?i:infinity|e|pi)|NaN)", "InfInity",
+      Just ("InfInity", [(1,"InfInity")]))
+--  , ("(?im)foo", "Foo", Just ("Foo", []))
   , ("d(?=(bc)|(ef))", "def", Just ("d", [(2,"ef")]))
   , ("([bcd])([efg])(?2)(?1)", "befd", Just ("befd", [(1,"b"),(2,"e")]))
   , ("([abc](?1)*)", "abcd", Just ("abc", [(1,"abc")]))
