@@ -171,7 +171,7 @@ atWordBoundary m =
 
 lastCharOffset :: ByteString -> Int -> Maybe Int
 lastCharOffset _ 0 = Nothing
-lastCharOffset _ 1 = Nothing
+lastCharOffset _ 1 = Just 0
 lastCharOffset bs n =
   case B.index bs (n - 2) of
     w | w <  0b10000000 -> Just (n - 1)
