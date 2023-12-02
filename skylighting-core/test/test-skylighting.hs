@@ -310,6 +310,7 @@ regexTests =
   , ("[\\p{Lu}\\p{Ll}]*", "Σφa1B", Just ("Σφa", []))
   , ("\\bhello\\b|hell", "hello there", Just ("hello", []))
   , ("\\bhello\\b|hell", "hellothere", Just ("hell", []))
+  , ("u\\b", "ue", Nothing)
   , ("[[:space:]]{2,4}.", "  abc", Just ("  a", []))
   , ("[[:space:]]{2,4}.", " abc", Nothing)
   , ("[[:space:]]{2,4}.", "     abc", Just ("     ", []))
