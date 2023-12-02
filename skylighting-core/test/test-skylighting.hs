@@ -343,6 +343,8 @@ regexTests =
   , ("a|\\((?0)\\)", "(((a)))", Just ("(((a)))", []))
   , ("([abc](x(?1))*)", "axbxcc", Just ("axbxc", [(1,"axbxc"),(2,"xc")]))
     -- note: pcre gives insetad (2, "xbxc") -- I don't understand why
+  , ("[\\p{Nd}]", "33", Just ("3", []))
+  , ("\\p{N}", "33", Just ("3", []))
   ]
 
 

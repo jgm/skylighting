@@ -179,6 +179,7 @@ pRegexEscapedChar = do
     'S' -> return $ MatchChar (not . isSpace)
     'w' -> return $ MatchChar isWordChar
     'W' -> return $ MatchChar (not . isWordChar)
+    'p' -> MatchChar <$> pUnicodeCharClass
     _ | c >= '0' && c <= '9' ->
        return $! MatchCaptured (ord c - ord '0')
       | otherwise -> mzero) <|> (MatchChar . (==) <$> pEscaped c)
@@ -260,64 +261,68 @@ pRegexCharClass = do
         c <- getC
         (\d -> (\x -> x >= c && x <= d)) <$> (char '-' *> getC) <|>
           return (== c)
-  let getCClass = do -- character class \p{Lo}
-        _ <- A.string "\\p"
-        ds <- satisfy (== 123) *> A.takeWhile (/= 125) <* satisfy (== 125)
-        return $
-          (case ds of
-            "Lu" -> (== UppercaseLetter)
-            "Ll" -> (== LowercaseLetter)
-            "Lt" -> (== TitlecaseLetter)
-            "Lm" -> (== ModifierLetter)
-            "Lo" -> (== OtherLetter)
-            "L" -> (\c -> c == UppercaseLetter || c == LowercaseLetter ||
-                          c == TitlecaseLetter || c == ModifierLetter ||
-                          c == OtherLetter)
-            "Mn" -> (== NonSpacingMark)
-            "Mc" -> (== SpacingCombiningMark)
-            "Me" -> (== EnclosingMark)
-            "M" -> (\c -> c == NonSpacingMark || c == SpacingCombiningMark ||
-                          c == EnclosingMark)
-            "Nd" -> (== DecimalNumber)
-            "Nl" -> (== LetterNumber)
-            "No" -> (== OtherNumber)
-            "N" -> (\c -> c == DecimalNumber || c == LetterNumber ||
-                          c == OtherNumber)
-            "Pc" -> (== ConnectorPunctuation)
-            "Pd" -> (== DashPunctuation)
-            "Ps" -> (== OpenPunctuation)
-            "Pe" -> (== ClosePunctuation)
-            "Pi" -> (== InitialQuote)
-            "Pf" -> (== FinalQuote)
-            "Po" -> (== OtherPunctuation)
-            "P" -> (\c -> c == ConnectorPunctuation || c == DashPunctuation ||
-                          c == OpenPunctuation || c == ClosePunctuation ||
-                          c == InitialQuote || c == FinalQuote ||
-                          c == OtherPunctuation)
-            "Sm" -> (== MathSymbol)
-            "Sc" -> (== CurrencySymbol)
-            "Sk" -> (== ModifierSymbol)
-            "So" -> (== OtherSymbol)
-            "S" -> (\c -> c == MathSymbol || c == CurrencySymbol ||
-                          c == ModifierSymbol || c == OtherSymbol)
-            "Zs" -> (== Space)
-            "Zl" -> (== LineSeparator)
-            "Zp" -> (== ParagraphSeparator)
-            "Z" -> (\c -> c == Space || c == LineSeparator ||
-                          c == ParagraphSeparator)
-            "Cc" -> (== Control)
-            "Cf" -> (== Format)
-            "Cs" -> (== Surrogate)
-            "Co" -> (== PrivateUse)
-            "Cn" -> (== NotAssigned)
-            "C" -> (\c -> c == Control || c == Format || c == Surrogate ||
-                          c == PrivateUse || c == NotAssigned)
-            _    -> (const False)) . generalCategory
   brack <- option [] $ [(==']')] <$ char ']'
-  fs <- many (getEscapedClass <|> getPosixClass <|> getCRange <|> getCClass)
+  fs <- many (getEscapedClass <|> getPosixClass <|> getCRange
+              <|> (A.string "\\p" *> pUnicodeCharClass))
   _ <- satisfy (== 93) -- ]
   let f c = any ($ c) $ brack ++ fs
   return $! MatchChar (if negated then (not . f) else f)
+
+-- character class \p{Lo}; we assume \p is already parsed
+pUnicodeCharClass :: Parser (Char -> Bool)
+pUnicodeCharClass = do
+  ds <- satisfy (== 123) *> A.takeWhile (/= 125) <* satisfy (== 125)
+  return $
+    (case ds of
+      "Lu" -> (== UppercaseLetter)
+      "Ll" -> (== LowercaseLetter)
+      "Lt" -> (== TitlecaseLetter)
+      "Lm" -> (== ModifierLetter)
+      "Lo" -> (== OtherLetter)
+      "L" -> (\c -> c == UppercaseLetter || c == LowercaseLetter ||
+                    c == TitlecaseLetter || c == ModifierLetter ||
+                    c == OtherLetter)
+      "Mn" -> (== NonSpacingMark)
+      "Mc" -> (== SpacingCombiningMark)
+      "Me" -> (== EnclosingMark)
+      "M" -> (\c -> c == NonSpacingMark || c == SpacingCombiningMark ||
+                    c == EnclosingMark)
+      "Nd" -> (== DecimalNumber)
+      "Nl" -> (== LetterNumber)
+      "No" -> (== OtherNumber)
+      "N" -> (\c -> c == DecimalNumber || c == LetterNumber ||
+                    c == OtherNumber)
+      "Pc" -> (== ConnectorPunctuation)
+      "Pd" -> (== DashPunctuation)
+      "Ps" -> (== OpenPunctuation)
+      "Pe" -> (== ClosePunctuation)
+      "Pi" -> (== InitialQuote)
+      "Pf" -> (== FinalQuote)
+      "Po" -> (== OtherPunctuation)
+      "P" -> (\c -> c == ConnectorPunctuation || c == DashPunctuation ||
+                    c == OpenPunctuation || c == ClosePunctuation ||
+                    c == InitialQuote || c == FinalQuote ||
+                    c == OtherPunctuation)
+      "Sm" -> (== MathSymbol)
+      "Sc" -> (== CurrencySymbol)
+      "Sk" -> (== ModifierSymbol)
+      "So" -> (== OtherSymbol)
+      "S" -> (\c -> c == MathSymbol || c == CurrencySymbol ||
+                    c == ModifierSymbol || c == OtherSymbol)
+      "Zs" -> (== Space)
+      "Zl" -> (== LineSeparator)
+      "Zp" -> (== ParagraphSeparator)
+      "Z" -> (\c -> c == Space || c == LineSeparator ||
+                    c == ParagraphSeparator)
+      "Cc" -> (== Control)
+      "Cf" -> (== Format)
+      "Cs" -> (== Surrogate)
+      "Co" -> (== PrivateUse)
+      "Cn" -> (== NotAssigned)
+      "C" -> (\c -> c == Control || c == Format || c == Surrogate ||
+                    c == PrivateUse || c == NotAssigned)
+      _    -> (const False)) . generalCategory
+
 
 anyChar :: Parser Char
 anyChar = do
