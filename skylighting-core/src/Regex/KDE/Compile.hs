@@ -274,7 +274,7 @@ pRegexCharClass = do
         (\d x -> x >= c && x <= d) <$> (char '-' *> getC) <|>
           return (== c)
   let getQELiteral = do
-        A.string "\\Q"
+        void $ A.string "\\Q"
         cs <- manyTill anyChar (A.string "\\E")
         return $! \c -> any (== c) cs
   brack <- option [] $ [(==']')] <$ char ']'
