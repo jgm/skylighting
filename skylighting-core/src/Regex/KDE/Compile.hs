@@ -8,7 +8,8 @@ module Regex.KDE.Compile
 import qualified Data.ByteString as B
 import qualified Data.Text as T
 import Data.ByteString (ByteString)
-import Data.Text.Encoding (decodeUtf8Lenient, encodeUtf8)
+import Data.Text.Encoding (decodeUtf8With, encodeUtf8)
+import Data.Text.Encoding.Error (lenientDecode)
 import Safe
 import Data.Attoparsec.Text as A hiding (match)
 import Data.Char
@@ -30,7 +31,7 @@ compileRegex caseSensitive bs =
   let !res = parseOnly (evalStateT parser RState{
                                             rsCurrentCaptureNumber = 0,
                                             rsCaseSensitive = caseSensitive })
-                       (decodeUtf8Lenient bs)
+                       (decodeUtf8With lenientDecode bs)
    in res
  where
    parser = do
