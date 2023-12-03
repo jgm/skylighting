@@ -15,7 +15,7 @@
 <!-- v10 by Peter J. Mello <admin@petermello.net>
      Add recognition of POSIX 2013 '::=' operator for variable assignment -->
 <language name="Makefile" section="Other"
-          version="16" kateversion="5.79"
+          version="17" kateversion="5.79"
           extensions="GNUmakefile;Makefile;makefile;GNUmakefile.*;Makefile.*;makefile.*;*.mk"
           mimetype="text/x-makefile" priority="11"
           author="Per Wigren (wigren@home.se)" license="">
@@ -548,14 +548,27 @@
 
       <context name="callFunc(" attribute="FuncParam" lineEndContext="#stay">
         <DetectChar attribute="Operator" char=")" context="#pop#pop#pop"/>
-        <DetectChar attribute="Operator" context="dollar" char="$"/>
-        <DetectChar attribute="Keyword" context="#stay" char=","/>
-        <DetectChar attribute="String" context="string&quot;" char="&quot;"/>
-        <DetectChar attribute="String" context="string'" char="'"/>
+        <DetectChar attribute="FuncParam" char="(" context="callFuncSub("/>
+        <IncludeRules context="callFuncCommon"/>
+      </context>
+      <context name="callFuncSub(" attribute="FuncParam" lineEndContext="#stay">
+        <DetectChar attribute="FuncParam" char=")" context="#pop"/>
+        <DetectChar attribute="FuncParam" char="(" context="callFuncSub("/>
+        <IncludeRules context="callFuncCommon"/>
       </context>
 
       <context name="callFunc{" attribute="FuncParam" lineEndContext="#stay">
         <DetectChar attribute="Operator" char="}" context="#pop#pop#pop"/>
+        <DetectChar attribute="FuncParam" char="{" context="callFuncSub{"/>
+        <IncludeRules context="callFuncCommon"/>
+      </context>
+      <context name="callFuncSub{" attribute="FuncParam" lineEndContext="#stay">
+        <DetectChar attribute="FuncParam" char="}" context="#pop"/>
+        <DetectChar attribute="FuncParam" char="{" context="callFuncSub{"/>
+        <IncludeRules context="callFuncCommon"/>
+      </context>
+
+      <context name="callFuncCommon" attribute="FuncParam" lineEndContext="#stay">
         <DetectChar attribute="Operator" context="dollar" char="$"/>
         <DetectChar attribute="Keyword" context="#stay" char=","/>
         <DetectChar attribute="String" context="string&quot;" char="&quot;"/>

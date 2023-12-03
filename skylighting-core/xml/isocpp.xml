@@ -35,12 +35,12 @@
 <language
     name="ISO C++"
     section="Sources"
-    version="29"
+    version="31"
     kateversion="5.79"
     indenter="cstyle"
     style="C++"
     mimetype="text/x-c++src;text/x-c++hdr;text/x-chdr"
-    extensions="*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.moc"
+    extensions="*.c++;*.cxx;*.cpp;*.cc;*.C;*.cu;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.cuh;*.inl;*.ino;*.pde;*.moc;*.mpp;*.ixx;*.cppm;*.cxxm;*.c++m;*.ccm"
     author="Alex Turbov (i.zaufi@gmail.com)"
     license="LGPL"
     priority="6"
@@ -370,11 +370,11 @@
         <Detect2Chars context="#pop!SelectStringPrefix" char="u" char1="&quot;" lookAhead="1"/>
         <Detect2Chars context="#pop!SelectStringPrefix" char="L" char1="&quot;" lookAhead="1"/>
         <StringDetect context="#pop!SelectStringPrefix" String="u8&quot;" lookAhead="1"/>
-        <Detect2Chars attribute="Raw String Delimiter" context="#pop!RawString" char="R" char1="&quot;" />
-        <StringDetect attribute="Raw String Delimiter" context="#pop!RawString" String="uR&quot;"/>
-        <StringDetect attribute="Raw String Delimiter" context="#pop!RawString" String="UR&quot;"/>
-        <StringDetect attribute="Raw String Delimiter" context="#pop!RawString" String="LR&quot;"/>
-        <StringDetect attribute="Raw String Delimiter" context="#pop!RawString" String="u8R&quot;"/>
+        <StringDetect context="#pop!RawString" String="R&quot;" lookAhead="1"/>
+        <StringDetect context="#pop!RawString" String="uR&quot;" lookAhead="1"/>
+        <StringDetect context="#pop!RawString" String="UR&quot;" lookAhead="1"/>
+        <StringDetect context="#pop!RawString" String="LR&quot;" lookAhead="1"/>
+        <StringDetect context="#pop!RawString" String="u8R&quot;" lookAhead="1"/>
         <Detect2Chars context="#pop!SelectCharPrefix" char="U" char1="'" lookAhead="1"/>
         <Detect2Chars context="#pop!SelectCharPrefix" char="u" char1="'" lookAhead="1"/>
         <Detect2Chars context="#pop!SelectCharPrefix" char="L" char1="'" lookAhead="1"/>
@@ -637,8 +637,12 @@
         <DetectIdentifier />
       </context>
 
-      <context name="RawString" attribute="String" lineEndContext="#stay" fallthroughContext="#pop!LineError">
-        <RegExpr attribute="Raw String Delimiter" context="#pop!InRawString" String="([^\(]{0,16})\(" beginRegion="Raw String" />
+      <context name="RawString" attribute="String" lineEndContext="#stay">
+        <AnyChar attribute="Raw String Literal Prefix" String="uUL8R"/>
+        <!-- A sequence of one or more basic character set, except parentheses, backslash and spaces,
+             at most 16 characters long -->
+        <RegExpr attribute="Raw String Delimiter" context="#pop!InRawString" String="&quot;([\x21-\x27\x2A-\x5B\x5D-\x7E]{0,16})\(" beginRegion="Raw String"/>
+        <RegExpr attribute="Error" context="#pop" String="&quot;(\s+|\w+\s*|&quot;|[^\s\w]+)?"/>
       </context>
 
       <context name="InRawString" attribute="Raw String" lineEndContext="#stay" dynamic="true">
@@ -893,6 +897,7 @@
       <itemData name="String Literal Prefix" defStyleNum="dsString" spellChecking="true" />
       <itemData name="Raw String"         defStyleNum="dsVerbatimString" spellChecking="true" />
       <itemData name="Raw String Delimiter" defStyleNum="dsString"  spellChecking="false" />
+      <itemData name="Raw String Literal Prefix" defStyleNum="dsString" spellChecking="false" />
       <itemData name="Comment"            defStyleNum="dsComment"   spellChecking="true"  />
       <itemData name="Symbol"             defStyleNum="dsOperator"  spellChecking="false" />
       <itemData name="Separator Symbol"   defStyleNum="dsOperator"  spellChecking="false" />
@@ -908,8 +913,8 @@
       <itemData name="Boost Stuff"        defStyleNum="dsExtension" spellChecking="false" />
       <itemData name="Internals"          defStyleNum="dsNormal"    spellChecking="false" color="#808080" selColor="#808080" />
       <itemData name="Region Marker"      defStyleNum="dsRegionMarker" spellChecking="false" />
-      <itemData name="UDL Numeric Suffix" defStyleNum="dsDecVal"    spellChecking="false" />
-      <itemData name="UDL String Suffix"  defStyleNum="dsString"    spellChecking="false" />
+      <itemData name="UDL Numeric Suffix" defStyleNum="dsOperator"  spellChecking="false" />
+      <itemData name="UDL String Suffix"  defStyleNum="dsOperator"  spellChecking="false" />
       <itemData name="Standard Suffix"    defStyleNum="dsBuiltIn"   spellChecking="false" />
       <itemData name="Error"              defStyleNum="dsError"     spellChecking="false" />
     </itemDatas>

@@ -11,12 +11,12 @@
 <language
     name="C++"
     section="Sources"
-    version="15"
+    version="17"
     kateversion="5.79"
     indenter="cstyle"
     style="C++"
     mimetype="text/x-c++src;text/x-c++hdr;text/x-chdr"
-    extensions="*.c++;*.cxx;*.cpp;*.cc;*.C;*.cu;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.cuh;*.inl;*.ino;*.pde;*.moc"
+    extensions="*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.inl;*.pde;*.moc;*.mpp;*.ixx;*.cppm;*.cxxm;*.c++m;*.ccm"
     author="Alex Turbov (i.zaufi@gmail.com)"
     license="LGPL"
     priority="9"
@@ -50,11 +50,16 @@
     <item>Q_EMIT</item>
     <item>Q_ENUM</item>
     <item>Q_ENUMS</item>
+    <item>Q_ENUM_NS</item>
     <item>Q_FLAG</item>
     <item>Q_FLAGS</item>
+    <item>Q_FLAG_NS</item>
     <item>Q_GADGET</item>
+    <item>Q_GADGET_EXPORT</item>
     <item>Q_INTERFACES</item>
     <item>Q_INVOKABLE</item>
+    <item>Q_NAMESPACE</item>
+    <item>Q_NAMESPACE_EXPORT</item>
     <item>Q_OBJECT</item>
     <item>Q_PROPERTY</item>
     <item>Q_REVISION</item>
@@ -458,6 +463,27 @@
     <item>Q_MOVABLE_TYPE</item>
     <item>Q_DUMMY_TYPE</item>
     <item>Q_RELOCATABLE_TYPE</item>
+    <!--https://doc.qt.io/qt-6/qqmlengine.html#macros-->
+    <item>QML_ADDED_IN_MINOR_VERSION</item>
+    <item>QML_ANONYMOUS</item>
+    <item>QML_ATTACHED</item>
+    <item>QML_DECLARE_TYPE</item>
+    <item>QML_DECLARE_TYPEINFO</item>
+    <item>QML_ELEMENT</item>
+    <item>QML_EXTENDED</item>
+    <item>QML_EXTENDED_NAMESPACE</item>
+    <item>QML_EXTRA_VERSION</item>
+    <item>QML_FOREIGN</item>
+    <item>QML_FOREIGN_NAMESPACE</item>
+    <item>QML_IMPLEMENTS_INTERFACES</item>
+    <item>QML_INTERFACE</item>
+    <item>QML_NAMED_ELEMENT</item>
+    <item>QML_REMOVED_IN_MINOR_VERSION</item>
+    <item>QML_SEQUENTIAL_CONTAINER</item>
+    <item>QML_SINGLETON</item>
+    <item>QML_UNAVAILABLE</item>
+    <item>QML_UNCREATABLE</item>
+    <item>QML_VALUE_TYPE</item>
   </list>
 
   <list name="QtFunc">

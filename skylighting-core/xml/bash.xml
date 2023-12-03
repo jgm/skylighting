@@ -66,7 +66,7 @@
 
 <language
     name="Bash"
-    version="50"
+    version="51"
     kateversion="5.79"
     section="Scripts"
     extensions="*.sh;*.bash;*.ebuild;*.eclass;*.exlib;*.exheres-0;.bashrc;.bash_profile;.bash_login;.profile;PKGBUILD;APKBUILD"
@@ -1005,13 +1005,15 @@
         <DetectChar attribute="Redirection" context="#pop!WordRedirection" char="&lt;"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="FdRedirection" fallthroughContext="#pop!FdRedirection2">
-        <DetectSpaces attribute="Normal Text" context="#pop!FdRedirection2"/>
+        <DetectSpaces attribute="Normal Text"/>
+        <DetectChar attribute="Comment" context="#pop!Comment" char="#"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="FdRedirection2" fallthroughContext="#pop!WordRedirection2">
         <RegExpr attribute="File Descriptor" context="#pop!CloseFile" String="[0-9]+(?=-?&eoexpr;)"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="WordRedirection" fallthroughContext="#pop!WordRedirection2">
-        <DetectSpaces attribute="Normal Text" context="#pop!WordRedirection2"/>
+        <DetectSpaces attribute="Normal Text"/>
+        <DetectChar attribute="Comment" context="#pop!Comment" char="#"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="WordRedirection2" fallthroughContext="#pop">
         <AnyChar context="#pop" String="&wordseps;`" lookAhead="1"/>
@@ -1019,7 +1021,8 @@
         <RegExpr attribute="Path" context="PathThenPop" String="&path;"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="StringRedirection" fallthroughContext="#pop!StringRedirection2">
-        <DetectSpaces attribute="Normal Text" context="#pop!StringRedirection2"/>
+        <DetectSpaces attribute="Normal Text"/>
+        <DetectChar attribute="Comment" context="#pop!Comment" char="#"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#pop" name="StringRedirection2">
         <AnyChar context="#pop" String="&wordseps;`" lookAhead="1"/>

@@ -15,12 +15,13 @@
 <language
     name="TOML"
     section="Configuration"
-    extensions="Cargo.lock;*.toml"
+    extensions="Cargo.lock;*.toml;*.rc;*.conf;*.cfg;*.cf;*.cnf;*.ini;mirrorlist"
     mimetype="text/x-toml;application/toml"
-    version="12"
+    version="13"
     kateversion="5.0"
     author="flying-sheep@web.de"
     license="LGPLv2+"
+    priority="-1"
   >
 <highlighting>
     <list name="bools">

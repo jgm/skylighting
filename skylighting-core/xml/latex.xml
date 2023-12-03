@@ -4,7 +4,7 @@
     <!ENTITY bullet "&#xd7;">
     <!ENTITY envname "[a-zA-Z]+\*?">
 ]>
-<language name="LaTeX" version="22" section="Markup" kateversion="5.79" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
+<language name="LaTeX" version="23" section="Markup" kateversion="5.79" priority="10" extensions="*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz;*.pgf" mimetype="text/x-tex" casesensitive="1" author="Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)" license="LGPL" >
   <highlighting>
     <!-- NOTE: Keywords of kind "\something" do not need a delimiter before "\".
          Using a DetectChar rule with lookAhead to detect "\" at the beginning
@@ -850,6 +850,13 @@
       <item>longtable</item>
     </list>
 
+    <list name="TabuEnv">
+      <item>tabu*</item>
+      <item>tabu</item>
+      <item>longtabu*</item>
+      <item>longtabu</item>
+    </list>
+
     <list name="MathModeText">
       <item>\text</item>
       <item>\textit</item>
@@ -887,8 +894,8 @@
       </context>
 
       <context name="LatexMacro" attribute="Normal Text" lineEndContext="#pop">
-        <keyword String="beginEnv" attribute="Structure" context="#pop!FindBeginEnvironment" beginRegion="block"/>
-        <keyword String="endEnv" attribute="Structure" context="#pop!FindEndEnvironment"/>
+        <WordDetect String="\begin" attribute="Structure" context="#pop!FindBeginEnvironment" beginRegion="block" additionalDeliminator="\"/>
+        <WordDetect String="\end" attribute="Structure" context="#pop!FindEndEnvironment" additionalDeliminator="\"/>
         <keyword String="Label" attribute="Structure" context="#pop!Label"/>
         <keyword String="macroFancyLabel" attribute="Builtin Macro" context="#pop!FancyLabel"/>
         <keyword String="FancyLabel" attribute="Structure" context="#pop!FancyLabel"/>
@@ -913,8 +920,7 @@
       <context name="Sectioning" attribute="Normal Text" lineEndContext="#stay" fallthroughContext="#pop">
         <DetectSpaces/>
         <RangeDetect char="[" char1="]" attribute="Normal Text" context="#stay"/>
-        <DetectChar char="{" attribute="Normal Text" context="SectioningInside"/>
-        <DetectChar char="}" attribute="Normal Text" context="#pop"/>
+        <DetectChar char="{" attribute="Normal Text" context="#pop!SectioningInside"/>
         <IncludeRules context="FindComments"/>
       </context>
       <context name="SectioningInside" attribute="Sectioning Text" lineEndContext="#stay">
@@ -1129,6 +1135,7 @@
         <keyword String="MathEnvParam" attribute="Environment" context="MathEnvWithParam"/>
         <keyword String="MathEnv" attribute="Environment" context="MathEnv"/>
         <keyword String="TabEnv" attribute="Environment" context="TabEnv"/>
+        <keyword String="TabuEnv" attribute="Environment" context="TabuEnv"/>
         <DetectChar char="&bullet;" attribute="Bullet" context="#stay"/>
         <RegExpr String="(\w+)code\b" attribute="Environment" context="MintedCodeEnv" lookAhead="true"/>
         <RegExpr String="&envname;" attribute="Environment" context="LatexEnv"/>
@@ -2229,7 +2236,7 @@
         <DetectSpaces/>
         <RegExpr String=".+" attribute="Error" context="#stay"/>
       </context>
-      <context name="HighlightingBash" attribute="Normal Text" lineEndContext="#stay">
+      <context name="HighlightingBash" attribute="Normal Text" lineEndContext="#stay" fallthroughContext="Command##Bash">
         <IncludeRules context="HighlightingCommon"/>
         <IncludeRules context="##Bash" includeAttrib="true"/>
       </context>
@@ -5245,7 +5252,7 @@
         <DetectSpaces/>
         <RegExpr String=".+" attribute="Error" context="#stay"/>
       </context>
-      <context name="HighlightingSCSS" attribute="Normal Text" lineEndContext="#stay">
+      <context name="HighlightingSCSS" attribute="Normal Text" lineEndContext="#stay" fallthroughContext="Selector##SCSS">
         <IncludeRules context="HighlightingCommon"/>
         <IncludeRules context="##SCSS" includeAttrib="true"/>
       </context>
@@ -6094,8 +6101,8 @@
         <DetectChar char="&bullet;" attribute="Bullet" context="#stay"/>
       </context>
       <context name="BackslashMathModeEnv" attribute="Math" lineEndContext="#pop">
-        <keyword String="beginEnv" attribute="Structure" context="#pop!FindBeginEnvironment" beginRegion="block"/>
-        <keyword String="endEnv" attribute="Structure" context="#pop!MathFindEnd"/>
+        <WordDetect String="\begin" attribute="Structure" context="#pop!FindBeginEnvironment" beginRegion="block" additionalDeliminator="\"/>
+        <WordDetect String="\end" attribute="Structure" context="#pop!MathFindEnd" additionalDeliminator="\"/>
         <keyword String="MathModeText" attribute="Macro Mathmode" context="#pop!MathModeText"/>
         <Detect2Chars char="\" char1="(" attribute="Error" context="#pop"/>
         <Detect2Chars char="\" char1=")" attribute="Error" context="#pop"/>
@@ -6147,6 +6154,31 @@
         <DetectChar char="{" attribute="Normal Text" context="#stay"/>
         <DetectChar char="}" attribute="Normal Text" context="#pop#pop#pop#pop#pop" endRegion="block"/>
         <keyword String="TabEnv" attribute="Environment" context="#stay"/>
+        <keyword String="TabuEnv" attribute="Environment" context="#stay"/>
+      </context>
+
+      <!-- environment type 10: tabu -->
+      <context name="TabuEnv" attribute="Environment" lineEndContext="#stay" fallthroughContext="#pop#pop#pop">
+        <DetectChar char="}" attribute="Normal Text" context="Tabu"/>
+        <RegExpr String="[^}]*" attribute="Error" context="#stay"/>
+      </context>
+
+      <!-- parse tabu options
+        \begin {tabu} [pos] {tabular preamble}
+        \begin {tabu} to <dimen> [pos] {tabular preamble}
+        \begin {tabu} spread <dimen> [pos] {tabular preamble}
+      -->
+      <context name="Tabu" attribute="Normal Text" lineEndContext="#pop!Tab">
+        <DetectChar char="{" attribute="Normal Text" context="TabuPreambule"/>
+        <DetectChar char="\" context="#pop!Tab" lookAhead="1"/>
+      </context>
+      <context name="TabuPreambule" attribute="Normal Text" lineEndContext="#stay">
+        <DetectChar char="}" attribute="Normal Text" context="#pop#pop!Tab"/>
+        <DetectChar char="{" attribute="Normal Text" context="TabuPreambuleInside"/>
+      </context>
+      <context name="TabuPreambuleInside" attribute="Normal Text" lineEndContext="#stay">
+        <DetectChar char="}" attribute="Normal Text" context="#pop"/>
+        <DetectChar char="{" attribute="Normal Text" context="TabuPreambuleInside"/>
       </context>
 
       <!-- math mode: starting with $ -->
@@ -6198,8 +6230,8 @@
         <DetectChar char="&bullet;" attribute="Bullet" context="#stay"/>
       </context>
       <context name="BackslashMathModeCommon" attribute="Math" lineEndContext="#pop">
-        <keyword String="beginEnv" attribute="Structure" context="#pop!MathEnvironment" beginRegion="block"/>
-        <keyword String="endEnv" attribute="Structure" context="#pop!MathEnvironmentEnd"/>
+        <WordDetect String="\begin" attribute="Structure" context="#pop!MathEnvironment" beginRegion="block" additionalDeliminator="\"/>
+        <WordDetect String="\end" attribute="Structure" context="#pop!MathEnvironmentEnd" additionalDeliminator="\"/>
         <keyword String="MathModeText" attribute="Macro Mathmode" context="#pop!MathModeText" />
         <DetectChar char="\" attribute="Macro Mathmode" context="#pop!MathContrSeq"/>
       </context>
@@ -6210,6 +6242,7 @@
       </context>
       <context name="MathEnvironmentInside" attribute="Environment" lineEndContext="#stay">
         <DetectChar char="}" attribute="Normal Text" context="#pop#pop"/>
+        <keyword String="TabuEnv" attribute="Environment" context="MathTabuEnv"/>
         <RegExpr String="&envname;" attribute="Environment" context="#stay"/>
         <RegExpr String="[^}a-zA-Z]+|." attribute="Error" context="#stay"/>
       </context>
@@ -6223,6 +6256,25 @@
         <WordDetect String="ensuremath" attribute="Environment" context="#pop!LatexEnvEnd"/>
         <RegExpr String="&envname;" attribute="Environment" context="#stay"/>
         <RegExpr String="[^}a-zA-Z]+|." attribute="Error" context="#pop#pop"/>
+      </context>
+
+      <!-- tabu in mathmode
+        \begin {tabu} [pos] {tabular preamble}
+        \begin {tabu} to <dimen> [pos] {tabular preamble}
+        \begin {tabu} spread <dimen> [pos] {tabular preamble}
+      -->
+      <context name="MathTabuEnv" attribute="Environment" lineEndContext="#stay">
+        <DetectChar char="}" attribute="Normal Text" context="MathTabu"/>
+        <RegExpr String="[^}]*" attribute="Error" context="#stay"/>
+      </context>
+      <context name="MathTabu" attribute="Math" lineEndContext="#pop#pop#pop#pop">
+        <DetectChar char="{" attribute="Normal Text" context="#pop#pop#pop#pop!MathTabuPreambule"/>
+        <DetectChar char="\" context="#pop#pop#pop#pop" lookAhead="1"/>
+        <DetectChar char="}" attribute="Normal Text" context="#pop#pop#pop#pop"/>
+      </context>
+      <context name="MathTabuPreambule" attribute="Math" lineEndContext="#stay">
+        <DetectChar char="}" attribute="Normal Text" context="#pop"/>
+        <DetectChar char="{" attribute="Normal Text" context="MathTabuPreambule"/>
       </context>
 
       <!-- command in mathmode -->

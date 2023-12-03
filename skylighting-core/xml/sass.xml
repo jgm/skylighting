@@ -6,26 +6,23 @@
   <!ENTITY nmchar  "[_a-zA-Z0-9-]|(\\[0-9a-fA-F]{1,6})|(\\[^\n\r\f0-9a-fA-F])">
 ]>
 
-<language name="SASS" version="8" kateversion="5.53" section="Markup" extensions="*.sass" indenter="cstyle" mimetype="text/css" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT" priority="5">
+<language name="SASS" version="8" kateversion="5.79" section="Markup" extensions="*.sass" indenter="cstyle" mimetype="text/css" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT" priority="5">
 
     <highlighting>
-        <list name="properties">
-            <include>properties##SCSS</include>
-            <include>sub-properties##SCSS</include>
-        </list>
+        <list name="properties"><include>properties##SCSS</include></list>
+        <list name="vendor properties"><include>vendor properties##SCSS</include></list>
+        <list name="sub-properties"><include>sub-properties##SCSS</include></list>
         <list name="special values"><include>special values##SCSS</include></list>
         <list name="value keywords"><include>value keywords##SCSS</include></list>
         <list name="values"><include>values##SCSS</include></list>
         <list name="colors"><include>colors##SCSS</include></list>
         <list name="functions"><include>functions##SCSS</include></list>
-        <list name="medias"><include>medias##SCSS</include></list>
-        <list name="pseudoelements"><include>pseudoelements##SCSS</include></list>
-        <list name="pseudoclasses"><include>pseudoclasses##SCSS</include></list>
-        <list name="pseudoclass-selector"><include>pseudoclass-selector##SCSS</include></list>
-        <list name="pseudoclasses-@page"><include>pseudoclasses-@page##SCSS</include></list>
+        <list name="media types"><include>media types##SCSS</include></list>
+        <list name="media features"><include>media features##SCSS</include></list>
+        <list name="pseudo-elements"><include>pseudo-elements##SCSS</include></list>
+        <list name="pseudo-classes"><include>pseudo-classes##SCSS</include></list>
+        <list name="@page pseudo-classes"><include>@page pseudo-classes##SCSS</include></list>
         <list name="at-rules"><include>at-rules##SCSS</include></list>
-        <list name="nested at-rules"><include>nested at-rules##SCSS</include></list>
-        <list name="other at-rules"><include>other at-rules##SCSS</include></list>
         <list name="media operators"><include>media operators##SCSS</include></list>
         <list name="operators"><include>operators##SCSS</include></list>
         <list name="annotations"><include>annotations##SCSS</include></list>
@@ -94,24 +91,24 @@
                 <DetectChar attribute="Annotation" context="Annotation" char="!" />
                 <keyword attribute="Operator" context="#stay" String="operators" />
                 <keyword attribute="Value Keyword" context="#stay" String="value keywords" />
+                <keyword attribute="Value Keyword" context="#stay" String="special values" />
                 <keyword attribute="Value" context="#stay" String="values" />
                 <keyword attribute="Color" context="#stay" String="colors" />
                 <RegExpr attribute="Number" context="FindUnits" String="([0-9]+(\.[0-9]+)?|\.[0-9]+)([eE][+-]?[0-9]+)?" />
                 <RegExpr attribute="Color" context="#stay" String="#([0-9A-Fa-f]{3,4}){1,2}\b" />
                 <RegExpr attribute="Variable" context="#stay" String="\$[a-zA-Z0-9\-_]+" />
-                <keyword attribute="Value Keyword" context="#stay" String="special values" />
                 <RegExpr attribute="Normal Text" context="#stay" String="[-]?(&nmstart;)(&nmchar;)*" />
                 <AnyChar attribute="Operator" context="#stay" String="*/+%-" />
                 <Detect2Chars attribute="Interpolation" context="Interpolation" char="#" char1="{" />
             </context>
 
             <!-- same as SCSS -->
-            <context name="Annotation" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
+            <context name="Annotation" attribute="Normal Text" lineEndContext="#pop" fallthroughContext="#pop">
                 <keyword attribute="Annotation" context="#pop" String="annotations" />
             </context>
 
             <!-- same as SCSS -->
-            <context name="FindUnits" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
+            <context name="FindUnits" attribute="Normal Text" lineEndContext="#pop" fallthroughContext="#pop">
                 <RegExpr attribute="Unit" context="#pop" String="(%|(em|ex|cap|ch|ic|rem|lh|rlh|vw|vh|vi|vb|vmin|vmax|cqw|cqh|cqi|cqb|cqmin|cqmax|cm|mm|Q|in|pc|pt|px|deg|rad|grad|turn|s|ms|Hz|kHz|fr|dpi|dpcm|dppx|x)\b)" />
             </context>
 
@@ -135,7 +132,7 @@
                 <Detect2Chars attribute="Comment" context="IsInlineComment2" char="/" char1="*" />
             </context>
 
-            <context name="Comment" attribute="Comment" lineEndContext="#stay" dynamic="true" fallthrough="true" fallthroughContext="IsInlineComment">
+            <context name="Comment" attribute="Comment" lineEndContext="#stay" dynamic="true" fallthroughContext="IsInlineComment">
                 <RegExpr attribute="Comment" context="IsInlineComment" String="^%1\s|^\s*$" dynamic="true" column="0" />
                 <DetectSpaces attribute="Normal Text" context="#pop" lookAhead="true" column="0" />
                 <RegExpr attribute="Comment" context="#pop" String="." lookAhead="true" column="0"/>
@@ -155,7 +152,6 @@
             </context>
 
             <context name="SelectAtRule" attribute="At Rule" lineEndContext="#pop">
-                <keyword attribute="At Rule" context="#pop!AtRule" String="nested at-rules" />
                 <keyword attribute="At Rule" context="#pop!AtRule" String="at-rules" />
                 <!-- CSS: inline -->
                 <!-- SCSS: inline or block -->
@@ -225,8 +221,8 @@
                 <DetectChar attribute="Selector Pseudo" context="SelectorPseudo-@page" char=":" />
             </context>
 
-            <context name="SelectorPseudo-@page" attribute="Selector Pseudo" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
-                <keyword attribute="Selector Pseudo" context="#pop" String="pseudoclasses-@page" />
+            <context name="SelectorPseudo-@page" attribute="Selector Pseudo" lineEndContext="#pop" fallthroughContext="#pop">
+                <keyword attribute="Selector Pseudo" context="#pop" String="@page pseudo-classes" />
                 <RegExpr attribute="Selector Pseudo" context="#pop" String="[-a-zA-Z][-a-zA-Z0-9]*" />
             </context>
 
@@ -238,7 +234,8 @@
                 <IncludeRules context="FindFunctions" />
                 <keyword attribute="Keyword" context="#stay" String="media operators" />
                 <RegExpr attribute="Property" context="#stay" String="[A-Za-z_-]+(?=\s*:)" />
-                <keyword attribute="Value" context="#stay" String="medias" />
+                <keyword attribute="Value" context="#stay" String="media types" />
+                <keyword attribute="Value" context="#stay" String="media features" />
                 <IncludeRules context="FindValues" />
             </context>
 
@@ -264,30 +261,18 @@
             <!-- same as SCSS -->
             <context name="SelectorPseudo" attribute="Selector Pseudo" lineEndContext="#pop">
                 <DetectChar attribute="Selector Pseudo" context="SelectorPseudoElements" char=":" />
-                <keyword attribute="Selector Pseudo" context="SelectorPseudoValueSelector" String="pseudoclass-selector" />
-                <keyword attribute="Selector Pseudo" context="SelectorPseudoValue" String="pseudoclasses" />
+                <keyword attribute="Selector Pseudo" context="SelectorPseudoValue" String="pseudo-classes" />
                 <RegExpr attribute="Selector Pseudo" context="SelectorPseudoValue" String="[-a-zA-Z][-a-zA-Z0-9]*" />
             </context>
 
             <!-- same as SCSS -->
             <context name="SelectorPseudoElements" attribute="Selector Pseudo" lineEndContext="#pop#pop">
-                <keyword attribute="Selector Pseudo" context="#pop!SelectorPseudoValue" String="pseudoelements" />
+                <keyword attribute="Selector Pseudo" context="#pop!SelectorPseudoValue" String="pseudo-elements" />
                 <RegExpr attribute="Selector Pseudo" context="#pop!SelectorPseudoValue" String="[-a-zA-Z][-a-zA-Z0-9]*" />
             </context>
 
             <!-- same as SCSS -->
-            <context name="SelectorPseudoValueSelector" attribute="Selector Pseudo" lineEndContext="#pop#pop" fallthrough="true" fallthroughContext="#pop#pop">
-                <DetectChar attribute="Selector Pseudo" context="SelectorPseudoValueCloseSelector" char="(" />
-            </context>
-
-            <context name="SelectorPseudoValueCloseSelector" attribute="Normal Text" lineEndContext="#pop#pop#pop">
-                <DetectSpaces />
-                <DetectChar attribute="Selector Pseudo" context="#pop#pop#pop" char=")" />
-                <IncludeRules context="FindSelector" />
-            </context>
-
-            <!-- same as SCSS -->
-            <context name="SelectorPseudoValue" attribute="Selector Pseudo" lineEndContext="#pop#pop" fallthrough="true" fallthroughContext="#pop#pop">
+            <context name="SelectorPseudoValue" attribute="Selector Pseudo" lineEndContext="#pop#pop" fallthroughContext="#pop#pop">
                 <DetectChar attribute="Selector Pseudo" context="SelectorPseudoValueClose" char="(" />
             </context>
 
@@ -303,6 +288,7 @@
                 <DetectChar attribute="Normal Text" context="RuleParameters" char=":" />
                 <Detect2Chars attribute="Variable" context="IsVariable" char="-" char1="-" />
                 <keyword attribute="Property" context="#stay" String="properties" />
+                <keyword attribute="Property" context="#stay" String="sub-properties" />
                 <RegExpr attribute="Unknown Property" context="#stay" String="[^:]+" />
             </context>
 
@@ -333,7 +319,7 @@
             </context>
 
             <!-- same as SCSS -->
-            <context name="FunctionVar" attribute="Variable" lineEndContext="#pop#pop" fallthrough="true" fallthroughContext="#pop!FunctionParameters">
+            <context name="FunctionVar" attribute="Variable" lineEndContext="#pop#pop" fallthroughContext="#pop!FunctionParameters">
                 <DetectSpaces />
                 <IncludeRules context="FindComments" />
                 <RegExpr attribute="Variable" context="#pop!FunctionParameters" String="--[^ \t\),]+" />
@@ -365,7 +351,7 @@
             </context>
 
             <!-- same as SCSS -->
-            <context name="FunctionUrl" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="UrlValue">
+            <context name="FunctionUrl" attribute="Normal Text" lineEndContext="#pop" fallthroughContext="UrlValue">
                 <DetectSpaces />
                 <IncludeRules context="FindStrings" />
                 <DetectChar attribute="Function" context="#pop#pop" char=")" />

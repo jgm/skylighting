@@ -7,7 +7,7 @@
   <!ENTITY eop      "(?=([\s\\;&quot;&#37;]|$))">         <!-- end of path -->
   <!ENTITY pathpart "[^\s\\&#37;!;/:*?&quot;&gt;&lt;|&amp;]">   <!-- valid character in a file name -->
 ]>
-<language name="MS-DOS Batch" version="8" kateversion="5.62" section="Scripts" extensions="*.bat;*.cmd" mimetype="application/x-dos" casesensitive="0" author="Matthew Woehlke (mw_triad@users.sourceforge.net)" license="LGPL">
+<language name="MS-DOS Batch" version="9" kateversion="5.62" section="Scripts" extensions="*.bat;*.cmd" mimetype="application/x-dos" casesensitive="0" author="Matthew Woehlke (mw_triad@users.sourceforge.net)" license="LGPL">
 
 <!-- (c) 2006, 2009, 2010 Matthew Woehlke (mw_triad@users.sourceforge.net)
     Released under the LGPL -->
@@ -340,6 +340,7 @@
       </context>
 
       <context attribute="Normal Text" lineEndContext="#pop" name="FindUnquotedStringEscape">
+        <LineContinue attribute="Escape" char="^"/>
         <RegExpr attribute="Escape" context="#stay" String="\^."/>
       </context>
 
