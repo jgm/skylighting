@@ -1,5 +1,5 @@
-[ [ ( DataTypeTok , "<!DOCTYPE " )
-  , ( NormalTok , "HTML" )
+[ [ ( DataTypeTok , "<!DOCTYPE" )
+  , ( NormalTok , " HTML" )
   , ( DataTypeTok , ">" )
   ]
 , [ ( DataTypeTok , "<" )

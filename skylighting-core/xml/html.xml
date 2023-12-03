@@ -5,7 +5,7 @@
 	<!ENTITY attributeName "[A-Za-z_:*#\(\[][\)\]\w.:_-]*">
 	<!ENTITY entref        "&amp;(?:#[0-9]+|#[xX][0-9A-Fa-f]+|&name;);">
 ]>
-<language name="HTML" version="17" kateversion="5.53" section="Markup" extensions="*.htm;*.html;*.shtml;*.shtm;*.aspx" mimetype="text/html"  author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
+<language name="HTML" version="18" kateversion="5.79" section="Markup" extensions="*.htm;*.html;*.shtml;*.shtm;*.aspx" mimetype="text/html"  author="Wilbert Berendsen (wilbert@kde.nl)" license="LGPL" priority="10">
 
 <highlighting>
 <contexts>
@@ -18,7 +18,7 @@
     <DetectIdentifier/>
     <StringDetect attribute="Comment" context="Comment" String="&lt;!--" beginRegion="comment" />
     <StringDetect attribute="CDATA" context="CDATA" String="&lt;![CDATA[" beginRegion="cdata" />
-    <RegExpr attribute="Doctype" context="Doctype" String="&lt;!DOCTYPE\s+" insensitive="true" beginRegion="doctype" />
+    <WordDetect attribute="Doctype" context="Doctype" String="&lt;!DOCTYPE" insensitive="true" beginRegion="doctype" />
     <IncludeRules context="FindElements" />
     <RegExpr attribute="Processing Instruction" context="PI" String="&lt;\?[\w:-]*" beginRegion="pi" />
 
@@ -211,13 +211,13 @@
     <IncludeRules context="##Comments" />
   </context>
 
-  <context name="Value" attribute="Other Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="Value NQ">
+  <context name="Value" attribute="Other Text" lineEndContext="#stay" fallthroughContext="Value NQ">
     <DetectChar attribute="Value" context="Value DQ" char="&quot;" />
     <DetectChar attribute="Value" context="Value SQ" char="&apos;" />
     <DetectSpaces />
   </context>
 
-  <context name="Value NQ" attribute="Other Text" lineEndContext="#pop#pop" fallthrough="true" fallthroughContext="#pop#pop">
+  <context name="Value NQ" attribute="Other Text" lineEndContext="#pop#pop" fallthroughContext="#pop#pop">
     <!-- '{' and '}' are valid, but used with twig -->
     <RegExpr attribute="Value" String="[^&gt;&lt;&quot;&apos;&amp;\s=`{}]+" />
     <IncludeRules context="FindEntityRefs" />
@@ -238,11 +238,11 @@
   <!-- Read content from the "type" attribute to change the language to
        highlight in the <script> tag. The default language is JavaScript. -->
 
-  <context name="Script-Type" attribute="Other Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop">
+  <context name="Script-Type" attribute="Other Text" lineEndContext="#stay" fallthroughContext="#pop">
     <DetectSpaces />
     <DetectChar attribute="Attribute" context="#pop!Script-Type Value" char="=" />
   </context>
-  <context name="Script-Type Value" attribute="Other Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop!Value">
+  <context name="Script-Type Value" attribute="Other Text" lineEndContext="#stay" fallthroughContext="#pop!Value">
     <DetectSpaces />
     <!-- TypeScript -->
     <StringDetect attribute="Value" context="#pop#pop!TypeScript" String="&quot;text/typescript&quot;"/>
@@ -293,7 +293,7 @@
   <context name="MustacheJS content" attribute="Other Text" lineEndContext="#stay">
     <IncludeRules context="FindScriptTagClose" />
     <StringDetect attribute="Error" context="#stay" String="&lt;script&gt;" insensitive="true" />
-    <RegExpr attribute="Error" context="#stay" String="&lt;script\b" insensitive="true" />
+    <WordDetect attribute="Error" context="#stay" String="&lt;script" insensitive="true" />
     <IncludeRules context="Base##Mustache/Handlebars (HTML)" includeAttrib="true"/>
   </context>
 
@@ -304,7 +304,7 @@
   <context name="Script HTML template content" attribute="Other Text" lineEndContext="#stay">
     <IncludeRules context="FindScriptTagClose" />
     <StringDetect attribute="Error" context="#stay" String="&lt;script&gt;" insensitive="true" />
-    <RegExpr attribute="Error" context="#stay" String="&lt;script\b" insensitive="true" />
+    <WordDetect attribute="Error" context="#stay" String="&lt;script" insensitive="true" />
     <IncludeRules context="FindHTML" />
   </context>
 

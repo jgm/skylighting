@@ -383,7 +383,9 @@ withAttr tt p = do
 
 wordDetect :: Bool -> Set.Set Char -> Text -> ByteString -> TokenizerM Text
 wordDetect caseSensitive weakDelims s inp = do
-  wordBoundary weakDelims inp
+  -- Removed the next line because KDE seems to allow
+  -- \n<DOCTYPE! to match \b<DOCTYPE!/b:
+  -- wordBoundary weakDelims inp
   t <- decodeBS $ UTF8.take (Text.length s) inp
   -- we assume here that the case fold will not change length,
   -- which is safe for ASCII keywords and the like...
