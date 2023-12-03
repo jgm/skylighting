@@ -1,17 +1,16 @@
 {-# LANGUAGE CPP #-}
-{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Regex.KDE.Compile
   (compileRegex)
   where
 
-import Data.Word (Word8)
 import qualified Data.ByteString as B
+import qualified Data.Text as T
 import Data.ByteString (ByteString)
-import qualified Data.ByteString.UTF8 as U
+import Data.Text.Encoding (decodeUtf8Lenient, encodeUtf8)
 import Safe
-import Data.Attoparsec.ByteString as A hiding (match)
+import Data.Attoparsec.Text as A hiding (match)
 import Data.Char
 import Control.Applicative
 import Regex.KDE.Regex
@@ -31,15 +30,15 @@ compileRegex caseSensitive bs =
   let !res = parseOnly (evalStateT parser RState{
                                             rsCurrentCaptureNumber = 0,
                                             rsCaseSensitive = caseSensitive })
-                       bs
+                       (decodeUtf8Lenient bs)
    in res
  where
    parser = do
      !re <- pRegex
      (re <$ lift A.endOfInput) <|>
-       do rest <- lift A.takeByteString
+       do rest <- lift A.takeText
           fail $ "parse error at byte position " ++
-                 show (B.length bs - B.length rest)
+                 show (B.length bs - B.length (encodeUtf8 rest))
 
 data RState =
   RState
@@ -54,14 +53,10 @@ pRegex =
   option MatchNull $
   foldr MatchAlt
     <$> pAltPart
-    <*> (many $ lift (char '|') *> (pAltPart <|> pure mempty))
+    <*> many (lift (char '|') *> (pAltPart <|> pure mempty))
 
 pAltPart :: RParser Regex
 pAltPart = mconcat <$> many1 pRegexPart
-
-char :: Char -> Parser Char
-char c =
-  c <$ satisfy (== fromIntegral (ord c))
 
 pRegexPart :: RParser Regex
 pRegexPart =
@@ -69,14 +64,14 @@ pRegexPart =
 
 pParenthesized :: RParser Regex
 pParenthesized = do
-  _ <- lift (satisfy (== 40))
+  _ <- lift (char '(')
   -- pcrepattern says: A group that starts with (?| resets the capturing
   -- parentheses numbers in each alternative.
   resetCaptureNumbers <- option False (True <$ lift (string "?|"))
   (modifier, stModifier) <-
               if resetCaptureNumbers
                  then return (id, id)
-                 else lift (satisfy (== 63) *> pGroupModifiers)
+                 else lift (char '?' *> pGroupModifiers)
                     <|> do modify (\st -> st{
                                       rsCurrentCaptureNumber =
                                              rsCurrentCaptureNumber st + 1})
@@ -86,12 +81,12 @@ pParenthesized = do
   contents <- option MatchNull $ withStateT stModifier $
     foldr MatchAlt
       <$> pAltPart
-      <*> (many $ lift (char '|') *>
-            (((if resetCaptureNumbers
-                  then modify $ \st ->
-                        st{ rsCurrentCaptureNumber = currentCaptureNumber }
-                  else return ()) >> pAltPart) <|> pure mempty))
-  _ <- lift (satisfy (== 41))
+      <*> many (lift (char '|') *>
+            ((when resetCaptureNumbers
+                  (modify (\st ->
+                        st{ rsCurrentCaptureNumber = currentCaptureNumber }))
+               >> pAltPart) <|> pure mempty))
+  _ <- lift (char ')')
   return $ modifier contents
 
 pGroupModifiers :: Parser (Regex -> Regex, RState -> RState)
@@ -104,41 +99,38 @@ pGroupModifiers =
         ((AssertPositive dir, id) <$ char '=') <|>
           ((AssertNegative dir, id) <$ char '!')
    <|>
-     do n <- satisfy (\d -> d >= 48 && d <= 57)
-        return ((\_ -> Subroutine (fromIntegral n - 48)), id)
+     do c <- digit
+        return (\_ -> Subroutine (ord c - 48), id)
    <|>
-     do _ <- satisfy (== 82) -- R
+     do void $ char 'R'
         return  (\_ -> Subroutine 0, id)
 
 pRegexModifier :: Parser (RState -> RState)
 pRegexModifier = do
   -- "adlupimnsx-imnsx"
   -- i = 105  - = 45
-  ons <- many $ satisfy (`elem` [97,100,108,117,112,105,109,110,115,120])
-  offs <- option [] $ satisfy (== 45) *>
-                      many (satisfy (`elem` [105,109,110,115,120]))
+  ons <- many $ satisfy (inClass "adlupimnsx")
+  offs <- option [] $ char '-' *>
+                      many (satisfy (inClass "imnsx"))
   pure $ \st -> st{
     rsCaseSensitive =
-      if 105 `elem` ons && 105 `notElem` offs
+      if 'i' `elem` ons && 'i' `notElem` offs
          then False
-         else if 105 `elem` offs
-              then True
-              else rsCaseSensitive st
+         else ('i' `elem` offs) || rsCaseSensitive st
   }
 
 pSuffix :: Regex -> RParser Regex
 pSuffix re = option re $ do
-  w <- lift $ satisfy (\x -> x == 42 || x == 43 || x == 63 || x == 123)
+  w <- lift $ satisfy (inClass "*+?{")
   (case w of
-    42  -> return $ MatchAlt (MatchSome re) MatchNull
-    43  -> return $ MatchSome re
-    63  -> return $ MatchAlt re MatchNull
-    123 -> do
-      let isDig x = x >= 48 && x < 58
+    '*'  -> return $ MatchAlt (MatchSome re) MatchNull
+    '+'  -> return $ MatchSome re
+    '?'  -> return $ MatchAlt re MatchNull
+    '{'  -> do
       minn <- lift $
-        option Nothing $ readMay . U.toString <$> A.takeWhile isDig
+        option Nothing $ readMay . T.unpack <$> A.takeWhile isDigit
       maxn <- lift $ option minn $ char ',' *>
-                       (readMay . U.toString <$> A.takeWhile isDig)
+                       (readMay . T.unpack <$> A.takeWhile isDigit)
       _ <- lift $ char '}'
       case (minn, maxn) of
           (Nothing, Nothing) -> mzero
@@ -158,56 +150,41 @@ pSuffix re = option re $ do
 
 pQuantifierModifier :: Regex -> Parser Regex
 pQuantifierModifier re = option re $
-  (Possessive re <$ satisfy (== 43)) <|>
-  (Lazy re <$ satisfy (==63))
+  (Possessive re <$ char '+') <|> (Lazy re <$ char '?')
 
 pRegexChar :: RParser Regex
 pRegexChar = do
-  w <- lift $ satisfy $ const True
+  w <- lift anyChar
   caseSensitive <- gets rsCaseSensitive
   case w of
-    46  -> return MatchAnyChar
-    37 -> (do -- dynamic %1 %2
-              ds <- lift $ A.takeWhile1 (\x -> x >= 48 && x <= 57)
-              case readMay (U.toString ds) of
+    '.'  -> return MatchAnyChar
+    '%' -> (do -- dynamic %1 %2
+              ds <- lift $ many1 digit
+              case readMay ds of
                 Just !n -> return $ MatchDynamic n
                 Nothing -> fail "not a number")
             <|> return (MatchChar (== '%'))
-    92  -> lift pRegexEscapedChar
-    36  -> return AssertEnd
-    94  -> return AssertBeginning
-    91  -> lift pRegexCharClass
-    _ | w < 128
-      , not (isSpecial w)
-         -> do let c = chr $ fromIntegral w
-               return $! MatchChar $
-                        if caseSensitive
-                           then (== c)
-                           else (\d -> toLower d == toLower c)
-      | w >= 0xc0 -> do
-          rest <- lift $ case w of
-                    _ | w >= 0xf0 -> A.take 3
-                      | w >= 0xe0 -> A.take 2
-                      | otherwise -> A.take 1
-          case U.uncons (B.cons w rest) of
-            Just (d, _) -> return $! MatchChar $
-                             if caseSensitive
-                                then (== d)
-                                else (\e -> toLower e == toLower d)
-            Nothing     -> fail "could not decode as UTF8"
-      | otherwise -> mzero
+    '\\' -> lift pRegexEscapedChar
+    '$'  -> return AssertEnd
+    '^'  -> return AssertBeginning
+    '['  -> lift pRegexCharClass
+    _ | isSpecial w -> mzero
+      | otherwise -> return $!
+            MatchChar $ if caseSensitive
+                           then (== w)
+                           else (\d -> toLower d == toLower w)
 
 pRegexEscapedChar :: Parser Regex
 pRegexEscapedChar = do
-  c <- anyChar
+  c <- A.anyChar
   (case c of
     'b' -> return AssertWordBoundary
     'B' -> return $ AssertNegative Forward AssertWordBoundary
     '{' -> do -- captured pattern: \1 \2 \{12}
-              ds <- A.takeWhile1 (\x -> x >= 48 && x <= 57)
+              ds <- many1 digit
               _ <- char '}'
-              case readMay (U.toString ds) of
-                Just !n -> return $ MatchCaptured $ n
+              case readMay ds of
+                Just !n -> return $ MatchCaptured n
                 Nothing -> fail "not a number"
     'd' -> return $ MatchChar isDigit
     'D' -> return $ MatchChar (not . isDigit)
@@ -216,7 +193,7 @@ pRegexEscapedChar = do
     'w' -> return $ MatchChar isWordChar
     'W' -> return $ MatchChar (not . isWordChar)
     'p' -> MatchChar <$> pUnicodeCharClass
-    _ | c >= '0' && c <= '9' ->
+    _ | isDigit c ->
        return $! MatchCaptured (ord c - ord '0')
       | otherwise -> mzero) <|> (MatchChar . (==) <$> pEscaped c)
 
@@ -232,28 +209,27 @@ pEscaped c =
     'v' -> return '\v'
     '0' -> do -- \0ooo matches octal ooo
       ds <- A.take 3
-      case readMay ("'\\o" ++ U.toString ds ++ "'") of
+      case readMay ("'\\o" ++ T.unpack ds ++ "'") of
         Just x  -> return x
         Nothing -> fail "invalid octal character escape"
     _ | c >= '1' && c <= '7' -> do
       -- \123 matches octal 123, \1 matches octal 1
       let octalDigitScanner s w
-            | s < 3, w >= 48 && w <= 55
-                        = Just (s + 1) -- digits 0-7
+            | s < 3, isOctDigit w = Just (s + 1) -- digits 0-7
             | otherwise = Nothing
       ds <- A.scan (1 :: Int) octalDigitScanner
-      case readMay ("'\\o" ++ [c] ++ U.toString ds ++ "'") of
+      case readMay ("'\\o" ++ [c] ++ T.unpack ds ++ "'") of
         Just x  -> return x
         Nothing -> fail "invalid octal character escape"
     'z' -> do -- \zhhhh matches unicode hex char hhhh
       ds <- A.take 4
-      case readMay ("'\\x" ++ U.toString ds ++ "'") of
+      case readMay ("'\\x" ++ T.unpack ds ++ "'") of
         Just x  -> return x
         Nothing -> fail "invalid hex character escape"
     'x' -> do -- \xhh matches hex hh, \x{h+} matches hex h+
-      ds <- (satisfy (== 123) *> A.takeWhile (/= 125) <* satisfy (== 125))
+      ds <- (char '{' *> A.takeWhile (/= '}') <* char '}')
              <|> A.take 2
-      case readMay ("'\\x" ++ U.toString ds ++ "'") of
+      case readMay ("'\\x" ++ T.unpack ds ++ "'") of
         Just x  -> return x
         Nothing -> fail "invalid hex character escape"
     _ | isPunctuation c || isSymbol c || isSpace c -> return c
@@ -261,9 +237,9 @@ pEscaped c =
 
 pRegexCharClass :: Parser Regex
 pRegexCharClass = do
-  negated <- option False $ True <$ satisfy (== 94) -- '^'
+  negated <- option False $ True <$ char '^'
   let getEscapedClass = do
-        _ <- satisfy (== 92) -- backslash
+        _ <- char '\\'
         (isDigit <$ char 'd')
          <|> (not . isDigit <$ char 'D')
          <|> (isSpace <$ char 's')
@@ -272,7 +248,7 @@ pRegexCharClass = do
          <|> (not . isWordChar <$ char 'W')
   let getPosixClass = do
         _ <- string "[:"
-        localNegated <- option False $ True <$ satisfy (== 94) -- '^'
+        localNegated <- option False $ True <$ char '^'
         res <- (isAlphaNum <$ string "alnum")
              <|> (isAlpha <$ string "alpha")
              <|> (isAscii <$ string "ascii")
@@ -291,23 +267,25 @@ pRegexCharClass = do
              <|> (isHexDigit <$ string "xdigit")
         _ <- string ":]"
         return $! if localNegated then not . res else res
-  let getC = (satisfy (== 92) *> anyChar >>= pEscaped) <|>
-       (chr . fromIntegral <$> satisfy (\x -> x /= 92 && x /= 93)) -- \ ]
+  let getC = (char '\\' *> anyChar >>= pEscaped) <|>
+             satisfy (\c -> c /= '\\' && c /= ']')
   let getCRange = do
         c <- getC
-        (\d -> (\x -> x >= c && x <= d)) <$> (char '-' *> getC) <|>
+        (\d x -> x >= c && x <= d) <$> (char '-' *> getC) <|>
           return (== c)
   brack <- option [] $ [(==']')] <$ char ']'
   fs <- many (getEscapedClass <|> getPosixClass <|> getCRange
               <|> (A.string "\\p" *> pUnicodeCharClass))
-  _ <- satisfy (== 93) -- ]
+  void $ char ']'
   let f c = any ($ c) $ brack ++ fs
-  return $! MatchChar (if negated then (not . f) else f)
+  return $! MatchChar $ if negated
+                           then not . f
+                           else f
 
 -- character class \p{Lo}; we assume \p is already parsed
 pUnicodeCharClass :: Parser (Char -> Bool)
 pUnicodeCharClass = do
-  ds <- satisfy (== 123) *> A.takeWhile (/= 125) <* satisfy (== 125)
+  ds <- char '{' *> A.takeWhile (/= '}') <* char '}'
   return $
     (case ds of
       "Lu" -> (== UppercaseLetter)
@@ -357,28 +335,23 @@ pUnicodeCharClass = do
       "Cn" -> (== NotAssigned)
       "C" -> (\c -> c == Control || c == Format || c == Surrogate ||
                     c == PrivateUse || c == NotAssigned)
-      _    -> (const False)) . generalCategory
+      _    -> const False) . generalCategory
 
 
-anyChar :: Parser Char
-anyChar = do
-  w <- satisfy (const True)
-  return $! chr $ fromIntegral w
-
-isSpecial :: Word8 -> Bool
-isSpecial 92 = True -- '\\'
-isSpecial 63 = True -- '?'
-isSpecial 42 = True -- '*'
-isSpecial 43 = True -- '+'
--- isSpecial 123 = True -- '{'  -- this is okay except in suffixes
-isSpecial 91 = True -- '['
-isSpecial 93 = True -- ']'
-isSpecial 37 = True -- '%'
-isSpecial 40 = True -- '('
-isSpecial 41 = True -- ')'
-isSpecial 124 = True -- '|'
-isSpecial 46 = True -- '.'
-isSpecial 36 = True -- '$'
-isSpecial 94 = True -- '^'
+isSpecial :: Char -> Bool
+isSpecial '\\' = True
+isSpecial '?'  = True
+isSpecial '*'  = True
+isSpecial '+'  = True
+-- isSpecial '{' = True -- this is okay except in suffixes
+isSpecial '[' = True
+isSpecial ']' = True
+isSpecial '%' = True
+isSpecial '(' = True
+isSpecial ')' = True
+isSpecial '|' = True
+isSpecial '.' = True
+isSpecial '$' = True
+isSpecial '^' = True
 isSpecial _  = False
 
