@@ -1,0 +1,21 @@
+--- raku.xml	2023-12-02 17:57:32.000000000 -0800
++++ raku.new	2023-12-02 17:57:07.000000000 -0800
+@@ -8,7 +8,8 @@
+   -->
+   <!-- Large values -->
+   <!ENTITY rangealnum "_\p{L}\p{N}">
+-  <!ENTITY alnum "[_\p{L}\p{N}]">
++  <!ENTITY _alnum "_\p{L}\p{N}">
++  <!ENTITY alnum "[&_alnum;]">
+   <!ENTITY _ident "&alnum;*+(?:[-']&alnum;*+)*+">
+   <!ENTITY ident "(?:[_\p{L}]&_ident;)">
+   <!ENTITY datatype "(?:[_\p{Lu}\p{Lt}]&_ident;)">
+@@ -828,7 +829,7 @@
+         <RegExpr String="&variable;|@" attribute="Variable"/>
+         <RegExpr String="\$&lt;&ident;>?" attribute="Pattern Named Capture"/>
+         <AnyChar String="&amp;|^$" attribute="Pattern Control Flow"/>
+-        <RegExpr String="[&alnum;\s]+" attribute="Pattern"/>
++        <RegExpr String="[&_alnum;\s]+" attribute="Pattern"/>
+         <AnyChar String=">)]" attribute="Error"/>
+       </context>
+ 
