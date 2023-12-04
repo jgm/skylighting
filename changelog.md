@@ -1,5 +1,32 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.14.1
+
+  * Update syntax definitions for julia, actionscript, bash, cpp, css,
+    djangotemplate, dosbat, groovy, html, ini, isocpp, java, javadoc, json,
+    jsp, latex, makefile, mustache, php, powershell, rest, rhtml,
+    sass, scala, scss, toml, xml, raku (with patch).
+
+  * Many improvements to regular expression compilation:
+
+    - Properly recognize unicode characters.
+    - Handle `\Q..\E` literal sequences.
+    - Handle group modifiers like `(?i:etc.)`. (The only one
+      we actually pay attention to is `i`.)
+    - Allow unicode category escapes outside of character classes.
+    - Support one-letter unicode category escapes like `\p{L}`.
+      These are found in some of the newer syntax definitions.
+
+  * Improve regex matching:
+
+    - Fix `wordDetect` to work around an issue in the new html.xml.
+    - Refactor and fix `atWordBoundary`: remove redundant checks, and
+      fix behavior (`/x\b/` was behaving like `/\bx\b/`) (Côme ALLART).
+    - Fix bug in `lastCharOffset` (Côme ALLART).
+
+  * Style: Allow colors to be specified in ARGB format (#178).
+    We currently just ignore the A part, but at least we don't fail.
+
 ## 0.14
 
   * Add rWeakDeliminators field to Rule. [API change]
