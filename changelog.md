@@ -1,5 +1,14 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.14.1.1
+
+  * Add GPRBuild syntax.
+
+  * Update syntax descriptions for clojure, cmake, coffee, cpp,
+    cs, erlang, graphql, haskell, javascript, julia, kotlin,
+    lilypond, markdown, objectivec, objectivecpp, ocaml, perl,
+    python, ruby, rust, stan, typescript, yaml.
+
 ## 0.14.1
 
   * Update syntax definitions for julia, actionscript, bash, cpp, css,
