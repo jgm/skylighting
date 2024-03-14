@@ -98,6 +98,7 @@ library
                        Skylighting.Syntax.Glsl
                        Skylighting.Syntax.Gnuassembler
                        Skylighting.Syntax.Go
+                       Skylighting.Syntax.Gpr
                        Skylighting.Syntax.Graphql
                        Skylighting.Syntax.Groovy
                        Skylighting.Syntax.Hamlet
