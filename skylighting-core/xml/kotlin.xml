@@ -8,7 +8,7 @@
     <!ENTITY hexfloat "\b0[xX](&hex;\.?+&hex;?+|\.&hex;?)[pP][-+]?&int;[fF]?\b">
 ]>
 <!-- kotlin language syntax http://kotlinlang.org -->
-<language name="Kotlin" version="11" kateversion="5.62" section="Sources" extensions="*.kt;*.kts" license="LGPLv2+" author="Sergey Mashkov (sergey.mashkov@jetbrains.com)" style="cstyle" indenter="cstyle">
+<language name="Kotlin" alternativeNames="KT" version="12" kateversion="5.62" section="Sources" extensions="*.kt;*.kts" license="LGPLv2+" author="Sergey Mashkov (sergey.mashkov@jetbrains.com)" style="cstyle" indenter="cstyle">
     <highlighting>
         <list name="keywords">
             <item>package</item>

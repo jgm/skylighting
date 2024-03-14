@@ -67,7 +67,8 @@
 -->
 
 <language name="TypeScript"
-          version="17"
+          alternativeNames="TS"
+          version="18"
           kateversion="5.53"
           section="Scripts"
           extensions="*.ts;*.mts;*.cts"

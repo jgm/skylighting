@@ -25,7 +25,7 @@
 
 <language
     name="CMake"
-    version="49"
+    version="50"
     kateversion="5.62"
     section="Other"
     extensions="CMakeLists.txt;*.cmake;*.cmake.in"
@@ -193,6 +193,7 @@
       <item>HOST</item>
       <item>HOSTNAME</item>
       <item>IS_64BIT</item>
+      <item>MSYSTEM_PREFIX</item>
       <item>NUMBER_OF_LOGICAL_CORES</item>
       <item>NUMBER_OF_PHYSICAL_CORES</item>
       <item>OS_NAME</item>
@@ -855,6 +856,7 @@
       <item>DEPFILE</item>
       <item>IMPLICIT_DEPENDS</item>
       <item>JOB_POOL</item>
+      <item>JOB_SERVER_AWARE</item>
       <item>MAIN_DEPENDENCY</item>
       <item>OUTPUT</item>
       <item>POST_BUILD</item>
@@ -876,6 +878,7 @@
       <item>DEPFILE</item>
       <item>IMPLICIT_DEPENDS</item>
       <item>JOB_POOL</item>
+      <item>JOB_SERVER_AWARE</item>
       <item>SOURCES</item>
       <item>USES_TERMINAL</item>
       <item>VERBATIM</item>
@@ -976,6 +979,9 @@
     <list name="get_source_file_property_nargs">
       <item>DIRECTORY</item>
       <item>TARGET_DIRECTORY</item>
+    </list>
+    <list name="get_test_property_nargs">
+      <item>DIRECTORY</item>
     </list>
     <list name="include_directories_nargs">
       <item>AFTER</item>
@@ -1096,6 +1102,10 @@
       <item>DIRECTORY</item>
       <item>PROPERTIES</item>
       <item>TARGET_DIRECTORY</item>
+    </list>
+    <list name="set_tests_properties_nargs">
+      <item>DIRECTORY</item>
+      <item>PROPERTIES</item>
     </list>
     <list name="source_group_nargs">
       <item>FILES</item>
@@ -1218,6 +1228,10 @@
       <item>PRIVATE</item>
       <item>PUBLIC</item>
       <item>TYPE</item>
+    </list>
+    <list name="target_sources_sargs">
+      <item>CXX_MODULES</item>
+      <item>HEADERS</item>
     </list>
     <list name="try_compile_nargs">
       <item>BINARY_DIR</item>
@@ -1580,6 +1594,7 @@
       <item>BUILD_BYPRODUCTS</item>
       <item>BUILD_COMMAND</item>
       <item>BUILD_IN_SOURCE</item>
+      <item>BUILD_JOB_SERVER_AWARE</item>
       <item>CMAKE_ARGS</item>
       <item>CMAKE_CACHE_ARGS</item>
       <item>CMAKE_CACHE_DEFAULT_ARGS</item>
@@ -1684,6 +1699,7 @@
       <item>DEPENDS</item>
       <item>EXCLUDE_FROM_MAIN</item>
       <item>INDEPENDENT</item>
+      <item>JOB_SERVER_AWARE</item>
       <item>LOG</item>
       <item>USES_TERMINAL</item>
       <item>WORKING_DIRECTORY</item>
@@ -1726,6 +1742,8 @@
       <item>DOWNLOAD_NAME</item>
       <item>DOWNLOAD_NO_EXTRACT</item>
       <item>DOWNLOAD_NO_PROGRESS</item>
+      <item>EXCLUDE_FROM_ALL</item>
+      <item>FIND_PACKAGE_ARGS</item>
       <item>GIT_CONFIG</item>
       <item>GIT_PROGRESS</item>
       <item>GIT_REMOTE_NAME</item>
@@ -1743,6 +1761,7 @@
       <item>INACTIVITY_TIMEOUT</item>
       <item>NETRC</item>
       <item>NETRC_FILE</item>
+      <item>OVERRIDE_FIND_PACKAGE</item>
       <item>PATCH_COMMAND</item>
       <item>SOURCE_SUBDIR</item>
       <item>SVN_PASSWORD</item>
@@ -2028,6 +2047,9 @@
       <item>REQUIRED</item>
       <item>STATIC_TARGET</item>
     </list>
+    <list name="pkg_get_variable_nargs">
+      <item>DEFINE_VARIABLES</item>
+    </list>
     <list name="protobuf_generate_cpp_nargs">
       <item>DESCRIPTORS</item>
       <item>EXPORT_MACRO</item>
@@ -2209,6 +2231,7 @@
       <item>CMAKE_CXX_EXTENSIONS</item>
       <item>CMAKE_CXX_LINK_NO_PIE_SUPPORTED</item>
       <item>CMAKE_CXX_LINK_PIE_SUPPORTED</item>
+      <item>CMAKE_CXX_SCAN_FOR_MODULES</item>
       <item>CMAKE_CXX_STANDARD</item>
       <item>CMAKE_CXX_STANDARD_REQUIRED</item>
       <item>CMAKE_C_COMPILE_FEATURES</item>
@@ -2311,6 +2334,7 @@
       <item>CMAKE_HIP_EXTENSIONS</item>
       <item>CMAKE_HIP_LINK_NO_PIE_SUPPORTED</item>
       <item>CMAKE_HIP_LINK_PIE_SUPPORTED</item>
+      <item>CMAKE_HIP_PLATFORM</item>
       <item>CMAKE_HIP_STANDARD</item>
       <item>CMAKE_HIP_STANDARD_REQUIRED</item>
       <item>CMAKE_HOST_APPLE</item>
@@ -2385,7 +2409,6 @@
       <item>CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP</item>
       <item>CMAKE_INSTALL_UCRT_LIBRARIES</item>
       <item>CMAKE_INTERPROCEDURAL_OPTIMIZATION</item>
-      <item>CMAKE_IOS_INSTALL_COMBINED</item>
       <item>CMAKE_ISPC_HEADER_DIRECTORY</item>
       <item>CMAKE_ISPC_HEADER_SUFFIX</item>
       <item>CMAKE_ISPC_INSTRUCTION_SETS</item>
@@ -3058,6 +3081,7 @@
       <item>CUDAToolkit_NVCC_EXECUTABLE</item>
       <item>CUPS_INCLUDE_DIR</item>
       <item>CURL_NO_CURL_CMAKE</item>
+      <item>CURL_USE_STATIC_LIBS</item>
       <item>CURSES_CFLAGS</item>
       <item>CURSES_HAVE_CURSES_H</item>
       <item>CURSES_HAVE_NCURSES_CURSES_H</item>
@@ -3076,6 +3100,7 @@
       <item>DVIPDF_CONVERTER</item>
       <item>DVIPS_CONVERTER</item>
       <item>EXECUTABLE_OUTPUT_PATH</item>
+      <item>EXPAT_USE_STATIC_LIBS</item>
       <item>EnvModules_COMMAND</item>
       <item>ExternalData_BINARY_ROOT</item>
       <item>ExternalData_CUSTOM_ERROR</item>
@@ -3508,6 +3533,7 @@
       <item>CMAKE_FILES_DIRECTORY</item>
       <item>CMAKE_HOME_DIRECTORY</item>
       <item>CMAKE_INTERNAL_PLATFORM_ABI</item>
+      <item>CMAKE_IOS_INSTALL_COMBINED</item>
       <item>CMAKE_NOT_USING_CONFIG_FLAGS</item>
       <item>CMAKE_OBJDUMP</item>
       <item>CMAKE_SUPPRESS_DEVELOPER_ERRORS</item>
@@ -3534,6 +3560,7 @@
       <item>CMAKE_COLOR_DIAGNOSTICS</item>
       <item>CMAKE_CONFIGURATION_TYPES</item>
       <item>CMAKE_CONFIG_TYPE</item>
+      <item>CMAKE_CROSSCOMPILING_EMULATOR</item>
       <item>CMAKE_EXPORT_COMPILE_COMMANDS</item>
       <item>CMAKE_FRAMEWORK_PATH</item>
       <item>CMAKE_GENERATOR</item>
@@ -3731,6 +3758,10 @@
       <item>CUDA_STANDARD</item>
       <item>CUDA_STANDARD_REQUIRED</item>
       <item>CXX_EXTENSIONS</item>
+      <item>CXX_MODULE_DIRS</item>
+      <item>CXX_MODULE_SET</item>
+      <item>CXX_MODULE_SETS</item>
+      <item>CXX_SCAN_FOR_MODULES</item>
       <item>CXX_STANDARD</item>
       <item>CXX_STANDARD_REQUIRED</item>
       <item>C_EXTENSIONS</item>
@@ -3797,6 +3828,7 @@
       <item>INTERFACE_COMPILE_DEFINITIONS</item>
       <item>INTERFACE_COMPILE_FEATURES</item>
       <item>INTERFACE_COMPILE_OPTIONS</item>
+      <item>INTERFACE_CXX_MODULE_SETS</item>
       <item>INTERFACE_HEADER_SETS</item>
       <item>INTERFACE_HEADER_SETS_TO_VERIFY</item>
       <item>INTERFACE_INCLUDE_DIRECTORIES</item>
@@ -3974,6 +4006,7 @@
       <item>COMPILE_DEFINITIONS</item>
       <item>COMPILE_FLAGS</item>
       <item>COMPILE_OPTIONS</item>
+      <item>CXX_SCAN_FOR_MODULES</item>
       <item>EXTERNAL_OBJECT</item>
       <item>Fortran_FORMAT</item>
       <item>Fortran_PREPROCESS</item>
@@ -4031,12 +4064,14 @@
       <item>FIXTURES_CLEANUP</item>
       <item>FIXTURES_REQUIRED</item>
       <item>FIXTURES_SETUP</item>
+      <item>GENERATED_RESOURCE_SPEC_FILE</item>
       <item>LABELS</item>
       <item>MEASUREMENT</item>
       <item>PASS_REGULAR_EXPRESSION</item>
       <item>PROCESSORS</item>
       <item>PROCESSOR_AFFINITY</item>
       <item>REQUIRED_FILES</item>
+      <item>RESOURCE_GROUPS</item>
       <item>RESOURCE_LOCK</item>
       <item>RUN_SERIAL</item>
       <item>SKIP_REGULAR_EXPRESSION</item>
@@ -4783,7 +4818,7 @@
         <WordDetect String="matlab_add_mex" insensitive="true" attribute="CMake Provided Function/Macro" context="matlab_add_mex_ctx"/>
         <WordDetect String="pkg_check_modules" insensitive="true" attribute="CMake Provided Function/Macro" context="pkg_check_modules_ctx"/>
         <WordDetect String="pkg_search_module" insensitive="true" attribute="CMake Provided Function/Macro" context="pkg_check_modules_ctx"/>
-        <WordDetect String="pkg_get_variable" insensitive="true" attribute="CMake Provided Function/Macro" context="function_ctx"/>
+        <WordDetect String="pkg_get_variable" insensitive="true" attribute="CMake Provided Function/Macro" context="pkg_get_variable_ctx"/>
         <WordDetect String="protobuf_generate_cpp" insensitive="true" attribute="CMake Provided Function/Macro" context="protobuf_generate_cpp_ctx"/>
         <WordDetect String="protobuf_generate_python" insensitive="true" attribute="CMake Provided Function/Macro" context="function_ctx"/>
         <WordDetect String="Python_add_library" insensitive="true" attribute="CMake Provided Function/Macro" context="Python_add_library_ctx"/>
@@ -5476,6 +5511,7 @@
       <context attribute="Normal Text" lineEndContext="#stay" name="get_test_property_ctx_op">
         <DetectSpaces/>
         <DetectChar attribute="Normal Text" context="#pop" char=")" lookAhead="true"/>
+        <keyword attribute="Named Args" context="#stay" String="get_test_property_nargs"/>
         <keyword attribute="Property" context="#stay" String="test-properties"/>
         <IncludeRules context="User Function Args"/>
       </context>
@@ -5604,7 +5640,7 @@
       <context attribute="Normal Text" lineEndContext="#stay" name="set_tests_properties_ctx_op">
         <DetectSpaces/>
         <DetectChar attribute="Normal Text" context="#pop" char=")" lookAhead="true"/>
-        <keyword attribute="Named Args" context="#stay" String="set_directory_properties_nargs"/>
+        <keyword attribute="Named Args" context="#stay" String="set_tests_properties_nargs"/>
         <keyword attribute="Property" context="#stay" String="test-properties"/>
         <IncludeRules context="User Function Args"/>
       </context>
@@ -5737,6 +5773,7 @@
         <DetectSpaces/>
         <DetectChar attribute="Normal Text" context="#pop" char=")" lookAhead="true"/>
         <keyword attribute="Named Args" context="#stay" String="target_sources_nargs"/>
+        <keyword attribute="Special Args" context="#stay" String="target_sources_sargs"/>
         <IncludeRules context="User Function Args"/>
       </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="try_compile_ctx">
@@ -6520,6 +6557,16 @@
         <keyword attribute="Named Args" context="#stay" String="pkg_check_modules_nargs"/>
         <IncludeRules context="User Function Args"/>
       </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="pkg_get_variable_ctx">
+        <DetectChar attribute="Normal Text" context="pkg_get_variable_ctx_op" char="("/>
+        <DetectChar attribute="Normal Text" context="#pop" char=")"/>
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="pkg_get_variable_ctx_op">
+        <DetectSpaces/>
+        <DetectChar attribute="Normal Text" context="#pop" char=")" lookAhead="true"/>
+        <keyword attribute="Named Args" context="#stay" String="pkg_get_variable_nargs"/>
+        <IncludeRules context="User Function Args"/>
+      </context>
       <context attribute="Normal Text" lineEndContext="#stay" name="protobuf_generate_cpp_ctx">
         <DetectChar attribute="Normal Text" context="protobuf_generate_cpp_ctx_op" char="("/>
         <DetectChar attribute="Normal Text" context="#pop" char=")"/>
@@ -6559,7 +6606,7 @@
       </context>
 
       <context attribute="Normal Text" lineEndContext="#stay" name="Detect More target-properties">
-        <RegExpr attribute="Property" context="#stay" String="\b(?:&var_ref_re;_((COMPIL|LINK)ER_LAUNCHER|CLANG_TIDY(_EXPORT_FIXES_DIR)?|CPP(CHECK|LINT)|INCLUDE_WHAT_YOU_USE|OUTPUT_NAME|POSTFIX|VISIBILITY_PRESET)|((ARCHIVE|LIBRARY|RUNTIME)_OUTPUT_(DIRECTORY|NAME)|COMPILE_PDB_(NAME|OUTPUT_DIRECTORY)|EXCLUDE_FROM_DEFAULT_BUILD|FRAMEWORK_MULTI_CONFIG_POSTFIX|HEADER_(DIRS|SET)|IMPORTED_((NO_)?SONAME|IMPLIB|LIBNAME|LINK_(DEPENDENT_LIBRARIES|INTERFACE_(LANGUAGES|LIBRARIES|MULTIPLICITY))|LOCATION|OBJECTS)|INTERPROCEDURAL_OPTIMIZATION|LINK_(FLAGS|INTERFACE_(LIBRARIES|MULTIPLICITY))|LOCATION|MAP_IMPORTED_CONFIG|OSX_ARCHITECTURES|OUTPUT_NAME|PDB_(NAME|OUTPUT_DIRECTORY)|STATIC_LIBRARY_FLAGS|VS_(DOTNET_REFERENCE(PROP_&var_ref_re;_TAG)?|GLOBAL|SOURCE_SETTINGS))_&var_ref_re;|XCODE_(ATTRIBUTE_&var_ref_re;|EMBED_&var_ref_re;(_((CODE_SIGN|REMOVE_HEADERS)_ON_COPY|PATH))?))\b"/>
+        <RegExpr attribute="Property" context="#stay" String="\b(?:&var_ref_re;_((COMPIL|LINK)ER_LAUNCHER|CLANG_TIDY(_EXPORT_FIXES_DIR)?|CPP(CHECK|LINT)|INCLUDE_WHAT_YOU_USE|OUTPUT_NAME|POSTFIX|VISIBILITY_PRESET)|((ARCHIVE|LIBRARY|RUNTIME)_OUTPUT_(DIRECTORY|NAME)|COMPILE_PDB_(NAME|OUTPUT_DIRECTORY)|CXX_MODULE_(DIRS|SET)|EXCLUDE_FROM_DEFAULT_BUILD|FRAMEWORK_MULTI_CONFIG_POSTFIX|HEADER_(DIRS|SET)|IMPORTED_((NO_)?SONAME|IMPLIB|LIBNAME|LINK_(DEPENDENT_LIBRARIES|INTERFACE_(LANGUAGES|LIBRARIES|MULTIPLICITY))|LOCATION|OBJECTS)|INTERPROCEDURAL_OPTIMIZATION|LINK_(FLAGS|INTERFACE_(LIBRARIES|MULTIPLICITY))|LOCATION|MAP_IMPORTED_CONFIG|OSX_ARCHITECTURES|OUTPUT_NAME|PDB_(NAME|OUTPUT_DIRECTORY)|STATIC_LIBRARY_FLAGS|VS_(DOTNET_REFERENCE(PROP_&var_ref_re;_TAG)?|GLOBAL|SOURCE_SETTINGS))_&var_ref_re;|XCODE_(ATTRIBUTE_&var_ref_re;|EMBED_&var_ref_re;(_((CODE_SIGN|REMOVE_HEADERS)_ON_COPY|PATH))?))\b"/>
       </context>
 
       <context attribute="Normal Text" lineEndContext="#stay" name="Detect More source-properties">

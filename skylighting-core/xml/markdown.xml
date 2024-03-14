@@ -94,7 +94,7 @@
 <!ENTITY checkbox "\[[ x]\](?=\s)">
 ]>
 
-<language name="Markdown" version="29" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown" mimetype="text/markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
+<language name="Markdown" version="30" kateversion="5.79" section="Markup" extensions="*.md;*.mmd;*.markdown;*.md.html" mimetype="text/markdown" priority="15" author="Darrin Yeager, Claes Holmerson" license="GPL,BSD">
   <highlighting>
     <contexts>
       <!-- Start of the Markdown document: find metadata or code block -->

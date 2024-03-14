@@ -40,7 +40,7 @@
 	<!ENTITY scope2 "::(?=[^\s\:])"> <!-- Points after keyword or group { } -->
 
 ]>
-<language name="Rust" version="14" kateversion="5.0" section="Sources" extensions="*.rs" mimetype="text/rust" indenter="cstyle" priority="15" license="MIT" author="The Rust Project Developers">
+<language name="Rust" alternativeNames="RS" version="15" kateversion="5.0" section="Sources" extensions="*.rs" mimetype="text/rust" indenter="cstyle" priority="15" license="MIT" author="The Rust Project Developers">
 <highlighting>
 	<list name="fn">
 		<item>fn</item>
