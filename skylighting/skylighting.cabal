@@ -190,6 +190,7 @@ library
                        Skylighting.Syntax.Systemverilog
                        Skylighting.Syntax.Tcl
                        Skylighting.Syntax.Tcsh
+                       Skylighting.Syntax.Terraform
                        Skylighting.Syntax.Texinfo
                        Skylighting.Syntax.Toml
                        Skylighting.Syntax.Typescript
