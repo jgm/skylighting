@@ -1,5 +1,9 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.14.1.2
+
+  * Add terraform syntax (#190).
+
 ## 0.14.1.1
 
   * Add GPRBuild syntax.
