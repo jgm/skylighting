@@ -1,8 +1,10 @@
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE LambdaCase #-}
 -- | This module provides routines to load syntax definitions from disk
 -- files.
 module Skylighting.Loader ( loadSyntaxFromFile
                           , loadSyntaxesFromDir
+                          , loadValidSyntaxesFromDir
                           )
                           where
 
@@ -37,7 +39,8 @@ loadSyntaxFromFile path = do
 -- | Loads all syntax definitions from the specified directory by
 -- looking for files with an ".xml" extension. This function assumes
 -- such files are Kate XML syntax definitions, so XML files with
--- unexpected contents will cause a parsing error returned as a 'Left'.
+-- unexpected contents will cause a parsing error returned as a 'Left'
+-- and syntax parsing will be aborted.
 loadSyntaxesFromDir :: FilePath -> IO (Either String SyntaxMap)
 loadSyntaxesFromDir path = runExceptT $ do
     files <- liftIO $ syntaxFiles path
@@ -54,3 +57,20 @@ syntaxFiles dir = do
     entries <- listDirectory dir
     let absEntries = (dir </>) <$> filter isSyntaxFile entries
     filterM doesFileExist absEntries
+
+-- | Loads all valid syntax definitions from the specified directory by looking
+-- for files with an ".xml" extension.  Any files that are not valid Kate XML
+-- syntax definitions will have an entry in the resulting error map; the returned
+-- SyntaxMap will be made up of only the files that could successfully be loaded
+-- and parsed.
+loadValidSyntaxesFromDir :: FilePath -> IO (LoadErrMap, SyntaxMap)
+loadValidSyntaxesFromDir path = foldM go (mempty, mempty) =<< syntaxFiles path
+  where
+    go (errMap, syntaxMap) file =
+      loadSyntaxFromFile file >>= \case
+        Right s -> return (errMap, addSyntaxDefinition s syntaxMap)
+        Left e -> return (M.insert file e errMap, syntaxMap)
+
+-- | A map from a potential syntax file to the error encountered when trying to
+-- load that syntax file.
+type LoadErrMap = M.Map FilePath String
