@@ -1,5 +1,5 @@
 name:                skylighting-core
-version:             0.14.1.2
+version:             0.14.2
 synopsis:            syntax highlighting library
 description:         Skylighting is a syntax highlighting library.
                      It derives its tokenizers from XML syntax
@@ -21,7 +21,7 @@ license:             BSD3
 license-file:        LICENSE
 author:              John MacFarlane
 maintainer:          jgm@berkeley.edu
-copyright:           (C) 2016-2018 John MacFarlane
+copyright:           (C) 2016-2024 John MacFarlane
 category:            Text
 build-type:          Simple
 extra-source-files:  README.md

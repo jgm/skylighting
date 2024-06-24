@@ -1,5 +1,15 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.14.2
+
+  * Add `loadValidSyntaxesFromDir` (Kevin Quick) [API change].
+    The `loadSyntaxesFromDir` function is an all-or-nothing function:
+    a single invalid file results in a error and *no* loaded syntaxes.
+    This adds the `loadValidSyntaxesFromDir`, which is resilient
+    against individual syntax file load failures.  It returns a map
+    of the failure messages, and the SyntaxMap that is created from
+    all the successful parsing.
+
 ## 0.14.1.2
 
   * Add terraform syntax (#190).
