@@ -5,3 +5,6 @@ dist
 skylighting.cabal.orig
 .*.swp
 syntax-highlighting
+skylighting-core/xml/*.xml.rej
+skylighting-core/xml/*.xml.rej.orig
+skylighting-core/xml/*.xml.orig
