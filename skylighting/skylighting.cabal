@@ -69,6 +69,7 @@ library
                        Skylighting.Syntax.Comments
                        Skylighting.Syntax.Commonlisp
                        Skylighting.Syntax.Cpp
+                       Skylighting.Syntax.Crystal
                        Skylighting.Syntax.Cs
                        Skylighting.Syntax.Css
                        Skylighting.Syntax.Curry
@@ -164,6 +165,7 @@ library
                        Skylighting.Syntax.Python
                        Skylighting.Syntax.Qml
                        Skylighting.Syntax.R
+                       Skylighting.Syntax.Racket
                        Skylighting.Syntax.Raku
                        Skylighting.Syntax.Relaxng
                        Skylighting.Syntax.Relaxngcompact
@@ -202,6 +204,7 @@ library
                        Skylighting.Syntax.Xul
                        Skylighting.Syntax.Yacc
                        Skylighting.Syntax.Yaml
+                       Skylighting.Syntax.Zig
                        Skylighting.Syntax.Zsh
   other-extensions:    CPP
   build-depends:       base >= 4.8 && < 5.0,
