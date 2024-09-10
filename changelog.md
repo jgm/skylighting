@@ -1,5 +1,9 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.14.3
+
+  * Add crystal, racket, zip syntax (#194).
+
 ## 0.14.2
 
   * Add `loadValidSyntaxesFromDir` (Kevin Quick) [API change].
