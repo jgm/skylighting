@@ -205,7 +205,7 @@ styleToCss f = unlines $
           , "}"
           , "@media print {"
           , "pre > code.sourceCode { white-space: pre-wrap; }"
-          , "pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }"
+          , "pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }"
           , "}"
           ]
          linkspec = [ "@media screen {"
