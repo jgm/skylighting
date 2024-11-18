@@ -193,7 +193,8 @@ styleToCss f = unlines $
               " padding-left: 4px; }"
           ]
          divspec = [
-            "pre > code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for relative contents
+            "html { -webkit-text-size-adjust: 100%; }" -- Work around iOS bug, see https://github.com/jgm/pandoc/issues/7248
+          , "pre > code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for relative contents
           , "pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }"
           , "pre > code.sourceCode > span:empty { height: 1.2em; }" -- correct empty line height
           , ".sourceCode { overflow: visible; }" -- needed for line numbers
