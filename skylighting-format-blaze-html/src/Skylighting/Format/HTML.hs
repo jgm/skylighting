@@ -193,8 +193,9 @@ styleToCss f = unlines $
               " padding-left: 4px; }"
           ]
          divspec = [
-            "pre > code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for relative contents
-          , "pre > code.sourceCode > span { line-height: 1.25; }"
+            "html { -webkit-text-size-adjust: 100%; }" -- Work around iOS bug, see https://github.com/jgm/pandoc/issues/7248
+          , "pre > code.sourceCode { white-space: pre; position: relative; }" -- position relative needed for relative contents
+          , "pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }"
           , "pre > code.sourceCode > span:empty { height: 1.2em; }" -- correct empty line height
           , ".sourceCode { overflow: visible; }" -- needed for line numbers
           , "code.sourceCode > span { color: inherit; text-decoration: inherit; }"
@@ -205,7 +206,7 @@ styleToCss f = unlines $
           , "}"
           , "@media print {"
           , "pre > code.sourceCode { white-space: pre-wrap; }"
-          , "pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }"
+          , "pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }"
           , "}"
           ]
          linkspec = [ "@media screen {"
