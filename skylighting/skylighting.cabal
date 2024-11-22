@@ -197,6 +197,7 @@ library
                        Skylighting.Syntax.Tlaplus
                        Skylighting.Syntax.Toml
                        Skylighting.Syntax.Typescript
+                       Skylighting.Syntax.Typst
                        Skylighting.Syntax.Verilog
                        Skylighting.Syntax.Vhdl
                        Skylighting.Syntax.Xml
