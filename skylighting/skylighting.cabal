@@ -96,6 +96,7 @@ library
                        Skylighting.Syntax.Fsharp
                        Skylighting.Syntax.Gap
                        Skylighting.Syntax.Gcc
+                       Skylighting.Syntax.GdScript
                        Skylighting.Syntax.Glsl
                        Skylighting.Syntax.Gnuassembler
                        Skylighting.Syntax.Go
