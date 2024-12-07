@@ -1,5 +1,10 @@
 # Changelog for skylighting-format-blaze-html
 
+## 0.1.1.3
+
+  * Use `-webkit-text-size-adjust` instead of unsetting
+    inline-block (#202, Jacke Zimmerman).
+
 ## 0.1.1.2
 
 * Re-add `display: inline-block` to code line spans, but only
