@@ -1,5 +1,9 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.14.4
+
+  * Add `gdscript`, `typst`, `tlaplus` syntax (#184, #199).
+
 ## 0.14.3
 
   * Add crystal, racket, zip syntax (#194).
