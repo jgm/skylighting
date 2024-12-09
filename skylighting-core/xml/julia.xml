@@ -36,7 +36,7 @@
   <!ENTITY function_begin_boundary "(?:(?&lt;=[&function_disallowed_chars;!]|^)(?=[^&function_disallowed_first_char;]))">
 ]>
 
-<language name="Julia" alternativeNames="JL" style="julia" indenter="julia" section="Sources" version="15" kateversion="5.62" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
+<language name="Julia" alternativeNames="JL" style="julia" indenter="julia" section="Sources" version="16" kateversion="5.62" extensions="*.jl" casesensitive="1" priority="5" license="MIT">
 
   <highlighting>
     <list name="cflow_begin">
@@ -45,11 +45,11 @@
       <item>if</item>
       <item>begin</item>
       <item>do</item>
+      <item>try</item>
     </list>
     <list name="cflow_eb">
       <item>else</item>
       <item>elseif</item>
-      <item>try</item>
       <item>catch</item>
       <item>finally</item>
     </list>

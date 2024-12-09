@@ -44,7 +44,7 @@
 -->
 	
 <!-- Hold the "language" opening tag on a single line, as mentioned in "language.dtd". -->
-<language name="Ruby/Rails/RHTML" version="15" kateversion="5.79" section="Markup" extensions="*.rhtml;*.RHTML;*.html.erb" mimetype="" author="Richard Dale rdale@foton.es" license="LGPLv2+">
+<language name="Ruby/Rails/RHTML" version="16" kateversion="5.79" section="Markup" extensions="*.rhtml;*.RHTML;*.erb" mimetype="" author="Richard Dale rdale@foton.es" license="LGPLv2+" priority="1">
 	
 	<highlighting>
 	
