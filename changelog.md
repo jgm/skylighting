@@ -1,5 +1,14 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.14.5
+
+  * Update xml syntax definitions for bash, cmake, commonlisp, isocpp,
+    javascript-react, julia, latex, lua, markdown, modelines, nix, orgmode,
+    php, python, rhtml, ruby, swift, xml, yaml, zig, zsh. Add odin (required
+    by orgmode).
+
+  * Update JSON syntax definition from upstream. (#203)
+
 ## 0.14.4
 
   * Add `gdscript`, `typst`, `tlaplus` syntax (#184, #199).
