@@ -149,6 +149,7 @@ library
                        Skylighting.Syntax.Objectivecpp
                        Skylighting.Syntax.Ocaml
                        Skylighting.Syntax.Octave
+                       Skylighting.Syntax.Odin
                        Skylighting.Syntax.Opencl
                        Skylighting.Syntax.Orgmode
                        Skylighting.Syntax.Pascal
