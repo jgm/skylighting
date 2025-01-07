@@ -99,14 +99,14 @@ macrodef defaultcol tokstyles' tokt =
        bg x = case tokenBackground tokf of
                    Nothing        -> x
                    Just _c -> x -- TODO?
-       textstyle x = "text(" <> bf x <> it x <> co x <> x <> ")"
-       it x = if tokenItalic tokf
-                 then "style: \"italic\","
-                 else ""
-       bf x = if tokenBold tokf
-                 then "weight: \"bold\","
-                 else ""
-       co x = case tokenColor tokf `mplus` defaultcol of
-                   Just c -> "fill: rgb(" <>
-                     Text.pack (show (fromColor c :: String)) <> "),"
-                   Nothing -> ""
+       textstyle x = "text(" <> bf <> it <> co <> x <> ")"
+       it = if tokenItalic tokf
+               then "style: \"italic\","
+               else ""
+       bf = if tokenBold tokf
+               then "weight: \"bold\","
+               else ""
+       co = case tokenColor tokf `mplus` defaultcol of
+                 Just c -> "fill: rgb(" <>
+                   Text.pack (show (fromColor c :: String)) <> "),"
+                 Nothing -> ""
