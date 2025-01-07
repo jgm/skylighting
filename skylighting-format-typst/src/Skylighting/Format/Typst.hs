@@ -14,6 +14,7 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Skylighting.Types
 import qualified Data.Map as M
+import Data.Maybe (fromMaybe)
 #if !MIN_VERSION_base(4,11,0)
 import Data.Semigroup
 #endif
@@ -86,9 +87,7 @@ macrodef :: Maybe Color -> [(TokenType, TokenStyle)] -> TokenType -> Text
 macrodef defaultcol tokstyles' tokt =
   "#let " <> Text.pack (show tokt) <> "(s) = " <> (ul . bg . textstyle) ("raw(s)")
  where tokstyles = M.fromList tokstyles'
-       tokf = case M.lookup tokt tokstyles of
-                    Nothing -> defStyle
-                    Just x  -> x
+       tokf = fromMaybe defStyle $ M.lookup tokt tokstyles
        ul x = if tokenUnderline tokf
                  then "underline(" <> x <> ")"
                  else x
