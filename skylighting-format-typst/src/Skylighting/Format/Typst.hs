@@ -52,21 +52,32 @@ formatTypstBlock :: FormatOptions -> [SourceLine] -> Text
 formatTypstBlock opts ls =
   "#Skylighting(" <>
   (if numberLines opts
-       then "number: true, start: " <> Text.pack (show (startNumber opts)) <> ")"
-       else ")") <>
-  "[" <> formatTypstInline opts ls <> "];"
+       then "number: true, start: " <> Text.pack (show (startNumber opts)) <> ", "
+       else "") <>
+  "(" <> -- an array
+  Text.intercalate "\n" (map (\ln -> "[" <> formatTypstInline opts [ln] <> "],") ls)
+  <> "));"
 
 -- | Converts a 'Style' to a set of Typst macro definitions,
 -- which should be placed in the document's preamble.
 styleToTypst :: Style -> Text
 styleToTypst f =
   Text.unlines $
-  [ "#let Skylighting(body, number: false, start: 1) = block(" <>
-      (case backgroundColor f of
-        Nothing -> ""
-        Just c -> "fill: rgb(" <> Text.pack (show (fromColor c :: String)) <> "), ")
-      <> "body)"
-  , "#let EndLine() = raw(\"\\n\")"
+  [ "#let EndLine() = raw(\"\\n\")"
+  , "#let Skylighting(fill: none, number: false, start: 1, sourcelines) = {"
+  , "   let blocks = []"
+  , "   let lnum = start - 1"
+  , "   for ln in sourcelines {"
+  , "     if number { lnum = lnum + 1; blocks = blocks + box(width: 2em, [ #lnum ]) }"
+  , "     blocks = blocks + ln + EndLine()"
+  , "   }"
+  , "   let bgcolor = " <> case backgroundColor f of
+                             Nothing -> "none"
+                             Just c -> "rgb(" <>
+                                        Text.pack (show (fromColor c :: String)) <>
+                                        ")"
+  , "   block(fill: bgcolor, blocks)"
+  , "}"
   ] <>
   sort (map (macrodef (defaultColor f) (Map.toList (tokenStyles f)))
          (enumFromTo KeywordTok NormalTok))
