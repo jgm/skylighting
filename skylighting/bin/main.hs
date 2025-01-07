@@ -310,10 +310,10 @@ hlTypst :: Bool               -- ^ Fragment
 hlTypst frag fname opts sty sourceLines =
  if frag
     then Text.putStrLn fragment
-    else Text.putStrLn $ macros <> pageTitle <> fragment
+    else Text.putStrLn $ macros <> "\n" <> pageTitle <> "\n" <> fragment
   where fragment = formatTypstBlock opts sourceLines
         macros = styleToTypst sty
-        pageTitle = "== " <> Text.pack fname <> "\n"
+        pageTitle = "= " <> Text.pack fname <> "\n"
 
 
 hlConTeXt :: Bool               -- ^ Fragment
