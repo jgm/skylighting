@@ -17,6 +17,7 @@ module Skylighting
   , module Skylighting.Format.ConTeXt
   , module Skylighting.Format.HTML
   , module Skylighting.Format.LaTeX
+  , module Skylighting.Format.Typst
   , module Skylighting.Loader
 
   )
@@ -27,6 +28,7 @@ import Skylighting.Format.ANSI
 import Skylighting.Format.ConTeXt
 import Skylighting.Format.HTML
 import Skylighting.Format.LaTeX
+import Skylighting.Format.Typst
 import Skylighting.Parser
 import Skylighting.Regex
 import Skylighting.Styles

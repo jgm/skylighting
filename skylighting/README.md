@@ -25,6 +25,8 @@ This project is divided up into five packages:
    rendering skylighting tokens as ConTeXt.
 * `skylighting-format-latex`: this provides formatters for
   rendering skylighting tokens as LaTeX.
+* `skylighting-format-typst`: this provides formatters for
+  rendering skylighting tokens as Typst.
 * `skylighting`: this exposes the `skylighting-core` API and
    ANSI, HTML, ConTeXt, and LaTeX formatters, and also
    provides bundled Haskell parser modules derived from the XML

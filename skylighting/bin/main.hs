@@ -45,6 +45,7 @@ data HighlightFormat = FormatANSI
                      | FormatConTeXt
                      | FormatHtml
                      | FormatLaTeX
+                     | FormatTypst
                      | FormatNative
                      deriving (Eq, Show)
 
@@ -61,7 +62,7 @@ options =
   ,Option ['f']
           ["format"]
           (ReqArg Format "FORMAT")
-          "output format (ansi|context|html|latex|native)"
+          "output format (ansi|context|html|latex|typst|native)"
   ,Option ['r']
           ["fragment"]
           (NoArg Fragment)
@@ -147,6 +148,7 @@ formatOf (Format s : _) = case map toLower s of
                             "context"-> return FormatConTeXt
                             "html"   -> return FormatHtml
                             "latex"  -> return FormatLaTeX
+                            "typst"  -> return FormatTypst
                             "native" -> return FormatNative
                             _        -> err $ "Unknown format: " ++ s
 formatOf (_ : xs) = formatOf xs
@@ -249,6 +251,7 @@ main = do
        FormatConTeXt-> hlConTeXt fragment fname highlightOpts style sourceLines
        FormatHtml   -> hlHtml fragment fname highlightOpts style sourceLines
        FormatLaTeX  -> hlLaTeX fragment fname highlightOpts style sourceLines
+       FormatTypst  -> hlTypst fragment fname highlightOpts style sourceLines
        FormatNative -> putStrLn $ ppShow sourceLines
 
 hlANSI :: FormatOptions
@@ -297,6 +300,21 @@ hlLaTeX frag fname opts sty sourceLines =
   where fragment = formatLaTeXBlock opts sourceLines
         macros = styleToLaTeX sty
         pageTitle = "\\title{" <> Text.pack fname <> "}\n"
+
+hlTypst :: Bool               -- ^ Fragment
+        -> FilePath            -- ^ Filename
+        -> FormatOptions
+        -> Style
+        -> [SourceLine]
+        -> IO ()
+hlTypst frag fname opts sty sourceLines =
+ if frag
+    then Text.putStrLn fragment
+    else Text.putStrLn $ macros <> "\n" <> pageTitle <> "\n" <> fragment
+  where fragment = formatTypstBlock opts sourceLines
+        macros = styleToTypst sty
+        pageTitle = "= " <> Text.pack fname <> "\n"
+
 
 hlConTeXt :: Bool               -- ^ Fragment
           -> FilePath           -- ^ Filename
