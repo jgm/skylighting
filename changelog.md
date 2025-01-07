@@ -1,5 +1,10 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.14.6
+
+  * Export Skylighting.Format.Typst from Skylighting [API change] (#201).
+    Allow typst as an output format in the cli executable.
+
 ## 0.14.5
 
   * Update xml syntax definitions for bash, cmake, commonlisp, isocpp,
