@@ -10,6 +10,7 @@ module Skylighting.Format.HTML (
 import Data.List (intersperse, sort)
 import qualified Data.Map as Map
 import qualified Data.Text as Text
+import Data.Containers.ListUtils (nubOrd)
 import Skylighting.Types
 import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
@@ -54,7 +55,8 @@ import Data.Semigroup
 -- 'WarningTok'        = @wa@.
 -- A 'NormalTok' is not marked up at all.
 formatHtmlInline :: FormatOptions -> [SourceLine] -> Html
-formatHtmlInline opts = wrapCode opts
+formatHtmlInline opts = wrapCode opts{ codeClasses = nubOrd $ codeClasses opts ++
+                                                     containerClasses opts }
                       . mconcat . intersperse (toHtml "\n")
                       . map (mapM_ (tokenToHtml opts))
 
@@ -90,8 +92,9 @@ formatHtmlBlockFor htmlVersion opts ls =
 
 wrapCode :: FormatOptions -> Html -> Html
 wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
-                                             $ Text.pack "sourceCode"
-                                               : codeClasses opts)
+                                               (Text.pack "sourceCode"
+                                                 : filter (/= Text.pack "sourceCode")
+                                                   (codeClasses opts)))
                          !? (startZero /= 0, A.style (toValue counterOverride))
                          $ h
   where  counterOverride = "counter-reset: source-line " <> show startZero <> ";"
