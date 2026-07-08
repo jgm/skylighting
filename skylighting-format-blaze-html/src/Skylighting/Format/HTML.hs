@@ -107,10 +107,12 @@ sourceLineToHtml htmlVersion opts lno cont =
   H.span ! A.id lineNum
          $ do
            H.a ! A.href lineRef
-               ! (if numberLines opts || htmlVersion == Html4
-                     then mempty
-                     else customAttribute (fromString "aria-hidden")
-                           (fromString "true")) -- see jgm/pandoc#6352
+               ! (case numberLines opts of
+                    _ | htmlVersion == Html4 -> mempty
+                    False -> customAttribute (fromString "aria-hidden")
+                              (fromString "true") -- see jgm/pandoc#6352
+                    True -> customAttribute (fromString "aria-label")
+                              (fromString (show (lineNo lno))))  -- see #211
                ! (if numberLines opts
                      then mempty
                      else customAttribute (fromString "tabindex")
