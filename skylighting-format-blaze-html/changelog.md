@@ -1,15 +1,20 @@
 # Changelog for skylighting-format-blaze-html
 
+## 0.1.2.1
+
+* Ensure that per-line anchors have aria-labels. Otherwise screen
+  readers will read out the `href` attribute.
+
 ## 0.1.2
 
-  * Include container classes on inline code. In block code,
-    these are put on the pre, but in inline code there is only a
-    code element; they should not just be dropped. See jgm/pandoc#11423.
+* Include container classes on inline code. In block code,
+  these are put on the pre, but in inline code there is only a
+  code element; they should not just be dropped. See jgm/pandoc#11423.
 
 ## 0.1.1.3
 
-  * Use `-webkit-text-size-adjust` instead of unsetting
-    inline-block (#202, Jacke Zimmerman).
+* Use `-webkit-text-size-adjust` instead of unsetting
+  inline-block (#202, Jacke Zimmerman).
 
 ## 0.1.1.2
 
