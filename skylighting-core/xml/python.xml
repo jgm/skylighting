@@ -78,12 +78,19 @@
 <!-- v2.07 add support for %prog and co, see bug 142832 -->
 <!-- v2.08 add missing overloaders, new Python 3 statements, builtins, and keywords -->
 <!-- v2.29 recognize escape sequenzes correctly -->
-<language name="Python" alternativeNames="Py" version="32" style="python" indenter="python" kateversion="5.0" section="Scripts" extensions="*.py;*.pyw;*.pyi;SConstruct;SConscript;*.FCMacro;*.sage" mimetype="application/x-python;text/x-python;text/x-python3" casesensitive="1" author="Michael Bueker" license="">
+<language name="Python" alternativeNames="Py" version="33" style="python" indenter="python" kateversion="5.0" section="Scripts" extensions="*.py;*.pyw;*.pyi;SConstruct;SConscript;*.FCMacro;*.sage" mimetype="application/x-python;text/x-python;text/x-python3" casesensitive="1" author="Michael Bueker" license="">
 	<highlighting>
 		<list name="import">
 			<item>import</item>
 			<item>from</item>
 			<item>as</item>
+			<!--
+				"lazy from" and "lazy import" are added here for autocompletion.
+				The actual handling is in context="kw_lazy"
+				so that we won't need to add space as a weakDeliminator.
+			-->
+			<item>lazy from</item> <!-- 3.15 -->
+			<item>lazy import</item> <!-- 3.15 -->
 		</list>
 		<list name="defs">
 			<item>class</item>
@@ -123,7 +130,7 @@
 			<item>yield</item>
 			<!--
 				"yield from" added here as a keyword for autocompletion. The actual handling
-				is in context="yield" so that we won't need to add space as a weakDeliminator.
+				is in context="kw_yield" so that we won't need to add space as a weakDeliminator.
 			-->
 			<item>yield from</item>
 		</list>
@@ -167,6 +174,7 @@
 			<item>filter</item>
 			<item>float</item>
 			<item>format</item>
+			<item>frozendict</item>
 			<item>frozenset</item>
 			<item>getattr</item>
 			<item>globals</item>
@@ -235,6 +243,7 @@
 			<item>__qualname__</item>
 			<item>__slots__</item>
 		</list>
+		<!-- Qt extension (PySide) -->
 		<list name="bindings">
 			<item>SIGNAL</item>
 			<item>SLOT</item>
@@ -452,12 +461,14 @@
 				<keyword attribute="Operator Keyword" String="operators" context="#stay"/>
 				<keyword attribute="Builtin Function" String="builtinfuncs" context="#stay"/>
 				<keyword attribute="Definition Keyword" String="defs" context="#stay"/>
-				<keyword attribute="Flow Control Keyword" String="flow_yield" context="yield"/>
+				<keyword attribute="Flow Control Keyword" String="flow_yield" context="kw_yield"/>
 				<keyword attribute="Flow Control Keyword" String="patternmatching" context="Pattern Matching" lookAhead="1" firstNonSpace="1"/>
 				<keyword attribute="Import" String="import" context="#stay"/>
 				<keyword attribute="Exceptions" String="exceptions" context="#stay"/>
 				<keyword attribute="Overloaders" String="overloaders" context="#stay"/>
 				<keyword attribute="Extensions" String="bindings" context="#stay"/>
+
+				<WordDetect String="lazy" context="kw_lazy" lookAhead="1"/>
 
 				<IncludeRules context="Number" />
 				<IncludeRules context="CommentVariants" />
@@ -502,9 +513,24 @@
 				<RegExpr attribute="Error" String="\w+" context="#pop#pop"/>
 			</context>
 
-			<context name="yield" attribute="Flow Control Keyword" lineEndContext="#pop" fallthrough="1" fallthroughContext="#pop">
+			<!-- yield from expr
+			           ~~~~ Flow Control Keyword no Import
+			-->
+			<context name="kw_yield" attribute="Flow Control Keyword" lineEndContext="#pop" fallthrough="1" fallthroughContext="#pop">
 				<DetectSpaces attribute="Normal Text" context="#stay"/>
 				<WordDetect attribute="Flow Control Keyword" context="#pop" String="from"/>
+			</context>
+
+			<!-- lazy from ... import ...
+			     ~~~~~~~~~ Import
+					 lazy import ...
+			     ~~~~~~~~~~~ Import
+					 lazy = 2
+			     ~~~~ Normal Text
+			-->
+			<context name="kw_lazy" attribute="Import" lineEndContext="#pop">
+				<RegExpr String="lazy\s+(import|from)\b" attribute="Import" context="#pop"/>
+				<DetectIdentifier attribute="Normal Text" context="#pop"/>
 			</context>
 
 			<context name="Pattern Matching" attribute="Flow Control Keyword" lineEndContext="#pop">

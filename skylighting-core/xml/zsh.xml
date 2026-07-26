@@ -83,7 +83,7 @@ https://zsh.sourceforge.io/releases.html
 current: 5.9
 -->
 
-<language name="Zsh" version="34" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
+<language name="Zsh" version="37" kateversion="5.79" section="Scripts" extensions="*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile" mimetype="application/x-shellscript;text/x-shellscript" casesensitive="1" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
 
   <highlighting>
     <list name="keywords">
@@ -360,7 +360,6 @@ current: 5.9
       </context>
       <context attribute="Variable" lineEndContext="#pop" name="DispatchStringVariables">
         <Detect2Chars attribute="String SingleQ" context="#pop!StringEsc" char="$" char1="'"/>
-        <Detect2Chars attribute="String Transl." context="#pop!StringDQ" char="$" char1="&quot;"/>
       </context>
       <context attribute="Variable" lineEndContext="#pop" name="DispatchVarNameVariables">
         <RegExpr attribute="Dollar Prefix" context="#pop!VarNamePrefixedWithDollar" String="\$(?=&varname;|[0-9]+|[-*@?$!#~=^+])"/>
@@ -2142,7 +2141,6 @@ current: 5.9
       <itemData name="String DoubleQ" defStyleNum="dsString"/>
       <itemData name="Here Doc"       defStyleNum="dsString"/>
       <itemData name="Backquote"      defStyleNum="dsKeyword"       spellChecking="false"/>
-      <itemData name="String Transl." defStyleNum="dsString"/>
       <itemData name="String Escape"  defStyleNum="dsDataType"/>
       <itemData name="Variable"       defStyleNum="dsVariable"      spellChecking="false"/>
       <itemData name="Dollar Prefix"  defStyleNum="dsVariable"      spellChecking="false"/>
@@ -2166,7 +2164,7 @@ current: 5.9
   </highlighting>
   <general>
     <comments>
-      <comment name="singleLine" start="#"/>
+      <comment name="singleLine" start="#" position="afterwhitespace"/>
     </comments>
     <keywords casesensitive="1" weakDeliminator="^%#[]$._:-/" additionalDeliminator="`"/>
   </general>
