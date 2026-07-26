@@ -186,6 +186,7 @@ library
                        Skylighting.Syntax.Sed
                        Skylighting.Syntax.Sgml
                        Skylighting.Syntax.Sml
+                       Skylighting.Syntax.Sparql
                        Skylighting.Syntax.SpdxComments
                        Skylighting.Syntax.Sql
                        Skylighting.Syntax.SqlMysql
