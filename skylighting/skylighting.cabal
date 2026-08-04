@@ -178,6 +178,7 @@ library
                        Skylighting.Syntax.Roff
                        Skylighting.Syntax.Ruby
                        Skylighting.Syntax.Rust
+                       Skylighting.Syntax.Sas
                        Skylighting.Syntax.Sass
                        Skylighting.Syntax.Scala
                        Skylighting.Syntax.Scheme
