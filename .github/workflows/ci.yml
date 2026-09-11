@@ -12,12 +12,16 @@ jobs:
         versions:
           - ghc: '9.6'
             cabal: '3.10'
+            cabalopts: '--ghc-options=-Werror'
           - ghc: '9.8'
             cabal: 'latest'
+            cabalopts: '--ghc-options=-Werror'
           - ghc: '9.10'
             cabal: 'latest'
+            cabalopts: '--ghc-options=-Werror'
           - ghc: '9.12'
             cabal: 'latest'
+            cabalopts: ''
     steps:
     - uses: actions/checkout@v4
 
@@ -44,21 +48,18 @@ jobs:
 
     - name: Bootstrap
       run: |
-          cabal v2-update
-          cabal v2-build --only-dependencies -fexecutable --disable-optimization skylighting-core
-          cabal v2-build -fexecutable --disable-optimization skylighting-core 2>&1 | tee build.log
+          cabal update
+          cabal build --only-dependencies -fexecutable --disable-optimization skylighting-core
+          cabal build -fexecutable --disable-optimization skylighting-core 2>&1 | tee build.log
           # fail if warnings in local build
           ! grep -q ": *[Ww]arning:" build.log || exit 1
           cd skylighting
-          cabal v2-run skylighting-extract -fexecutable --disable-optimization -- ../skylighting-core/xml
+          cabal run skylighting-extract -fexecutable --disable-optimization -- ../skylighting-core/xml
 
     - name: Build and test
       run: |
-          cabal v2-build -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all
-          cabal v2-build -j1 -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all 2>&1 | tee build.log
-          # fail if warnings in local build
-          ! grep -q ": [Ww]arning:" build.log || exit 1
-          cabal v2-test -fexecutable --disable-optimization --test-options="--hide-successes" all
+          cabal build -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all
+          cabal test -fexecutable --disable-optimization ${{ matrix.versions.cabalopts }} --test-options="--hide-successes" all
 
   windows:
 
