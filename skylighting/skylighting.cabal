@@ -215,7 +215,7 @@ library
                        Skylighting.Syntax.Zig
                        Skylighting.Syntax.Zsh
   other-extensions:    CPP
-  build-depends:       base >= 4.8 && < 5.0,
+  build-depends:       base >= 4.18 && < 5.0,
                        skylighting-core == 0.14.7,
                        skylighting-format-ansi >= 0.1 && < 0.2,
                        skylighting-format-context >= 0.1 && < 0.2,
