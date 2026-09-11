@@ -243,10 +243,11 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
                          TR.decimal column'
   let re = RegExpr RE{ reString = TE.encodeUtf8 str
                      , reCaseSensitive = not insensitive }
+  let contextSwitches = parseContextSwitches syntaxname context
   let (incsyntax, inccontext) =
-          case T.breakOn "##" context of
-                (_,x) | T.null x -> (syntaxname, context)
-                (cont, lang)     -> (T.drop 2 lang, cont)
+        case contextSwitches of
+          (Push (s,c) : _)  -> (s,c)
+          _ -> error "IncludeRules doesn't specify a syntax and context"
   matcher <- case name of
                  "DetectChar" -> return $ DetectChar char0
                  "Detect2Chars" -> return $ Detect2Chars char0 char1
@@ -269,9 +270,6 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
                  "DetectIdentifier" -> return $ DetectIdentifier
                  _ -> throwError $ "Unknown element " ++ T.unpack name
 
-  let contextSwitch = if name == "IncludeRules"
-                         then []  -- is this right?
-                         else parseContextSwitch incsyntax inccontext
   return $ Rule{ rMatcher = matcher
                , rAttribute = fromMaybe NormalTok $
                     if T.null attribute
@@ -282,7 +280,9 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
                , rDynamic = dynamic
                , rCaseSensitive = not insensitive
                , rChildren = children
-               , rContextSwitch = contextSwitch
+               , rContextSwitch = if name == "IncludeRules"
+                                     then []
+                                     else contextSwitches
                , rLookahead = lookahead
                , rFirstNonspace = firstNonSpace
                , rColumn = column
@@ -317,14 +317,14 @@ getContext casesensitive syntaxname itemDatas lists kwattr el = do
           , cRules = parsers
           , cAttribute = fromMaybe NormalTok $ M.lookup attribute itemDatas
           , cLineEmptyContext =
-               parseContextSwitch syntaxname lineEmptyContext
+               parseContextSwitches syntaxname lineEmptyContext
           , cLineEndContext =
-               parseContextSwitch syntaxname lineEndContext
+               parseContextSwitches syntaxname lineEndContext
           , cLineBeginContext =
-               parseContextSwitch syntaxname lineBeginContext
+               parseContextSwitches syntaxname lineBeginContext
           , cFallthrough = fallthrough
           , cFallthroughContext =
-               parseContextSwitch syntaxname fallthroughContext
+               parseContextSwitches syntaxname fallthroughContext
           , cDynamic = dynamic
           }
 
@@ -347,20 +347,25 @@ getKeywordAttrs el =
                            (Set.fromList additionalDelim)
                              Set.\\ Set.fromList weakDelim }
 
-parseContextSwitch :: Text -> Text -> [ContextSwitch]
-parseContextSwitch syntaxname t =
+parseContextSwitches :: Text -> Text -> [ContextSwitch]
+parseContextSwitches syntaxname t =
   if T.null t || t == "#stay"
      then []
      else
        case T.stripPrefix "#pop" t of
-         Just rest -> Pop : parseContextSwitch syntaxname rest
-         Nothing   ->
-           let (othersyntax, contextname) =
-                  splitContext (T.dropWhile (=='!') t)
-               syntaxname' = if T.null othersyntax
-                                then syntaxname
-                                else othersyntax
-            in [Push (syntaxname', contextname)]
+          Just rest ->
+            Pop : parseContextSwitches syntaxname rest
+          Nothing ->
+            -- a sequence of contexts separated by !; in
+            -- A!B!C, C is the top of the stack.
+            let cs = filter (not . T.null) $ T.split (== '!') t
+                toContext x =
+                  let (othersyntax, contextname) = splitContext x
+                      syntaxname' = if T.null othersyntax
+                                       then syntaxname
+                                       else othersyntax
+                   in (syntaxname', contextname)
+            in map (Push . toContext) cs
 
 type ItemData = M.Map Text TokenType
 
