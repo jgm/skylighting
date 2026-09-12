@@ -123,6 +123,8 @@ pGroupModifiers =
    <|>
      do void $ char 'R'
         return  (\_ -> Subroutine 0, id)
+   <|> -- atomic group (?>...): no backtracking into the group
+     ((Possessive, id) <$ char '>')
 
 pRegexModifier :: Parser (RState -> RState)
 pRegexModifier = do

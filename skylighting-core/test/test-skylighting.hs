@@ -460,6 +460,11 @@ regexTests =
   , ("[\\b+-]x", "\bx", Just ("\bx", []))
   , ("[\\b+-]x", "+x", Just ("+x", []))
   , ("[\\b+-]x", "bx", Nothing)
+    -- atomic groups (?>...):
+  , ("(?>ab|a)c", "abc", Just ("abc", []))
+  , ("(?>ab|a)c", "ac", Just ("ac", []))
+  , ("(?>a+)ab", "aaab", Nothing)
+  , ("x(?>)y", "xy", Just ("xy", []))
   ]
 
 
