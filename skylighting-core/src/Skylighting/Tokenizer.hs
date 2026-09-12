@@ -628,15 +628,19 @@ regExpr dynamic re inp = do
   -- return $! traceShowId $! (reStr, inp)
   let reStr = reString re
   when (BS.take 2 reStr == "\\b") $ wordBoundary inp
-  regex <- case compileRE re of
+  (regex, groups) <- case compileRE re of
             Right r  -> return r
             Left e   -> throwError $
               "Error compiling regex " ++
               UTF8.toString reStr ++ ": " ++ e
-  regex' <- if dynamic
-               then subDynamic regex
-               else return regex
-  case matchRegex regex' inp of
+  mbmatch <- if dynamic
+                then do
+                  regex' <- subDynamic regex
+                  -- the capturing groups have to be recomputed after
+                  -- dynamic substitution (matchRegex does this):
+                  return $ matchRegex regex' inp
+                else return $ matchRegexWithGroups groups regex inp
+  case mbmatch of
         Just (matchedBytes, capts) -> do
           unless (null capts) $
             modify $ \st -> st{ captures = Captures $

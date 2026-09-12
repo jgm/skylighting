@@ -12,6 +12,7 @@ module Skylighting.Regex (
               , compileRE
               , compileRegex
               , matchRegex
+              , matchRegexWithGroups
               , testRegex
               , isWordChar
               ) where
@@ -21,6 +22,7 @@ import Data.Binary (Binary(..))
 import qualified Data.ByteString.Base64 as Base64
 import qualified Data.ByteString.Char8 as BS
 import Data.Data
+import qualified Data.IntMap.Strict as M
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as TE
 #if !MIN_VERSION_base(4,13,0)
@@ -35,18 +37,21 @@ data RE = RE'{
     _reString        :: BS.ByteString
   , _reCaseSensitive :: Bool
   , _reMinimal       :: Bool
-  , _reCompiled      :: Either String Regex
+  , _reCompiled      :: Either String (Regex, M.IntMap Regex)
 } deriving Typeable
 
--- We define a smart constructor which also holds the compiled regex, to avoid
--- recompiling each time we tokenize.
+-- We define a smart constructor which also holds the compiled regex
+-- and its capturing groups, to avoid recomputing them each time we
+-- tokenize.
 
 {-# COMPLETE RE #-}
 pattern RE :: BS.ByteString -> Bool -> Bool -> RE
 pattern RE {reString, reCaseSensitive, reMinimal} <-
   RE' reString reCaseSensitive reMinimal _ where
   RE str caseSensitive minimal =
-    RE' str caseSensitive minimal (compileRegex caseSensitive minimal str)
+    RE' str caseSensitive minimal
+        (fmap (\r -> (r, extractCapturingGroups r))
+              (compileRegex caseSensitive minimal str))
 
 -- Unfortunately this means we need to derive all the instances ourselves.
 
@@ -120,5 +125,7 @@ encodeToText = TE.decodeUtf8 . Base64.encode
 decodeFromText :: (Monad m, MonadFail m) => Text.Text -> m BS.ByteString
 decodeFromText = either fail return . Base64.decode . TE.encodeUtf8
 
-compileRE :: RE -> Either String Regex
+-- | The compiled regex and its capturing groups (cached in the
+-- 'RE' by the smart constructor).
+compileRE :: RE -> Either String (Regex, M.IntMap Regex)
 compileRE = _reCompiled

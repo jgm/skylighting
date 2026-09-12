@@ -5,6 +5,8 @@
 {-# LANGUAGE BinaryLiterals #-}
 module Regex.KDE.Match
  ( matchRegex
+ , matchRegexWithGroups
+ , extractCapturingGroups
  ) where
 
 import qualified Data.ByteString as B
@@ -301,14 +303,26 @@ lastCharOffset bs n = go (n - 1)
 matchRegex :: Regex
            -> ByteString
            -> Maybe (ByteString, M.IntMap (Int, Int))
-matchRegex re bs =
-  let capturingGroups = extractCapturingGroups re
-  in  toResult <$> Set.lookupMin
-               (exec (Set.empty, capturingGroups) Forward re
-                  (Set.singleton (Match bs 0 M.empty emptyPath)))
+matchRegex re = matchRegexWithGroups (extractCapturingGroups re) re
+
+-- | Like 'matchRegex', but takes the map of capturing groups (as
+-- computed by 'extractCapturingGroups') as an argument, so that it
+-- can be computed once per regex instead of once per match.  (The
+-- map is only consulted for regexes containing subroutine calls
+-- like @(?1)@ or @(?R)@.)
+matchRegexWithGroups :: M.IntMap Regex
+                     -> Regex
+                     -> ByteString
+                     -> Maybe (ByteString, M.IntMap (Int, Int))
+matchRegexWithGroups capturingGroups re bs =
+  toResult <$> Set.lookupMin
+             (exec (Set.empty, capturingGroups) Forward re
+                (Set.singleton (Match bs 0 M.empty emptyPath)))
  where
    toResult m = (B.take (matchOffset m) (matchBytes m), (matchCaptures m))
 
+-- | Extract the capturing groups of a regex, numbered as in the
+-- regex, with the whole regex at key 0.
 extractCapturingGroups :: Regex -> M.IntMap Regex
 extractCapturingGroups regex = M.insert 0 regex (go regex)
  where

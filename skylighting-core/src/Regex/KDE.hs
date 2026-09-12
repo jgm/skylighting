@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Regex.KDE
- (Regex(..), compileRegex, matchRegex, testRegex, isWordChar)
+ (Regex(..), compileRegex, matchRegex, matchRegexWithGroups,
+  extractCapturingGroups, testRegex, isWordChar)
   where
 
 import Regex.KDE.Regex
