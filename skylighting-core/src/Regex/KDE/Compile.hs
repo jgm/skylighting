@@ -79,7 +79,11 @@ pParenthesized = do
                            num <- gets rsCurrentCaptureNumber
                            pure (MatchCapture num, id)
   currentCaptureNumber <- gets rsCurrentCaptureNumber
-  contents <- option MatchNull $ withStateT stModifier $
+  -- modifiers like (?i: are scoped to the group, so save the current
+  -- case sensitivity and restore it after the closing parenthesis:
+  oldCaseSensitive <- gets rsCaseSensitive
+  modify stModifier
+  contents <- option MatchNull $
     foldr MatchAlt
       <$> pAltPart
       <*> many (lift (char '|') *>
@@ -88,6 +92,7 @@ pParenthesized = do
                         st{ rsCurrentCaptureNumber = currentCaptureNumber }))
                >> pAltPart) <|> pure mempty))
   _ <- lift (char ')')
+  modify $ \st -> st{ rsCaseSensitive = oldCaseSensitive }
   return $ modifier contents
 
 pGroupModifiers :: Parser (Regex -> Regex, RState -> RState)
