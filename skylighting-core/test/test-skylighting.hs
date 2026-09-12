@@ -498,6 +498,17 @@ regexTests =
   , ("[^]-a]+", "bz!", Just ("bz!", []))
   , ("[^]-a]+", "^", Nothing)
   , ("[]a-]+", "a]-", Just ("a]-", []))
+    -- \pL is short for \p{L}; \P is the complement of \p:
+  , ("\\pL+", "ab\x3a3\&9", Just ("ab\x3a3", []))
+  , ("\\pN", "9", Just ("9", []))
+  , ("\\pN", "a", Nothing)
+  , ("\\PL+", "9!", Just ("9!", []))
+  , ("\\P{L}+", "9!a", Just ("9!", []))
+  , ("\\p{^L}+", "9!a", Just ("9!", []))
+  , ("[\\pL]+", "ab9", Just ("ab", []))
+  , ("[\\PL]+", "9!a", Just ("9!", []))
+  , ("[\\P{N}]+", "a!9", Just ("a!", []))
+  , ("[^\\PL]+", "ab9", Just ("ab", []))
   ]
 
 

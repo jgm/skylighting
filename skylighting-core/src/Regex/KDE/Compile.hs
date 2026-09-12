@@ -270,6 +270,7 @@ pRegexEscapedChar caseSensitive = do
     'w' -> return $ MatchChar isWordChar
     'W' -> return $ MatchChar (not . isWordChar)
     'p' -> MatchChar <$> pUnicodeCharClass
+    'P' -> MatchChar . (not .) <$> pUnicodeCharClass
     _ | isDigit c, c /= '0' -> -- \0 is an octal escape, not a backreference
        return $! MatchCaptured (ord c - ord '0') caseSensitive
       | otherwise -> mzero) <|> (matchLiteralChar <$> pEscaped c)
@@ -375,7 +376,8 @@ pRegexCharClass caseSensitive = do
         return [\x -> x >= ']' && x <= d])
       <|> return [(== ']')]
   fs <- many (getQELiteral <|> getEscapedClass <|> getPosixClass <|> getCRange
-              <|> (A.string "\\p" *> pUnicodeCharClass))
+              <|> (A.string "\\p" *> pUnicodeCharClass)
+              <|> (A.string "\\P" *> ((not .) <$> pUnicodeCharClass)))
   void $ char ']'
   let f c = any ($ c) $ brack ++ fs
   -- for case-insensitive matching, a character matches (or, if
@@ -386,11 +388,16 @@ pRegexCharClass caseSensitive = do
                            then not . f'
                            else f'
 
--- character class \p{Lo}; we assume \p is already parsed
+-- character class \p{Lo}, \p{^Lo}, or \pL; we assume \p is already
+-- parsed
 pUnicodeCharClass :: Parser (Char -> Bool)
 pUnicodeCharClass = do
-  ds <- char '{' *> A.takeWhile (/= '}') <* char '}'
-  return $
+  (negated, ds) <-
+    (char '{' *> ((,) <$> option False (True <$ char '^')
+                      <*> (A.takeWhile (/= '}') <* char '}')))
+     <|> ((,) False . T.singleton <$> satisfy isAlpha)
+  let neg = if negated then (not .) else id
+  return $ neg $
     (case ds of
       "Lu" -> (== UppercaseLetter)
       "Ll" -> (== LowercaseLetter)
