@@ -355,6 +355,10 @@ regexTests =
     -- lazy quantifiers in lookbehinds used to hang the matcher:
   , ("ab(?<=a+?b)c", "abc", Just ("abc", []))
   , ("ab(?<=a+?)c", "abc", Nothing)
+    -- recursive subroutine calls that consume no input used to hang;
+    -- now re-entering a subroutine at the same offset just fails:
+  , ("x|(?R)", "x", Just ("x", []))
+  , ("a|(?R)(?R)", "aa", Just ("aa", []))
   ]
 
 

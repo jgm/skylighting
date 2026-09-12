@@ -48,8 +48,11 @@ prune ms = if Set.size ms > sizeLimit
               then Set.take sizeLimit ms
               else ms
 
--- first argument is a map of capturing groups, needed for Subroutine.
-exec :: M.IntMap Regex -> Direction -> Regex -> Set Match -> Set Match
+-- first argument: the set of subroutine calls (group number, offset)
+-- currently being evaluated -- used to prevent infinite recursion --
+-- and a map of capturing groups, needed for Subroutine.
+exec :: (Set (Int, Int), M.IntMap Regex)
+     -> Direction -> Regex -> Set Match -> Set Match
 exec _ _ MatchNull = id
 exec cgs Forward (Lazy re) = -- note: the action is below under Concat
   exec cgs Forward (MatchConcat (Lazy re) MatchNull)
@@ -167,10 +170,19 @@ exec _ dir (MatchCaptured n) = mapMatching matchCaptured
                         -> m{ matchOffset = matchOffset m - B.length capture }
                      _  -> m{ matchOffset = -1 }
        Nothing -> m{ matchOffset = -1 }
-exec cgs dir (Subroutine i) =
+exec (active, cgs) dir (Subroutine i) =
   case M.lookup i cgs of
     Nothing -> id  -- ignore references to nonexistent groups
-    Just re' -> exec cgs dir re'
+    Just re' -> \ms ->
+      -- A subroutine that calls itself again without having consumed
+      -- any input can never make progress: block re-entry at the same
+      -- offset so that zero-progress recursion (e.g. `x|(?R)`) fails
+      -- instead of looping forever.
+      Set.unions
+        [ exec (Set.insert (i, matchOffset m) active, cgs) dir re'
+            (Set.singleton m)
+        | m <- Set.toList ms
+        , (i, matchOffset m) `Set.notMember` active ]
 
 atWordBoundary :: Match -> Bool
 atWordBoundary m =
@@ -205,7 +217,7 @@ matchRegex :: Regex
 matchRegex re bs =
   let capturingGroups = extractCapturingGroups re
   in  toResult <$> Set.lookupMin
-               (exec capturingGroups Forward re
+               (exec (Set.empty, capturingGroups) Forward re
                   (Set.singleton (Match bs 0 M.empty)))
  where
    toResult m = (B.take (matchOffset m) (matchBytes m), (matchCaptures m))
