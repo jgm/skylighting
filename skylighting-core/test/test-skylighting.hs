@@ -371,6 +371,12 @@ regexTests =
   , ("(?i:a)b", "AB", Nothing)
   , ("x(?i:a(?-i:b)c)y", "xAbCy", Just ("xAbCy", []))
   , ("x(?i:a(?-i:b)c)y", "xABCy", Nothing)
+    -- [[:graph:]] and [[:word:]] used to be unparseable (and graph
+    -- meant "print"):
+  , ("[[:graph:]]+", "ab cd", Just ("ab", []))
+  , ("[[:word:]]+", "a_b-c", Just ("a_b", []))
+  , ("[^[:graph:]]", " a", Just (" ", []))
+  , ("[[:alpha:][:digit:]]+", "ab1 x", Just ("ab1", []))
   ]
 
 

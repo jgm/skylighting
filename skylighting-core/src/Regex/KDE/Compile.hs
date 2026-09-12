@@ -264,7 +264,8 @@ pRegexCharClass = do
              <|> ((\c -> isSpace c && c `notElem` ['\n','\r','\f','\v']) <$
                    string "blank")
              <|> (isControl <$ string "cntrl")
-             <|> ((\c -> isPrint c || isSpace c) <$ string "graph:")
+             <|> (isDigit <$ string "digit")
+             <|> ((\c -> isPrint c && not (isSpace c)) <$ string "graph")
              <|> (isLower <$ string "lower")
              <|> (isUpper <$ string "upper")
              <|> (isPrint <$ string "print")
@@ -272,7 +273,7 @@ pRegexCharClass = do
              <|> (isSpace <$ string "space")
              <|> ((\c -> isAlphaNum c ||
                          generalCategory c == ConnectorPunctuation)
-                   <$ string "word:")
+                   <$ string "word")
              <|> (isHexDigit <$ string "xdigit")
         _ <- string ":]"
         return $! if localNegated then not . res else res
