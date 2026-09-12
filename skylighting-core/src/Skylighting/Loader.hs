@@ -64,7 +64,9 @@ syntaxFiles dir = do
 -- SyntaxMap will be made up of only the files that could successfully be loaded
 -- and parsed.
 loadValidSyntaxesFromDir :: FilePath -> IO (LoadErrMap, SyntaxMap)
-loadValidSyntaxesFromDir path = foldM go (mempty, mempty) =<< syntaxFiles path
+loadValidSyntaxesFromDir path = do
+    (errMap, sm) <- foldM go (mempty, mempty) =<< syntaxFiles path
+    return (errMap, M.map (resolveKeywords sm) sm)
   where
     go (errMap, syntaxMap) file =
       loadSyntaxFromFile file >>= \case

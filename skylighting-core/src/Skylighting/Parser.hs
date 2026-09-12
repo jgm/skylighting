@@ -80,7 +80,10 @@ vBool defaultVal value = case value of
                            _       -> defaultVal
 
 -- | Parses a file containing a Kate XML syntax definition
--- into a 'Syntax' description.
+-- into a 'Syntax' description.  Note that the resulting 'Syntax'
+-- must be processed with 'resolveKeywords' (once the full syntax
+-- map is assembled) before it can be used for tokenizing; the
+-- functions in Skylighting.Loader do this automatically.
 parseSyntaxDefinition :: FilePath -> IO (Either String Syntax)
 parseSyntaxDefinition fp = do
   bs <- BL.readFile fp

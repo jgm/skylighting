@@ -208,8 +208,12 @@ main = do
      putStrLn (prg ++ " " ++ showVersion version)
      exitWith ExitSuccess
 
-  syntaxMap' <- foldr addSyntaxDefinition defaultSyntaxMap <$>
-                    extractDefinitions opts
+  defs <- extractDefinitions opts
+  -- resolve keyword lists in the added definitions against the
+  -- full syntax map (the bundled syntaxes are already resolved):
+  let allSyntaxes = foldr addSyntaxDefinition defaultSyntaxMap defs
+  let syntaxMap' = foldr (addSyntaxDefinition . resolveKeywords allSyntaxes)
+                      defaultSyntaxMap defs
 
   when (List `elem` opts) $ do
      let printSyntaxNames s = putStrLn (printf "%s (%s)"

@@ -34,7 +34,6 @@ import Data.Text.Encoding (decodeUtf8', encodeUtf8)
 import Debug.Trace
 import Skylighting.Regex
 import Skylighting.Types
-import Skylighting.Parser (resolveKeywords)
 import Data.List.NonEmpty (NonEmpty((:|)), (<|), toList)
 #if !MIN_VERSION_base(4,11,0)
 import Data.Semigroup
@@ -140,20 +139,23 @@ instance MonadError String TokenizerM where
                                       z            -> z)
 
 -- | Tokenize some text using 'Syntax'.
+-- Note that the syntax definitions are assumed to have their
+-- keyword lists already resolved into word sets (as is the case
+-- for the bundled syntax definitions and for definitions loaded
+-- with the functions in Skylighting.Loader).  If you construct a
+-- syntax map yourself from syntaxes parsed with
+-- 'Skylighting.Parser.parseSyntaxDefinition', apply
+-- 'Skylighting.Parser.resolveKeywords' to each syntax first.
 tokenize :: TokenizerConfig -> Syntax -> Text -> Either String [SourceLine]
 tokenize config syntax inp =
   eitherStack >>= \(!stack) ->
-    case runTokenizerM action
-            config{ syntaxMap = Map.map (resolveKeywords (syntaxMap config))
-                                          (syntaxMap config) }
-            (startingState stack) of
+    case runTokenizerM action config (startingState stack) of
        (_, Success ls) -> Right ls
        (_, Error e)    -> Left e
        (_, Failure)    -> Left "Could not tokenize code"
   where
     action = mapM tokenizeLine (zip (BS.lines (encodeUtf8 inp)) [1..])
-    eitherStack = case lookupContext (sStartingContext syntax)
-                         (resolveKeywords (syntaxMap config) syntax) of
+    eitherStack = case lookupContext (sStartingContext syntax) syntax of
                     Just c  -> Right $ ContextStack ((c, Captures mempty) :| [])
                     Nothing -> Left "No starting context specified"
     startingState stack =
