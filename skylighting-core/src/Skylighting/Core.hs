@@ -39,13 +39,17 @@ syntaxesByFilename syntaxmap fn = [s | s <- Map.elems syntaxmap
 -- | Lookup a syntax by full name (case insensitive).
 syntaxByName :: SyntaxMap -> Text -> Maybe Syntax
 syntaxByName syntaxmap name =
-  Map.lookup (Text.toLower name) (Map.mapKeys Text.toLower syntaxmap)
+  Map.lookup name syntaxmap `mplus`  -- fast path for exact match
+    listToMaybe [s | (k, s) <- Map.toList syntaxmap
+                   , Text.toLower k == lcname ]
+ where lcname = Text.toLower name
 
 -- | Lookup a syntax by short name (case insensitive).
 syntaxByShortName :: SyntaxMap -> Text -> Maybe Syntax
 syntaxByShortName syntaxmap name = listToMaybe
   [s | s <- Map.elems syntaxmap
-     , Text.toLower (sShortname s) == Text.toLower name ]
+     , Text.toLower (sShortname s) == lcname ]
+ where lcname = Text.toLower name
 
 -- | Lookup syntax by (in order) full name (case insensitive),
 -- short name (case insensitive), extension.

@@ -443,12 +443,16 @@ withAttr tt p = do
 wordDetect :: Bool -> Set.Set Char -> Text -> ByteString
            -> TokenizerM Text
 wordDetect caseSensitive delims s inp = do
-  t <- decodeBS $ UTF8.take (Text.length s) inp
-  -- we assume here that the case fold will not change length,
-  -- which is safe for ASCII keywords and the like...
-  guard $ if caseSensitive
-             then s == t
-             else mk s == mk t
+  t <- if caseSensitive
+          then do -- fast path: compare bytes without decoding
+            guard $ encodeUtf8 s `BS.isPrefixOf` inp
+            return s
+          else do
+            t <- decodeBS $ UTF8.take (Text.length s) inp
+            -- we assume here that the case fold will not change length,
+            -- which is safe for ASCII keywords and the like...
+            guard $ mk s == mk t
+            return t
   guard $ not (Text.null t)
   let isDelim = (`Set.member` delims)
   -- KDE requires a word delimiter (or start of line) before the
@@ -474,12 +478,14 @@ stringDetect dynamic caseSensitive s inp = do
           info $ "Dynamic string: " ++ show dynStr
           return dynStr
         else return s
-  t <- decodeBS $ UTF8.take (Text.length s') inp
-  -- we assume here that the case fold will not change length,
-  -- which is safe for ASCII keywords and the like...
-  guard $ if caseSensitive
-             then s' == t
-             else mk s' == mk t
+  if caseSensitive
+     then -- fast path: compare bytes without decoding
+          guard $ encodeUtf8 s' `BS.isPrefixOf` inp
+     else do
+       t <- decodeBS $ UTF8.take (Text.length s') inp
+       -- we assume here that the case fold will not change length,
+       -- which is safe for ASCII keywords and the like...
+       guard $ mk s' == mk t
   takeChars (Text.length s')
 
 subDynamicText :: Text -> TokenizerM Text
@@ -577,9 +583,12 @@ detect2Chars dynamic c d inp = do
   d' <- if dynamic && d >= '0' && d <= '9'
            then getDynamicChar d
            else return d
-  if (encodeUtf8 (Text.pack [c',d'])) `BS.isPrefixOf` inp
-     then takeChars 2
-     else mzero
+  case UTF8.uncons inp of
+    Just (x, rest) | x == c' ->
+      case UTF8.uncons rest of
+        Just (y, _) | y == d' -> takeChars 2
+        _ -> mzero
+    _ -> mzero
 
 rangeDetect :: Char -> Char -> ByteString -> TokenizerM Text
 rangeDetect c d inp = do
