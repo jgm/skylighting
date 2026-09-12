@@ -254,6 +254,9 @@ pEscaped c =
   case c of
     '\\' -> return c
     'a' -> return '\a'
+    -- \b means backspace inside a character class (outside one, it is
+    -- a word boundary assertion handled by pRegexEscapedChar):
+    'b' -> return '\b'
     'f' -> return '\f'
     'n' -> return '\n'
     'r' -> return '\r'

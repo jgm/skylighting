@@ -455,6 +455,11 @@ regexTests =
   , ("(?:\\d\\d(?:|[DT]\\d\\d))y", "12y", Just ("12y", []))
   , ("(?:\\d\\d(?:|[DT]\\d\\d))y", "12T34y", Just ("12T34y", []))
   , ("(?<=|)z\\d", "z4", Just ("z4", []))
+    -- inside a character class, \b means backspace:
+  , ("[\\b]", "\b", Just ("\b", []))
+  , ("[\\b+-]x", "\bx", Just ("\bx", []))
+  , ("[\\b+-]x", "+x", Just ("+x", []))
+  , ("[\\b+-]x", "bx", Nothing)
   ]
 
 
