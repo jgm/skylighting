@@ -51,8 +51,10 @@ prune ms = if Set.size ms > sizeLimit
 -- first argument is a map of capturing groups, needed for Subroutine.
 exec :: M.IntMap Regex -> Direction -> Regex -> Set Match -> Set Match
 exec _ _ MatchNull = id
-exec cgs dir (Lazy re) = -- note: the action is below under Concat
-  exec cgs dir (MatchConcat (Lazy re) MatchNull)
+exec cgs Forward (Lazy re) = -- note: the action is below under Concat
+  exec cgs Forward (MatchConcat (Lazy re) MatchNull)
+exec cgs Backward (Lazy re) = -- backward, the second part of a concat runs
+  exec cgs Backward (MatchConcat MatchNull (Lazy re)) -- first (see Concat)
 exec cgs dir (Possessive re) =
   foldr
     (\elt s -> case Set.lookupMin (exec cgs dir re (Set.singleton elt)) of
@@ -115,6 +117,22 @@ exec cgs Forward (MatchConcat r1 r2) = -- TODO longest match first
      in if Set.null ms1
            then ms1
            else exec cgs Forward r2 (prune ms1)
+exec cgs Backward (MatchConcat r1 (Lazy r2)) =
+  -- in backward matching, r2 runs first and r1 is its continuation:
+  Set.foldl Set.union mempty . Set.map
+    (\m ->
+      let ms2 = exec cgs Backward r2 (Set.singleton m)
+       in if Set.null ms2
+             then ms2
+             else go ms2)
+ where
+  go ms = case Set.lookupMin ms of -- find shortest match (largest offset)
+            Nothing -> Set.empty
+            Just m' ->
+              let s' = exec cgs Backward r1 (Set.singleton m')
+               in if Set.null s'
+                     then go (Set.delete m' ms)
+                     else s'
 exec cgs Backward (MatchConcat r1 r2) =
   exec cgs Backward r1 . exec cgs Backward r2
 exec cgs dir (MatchAlt r1 r2) = \ms -> exec cgs dir r1 ms <> exec cgs dir r2 ms

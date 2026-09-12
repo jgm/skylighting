@@ -352,6 +352,9 @@ regexTests =
     -- (it used to send the compiler into an infinite loop):
   , ("a{3,1}", "aaa", Nothing)
   , ("a{3,1}", "a{3,1}", Just ("a{3,1}", []))
+    -- lazy quantifiers in lookbehinds used to hang the matcher:
+  , ("ab(?<=a+?b)c", "abc", Just ("abc", []))
+  , ("ab(?<=a+?)c", "abc", Nothing)
   ]
 
 
