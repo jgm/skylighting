@@ -199,6 +199,10 @@ pRegexEscapedChar caseSensitive = do
   (case c of
     'b' -> return AssertWordBoundary
     'B' -> return $ AssertNegative Forward AssertWordBoundary
+    -- PCRE's \G asserts the position at which the match attempt
+    -- started.  Since matching is always anchored at the start of
+    -- the input we are given, that is the same as AssertBeginning:
+    'G' -> return AssertBeginning
     '{' -> do -- captured pattern: \1 \2 \{12}
               ds <- many1 digit
               _ <- char '}'

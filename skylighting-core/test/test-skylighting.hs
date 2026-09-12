@@ -415,6 +415,11 @@ regexTests =
   , ("[\\0]", "\NULx", Just ("\NUL", []))
     -- a third digit is not consumed (\0101 is \b followed by 1):
   , ("\\0101", "\b1", Just ("\b1", []))
+    -- \G asserts the position where the match attempt started;
+    -- since our matches are anchored, a leading \G is always true
+    -- and a \G after consuming input always fails:
+  , ("\\G\\d{4}-\\d{2}", "2024-01x", Just ("2024-01", []))
+  , ("a\\Gb", "ab", Nothing)
   ]
 
 
