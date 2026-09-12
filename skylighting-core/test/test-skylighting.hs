@@ -426,6 +426,16 @@ regexTests =
   , ("(ab)c\\g{1}", "abcabx", Just ("abcab", [(1,"ab")]))
   , ("([_*]{1,2})x\\g1", "**x**", Just ("**x**", [(1,"**")]))
   , ("([_*]{1,2})x\\g1", "**x*", Nothing)
+    -- inline modifiers without a colon, like (?i), apply from that
+    -- point to the end of the enclosing group (as in PCRE):
+  , ("(?i)ab", "AB", Just ("AB", []))
+  , ("A(?i)B", "aB", Nothing)
+  , ("A(?i)B", "Ab", Just ("Ab", []))
+  , ("x(?:(?i)a)Y", "xAY", Just ("xAY", []))
+  , ("x(?:(?i)a)Y", "xAy", Nothing)
+  , ("(a(?i)b|c)", "C", Just ("C", [(1,"C")]))
+  , ("(?i)A(?-i)B", "aB", Just ("aB", []))
+  , ("(?i)A(?-i)B", "Ab", Nothing)
   ]
 
 

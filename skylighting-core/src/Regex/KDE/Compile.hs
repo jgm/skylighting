@@ -66,34 +66,45 @@ pRegexPart =
 pParenthesized :: RParser Regex
 pParenthesized = do
   _ <- lift (char '(')
-  -- pcrepattern says: A group that starts with (?| resets the capturing
-  -- parentheses numbers in each alternative.
-  resetCaptureNumbers <- option False (True <$ lift (string "?|"))
-  (modifier, stModifier) <-
-              if resetCaptureNumbers
-                 then return (id, id)
-                 else lift (char '?' *> pGroupModifiers)
-                    <|> do modify (\st -> st{
-                                      rsCurrentCaptureNumber =
-                                             rsCurrentCaptureNumber st + 1})
-                           num <- gets rsCurrentCaptureNumber
-                           pure (MatchCapture num, id)
-  currentCaptureNumber <- gets rsCurrentCaptureNumber
-  -- modifiers like (?i: are scoped to the group, so save the current
-  -- case sensitivity and restore it after the closing parenthesis:
-  oldCaseSensitive <- gets rsCaseSensitive
+  pInlineModifiers <|> do
+    -- pcrepattern says: A group that starts with (?| resets the capturing
+    -- parentheses numbers in each alternative.
+    resetCaptureNumbers <- option False (True <$ lift (string "?|"))
+    (modifier, stModifier) <-
+                if resetCaptureNumbers
+                   then return (id, id)
+                   else lift (char '?' *> pGroupModifiers)
+                      <|> do modify (\st -> st{
+                                        rsCurrentCaptureNumber =
+                                               rsCurrentCaptureNumber st + 1})
+                             num <- gets rsCurrentCaptureNumber
+                             pure (MatchCapture num, id)
+    currentCaptureNumber <- gets rsCurrentCaptureNumber
+    -- modifiers like (?i: are scoped to the group, so save the current
+    -- case sensitivity and restore it after the closing parenthesis:
+    oldCaseSensitive <- gets rsCaseSensitive
+    modify stModifier
+    contents <- option MatchNull $
+      foldr MatchAlt
+        <$> pAltPart
+        <*> many (lift (char '|') *>
+              ((when resetCaptureNumbers
+                    (modify (\st ->
+                          st{ rsCurrentCaptureNumber = currentCaptureNumber }))
+                 >> pAltPart) <|> pure mempty))
+    _ <- lift (char ')')
+    modify $ \st -> st{ rsCaseSensitive = oldCaseSensitive }
+    return $ modifier contents
+
+-- Inline modifiers like (?i) or (?-i), without a colon, apply from
+-- this point to the end of the enclosing group (or pattern).  The
+-- state change persists after the closing parenthesis; the enclosing
+-- group's save/restore of rsCaseSensitive provides the scoping.
+pInlineModifiers :: RParser Regex
+pInlineModifiers = do
+  stModifier <- lift $ char '?' *> pRegexModifier <* char ')'
   modify stModifier
-  contents <- option MatchNull $
-    foldr MatchAlt
-      <$> pAltPart
-      <*> many (lift (char '|') *>
-            ((when resetCaptureNumbers
-                  (modify (\st ->
-                        st{ rsCurrentCaptureNumber = currentCaptureNumber }))
-               >> pAltPart) <|> pure mempty))
-  _ <- lift (char ')')
-  modify $ \st -> st{ rsCaseSensitive = oldCaseSensitive }
-  return $ modifier contents
+  return MatchNull
 
 pGroupModifiers :: Parser (Regex -> Regex, RState -> RState)
 pGroupModifiers =
