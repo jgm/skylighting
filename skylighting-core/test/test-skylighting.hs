@@ -125,7 +125,11 @@ main = do
           dosbat = maybe (error "could not find MS-DOS Batch syntax") id
                              (lookupSyntax "MS-DOS Batch" sMap)
           cmake = maybe (error "could not find CMake syntax") id
-                             (lookupSyntax "CMake" sMap) in
+                             (lookupSyntax "CMake" sMap)
+          lua = maybe (error "could not find Lua syntax") id
+                             (lookupSyntax "Lua" sMap)
+          awk = maybe (error "could not find AWK syntax") id
+                             (lookupSyntax "AWK" sMap) in
       [ testCase "perl NUL case" $ Right
              [[(OtherTok,"s\NULb\NUL")
               ,(StringTok,"c")
@@ -218,6 +222,22 @@ main = do
             , ( OtherTok , "yes" )
             , ( NormalTok , ")" ) ] ]
              @=? tokenize defConfig cmake "if(YES)\nif(yes)"
+
+      , testCase "keyword rule additionalDeliminator attribute (lua)" $ Right
+          [ [ ( VariableTok , "a" )
+            , ( NormalTok , " " )
+            , ( OperatorTok , "=" )
+            , ( NormalTok , " " )
+            , ( KeywordTok , "nil" )
+            , ( OperatorTok , "." )
+            , ( VariableTok , "x" ) ] ]
+             @=? tokenize defConfig lua "a = nil.x"
+
+      , testCase "Int respects general weakDeliminator (awk)" $ Right
+          [ [ ( NormalTok , "x" )
+            , ( OperatorTok , "@" )
+            , ( NormalTok , "5" ) ] ]
+             @=? tokenize defConfig awk "x@5"
 
       , testCase "C floating-point literal (#174)" $ Right
           [ [ ( DataTypeTok , "double")

@@ -148,13 +148,15 @@ documentToSyntax fp Document{ documentRoot = rootEl } = do
 
   let defKeywordAttr = getKeywordAttrs casesensitive rootEl
 
+  let generalDelims = getGeneralDelims rootEl
+
   let contextEls = getElementsNamed "contexts" hlEl >>=
                    getElementsNamed "context"
 
   let syntaxname = getAttrValue "name" rootEl
 
   contexts <- mapM
-    (getContext syntaxname itemDatas lists defKeywordAttr)
+    (getContext syntaxname itemDatas lists defKeywordAttr generalDelims)
     contextEls
 
   startingContext <- case contexts of
@@ -217,8 +219,10 @@ splitContext t =
 
 getParser :: Monad m
           => Text -> ItemData -> M.Map Text [ListItem] -> KeywordAttr
+          -> (Set.Set Char, Set.Set Char)
           -> Text -> Element -> ExceptT String m Rule
-getParser syntaxname itemdatas lists kwattr cattr el = do
+getParser syntaxname itemdatas lists kwattr
+          generalDelims@(gWeakDelim, gAdditionalDelim) cattr el = do
   let name = nameLocalName . elementName $ el
   let attribute = getAttrValue "attribute" el
   let context = getAttrValue "context" el
@@ -230,12 +234,15 @@ getParser syntaxname itemdatas lists kwattr cattr el = do
   let insensitive = vBool False $ getAttrValue "insensitive" el
   let includeAttrib = vBool False $ getAttrValue "includeAttrib" el
   let weakDelim = Set.fromList $ T.unpack $ getAttrValue "weakDeliminator" el
+  let additionalDelim = Set.fromList $ T.unpack $
+                          getAttrValue "additionalDeliminator" el
   let lookahead = vBool False $ getAttrValue "lookAhead" el
   let firstNonSpace = vBool False $ getAttrValue "firstNonSpace" el
   let column' = getAttrValue "column" el
   let dynamic = vBool False $ getAttrValue "dynamic" el
   let minimal = vBool False $ getAttrValue "minimal" el
-  children <- mapM (getParser syntaxname itemdatas lists kwattr attribute)
+  children <- mapM (getParser syntaxname itemdatas lists kwattr
+                       generalDelims attribute)
                   [e | NodeElement e <- elementNodes el ]
   let tildeRegex = name == "RegExpr" && T.take 1 str' == "^"
   let str = if tildeRegex then T.drop 1 str' else str'
@@ -261,14 +268,20 @@ getParser syntaxname itemdatas lists kwattr cattr el = do
                  "RegExpr" -> return $ re
                  -- an insensitive attribute on the keyword rule itself
                  -- (if present) overrides the case sensitivity of the
-                 -- keyword list (as in KDE):
+                 -- keyword list, and additionalDeliminator and
+                 -- weakDeliminator attributes adjust its delimiters
+                 -- (as in KDE):
                  "keyword" -> return $
                    let kwattr' = if M.member (String.fromString "insensitive")
                                       (elementAttributes el)
                                     then kwattr{ keywordCaseSensitive =
                                                    not insensitive }
                                     else kwattr
-                    in Keyword kwattr' (Left str)
+                       kwattr'' = kwattr'{ keywordDelims =
+                                    Set.union (keywordDelims kwattr')
+                                              additionalDelim
+                                      Set.\\ weakDelim }
+                    in Keyword kwattr'' (Left str)
                  "Int" -> return $ Int
                  "Float" -> return $ Float
                  "HlCOct" -> return $ HlCOct
@@ -293,7 +306,17 @@ getParser syntaxname itemdatas lists kwattr cattr el = do
                        then M.lookup cattr itemdatas
                        else M.lookup attribute itemdatas
                , rIncludeAttribute = includeAttrib
-               , rWeakDeliminators = weakDelim
+               -- In KDE the delimiters of a rule are computed from
+               -- the language's word delimiters, first adding the
+               -- additionalDeliminator and removing the weakDeliminator
+               -- given on general > keywords, then adding the
+               -- additionalDeliminator and removing the weakDeliminator
+               -- given on the rule itself.  We store the (weak,
+               -- additional) modifications to the default word
+               -- delimiters that this amounts to:
+               , rWeakDeliminators = (gWeakDelim Set.\\ additionalDelim)
+                                       <> weakDelim
+               , rAdditionalDeliminators = gAdditionalDelim <> additionalDelim
                , rDynamic = dynamic
                , rCaseSensitive = not insensitive
                , rChildren = children
@@ -311,9 +334,10 @@ getContext :: Monad m
            -> ItemData
            -> M.Map Text [ListItem]
            -> KeywordAttr
+           -> (Set.Set Char, Set.Set Char)
            -> Element
            -> ExceptT String m Context
-getContext syntaxname itemDatas lists kwattr el = do
+getContext syntaxname itemDatas lists kwattr generalDelims el = do
   let name = getAttrValue "name" el
   let attribute = getAttrValue "attribute" el
   let lineEmptyContext = getAttrValue "lineEmptyContext" el
@@ -323,7 +347,8 @@ getContext syntaxname itemDatas lists kwattr el = do
   let fallthroughContext = getAttrValue "fallthroughContext" el
   let dynamic = vBool False $ getAttrValue "dynamic" el
 
-  parsers <- mapM (getParser syntaxname itemDatas lists kwattr attribute)
+  parsers <- mapM (getParser syntaxname itemDatas lists kwattr
+                      generalDelims attribute)
                   [e | NodeElement e <- elementNodes el ]
 
   return $ Context {
@@ -364,6 +389,17 @@ getKeywordAttrs casesensitive el =
                        , keywordDelims = Set.union standardDelims
                            (Set.fromList additionalDelim)
                              Set.\\ Set.fromList weakDelim }
+
+-- The weakDeliminator and additionalDeliminator attributes on
+-- general > keywords also modify the word delimiters used by
+-- WordDetect, Int, Float, HlCHex, and HlCOct rules:
+getGeneralDelims :: Element -> (Set.Set Char, Set.Set Char)
+getGeneralDelims el =
+  case (getElementsNamed "general" el >>= getElementsNamed "keywords") of
+     []    -> (Set.empty, Set.empty)
+     (x:_) ->
+       (Set.fromList $ T.unpack $ getAttrValue "weakDeliminator" x,
+        Set.fromList $ T.unpack $ getAttrValue "additionalDeliminator" x)
 
 parseContextSwitches :: Text -> Text -> [ContextSwitch]
 parseContextSwitches syntaxname t =

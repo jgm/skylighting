@@ -313,6 +313,8 @@ tryRule rule inp = do
   modify $ \st -> st{ captures = Captures mempty }
 
   let attr = rAttribute rule
+  let weakDelims = rWeakDeliminators rule
+  let addDelims = rAdditionalDeliminators rule
   mbtok <- case rMatcher rule of
                 DetectChar c -> withAttr attr $ detectChar (rDynamic rule) c inp
                 Detect2Chars c d -> withAttr attr $
@@ -320,12 +322,12 @@ tryRule rule inp = do
                 AnyChar cs -> withAttr attr $ anyChar cs inp
                 RangeDetect c d -> withAttr attr $ rangeDetect c d inp
                 RegExpr re -> withAttr attr $ regExpr (rDynamic rule) re inp
-                Int -> withAttr attr $ parseInt inp
-                HlCOct -> withAttr attr $ parseOct inp
-                HlCHex -> withAttr attr $ parseHex inp
+                Int -> withAttr attr $ parseInt weakDelims addDelims inp
+                HlCOct -> withAttr attr $ parseOct weakDelims addDelims inp
+                HlCHex -> withAttr attr $ parseHex weakDelims addDelims inp
                 HlCStringChar -> withAttr attr $ parseCStringChar inp
                 HlCChar -> withAttr attr $ parseCChar inp
-                Float -> withAttr attr $ parseFloat inp
+                Float -> withAttr attr $ parseFloat weakDelims addDelims inp
                 Keyword _kwattr (Left listname) ->
                   throwError $ "Keyword with unresolved list " <> show listname
                 Keyword kwattr (Right kws) ->
@@ -335,7 +337,7 @@ tryRule rule inp = do
                                                  s inp
                 WordDetect s -> withAttr attr $
                                     wordDetect (rCaseSensitive rule)
-                                      (rWeakDeliminators rule) s inp
+                                      weakDelims addDelims s inp
                 LineContinue c -> withAttr attr $ lineContinue c inp
                 DetectSpaces -> withAttr attr $ detectSpaces inp
                 DetectIdentifier -> withAttr attr $ detectIdentifier inp
@@ -381,11 +383,9 @@ withAttr tt p = do
      then return Nothing
      else return $ Just (tt, res)
 
-wordDetect :: Bool -> Set.Set Char -> Text -> ByteString -> TokenizerM Text
-wordDetect caseSensitive weakDelims s inp = do
-  -- Removed the next line because KDE seems to allow
-  -- \n<DOCTYPE! to match \b<DOCTYPE!/b:
-  -- wordBoundary weakDelims inp
+wordDetect :: Bool -> Set.Set Char -> Set.Set Char -> Text -> ByteString
+           -> TokenizerM Text
+wordDetect caseSensitive weakDelims addDelims s inp = do
   t <- decodeBS $ UTF8.take (Text.length s) inp
   -- we assume here that the case fold will not change length,
   -- which is safe for ASCII keywords and the like...
@@ -393,12 +393,20 @@ wordDetect caseSensitive weakDelims s inp = do
              then s == t
              else mk s == mk t
   guard $ not (Text.null t)
+  let wordish = isWordishChar weakDelims addDelims
+  -- KDE requires a word delimiter (or start of line) before the
+  -- word, or as its first character (this is why \n<DOCTYPE!
+  -- matches \b<DOCTYPE!/b):
+  prev <- gets prevChar
+  guard $ not (wordish prev) || not (wordish (Text.head t))
   let c = Text.last t
   let rest = UTF8.drop (Text.length s) inp
   let d = case UTF8.uncons rest of
                Nothing    -> '\n'
                Just (x,_) -> x
-  guard $ isWordBoundary weakDelims c d
+  -- ... and a word delimiter (or end of line) after the word, or
+  -- as its last character:
+  guard $ not (wordish d) || not (wordish c)
   takeChars (Text.length t)
 
 stringDetect :: Bool -> Bool -> Text -> ByteString -> TokenizerM Text
@@ -552,7 +560,7 @@ regExpr :: Bool -> RE -> ByteString -> TokenizerM Text
 regExpr dynamic re inp = do
   -- return $! traceShowId $! (reStr, inp)
   let reStr = reString re
-  when (BS.take 2 reStr == "\\b") $ wordBoundary mempty inp
+  when (BS.take 2 reStr == "\\b") $ wordBoundary mempty mempty inp
   regex <- case compileRE re of
             Right r  -> return r
             Left e   -> throwError $
@@ -572,18 +580,27 @@ regExpr dynamic re inp = do
 toSlice :: ByteString -> (Int, Int) -> ByteString
 toSlice bs (off, len) = BS.take len $ BS.drop off bs
 
-wordBoundary :: Set.Set Char -> ByteString -> TokenizerM ()
-wordBoundary weakDelims inp = do
+wordBoundary :: Set.Set Char -> Set.Set Char -> ByteString -> TokenizerM ()
+wordBoundary weakDelims addDelims inp = do
   case UTF8.uncons inp of
        Nothing -> return ()
        Just (d, _) -> do
          c <- gets prevChar
-         guard $ isWordBoundary weakDelims c d
+         guard $ isWordBoundary weakDelims addDelims c d
 
-isWordBoundary :: Set.Set Char -> Char -> Char -> Bool
-isWordBoundary weakDelims c d =
-  (isWordChar c || c `Set.member` weakDelims) /=
-  (isWordChar d || d `Set.member` weakDelims)
+isWordBoundary :: Set.Set Char -> Set.Set Char -> Char -> Char -> Bool
+isWordBoundary weakDelims addDelims c d =
+  isWordishChar weakDelims addDelims c /=
+  isWordishChar weakDelims addDelims d
+
+-- A weakDeliminator counts as a word character even if it isn't
+-- one; an additionalDeliminator does not count as a word character
+-- even if it is one.  The weak delimiters take precedence, as in
+-- KDE, where delimiters are added before weak ones are removed.
+isWordishChar :: Set.Set Char -> Set.Set Char -> Char -> Bool
+isWordishChar weakDelims addDelims c =
+  c `Set.member` weakDelims ||
+    (isWordChar c && not (c `Set.member` addDelims))
 
 decodeBS :: ByteString -> TokenizerM Text
 decodeBS bs = case decodeUtf8' bs of
@@ -661,9 +678,9 @@ pCChar = do
   pCStringChar <|> () <$ A.satisfy (\c -> c /= '\'' && c /= '\\')
   () <$ A.char '\''
 
-parseInt :: ByteString -> TokenizerM Text
-parseInt inp = do
-  wordBoundary mempty inp
+parseInt :: Set.Set Char -> Set.Set Char -> ByteString -> TokenizerM Text
+parseInt weakDelims addDelims inp = do
+  wordBoundary weakDelims addDelims inp
   case A.parseOnly (A.match (pHex <|> pOct <|> pDec)) inp of
        Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
@@ -673,9 +690,9 @@ pDec = do
   mbMinus
   void $ A.takeWhile1 (A.inClass "0-9")
 
-parseOct :: ByteString -> TokenizerM Text
-parseOct inp = do
-  wordBoundary mempty inp
+parseOct :: Set.Set Char -> Set.Set Char -> ByteString -> TokenizerM Text
+parseOct weakDelims addDelims inp = do
+  wordBoundary weakDelims addDelims inp
   case A.parseOnly (A.match pHex) inp of
        Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
@@ -688,9 +705,9 @@ pOct = do
   _ <- A.takeWhile1 (A.inClass "0-7")
   return ()
 
-parseHex :: ByteString -> TokenizerM Text
-parseHex inp = do
-  wordBoundary mempty inp
+parseHex :: Set.Set Char -> Set.Set Char -> ByteString -> TokenizerM Text
+parseHex weakDelims addDelims inp = do
+  wordBoundary weakDelims addDelims inp
   case A.parseOnly (A.match pHex) inp of
        Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r) -- assumes ascii
@@ -709,9 +726,9 @@ mbMinus = (() <$ A.char '-') <|> return ()
 mbPlusMinus :: A.Parser ()
 mbPlusMinus = () <$ A.satisfy (A.inClass "+-") <|> return ()
 
-parseFloat :: ByteString -> TokenizerM Text
-parseFloat inp = do
-  wordBoundary mempty inp
+parseFloat :: Set.Set Char -> Set.Set Char -> ByteString -> TokenizerM Text
+parseFloat weakDelims addDelims inp = do
+  wordBoundary weakDelims addDelims inp
   case A.parseOnly (A.match pFloat) inp of
        Left _      -> mzero
        Right (r,_) -> takeChars (BS.length r)  -- assumes all ascii
