@@ -130,8 +130,7 @@ data Rule = Rule{
     rMatcher          :: !Matcher
   , rAttribute        :: !TokenType
   , rIncludeAttribute :: !Bool
-  , rWeakDeliminators :: Set.Set Char
-  , rAdditionalDeliminators :: Set.Set Char
+  , rWordDelimiters   :: Set.Set Char
   , rDynamic          :: !Bool
   , rCaseSensitive    :: !Bool
   , rChildren         :: ![Rule]

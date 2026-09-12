@@ -129,7 +129,9 @@ main = do
           lua = maybe (error "could not find Lua syntax") id
                              (lookupSyntax "Lua" sMap)
           awk = maybe (error "could not find AWK syntax") id
-                             (lookupSyntax "AWK" sMap) in
+                             (lookupSyntax "AWK" sMap)
+          glsl = maybe (error "could not find GLSL syntax") id
+                             (lookupSyntax "GLSL" sMap) in
       [ testCase "perl NUL case" $ Right
              [[(OtherTok,"s\NULb\NUL")
               ,(StringTok,"c")
@@ -248,6 +250,50 @@ main = do
             , ( OperatorTok , ";" ) ] ]
              @=? tokenize defConfig c
                      "double x = 0.5;\n"
+
+      -- HlCOct matches C-style octals (0 followed by octal digits);
+      -- HlCHex matches 0x followed by hex digits:
+      , testCase "HlCOct and HlCHex rules (glsl)" $ Right
+          [ [ ( NormalTok , "x " )
+            , ( OperatorTok , "=" )
+            , ( NormalTok , " " )
+            , ( BaseNTok , "0755" )
+            , ( OperatorTok , ";" ) ]
+          , [ ( NormalTok , "y " )
+            , ( OperatorTok , "=" )
+            , ( NormalTok , " " )
+            , ( BaseNTok , "0x1F" )
+            , ( OperatorTok , ";" ) ] ]
+             @=? tokenize defConfig glsl "x = 0755;\ny = 0x1F;"
+
+      -- As in KDE, the Float rule requires a '.', so 5e2 is matched
+      -- by Int (leaving e2 unmatched), and an incomplete exponent is
+      -- excluded from the match:
+      , testCase "Float rule requires dot; exponent all-or-nothing (glsl)" $
+          Right
+          [ [ ( NormalTok , "x " )
+            , ( OperatorTok , "=" )
+            , ( NormalTok , " " )
+            , ( DecValTok , "5" )
+            , ( NormalTok , "e2" )
+            , ( OperatorTok , ";" ) ]
+          , [ ( NormalTok , "y " )
+            , ( OperatorTok , "=" )
+            , ( NormalTok , " " )
+            , ( FloatTok , "1.5" )
+            , ( NormalTok , "e" )
+            , ( OperatorTok , "+;" ) ] ]
+             @=? tokenize defConfig glsl "x = 5e2;\ny = 1.5e+;"
+
+      -- As in KDE, Int and Float rules do not consume a leading sign:
+      , testCase "Int does not include leading minus (glsl)" $ Right
+          [ [ ( NormalTok , "x " )
+            , ( OperatorTok , "=" )
+            , ( NormalTok , " " )
+            , ( OperatorTok , "-" )
+            , ( DecValTok , "15" )
+            , ( OperatorTok , ";" ) ] ]
+             @=? tokenize defConfig glsl "x = -15;"
 
       ]
     ]
