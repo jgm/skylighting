@@ -449,6 +449,12 @@ regexTests =
     -- \A asserts the start of the subject:
   , ("\\Aab", "abc", Just ("ab", []))
   , ("a\\Ab", "ab", Nothing)
+    -- an empty first alternative matches the empty string:
+  , ("(?:|abc)x", "x", Just ("x", []))
+  , ("(?:|abc)x", "abcx", Just ("abcx", []))
+  , ("(?:\\d\\d(?:|[DT]\\d\\d))y", "12y", Just ("12y", []))
+  , ("(?:\\d\\d(?:|[DT]\\d\\d))y", "12T34y", Just ("12T34y", []))
+  , ("(?<=|)z\\d", "z4", Just ("z4", []))
   ]
 
 

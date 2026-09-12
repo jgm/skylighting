@@ -53,7 +53,9 @@ pRegex :: RParser Regex
 pRegex =
   option MatchNull $
   foldr MatchAlt
-    <$> pAltPart
+    -- the first alternative may be empty, as in (?:|a); as in PCRE,
+    -- an empty alternative matches the empty string:
+    <$> (pAltPart <|> pure mempty)
     <*> many (lift (char '|') *> (pAltPart <|> pure mempty))
 
 pAltPart :: RParser Regex
@@ -86,7 +88,7 @@ pParenthesized = do
     modify stModifier
     contents <- option MatchNull $
       foldr MatchAlt
-        <$> pAltPart
+        <$> (pAltPart <|> pure mempty)
         <*> many (lift (char '|') *>
               ((when resetCaptureNumbers
                     (modify (\st ->
