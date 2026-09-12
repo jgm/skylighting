@@ -71,10 +71,10 @@ current: bash-5.2
 
 <language
     name="Bash"
-    version="57"
+    version="58"
     kateversion="5.79"
     section="Scripts"
-    extensions="*.sh;*.bash;*.ebuild;*.eclass;*.exlib;*.exheres-0;.bashrc;.bash_profile;.bash_login;.profile;PKGBUILD;APKBUILD"
+    extensions="*.sh;*.bash;*.ebuild;*.eclass;*.exlib;*.exheres-0;.bashrc;.bash_profile;.bash_login;.profile;.envrc;PKGBUILD;APKBUILD"
     mimetype="application/x-shellscript;text/x-shellscript"
     casesensitive="1"
     author="Wilbert Berendsen (wilbert@kde.nl)"
@@ -669,6 +669,8 @@ current: bash-5.2
         <Detect2Chars attribute="Parameter Expansion" context="#pop!VarBraceStart" char="$" char1="{"/>
         <StringDetect context="#pop!ExprDblParenSubstOrSubstCommand" String="$((" lookAhead="1"/>
         <Detect2Chars attribute="Parameter Expansion" context="#pop!SubstCommand" char="$" char1="(" beginRegion="subshell"/>
+        <!-- The old format $[exp] is undocumented, deprecated
+        and will be removed in upcoming versions of bash. -->
       </context>
       <context attribute="Command" lineEndContext="#pop#pop" name="DispatchStringVariables">
         <Detect2Chars attribute="String SingleQ" context="#pop!StringEsc" char="$" char1="'"/>

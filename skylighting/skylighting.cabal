@@ -78,6 +78,7 @@ library
                        Skylighting.Syntax.Dart
                        Skylighting.Syntax.Debiancontrol
                        Skylighting.Syntax.Default
+                       Skylighting.Syntax.Desktop
                        Skylighting.Syntax.Diff
                        Skylighting.Syntax.Djangotemplate
                        Skylighting.Syntax.Dockerfile
