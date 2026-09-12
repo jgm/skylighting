@@ -146,7 +146,7 @@ documentToSyntax fp Document{ documentRoot = rootEl } = do
 
   let itemDatas = getItemData hlEl
 
-  let defKeywordAttr = getKeywordAttrs rootEl
+  let defKeywordAttr = getKeywordAttrs casesensitive rootEl
 
   let contextEls = getElementsNamed "contexts" hlEl >>=
                    getElementsNamed "context"
@@ -154,7 +154,7 @@ documentToSyntax fp Document{ documentRoot = rootEl } = do
   let syntaxname = getAttrValue "name" rootEl
 
   contexts <- mapM
-    (getContext casesensitive syntaxname itemDatas lists defKeywordAttr)
+    (getContext syntaxname itemDatas lists defKeywordAttr)
     contextEls
 
   startingContext <- case contexts of
@@ -216,16 +216,18 @@ splitContext t =
            | otherwise -> (T.drop 2 y, x)
 
 getParser :: Monad m
-          => Bool -> Text -> ItemData -> M.Map Text [ListItem] -> KeywordAttr
+          => Text -> ItemData -> M.Map Text [ListItem] -> KeywordAttr
           -> Text -> Element -> ExceptT String m Rule
-getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
+getParser syntaxname itemdatas lists kwattr cattr el = do
   let name = nameLocalName . elementName $ el
   let attribute = getAttrValue "attribute" el
   let context = getAttrValue "context" el
   let char0 = readChar $ getAttrValue "char" el
   let char1 = readChar $ getAttrValue "char1" el
   let str' = getAttrValue "String" el
-  let insensitive = vBool (not casesensitive) $ getAttrValue "insensitive" el
+  -- rules default to case-sensitive matching; the language's
+  -- casesensitive attribute applies only to keyword lists (as in KDE):
+  let insensitive = vBool False $ getAttrValue "insensitive" el
   let includeAttrib = vBool False $ getAttrValue "includeAttrib" el
   let weakDelim = Set.fromList $ T.unpack $ getAttrValue "weakDeliminator" el
   let lookahead = vBool False $ getAttrValue "lookAhead" el
@@ -233,8 +235,7 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
   let column' = getAttrValue "column" el
   let dynamic = vBool False $ getAttrValue "dynamic" el
   let minimal = vBool False $ getAttrValue "minimal" el
-  children <- mapM (getParser casesensitive
-                    syntaxname itemdatas lists kwattr attribute)
+  children <- mapM (getParser syntaxname itemdatas lists kwattr attribute)
                   [e | NodeElement e <- elementNodes el ]
   let tildeRegex = name == "RegExpr" && T.take 1 str' == "^"
   let str = if tildeRegex then T.drop 1 str' else str'
@@ -258,7 +259,16 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
                  "StringDetect" -> return $ StringDetect str
                  "WordDetect" -> return $ WordDetect str
                  "RegExpr" -> return $ re
-                 "keyword" -> return $ Keyword kwattr (Left str)
+                 -- an insensitive attribute on the keyword rule itself
+                 -- (if present) overrides the case sensitivity of the
+                 -- keyword list (as in KDE):
+                 "keyword" -> return $
+                   let kwattr' = if M.member (String.fromString "insensitive")
+                                      (elementAttributes el)
+                                    then kwattr{ keywordCaseSensitive =
+                                                   not insensitive }
+                                    else kwattr
+                    in Keyword kwattr' (Left str)
                  "Int" -> return $ Int
                  "Float" -> return $ Float
                  "HlCOct" -> return $ HlCOct
@@ -297,14 +307,13 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
 
 
 getContext :: Monad m
-           => Bool
-           -> Text
+           => Text
            -> ItemData
            -> M.Map Text [ListItem]
            -> KeywordAttr
            -> Element
            -> ExceptT String m Context
-getContext casesensitive syntaxname itemDatas lists kwattr el = do
+getContext syntaxname itemDatas lists kwattr el = do
   let name = getAttrValue "name" el
   let attribute = getAttrValue "attribute" el
   let lineEmptyContext = getAttrValue "lineEmptyContext" el
@@ -314,8 +323,7 @@ getContext casesensitive syntaxname itemDatas lists kwattr el = do
   let fallthroughContext = getAttrValue "fallthroughContext" el
   let dynamic = vBool False $ getAttrValue "dynamic" el
 
-  parsers <- mapM (getParser casesensitive
-                    syntaxname itemDatas lists kwattr attribute)
+  parsers <- mapM (getParser syntaxname itemDatas lists kwattr attribute)
                   [e | NodeElement e <- elementNodes el ]
 
   return $ Context {
@@ -341,15 +349,18 @@ getItemData el = toItemDataTable $
     | e <- (getElementsNamed "itemDatas" el >>= getElementsNamed "itemData")
   ]
 
-getKeywordAttrs :: Element -> KeywordAttr
-getKeywordAttrs el =
+-- The default case sensitivity of keyword lists is given by the
+-- casesensitive attribute on the language element, and may be
+-- overridden by the casesensitive attribute on general > keywords:
+getKeywordAttrs :: Bool -> Element -> KeywordAttr
+getKeywordAttrs casesensitive el =
   case (getElementsNamed "general" el >>= getElementsNamed "keywords") of
-     []    -> defaultKeywordAttr
+     []    -> defaultKeywordAttr{ keywordCaseSensitive = casesensitive }
      (x:_) ->
        let weakDelim = T.unpack $ getAttrValue "weakDeliminator" x
            additionalDelim = T.unpack $ getAttrValue "additionalDeliminator" x
         in KeywordAttr { keywordCaseSensitive =
-                             vBool True $ getAttrValue "casesensitive" x
+                             vBool casesensitive $ getAttrValue "casesensitive" x
                        , keywordDelims = Set.union standardDelims
                            (Set.fromList additionalDelim)
                              Set.\\ Set.fromList weakDelim }

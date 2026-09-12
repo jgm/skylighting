@@ -123,7 +123,9 @@ main = do
           c    = maybe (error "could not find C syntax") id
                              (lookupSyntax "c" sMap)
           dosbat = maybe (error "could not find MS-DOS Batch syntax") id
-                             (lookupSyntax "MS-DOS Batch" sMap) in
+                             (lookupSyntax "MS-DOS Batch" sMap)
+          cmake = maybe (error "could not find CMake syntax") id
+                             (lookupSyntax "CMake" sMap) in
       [ testCase "perl NUL case" $ Right
              [[(OtherTok,"s\NULb\NUL")
               ,(StringTok,"c")
@@ -205,6 +207,17 @@ main = do
             , ( SpecialCharTok , "^" ) ]
           , [ ( NormalTok , "bar" ) ] ]
              @=? tokenize defConfig dosbat "echo foo ^\nbar"
+
+      , testCase "keyword rule insensitive attribute (cmake)" $ Right
+          [ [ ( ControlFlowTok , "if" )
+            , ( NormalTok , "(" )
+            , ( OtherTok , "YES" )
+            , ( NormalTok , ")" ) ]
+          , [ ( ControlFlowTok , "if" )
+            , ( NormalTok , "(" )
+            , ( OtherTok , "yes" )
+            , ( NormalTok , ")" ) ] ]
+             @=? tokenize defConfig cmake "if(YES)\nif(yes)"
 
       , testCase "C floating-point literal (#174)" $ Right
           [ [ ( DataTypeTok , "double")
