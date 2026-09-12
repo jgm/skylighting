@@ -56,6 +56,9 @@ data TokenizerState = TokenizerState{
   , column              :: Int
   , lineContinuation    :: Bool
   , firstNonspaceColumn :: Maybe Int
+  , loopCounter         :: Int
+    -- ^ number of consecutive rule-matching iterations without
+    -- consuming any input; used to guard against endless loops
 }
 
 -- | Configuration options for 'tokenize'.
@@ -162,6 +165,7 @@ tokenize config syntax inp =
                     , column = 0
                     , lineContinuation = False
                     , firstNonspaceColumn = Nothing
+                    , loopCounter = 0
                     }
 
 info :: String -> TokenizerM ()
@@ -240,35 +244,86 @@ lookupContext name syntax = Map.lookup name $ sContexts syntax
 
 tokenizeLine :: (ByteString, Int) -> TokenizerM [Token]
 tokenizeLine (!ln, !linenum) = do
-  modify $ \st -> st{ input = ln, endline = BS.null ln, prevChar = '\n' }
-  cur <- currentContext
-  lineCont <- gets lineContinuation
-  if lineCont
-     then modify $ \st -> st{ lineContinuation = False }
-     else do
-       let !mbFirstNonspace = BS.findIndex (not . isSpace) $! ln
-       modify $ \st -> st{ column = 0
-                         , firstNonspaceColumn = mbFirstNonspace }
-       doContextSwitches (cLineBeginContext cur)
+  -- column and firstNonspaceColumn restart on every physical line;
+  -- a line continuation only suppresses the previous line's
+  -- lineEndContext (KDE abstracthighlighter.cpp, highlightLine).
+  let !mbFirstNonspace = BS.findIndex (not . isSpace) $! ln
+  modify $ \st -> st{ input = ln
+                    , endline = BS.null ln
+                    , prevChar = '\n'
+                    , lineContinuation = False
+                    , column = 0
+                    , firstNonspaceColumn = mbFirstNonspace
+                    , loopCounter = 0 }
   if BS.null ln
-     then doContextSwitches (cLineEmptyContext cur)
-     else doContextSwitches (cLineBeginContext cur)
-  ts <- normalizeHighlighting . catMaybes <$> many getToken
-  eol <- gets endline
-  if eol
      then do
-       currentContext >>= checkLineEnd
-       return ts
-     else do  -- fail if we haven't consumed whole line
-       col <- gets column
-       throwError $ "Could not match anything at line " ++
-         show linenum ++ " column " ++ show col
+       -- Empty lines get only the lineEmptyContext switches (which
+       -- default to the lineEndContext switches), applied for
+       -- successive top contexts until #stay; the lineEndContext is
+       -- not applied separately (KDE abstracthighlighter.cpp).
+       handleEmptyLine loopLimit
+       return []
+     else do
+       ts <- normalizeHighlighting . catMaybes <$> many getToken
+       eol <- gets endline
+       if eol
+          then do
+            checkLineEnd
+            return ts
+          else do  -- fail if we haven't consumed whole line
+            col <- gets column
+            throwError $ "Could not match anything at line " ++
+              show linenum ++ " column " ++ show col
+
+-- | Limit on iterations that make no progress, to avoid endless
+-- loops with broken syntax definitions, as in KDE's
+-- abstracthighlighter.cpp.
+loopLimit :: Int
+loopLimit = 1024
+
+-- | Apply line-empty context switches for successive top contexts
+-- until a context with no switches (#stay) is on top, guarding
+-- against endless loops (KDE abstracthighlighter.cpp, highlightLine).
+handleEmptyLine :: Int -> TokenizerM ()
+handleEmptyLine counter = do
+  cur <- currentContext
+  case cLineEmptyContext cur of
+    [] -> return ()  -- #stay
+    switches
+      | counter <= 0 -> info $ "Endless switch context transitions " ++
+          "for line empty context, aborting highlighting of line."
+      | otherwise -> do
+          before <- gets (fmap fst . unContextStack . contextStack)
+          doContextSwitches switches
+          after <- gets (fmap fst . unContextStack . contextStack)
+          -- if the stack is unchanged (e.g. #pop of the initial
+          -- context), stop:
+          when (before /= after) $ handleEmptyLine (counter - 1)
 
 getToken :: TokenizerM (Maybe Token)
 getToken = do
   inp <- gets input
   gets endline >>= guard . not
   !context <- currentContext
+  counter <- gets loopCounter
+  if counter > loopLimit
+     -- too many iterations without consuming input (e.g. a cycle of
+     -- context switches): abort highlighting of this line, giving
+     -- the rest of it the context's attribute, as in KDE's
+     -- abstracthighlighter.cpp.
+     then do
+       info "Endless state transitions, aborting highlighting of line."
+       t <- decodeBS inp
+       modify $ \st -> st{ input = BS.empty
+                         , endline = True
+                         , prevChar = Text.last t
+                         , column = column st + Text.length t }
+       return $ Just (cAttribute context, t)
+     else getToken' context inp counter
+
+getToken' :: Context -> ByteString -> Int -> TokenizerM (Maybe Token)
+getToken' context inp counter = do
+  modify $ \st -> st{ loopCounter = counter + 1 }
   msum (map (\r -> tryRule r inp) (cRules context)) <|>
      case cFallthroughContext context of
            [] | cFallthrough context -> Nothing <$ doContextSwitches [Pop]
@@ -289,7 +344,8 @@ takeChars numchars = do
   modify $ \st -> st{ input = rest,
                       endline = BS.null rest,
                       prevChar = Text.last t,
-                      column = column st + numchars }
+                      column = column st + numchars,
+                      loopCounter = 0 }  -- input was consumed: progress
   return t
 
 tryRule :: Rule -> ByteString -> TokenizerM (Maybe Token)
@@ -470,17 +526,29 @@ includeRules mbattr (syn, con) inp = do
                     (Just (NormalTok, xs), Just attr) -> Just (attr, xs)
                     _                                 -> mbtok
 
-checkLineEnd :: Context -> TokenizerM ()
-checkLineEnd c = do
-  unless (null (cLineEndContext c)) $ do
-    eol <- gets endline
-    info $ "checkLineEnd for " ++ show (cName c) ++ " eol = " ++ show eol ++ " cLineEndContext = " ++ show (cLineEndContext c)
-    when eol $ do
-      lineCont' <- gets lineContinuation
-      unless lineCont' $ do
-        doContextSwitches (cLineEndContext c)
-        c' <- currentContext
-        unless (c == c') $ checkLineEnd c'
+-- | Apply line-end context switches for successive top contexts
+-- until a context with no switches (#stay) is on top, guarding
+-- against endless loops (KDE abstracthighlighter.cpp, highlightLine).
+checkLineEnd :: TokenizerM ()
+checkLineEnd = do
+  lineCont' <- gets lineContinuation
+  unless lineCont' $ go loopLimit
+ where
+  go counter = do
+    c <- currentContext
+    unless (null (cLineEndContext c)) $
+      if counter <= 0
+         then info $ "Endless switch context transitions " ++
+                "for line end context, aborting highlighting of line."
+         else do
+           info $ "checkLineEnd for " ++ show (cName c) ++
+                  " cLineEndContext = " ++ show (cLineEndContext c)
+           before <- gets (fmap fst . unContextStack . contextStack)
+           doContextSwitches (cLineEndContext c)
+           after <- gets (fmap fst . unContextStack . contextStack)
+           -- if the stack is unchanged (e.g. #pop of the initial
+           -- context), stop:
+           when (before /= after) $ go (counter - 1)
 
 detectChar :: Bool -> Char -> ByteString -> TokenizerM Text
 detectChar dynamic c inp = do

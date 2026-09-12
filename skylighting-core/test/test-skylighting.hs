@@ -131,7 +131,11 @@ main = do
           awk = maybe (error "could not find AWK syntax") id
                              (lookupSyntax "AWK" sMap)
           glsl = maybe (error "could not find GLSL syntax") id
-                             (lookupSyntax "GLSL" sMap) in
+                             (lookupSyntax "GLSL" sMap)
+          makefile = maybe (error "could not find Makefile syntax") id
+                             (lookupSyntax "Makefile" sMap)
+          markdown = maybe (error "could not find Markdown syntax") id
+                             (lookupSyntax "Markdown" sMap) in
       [ testCase "perl NUL case" $ Right
              [[(OtherTok,"s\NULb\NUL")
               ,(StringTok,"c")
@@ -294,6 +298,30 @@ main = do
             , ( DecValTok , "15" )
             , ( OperatorTok , ";" ) ] ]
              @=? tokenize defConfig glsl "x = -15;"
+
+      -- As in KDE, column and firstNonspaceColumn restart on every
+      -- physical line; a line continuation only suppresses the
+      -- previous line's lineEndContext.  So the column="0" Target
+      -- rule applies to "bar" on the continuation line:
+      , testCase "column restarts after LineContinue (makefile)" $ Right
+          [ [ ( DecValTok , "foo " )
+            , ( CharTok , "\\" ) ]
+          , [ ( DecValTok , "bar:" )
+            , ( DataTypeTok , " baz" ) ] ]
+             @=? tokenize defConfig makefile "foo \\\nbar: baz"
+
+      -- As in KDE, an empty line applies the lineEmptyContext
+      -- switches of successive top contexts until #stay (and
+      -- lineEmptyContext defaults to lineEndContext).  Here the empty
+      -- line pops blockquote and then enters Normal Text's
+      -- lineEmptyContext (find-code-block), so the indented line
+      -- becomes a code block:
+      , testCase "empty line applies successive lineEmptyContexts (markdown)" $
+          Right
+          [ [ ( AttributeTok , "> quote" ) ]
+          , []
+          , [ ( InformationTok , "    code" ) ] ]
+             @=? tokenize defConfig markdown "> quote\n\n    code"
 
       ]
     ]

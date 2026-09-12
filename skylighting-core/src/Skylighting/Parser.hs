@@ -330,7 +330,6 @@ getContext syntaxname itemDatas lists kwattr el = do
   let attribute = getAttrValue "attribute" el
   let lineEmptyContext = getAttrValue "lineEmptyContext" el
   let lineEndContext = getAttrValue "lineEndContext" el
-  let lineBeginContext = getAttrValue "lineBeginContext" el
   let fallthrough = vBool False $ getAttrValue "fallthrough" el
   let fallthroughContext = getAttrValue "fallthroughContext" el
   let dynamic = vBool False $ getAttrValue "dynamic" el
@@ -343,12 +342,16 @@ getContext syntaxname itemDatas lists kwattr el = do
           , cSyntax = syntaxname
           , cRules = parsers
           , cAttribute = fromMaybe NormalTok $ M.lookup attribute itemDatas
+            -- lineEmptyContext defaults to lineEndContext when it is
+            -- unspecified or #stay; this avoids skipping empty lines
+            -- after a line continuation character (KDE context.cpp,
+            -- Context::resolveContexts, see kde bug 405903):
           , cLineEmptyContext =
-               parseContextSwitches syntaxname lineEmptyContext
+               case parseContextSwitches syntaxname lineEmptyContext of
+                 [] -> parseContextSwitches syntaxname lineEndContext
+                 cs -> cs
           , cLineEndContext =
                parseContextSwitches syntaxname lineEndContext
-          , cLineBeginContext =
-               parseContextSwitches syntaxname lineBeginContext
           , cFallthrough = fallthrough
           , cFallthroughContext =
                parseContextSwitches syntaxname fallthroughContext

@@ -178,7 +178,6 @@ data Context = Context{
   , cAttribute          :: !TokenType
   , cLineEmptyContext   :: ![ContextSwitch]
   , cLineEndContext     :: ![ContextSwitch]
-  , cLineBeginContext   :: ![ContextSwitch]
   , cFallthrough        :: !Bool
   , cFallthroughContext :: ![ContextSwitch]
   , cDynamic            :: !Bool
