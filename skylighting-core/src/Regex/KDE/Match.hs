@@ -57,7 +57,12 @@ data Match =
          , matchCaptures :: !(M.IntMap (Int, Int))
                                   -- starting offset, length in bytes
          , matchPath     :: !Path
-         } deriving (Show, Eq)
+         } deriving (Show)
+
+-- consistent with Ord (which ignores matchBytes, since all matches
+-- in a given run share it):
+instance Eq Match where
+  m1 == m2 = compare m1 m2 == EQ
 
 -- preferred matches are <=; the path (priority) is decisive, and the
 -- other comparisons only make the order total:
