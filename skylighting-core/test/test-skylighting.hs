@@ -489,6 +489,15 @@ regexTests =
   , ("(?|(a)(b)|(c))(d)\\2", "abdb",
       Just ("abdb", [(1,"a"),(2,"b"),(3,"d")]))
   , ("(?|(a)(b)|(c))(d)\\2", "cdd", Nothing)
+    -- a ] in first position in a character class is a literal, and
+    -- may be the start of a range:
+  , ("[]-a]+", "^_`", Just ("^_`", []))
+  , ("[]-a]+", "b", Nothing)
+  , ("[]-]+", "]-]", Just ("]-]", []))
+  , ("[]-]+", "^", Nothing)
+  , ("[^]-a]+", "bz!", Just ("bz!", []))
+  , ("[^]-a]+", "^", Nothing)
+  , ("[]a-]+", "a]-", Just ("a]-", []))
   ]
 
 

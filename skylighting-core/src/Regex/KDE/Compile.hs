@@ -367,7 +367,13 @@ pRegexCharClass caseSensitive = do
         void $ A.string "\\Q"
         cs <- manyTill anyChar (A.string "\\E")
         return $! \c -> any (== c) cs
-  brack <- option [] $ [(==']')] <$ char ']'
+  -- a ] in first position is a literal; it may also be the start of
+  -- a range, as in []-a]:
+  brack <- option [] $ do
+    _ <- char ']'
+    (do d <- char '-' *> getC
+        return [\x -> x >= ']' && x <= d])
+      <|> return [(== ']')]
   fs <- many (getQELiteral <|> getEscapedClass <|> getPosixClass <|> getCRange
               <|> (A.string "\\p" *> pUnicodeCharClass))
   void $ char ']'
