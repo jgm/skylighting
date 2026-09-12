@@ -446,6 +446,9 @@ regexTests =
   , ("a\\Hb", "a b", Nothing)
   , ("[\\h]", "\xa0", Just ("\xa0", []))
   , ("[^\\h]+", "ab cd", Just ("ab", []))
+    -- \A asserts the start of the subject:
+  , ("\\Aab", "abc", Just ("ab", []))
+  , ("a\\Ab", "ab", Nothing)
   ]
 
 
