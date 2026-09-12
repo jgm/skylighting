@@ -409,17 +409,23 @@ tryRule rule inp = do
                  Nothing -> return Nothing
                  Just (tt, s)
                    | rLookahead rule -> do
-                     (oldinput, oldendline, oldprevChar, oldColumn) <-
+                     (oldinput, oldendline, oldprevChar, oldColumn,
+                      oldLoopCounter) <-
                          case oldstate of
                               Nothing -> throwError
                                     "oldstate not saved with lookahead rule"
                               Just st -> return
                                     (input st, endline st,
-                                     prevChar st, column st)
+                                     prevChar st, column st,
+                                     loopCounter st)
+                     -- restore loopCounter too: a lookahead match makes
+                     -- no progress, so it must not reset the
+                     -- endless-loop guard (takeChars reset it):
                      modify $ \st -> st{ input = oldinput
                                        , endline = oldendline
                                        , prevChar = oldprevChar
-                                       , column = oldColumn }
+                                       , column = oldColumn
+                                       , loopCounter = oldLoopCounter }
                      return Nothing
                    | otherwise -> do
                      case mbchildren of

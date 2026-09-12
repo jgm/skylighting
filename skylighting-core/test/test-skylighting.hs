@@ -323,8 +323,35 @@ main = do
           , [ ( InformationTok , "    code" ) ] ]
              @=? tokenize defConfig markdown "> quote\n\n    code"
 
+      -- A zero-progress cycle of context switches driven by a
+      -- lookahead rule must trigger the endless-loop guard (as in
+      -- KDE), aborting the line instead of hanging; in particular a
+      -- lookahead match must not reset the loop counter:
+      , testCase "zero-progress lookahead loop aborts line" $
+          Right [ [ ( NormalTok, "xy" ) ] ]
+             @=? tokenize defConfig{ syntaxMap =
+                    addSyntaxDefinition loopSyntax (syntaxMap defConfig) }
+                  loopSyntax "xy"
       ]
     ]
+
+-- | A syntax definition with a zero-progress loop: a lookahead rule
+-- pushes a context that immediately pops back via fallthrough.
+loopSyntax :: Syntax
+loopSyntax = either error id $ parseSyntaxDefinitionFromText "loop.xml" $
+     "<language name=\"Loop\" version=\"1\" kateversion=\"5.0\""
+  <> " section=\"Other\" extensions=\"\">"
+  <> "<highlighting><contexts>"
+  <> "<context name=\"start\" attribute=\"Normal Text\""
+  <> " lineEndContext=\"#stay\">"
+  <> "<AnyChar lookAhead=\"1\" context=\"other\" String=\"x\"/>"
+  <> "</context>"
+  <> "<context name=\"other\" attribute=\"Normal Text\""
+  <> " lineEndContext=\"#stay\" fallthroughContext=\"#pop\">"
+  <> "</context>"
+  <> "</contexts><itemDatas>"
+  <> "<itemData name=\"Normal Text\" defStyleNum=\"dsNormal\"/>"
+  <> "</itemDatas></highlighting></language>"
 
 compareValues :: FilePath -> Text -> Text -> IO (Maybe String)
 compareValues referenceFile expected actual =
