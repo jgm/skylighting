@@ -381,6 +381,14 @@ regexTests =
     -- be silently ignored (matching the empty string):
   , ("((a)b)(?2)", "aba", Just ("aba", [(1,"ab"),(2,"a")]))
   , ("((a)b)(?2)", "abx", Nothing)
+    -- character classes, escaped literals, and backreferences used
+    -- to ignore case-insensitivity:
+  , ("(?i:[abc]+)d", "aBcd", Just ("aBcd", []))
+  , ("(?i:[a-z]+)!", "aBcD!", Just ("aBcD!", []))
+  , ("(?i:[^a]+)", "xA", Just ("x", []))
+  , ("(?i:\\x61+)", "aA", Just ("aA", []))
+  , ("(?i:(ab)\\1)", "abAB", Just ("abAB", [(1,"ab")]))
+  , ("(ab)\\1", "abAB", Nothing)
   ]
 
 

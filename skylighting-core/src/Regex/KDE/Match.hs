@@ -10,6 +10,7 @@ module Regex.KDE.Match
 import qualified Data.ByteString as B
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.UTF8 as U
+import Data.Char (toLower)
 import qualified Data.Set as Set
 import Data.Set (Set)
 import Regex.KDE.Regex
@@ -155,19 +156,32 @@ exec cgs dir (MatchCapture i re) =
       let len = matchOffset m' - matchOffset m
       in  m'{ matchCaptures = M.insert i (matchOffset m, len)
                                   (matchCaptures m') }
-exec _ dir (MatchCaptured n) = mapMatching matchCaptured
+exec _ dir (MatchCaptured n caseSensitive) = mapMatching matchCaptured
  where
    matchCaptured m =
      case M.lookup n (matchCaptures m) of
        Just (offset, len) ->
               let capture = B.take len $ B.drop offset $ matchBytes m
               in  case dir of
-                     Forward | B.isPrefixOf capture
-                                 (B.drop (matchOffset m) (matchBytes m))
+                     Forward
+                       | caseSensitive
+                       , B.isPrefixOf capture
+                           (B.drop (matchOffset m) (matchBytes m))
                         -> m{ matchOffset = matchOffset m + B.length capture }
-                     Backward | B.isSuffixOf capture
-                                 (B.take (matchOffset m) (matchBytes m))
+                       | not caseSensitive
+                       , Just len' <- ciPrefixLength (U.toString capture)
+                             (B.drop (matchOffset m) (matchBytes m))
+                        -> m{ matchOffset = matchOffset m + len' }
+                     Backward
+                       | caseSensitive
+                       , B.isSuffixOf capture
+                           (B.take (matchOffset m) (matchBytes m))
                         -> m{ matchOffset = matchOffset m - B.length capture }
+                       | not caseSensitive
+                       , Just off' <- ciSuffixOffset
+                             (reverse (U.toString capture))
+                             (matchBytes m) (matchOffset m)
+                        -> m{ matchOffset = off' }
                      _  -> m{ matchOffset = -1 }
        Nothing -> m{ matchOffset = -1 }
 exec (active, cgs) dir (Subroutine i) =
@@ -192,6 +206,28 @@ atWordBoundary m =
       case U.toString (B.drop off (matchBytes m)) of
         (cur:next:_) -> isWordChar cur /= isWordChar next
         _ -> True
+
+-- If the characters of the first argument match the beginning of the
+-- bytestring case-insensitively, return the length in bytes of the
+-- matching prefix.
+ciPrefixLength :: String -> ByteString -> Maybe Int
+ciPrefixLength [] _ = Just 0
+ciPrefixLength (c:cs) bs =
+  case U.decode bs of
+    Just (d, n) | toLower d == toLower c ->
+      (n +) <$> ciPrefixLength cs (B.drop n bs)
+    _ -> Nothing
+
+-- If the characters of the first argument (reversed) match the
+-- characters just before the given offset case-insensitively, return
+-- the offset at which the match begins.
+ciSuffixOffset :: String -> ByteString -> Int -> Maybe Int
+ciSuffixOffset [] _ off = Just off
+ciSuffixOffset (c:cs) bs off =
+  case lastCharOffset bs off of
+    Just off' | Just (d, _) <- U.decode (B.drop off' bs)
+              , toLower d == toLower c -> ciSuffixOffset cs bs off'
+    _ -> Nothing
 
 -- Return the offset of the start of the (UTF-8 encoded) character
 -- that ends at (i.e., whose last byte is just before) offset n.

@@ -22,7 +22,7 @@ data Regex =
   MatchAlt !Regex !Regex |
   MatchConcat !Regex !Regex |
   MatchCapture !Int !Regex |
-  MatchCaptured !Int |
+  MatchCaptured !Int !Bool | -- group number, case sensitivity
   AssertWordBoundary |
   AssertBeginning |
   AssertEnd |
@@ -43,7 +43,8 @@ instance Show Regex where
             ")"
   show (MatchCapture i re) = "(MatchCapture " <> show i <> " " <>
                 show re <> ")"
-  show (MatchCaptured n) = "(MatchCaptured " <> show n <> ")"
+  show (MatchCaptured n cs) = "(MatchCaptured " <> show n <> " " <>
+                show cs <> ")"
   show AssertWordBoundary = "AssertWordBoundary"
   show AssertBeginning = "AssertBeginning"
   show AssertEnd = "AssertEnd"

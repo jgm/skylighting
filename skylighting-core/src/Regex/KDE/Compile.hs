@@ -173,18 +173,18 @@ pRegexChar = do
                 Just !n -> return $ MatchDynamic n
                 Nothing -> fail "not a number")
             <|> return (MatchChar (== '%'))
-    '\\' -> lift pRegexEscapedChar
+    '\\' -> lift $ pRegexEscapedChar caseSensitive
     '$'  -> return AssertEnd
     '^'  -> return AssertBeginning
-    '['  -> lift pRegexCharClass
+    '['  -> lift $ pRegexCharClass caseSensitive
     _ | isSpecial w -> mzero
       | otherwise -> return $!
             MatchChar $ if caseSensitive
                            then (== w)
                            else (\d -> toLower d == toLower w)
 
-pRegexEscapedChar :: Parser Regex
-pRegexEscapedChar = do
+pRegexEscapedChar :: Bool -> Parser Regex
+pRegexEscapedChar caseSensitive = do
   c <- A.anyChar
   (case c of
     'b' -> return AssertWordBoundary
@@ -193,7 +193,7 @@ pRegexEscapedChar = do
               ds <- many1 digit
               _ <- char '}'
               case readMay ds of
-                Just !n -> return $ MatchCaptured n
+                Just !n -> return $ MatchCaptured n caseSensitive
                 Nothing -> fail "not a number"
     'd' -> return $ MatchChar isDigit
     'D' -> return $ MatchChar (not . isDigit)
@@ -203,8 +203,13 @@ pRegexEscapedChar = do
     'W' -> return $ MatchChar (not . isWordChar)
     'p' -> MatchChar <$> pUnicodeCharClass
     _ | isDigit c ->
-       return $! MatchCaptured (ord c - ord '0')
-      | otherwise -> mzero) <|> (MatchChar . (==) <$> pEscaped c)
+       return $! MatchCaptured (ord c - ord '0') caseSensitive
+      | otherwise -> mzero) <|> (matchLiteralChar <$> pEscaped c)
+ where
+   matchLiteralChar d = MatchChar $
+     if caseSensitive
+        then (== d)
+        else \x -> toLower x == toLower d
 
 pEscaped :: Char -> Parser Char
 pEscaped c =
@@ -244,8 +249,8 @@ pEscaped c =
     _ | isPunctuation c || isSymbol c || isSpace c -> return c
       | otherwise -> fail $ "invalid escape \\" ++ [c]
 
-pRegexCharClass :: Parser Regex
-pRegexCharClass = do
+pRegexCharClass :: Bool -> Parser Regex
+pRegexCharClass caseSensitive = do
   negated <- option False $ True <$ char '^'
   let getEscapedClass = do
         _ <- char '\\'
@@ -292,9 +297,13 @@ pRegexCharClass = do
               <|> (A.string "\\p" *> pUnicodeCharClass))
   void $ char ']'
   let f c = any ($ c) $ brack ++ fs
+  -- for case-insensitive matching, a character matches (or, if
+  -- negated, is excluded) if any of its case variants matches:
+  let f' c | caseSensitive = f c
+           | otherwise = f c || f (toLower c) || f (toUpper c)
   return $! MatchChar $ if negated
-                           then not . f
-                           else f
+                           then not . f'
+                           else f'
 
 -- character class \p{Lo}; we assume \p is already parsed
 pUnicodeCharClass :: Parser (Char -> Bool)
