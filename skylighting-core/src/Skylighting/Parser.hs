@@ -232,6 +232,7 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
   let firstNonSpace = vBool False $ getAttrValue "firstNonSpace" el
   let column' = getAttrValue "column" el
   let dynamic = vBool False $ getAttrValue "dynamic" el
+  let minimal = vBool False $ getAttrValue "minimal" el
   children <- mapM (getParser casesensitive
                     syntaxname itemdatas lists kwattr attribute)
                   [e | NodeElement e <- elementNodes el ]
@@ -242,7 +243,8 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
                   else either (\_ -> Nothing) (Just . fst) $
                          TR.decimal column'
   let re = RegExpr RE{ reString = TE.encodeUtf8 str
-                     , reCaseSensitive = not insensitive }
+                     , reCaseSensitive = not insensitive
+                     , reMinimal = minimal }
   let contextSwitches = parseContextSwitches syntaxname context
   let (incsyntax, inccontext) =
         case contextSwitches of

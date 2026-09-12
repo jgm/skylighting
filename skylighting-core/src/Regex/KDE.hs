@@ -15,7 +15,7 @@ testRegex :: Bool -> String -> String -> Maybe (String, [(Int, String)])
 testRegex caseSensitive re s =
   let bs = U.fromString s
       toSlice (off,len) = U.toString $ B.take len $ B.drop off bs
-   in case compileRegex caseSensitive (U.fromString re) of
+   in case compileRegex caseSensitive False (U.fromString re) of
         Right r ->
           case matchRegex r bs of
             Nothing -> Nothing

@@ -103,7 +103,7 @@ main = do
                 testCase ("regex " <>
                            (Text.unpack $ TE.decodeUtf8 regex) <> " in "
                            <> sFilename syn)
-             $ case compileRegex True regex of
+             $ case compileRegex True False regex of
                  Right _ -> assertBool "regex does not compile" True
                  Left e -> assertFailure ("regex does not compile: " <> show e))
                          $ getRegexesFromSyntax syn))
@@ -519,6 +519,22 @@ regexTests =
   , ("(?s)a.b", "axb", Just ("axb", []))
   , ("(?m)^ab", "ab", Just ("ab", []))
   , ("(?ims)ab", "AB", Just ("AB", []))
+    -- (?U) makes quantifiers minimal by default and ? makes them
+    -- greedy (PCRE's UNGREEDY option, QRegularExpression's
+    -- InvertedGreedinessOption, minimal="1" in KDE syntax files):
+  , ("(?U)a+", "aaa", Just ("a", []))
+  , ("(?U)a+?", "aaa", Just ("aaa", []))
+  , ("(?U)a*b", "aabb", Just ("aab", []))
+  , ("(?U)a?", "a", Just ("", []))
+  , ("(?U)a{2,4}", "aaaaa", Just ("aa", []))
+  , ("(?U)a{2,4}?", "aaaaa", Just ("aaaa", []))
+  , ("(?U)a{2}", "aaa", Just ("aa", []))
+  , ("(?U)a*+b", "aab", Just ("aab", [])) -- possessive is unaffected
+  , ("(?U)<(.*)>", "<x><y>", Just ("<x>", [(1, "x")]))
+  , ("(?U:a+)a", "aaa", Just ("aa", []))
+  , ("((?U)a+)(a+)", "aaaa", Just ("aaaa", [(1, "a"), (2, "aaa")]))
+  , ("(?iU)ab+", "ABBB", Just ("AB", []))
+  , ("(?U)(?-U)a+", "aaa", Just ("aaa", []))
   ]
 
 -- these should fail to compile, as they do in PCRE ("quantifier does
@@ -548,7 +564,7 @@ regexErrorTests =
 regexErrorTest :: String -> TestTree
 regexErrorTest re =
   testCase ("/" ++ re ++ "/") $
-    case compileRegex True (TE.encodeUtf8 (Text.pack re)) of
+    case compileRegex True False (TE.encodeUtf8 (Text.pack re)) of
       Left _  -> return ()
       Right _ -> assertFailure "regex compiled, but an error was expected"
 

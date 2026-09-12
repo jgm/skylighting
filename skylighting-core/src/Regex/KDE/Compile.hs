@@ -25,12 +25,18 @@ import Data.Semigroup ((<>))
 -- It is described here: https://doc.qt.io/qt-6/qregexp.html
 
 -- | Compile a UTF-8 encoded ByteString as a Regex.  If the first
--- parameter is True, then the Regex will be case sensitive.
-compileRegex :: Bool -> ByteString -> Either String Regex
-compileRegex caseSensitive bs =
+-- parameter is True, then the Regex will be case sensitive.  If the
+-- second parameter is True, quantifiers are minimal (lazy) rather
+-- than greedy by default, and the @?@ modifier makes them greedy
+-- instead of lazy -- this corresponds to PCRE's UNGREEDY option
+-- (QRegularExpression's InvertedGreedinessOption, set by
+-- @minimal="1"@ in KDE syntax definitions).
+compileRegex :: Bool -> Bool -> ByteString -> Either String Regex
+compileRegex caseSensitive minimal bs =
   let !res = parseOnly (evalStateT parser RState{
                                             rsCurrentCaptureNumber = 0,
-                                            rsCaseSensitive = caseSensitive })
+                                            rsCaseSensitive = caseSensitive,
+                                            rsMinimal = minimal })
                        (decodeUtf8With lenientDecode bs)
    in res
  where
@@ -44,7 +50,8 @@ compileRegex caseSensitive bs =
 data RState =
   RState
   { rsCurrentCaptureNumber :: Int
-  , rsCaseSensitive :: Bool }
+  , rsCaseSensitive :: Bool
+  , rsMinimal :: Bool }
   deriving (Show)
 
 type RParser = StateT RState Parser
@@ -84,9 +91,10 @@ pParenthesized = do
                              num <- gets rsCurrentCaptureNumber
                              pure (MatchCapture num, id)
     currentCaptureNumber <- gets rsCurrentCaptureNumber
-    -- modifiers like (?i: are scoped to the group, so save the current
-    -- case sensitivity and restore it after the closing parenthesis:
+    -- modifiers like (?i: or (?U: are scoped to the group, so save the
+    -- current flags and restore them after the closing parenthesis:
     oldCaseSensitive <- gets rsCaseSensitive
+    oldMinimal <- gets rsMinimal
     modify stModifier
     contents <- do
       x <- pAltPart <|> pure mempty
@@ -107,7 +115,8 @@ pParenthesized = do
                  st{ rsCurrentCaptureNumber = maximum (n0 : map snd rest) })
       pure (foldr1 MatchAlt (x : map fst rest))
     _ <- lift (char ')')
-    modify $ \st -> st{ rsCaseSensitive = oldCaseSensitive }
+    modify $ \st -> st{ rsCaseSensitive = oldCaseSensitive
+                      , rsMinimal = oldMinimal }
     return $ modifier contents
 
 -- Inline modifiers like (?i) or (?-i), without a colon, apply from
@@ -142,21 +151,25 @@ pGroupModifiers =
 
 pRegexModifier :: Parser (RState -> RState)
 pRegexModifier = do
-  -- Of PCRE's inline flags we implement only i.  We also accept m and
-  -- s, which are no-ops for us: subjects are single lines, so there
-  -- are no newlines for (?s) to let . match or for (?m) to change the
-  -- meaning of ^ and $.  Flags that would change semantics we don't
-  -- implement (x, n, ...) are rejected, causing a compile error, as
-  -- unknown flags do in PCRE.  Turning flags *off* is always safe,
-  -- since only i is ever on.
-  ons <- many $ satisfy (inClass "ims")
+  -- Of PCRE's inline flags we implement i and U (ungreedy).  We also
+  -- accept m and s, which are no-ops for us: subjects are single
+  -- lines, so there are no newlines for (?s) to let . match or for
+  -- (?m) to change the meaning of ^ and $.  Flags that would change
+  -- semantics we don't implement (x, n, ...) are rejected, causing a
+  -- compile error, as unknown flags do in PCRE.  Turning flags *off*
+  -- is always safe, since only i and U are ever on.
+  ons <- many $ satisfy (inClass "imsU")
   offs <- option [] $ char '-' *>
-                      many (satisfy (inClass "imnsx"))
+                      many (satisfy (inClass "imnsxU"))
   pure $ \st -> st{
     rsCaseSensitive =
       if 'i' `elem` ons && 'i' `notElem` offs
          then False
          else ('i' `elem` offs) || rsCaseSensitive st
+  , rsMinimal =
+      if 'U' `elem` ons && 'U' `notElem` offs
+         then True
+         else ('U' `notElem` offs) && rsMinimal st
   }
 
 pSuffix :: Regex -> RParser Regex
@@ -204,8 +217,17 @@ pSuffix re = option re $ do
    -- by putting the empty alternative first; Lazy itself is only ever
    -- applied to MatchSome (the matcher relies on this).  A possessive
    -- quantifier commits to the preferred match of the greedy version.
-   withModifier greedy lazy = lift $
-     (Possessive greedy <$ char '+') <|> (lazy <$ char '?') <|> pure greedy
+   -- In minimal (ungreedy) mode the roles of the bare quantifier and
+   -- the ? modifier are swapped, as with PCRE's UNGREEDY option;
+   -- possessive quantifiers are unaffected.
+   withModifier :: Regex -> Regex -> RParser Regex
+   withModifier greedy lazy = do
+     minimal <- gets rsMinimal
+     let (bare, questioned) = if minimal
+                                 then (lazy, greedy)
+                                 else (greedy, lazy)
+     lift $ (Possessive greedy <$ char '+') <|> (questioned <$ char '?')
+            <|> pure bare
 
    -- repeat counts larger than this (the limit PCRE2 uses) are not
    -- treated as quantifiers:
