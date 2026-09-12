@@ -120,8 +120,10 @@ pGroupModifiers =
         ((AssertPositive dir, id) <$ char '=') <|>
           ((AssertNegative dir, id) <$ char '!')
    <|>
-     do c <- digit
-        return (\_ -> Subroutine (ord c - 48), id)
+     do ds <- many1 digit
+        case readMay ds of
+          Just !n -> return (\_ -> Subroutine n, id)
+          Nothing -> fail "not a number"
    <|>
      do void $ char 'R'
         return  (\_ -> Subroutine 0, id)
