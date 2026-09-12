@@ -88,14 +88,24 @@ pParenthesized = do
     -- case sensitivity and restore it after the closing parenthesis:
     oldCaseSensitive <- gets rsCaseSensitive
     modify stModifier
-    contents <- option MatchNull $
-      (\x xs -> foldr1 MatchAlt (x:xs))
-        <$> (pAltPart <|> pure mempty)
-        <*> many (lift (char '|') *>
-              ((when resetCaptureNumbers
-                    (modify (\st ->
-                          st{ rsCurrentCaptureNumber = currentCaptureNumber }))
-                 >> pAltPart) <|> pure mempty))
+    contents <- do
+      x <- pAltPart <|> pure mempty
+      n0 <- gets rsCurrentCaptureNumber
+      let pNextAlt = do
+            _ <- lift (char '|')
+            when resetCaptureNumbers $
+              modify (\st ->
+                       st{ rsCurrentCaptureNumber = currentCaptureNumber })
+            y <- pAltPart <|> pure mempty
+            n <- gets rsCurrentCaptureNumber
+            pure (y, n)
+      rest <- many pNextAlt
+      -- with (?|, numbering after the group resumes after the highest
+      -- group number used in any alternative, as in PCRE:
+      when resetCaptureNumbers $
+        modify (\st ->
+                 st{ rsCurrentCaptureNumber = maximum (n0 : map snd rest) })
+      pure (foldr1 MatchAlt (x : map fst rest))
     _ <- lift (char ')')
     modify $ \st -> st{ rsCaseSensitive = oldCaseSensitive }
     return $ modifier contents

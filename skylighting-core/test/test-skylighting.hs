@@ -484,6 +484,11 @@ regexTests =
             [(1,"a"),(2,"b"),(3,"c"),(4,"d"),(5,"e"),(6,"f"),(7,"g"),
              (8,"h"),(9,"i"),(10,"j"),(11,"k"),(12,"l")]))
   , ("(a)(b)(c)(d)(e)(f)(g)(h)(i)(j)(k)(l)x(?12)", "abcdefghijklxa", Nothing)
+    -- numbering after (?|...) resumes after the highest group number
+    -- used in any alternative:
+  , ("(?|(a)(b)|(c))(d)\\2", "abdb",
+      Just ("abdb", [(1,"a"),(2,"b"),(3,"d")]))
+  , ("(?|(a)(b)|(c))(d)\\2", "cdd", Nothing)
   ]
 
 
