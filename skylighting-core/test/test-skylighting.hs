@@ -109,6 +109,8 @@ main = do
                          $ getRegexesFromSyntax syn))
         syntaxes
     , testGroup "Regex module" $ map regexTest regexTests
+    , testGroup "Regex module compile errors" $
+        map regexErrorTest regexErrorTests
     , testGroup "Regression tests" $
       let perl = maybe (error "could not find Perl syntax") id
                              (lookupSyntax "Perl" sMap)
@@ -350,10 +352,9 @@ regexTests =
     -- matches "bxc", and inner iterations' captures are overwritten
   , ("[\\p{Nd}]", "33", Just ("3", []))
   , ("\\p{N}", "33", Just ("3", []))
-    -- {m,n} with m > n is invalid and is treated as a literal
-    -- (it used to send the compiler into an infinite loop):
-  , ("a{3,1}", "aaa", Nothing)
-  , ("a{3,1}", "a{3,1}", Just ("a{3,1}", []))
+    -- {m,n} with m > n is a compile error (see regexErrorTests; it
+    -- used to send the compiler into an infinite loop, and later was
+    -- treated as a literal)
     -- lazy quantifiers in lookbehinds used to hang the matcher:
   , ("ab(?<=a+?b)c", "abc", Just ("abc", []))
   , ("ab(?<=a+?)c", "abc", Nothing)
@@ -398,9 +399,8 @@ regexTests =
   , ("a{2,4}c", "aaaac", Just ("aaaac", []))
   , ("a{2,4}c", "aaaaac", Nothing)
   , ("[ab]{0,800}", replicate 800 'a', Just (replicate 800 'a', []))
-    -- repeat counts over 65535 are not treated as quantifiers:
-  , ("x{70000}", "xx", Nothing)
-  , ("x{70000}", "x{70000}", Just ("x{70000}", []))
+    -- repeat counts over 65535 are compile errors (see
+    -- regexErrorTests)
     -- an unmatched ] outside a character class is a literal, as in
     -- PCRE (used, e.g., by mermaid.xml and apparmor.xml):
   , ("a]b", "a]b", Just ("a]b", []))
@@ -509,7 +509,48 @@ regexTests =
   , ("[\\PL]+", "9!a", Just ("9!", []))
   , ("[\\P{N}]+", "a!9", Just ("a!", []))
   , ("[^\\PL]+", "ab9", Just ("ab", []))
+    -- {,n} is a quantifier (as in PCRE 10.43+), but {,} and {b} are
+    -- literal:
+  , ("a{,2}", "aaa", Just ("aa", []))
+  , ("a{,}", "a{,}", Just ("a{,}", []))
+  , ("a{b}", "a{b}", Just ("a{b}", []))
+    -- (?s) and (?m) are accepted (and are no-ops on our single-line
+    -- subjects):
+  , ("(?s)a.b", "axb", Just ("axb", []))
+  , ("(?m)^ab", "ab", Just ("ab", []))
+  , ("(?ims)ab", "AB", Just ("AB", []))
   ]
+
+-- these should fail to compile, as they do in PCRE ("quantifier does
+-- not follow a repeatable item", "numbers out of order in {}
+-- quantifier", "number too big in {} quantifier", or an unsupported
+-- inline flag):
+regexErrorTests :: [String]
+regexErrorTests =
+  [ "{2}"
+  , "({2})"
+  , "a|{2}"
+  , "a{2}{3}"
+  , "a+{2}"
+  , "{,2}"
+  , "a{3,1}"
+  , "x{70000}"
+  , "a{2,70000}"
+  , "^{2}"
+  , "^*a"
+  , "a$*"
+  , "\\b+a"
+  , "(?x)a b"
+  , "(?n)(a)b"
+  , "(?u)a"
+  ]
+
+regexErrorTest :: String -> TestTree
+regexErrorTest re =
+  testCase ("/" ++ re ++ "/") $
+    case compileRegex True (TE.encodeUtf8 (Text.pack re)) of
+      Left _  -> return ()
+      Right _ -> assertFailure "regex compiled, but an error was expected"
 
 
 vividize :: Diff Text -> Text

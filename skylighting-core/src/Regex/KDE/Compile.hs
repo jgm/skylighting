@@ -142,9 +142,14 @@ pGroupModifiers =
 
 pRegexModifier :: Parser (RState -> RState)
 pRegexModifier = do
-  -- "adlupimnsx-imnsx"
-  -- i = 105  - = 45
-  ons <- many $ satisfy (inClass "adlupimnsx")
+  -- Of PCRE's inline flags we implement only i.  We also accept m and
+  -- s, which are no-ops for us: subjects are single lines, so there
+  -- are no newlines for (?s) to let . match or for (?m) to change the
+  -- meaning of ^ and $.  Flags that would change semantics we don't
+  -- implement (x, n, ...) are rejected, causing a compile error, as
+  -- unknown flags do in PCRE.  Turning flags *off* is always safe,
+  -- since only i is ever on.
+  ons <- many $ satisfy (inClass "ims")
   offs <- option [] $ char '-' *>
                       many (satisfy (inClass "imnsx"))
   pure $ \st -> st{
@@ -155,6 +160,14 @@ pRegexModifier = do
   }
 
 pSuffix :: Regex -> RParser Regex
+-- a quantifier after an anchor or word-boundary assertion is a
+-- compile error in PCRE ("quantifier does not follow a repeatable
+-- item").  We get the same effect by leaving the quantifier
+-- unconsumed: *, +, and ? are rejected by pRegexChar as special, and
+-- { is rejected there when it begins a valid quantifier.
+pSuffix re@AssertBeginning = pure re
+pSuffix re@AssertEnd = pure re
+pSuffix re@AssertWordBoundary = pure re
 pSuffix re = option re $ do
   w <- lift $ satisfy (inClass "*+?{")
   case w of
@@ -171,13 +184,18 @@ pSuffix re = option re $ do
       case (minn, maxn) of
           _ | maybe False (> maxRepeat) minn ||
               maybe False (> maxRepeat) maxn
-                             -> mzero -- fall back to literal interpretation
-          (Nothing, Nothing) -> mzero
+                             -> mzero -- the unconsumed {..} then causes a
+                                      -- parse error via pRegexChar, as in
+                                      -- PCRE ("number too big in {}
+                                      -- quantifier")
+          (Nothing, Nothing) -> mzero -- {} and {,} are literal
           (Just n, Nothing)  -> withModifier (atleast n re) (atleastLazy n re)
           (Nothing, Just n)  -> withModifier (atmost n re) (atmostLazy n re)
           (Just m, Just n)
-            | m > n          -> mzero -- invalid quantifier, e.g. a{3,1};
-                                      -- fall back to literal interpretation
+            | m > n          -> mzero -- e.g. a{3,1}: the unconsumed {..}
+                                      -- then causes a parse error via
+                                      -- pRegexChar, as in PCRE ("numbers
+                                      -- out of order in {} quantifier")
             | otherwise      -> withModifier (between m n re)
                                              (betweenLazy m n re)
     _   -> fail "pSuffix encountered impossible byte"
@@ -230,11 +248,31 @@ pRegexChar = do
     '$'  -> return AssertEnd
     '^'  -> return AssertBeginning
     '['  -> lift $ pRegexCharClass caseSensitive
+    '{'  -> do
+      -- if this { begins a valid quantifier, there is nothing for it
+      -- to repeat, which is a compile error in PCRE ("quantifier does
+      -- not follow a repeatable item"); the same happens with a
+      -- quantifier that pSuffix declined to consume (out-of-order or
+      -- too-big repeat counts, which are also compile errors in PCRE):
+      isQuantifier <- lift $ option False (True <$ pQuantifierShape)
+      if isQuantifier
+         then fail "quantifier does not follow a repeatable item"
+         else return $ MatchChar (== '{')
     _ | isSpecial w -> mzero
       | otherwise -> return $!
             MatchChar $ if caseSensitive
                            then (== w)
                            else (\d -> toLower d == toLower w)
+
+-- The forms {m}, {m,}, {m,n}, and {,n} are quantifiers (PCRE also
+-- recognizes {,n} as of 10.43); anything else beginning with { --
+-- e.g. {}, {,}, {b}, or an unclosed {2 -- is a sequence of literal
+-- characters.  Assumes the initial { has already been consumed.
+pQuantifierShape :: Parser ()
+pQuantifierShape = do
+  _ <- (A.takeWhile1 isDigit <* option ',' (char ',' <* A.takeWhile isDigit))
+        <|> (char ',' *> A.takeWhile1 isDigit)
+  void $ char '}'
 
 pRegexEscapedChar :: Bool -> Parser Regex
 pRegexEscapedChar caseSensitive = do
