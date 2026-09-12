@@ -5,7 +5,7 @@ all: $(ALL)
 
 quick: skylighting/src/Skylighting/Syntax.hs
 	cabal test -fexecutable --test-options='--hide-successes $(TESTARGS)' all
-	cabal install -fexecutable exe:skylighting
+	cabal install -fexecutable --overwrite-policy=always exe:skylighting
 
 test:
 	cabal test --test-options '--hide-successes $(TESTARGS)'
