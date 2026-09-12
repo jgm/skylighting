@@ -136,6 +136,7 @@ library
                        Skylighting.Syntax.Matlab
                        Skylighting.Syntax.Maxima
                        Skylighting.Syntax.Mediawiki
+                       Skylighting.Syntax.Mermaid
                        Skylighting.Syntax.Metafont
                        Skylighting.Syntax.Mips
                        Skylighting.Syntax.Modelines
