@@ -137,7 +137,10 @@ pSuffix re = option re $ do
           (Nothing, Nothing) -> mzero
           (Just n, Nothing)  -> return $! atleast n re
           (Nothing, Just n)  -> return $! atmost n re
-          (Just m, Just n)   -> return $! between m n re
+          (Just m, Just n)
+            | m > n          -> mzero -- invalid quantifier, e.g. a{3,1};
+                                      -- fall back to literal interpretation
+            | otherwise      -> return $! between m n re
     _   -> fail "pSuffix encountered impossible byte") >>=
              lift . pQuantifierModifier
  where

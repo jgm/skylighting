@@ -348,6 +348,10 @@ regexTests =
     -- note: pcre gives insetad (2, "xbxc") -- I don't understand why
   , ("[\\p{Nd}]", "33", Just ("3", []))
   , ("\\p{N}", "33", Just ("3", []))
+    -- {m,n} with m > n is invalid and is treated as a literal
+    -- (it used to send the compiler into an infinite loop):
+  , ("a{3,1}", "aaa", Nothing)
+  , ("a{3,1}", "a{3,1}", Just ("a{3,1}", []))
   ]
 
 
