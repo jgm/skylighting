@@ -13,6 +13,8 @@ import qualified Data.ByteString.UTF8 as U
 import Data.Char (toLower)
 import qualified Data.Set as Set
 import Data.Set (Set)
+import Data.Bits (shiftL, (.|.))
+import Data.Word (Word8)
 import Regex.KDE.Regex
 import qualified Data.IntMap.Strict as M
 #if !MIN_VERSION_base(4,11,0)
@@ -22,19 +24,66 @@ import Data.Semigroup ((<>))
 -- Note that all matches are from the beginning of the string.
 -- The ^ anchor is implicit at the beginning of the regex.
 
+-- To reproduce PCRE's leftmost-first (backtracking) semantics in a
+-- set-based matcher, every match carries a path recording the choices
+-- made to reach it: 0 for taking the left branch of an alternation or
+-- continuing a greedy repetition, 1 for the right branch or ending
+-- the repetition (for lazy repetitions the loop codes are reversed).
+-- Comparing paths lexicographically gives the order in which a
+-- backtracking matcher like PCRE would find the matches, so the
+-- preferred match is always the one with the smallest path.
+
+-- A sequence of binary choices, packed into an Integer (most recent
+-- choice in the least significant bit) together with its length.
+-- Compared lexicographically as a bit sequence, with a proper prefix
+-- ordered before its extensions.
+data Path = Path !Integer !Int
+  deriving (Show, Eq)
+
+instance Ord Path where
+  compare (Path i1 l1) (Path i2 l2) =
+    compare (i1 `shiftL` max 0 (l2 - l1)) (i2 `shiftL` max 0 (l1 - l2))
+      <> compare l1 l2
+
+emptyPath :: Path
+emptyPath = Path 0 0
+
+pathSnoc :: Path -> Word8 -> Path
+pathSnoc (Path i l) b = Path ((i `shiftL` 1) .|. fromIntegral b) (l + 1)
+
 data Match =
    Match { matchBytes    :: !ByteString
          , matchOffset   :: !Int
          , matchCaptures :: !(M.IntMap (Int, Int))
                                   -- starting offset, length in bytes
+         , matchPath     :: !Path
          } deriving (Show, Eq)
 
--- preferred matches are <=
+-- preferred matches are <=; the path (priority) is decisive, and the
+-- other comparisons only make the order total:
 instance Ord Match where
-  m1 <= m2
-    | matchOffset m1 > matchOffset m2 = True
-    | matchOffset m1 < matchOffset m2 = False
-    | otherwise = matchCaptures m1 >= matchCaptures m2
+  compare m1 m2 =
+    compare (matchPath m1) (matchPath m2) <>
+    compare (matchOffset m1) (matchOffset m2) <>
+    compare (matchCaptures m1) (matchCaptures m2)
+
+-- the state of a match, disregarding its priority
+stateKey :: Match -> (Int, M.IntMap (Int, Int))
+stateKey m = (matchOffset m, matchCaptures m)
+
+-- append a choice to the path of every match
+addChoice :: Word8 -> Set Match -> Set Match
+addChoice !b = Set.map (\m -> m{ matchPath = pathSnoc (matchPath m) b })
+
+-- Discard any match whose state coincides with that of a preferred
+-- (smaller-path) match: their futures are identical, and a
+-- backtracking matcher would explore the preferred one first.
+dedup :: Set Match -> Set Match
+dedup = snd . Set.foldl' step (Set.empty, Set.empty)
+ where
+  step (!seen, !out) m
+    | stateKey m `Set.member` seen = (seen, out)
+    | otherwise = (Set.insert (stateKey m) seen, Set.insert m out)
 
 mapMatching :: (Match -> Match) -> Set Match -> Set Match
 mapMatching f = Set.filter ((>= 0) . matchOffset) . Set.map f
@@ -43,7 +92,7 @@ mapMatching f = Set.filter ((>= 0) . matchOffset) . Set.map f
 sizeLimit :: Int
 sizeLimit = 2000
 
--- prune matches if it gets out of hand
+-- prune matches if it gets out of hand, keeping preferred matches
 prune :: Set Match -> Set Match
 prune ms = if Set.size ms > sizeLimit
               then Set.take sizeLimit ms
@@ -55,15 +104,16 @@ prune ms = if Set.size ms > sizeLimit
 exec :: (Set (Int, Int), M.IntMap Regex)
      -> Direction -> Regex -> Set Match -> Set Match
 exec _ _ MatchNull = id
-exec cgs Forward (Lazy re) = -- note: the action is below under Concat
-  exec cgs Forward (MatchConcat (Lazy re) MatchNull)
-exec cgs Backward (Lazy re) = -- backward, the second part of a concat runs
-  exec cgs Backward (MatchConcat MatchNull (Lazy re)) -- first (see Concat)
+exec cgs dir (Lazy (MatchSome re)) = someLoop cgs dir re 1 0
+exec cgs dir (Lazy re) = -- Lazy is only applied to MatchSome (see Compile)
+  exec cgs dir re
 exec cgs dir (Possessive re) =
-  foldr
-    (\elt s -> case Set.lookupMin (exec cgs dir re (Set.singleton elt)) of
-                 Nothing -> s
-                 Just m  -> Set.insert m s)
+  -- commit to the first match (in backtracking order) of re; its
+  -- internal choices are forgotten, so the path is reset:
+  Set.foldl'
+    (\s m -> case Set.lookupMin (exec cgs dir re (Set.singleton m)) of
+               Nothing -> s
+               Just m' -> Set.insert m'{ matchPath = matchPath m } s)
     mempty
 exec cgs dir (MatchDynamic n) = -- if this hasn't been replaced, match literal
   exec cgs dir (MatchChar (== '%') <>
@@ -71,11 +121,16 @@ exec cgs dir (MatchDynamic n) = -- if this hasn't been replaced, match literal
 exec _ _ AssertEnd = Set.filter (\m -> matchOffset m == B.length (matchBytes m))
 exec _ _ AssertBeginning = Set.filter (\m -> matchOffset m == 0)
 exec cgs _ (AssertPositive dir regex) =
-  Set.unions . Set.map
-    (\m -> Set.map (\m' -> -- we keep captures but not matches
-                            m'{ matchBytes = matchBytes m,
-                               matchOffset = matchOffset m })
-           $ exec cgs dir regex (Set.singleton m))
+  -- assertions are atomic: only the captures of the first match (in
+  -- backtracking order) of the assertion are kept, as in PCRE:
+  Set.foldl'
+    (\s m -> case Set.lookupMin (exec cgs dir regex (Set.singleton m)) of
+               Nothing -> s
+               Just m' -> Set.insert
+                            m'{ matchBytes = matchBytes m
+                              , matchOffset = matchOffset m
+                              , matchPath = matchPath m } s)
+    mempty
 exec cgs _ (AssertNegative dir regex) =
   Set.filter (\m -> null (exec cgs dir regex (Set.singleton m)))
 exec _ _ AssertWordBoundary = Set.filter atWordBoundary
@@ -100,53 +155,17 @@ exec _ Backward (MatchChar f) = mapMatching $ \m ->
         _                -> m{ matchOffset = -1 }
 exec cgs dir (MatchConcat (MatchConcat r1 r2) r3) =
   exec cgs dir (MatchConcat r1 (MatchConcat r2 r3))
-exec cgs Forward (MatchConcat (Lazy r1) r2) =
-  Set.foldl Set.union mempty . Set.map
-    (\m ->
-      let ms1 = exec cgs Forward r1 (Set.singleton m)
-       in if Set.null ms1
-             then ms1
-             else go ms1)
- where
-  go ms = case Set.lookupMax ms of   -- find shortest match
-            Nothing -> Set.empty
-            Just m' ->
-              let s' = exec cgs Forward r2 (Set.singleton m')
-               in if Set.null s'
-                     then go (Set.delete m' ms)
-                     else s'
-exec cgs Forward (MatchConcat r1 r2) = -- TODO longest match first
+exec cgs Forward (MatchConcat r1 r2) =
   \ms ->
     let ms1 = exec cgs Forward r1 ms
      in if Set.null ms1
            then ms1
            else exec cgs Forward r2 (prune ms1)
-exec cgs Backward (MatchConcat r1 (Lazy r2)) =
-  -- in backward matching, r2 runs first and r1 is its continuation:
-  Set.foldl Set.union mempty . Set.map
-    (\m ->
-      let ms2 = exec cgs Backward r2 (Set.singleton m)
-       in if Set.null ms2
-             then ms2
-             else go ms2)
- where
-  go ms = case Set.lookupMin ms of -- find shortest match (largest offset)
-            Nothing -> Set.empty
-            Just m' ->
-              let s' = exec cgs Backward r1 (Set.singleton m')
-               in if Set.null s'
-                     then go (Set.delete m' ms)
-                     else s'
 exec cgs Backward (MatchConcat r1 r2) =
   exec cgs Backward r1 . exec cgs Backward r2
-exec cgs dir (MatchAlt r1 r2) = \ms -> exec cgs dir r1 ms <> exec cgs dir r2 ms
-exec cgs dir (MatchSome re) = go
- where
-  go ms = case exec cgs dir re ms of
-            ms' | Set.null ms' -> Set.empty
-                | ms' == ms    -> ms
-                | otherwise    -> let ms'' = prune ms'
-                                   in ms'' <> go ms''
+exec cgs dir (MatchAlt r1 r2) = \ms ->
+  dedup $ exec cgs dir r1 (addChoice 0 ms) <> exec cgs dir r2 (addChoice 1 ms)
+exec cgs dir (MatchSome re) = someLoop cgs dir re 0 1
 exec cgs dir (MatchCapture i re) =
   Set.foldr Set.union Set.empty .
    Set.map (\m ->
@@ -192,11 +211,32 @@ exec (active, cgs) dir (Subroutine i) =
       -- any input can never make progress: block re-entry at the same
       -- offset so that zero-progress recursion (e.g. `x|(?R)`) fails
       -- instead of looping forever.
-      Set.unions
+      dedup $ Set.unions
         [ exec (Set.insert (i, matchOffset m) active, cgs) dir re'
             (Set.singleton m)
         | m <- Set.toList ms
         , (i, matchOffset m) `Set.notMember` active ]
+
+-- Match one or more repetitions of a regex.  contB is the path code
+-- appended when continuing with another repetition, stopB the one
+-- appended when stopping: 0/1 for greedy, 1/0 for lazy repetitions,
+-- so that the paths order the results the way a backtracking matcher
+-- would find them.
+someLoop :: (Set (Int, Int), M.IntMap Regex) -> Direction -> Regex
+         -> Word8 -> Word8 -> Set Match -> Set Match
+someLoop cgs dir re !contB !stopB = \ms0 ->
+  let ms1 = dedup $ exec cgs dir re ms0  -- first, obligatory repetition
+   in go (Set.map stateKey ms1) ms1
+ where
+  go !seen ms
+    | Set.null ms = Set.empty
+    | otherwise =
+        let ms' = dedup $ prune $ exec cgs dir re (addChoice contB ms)
+            -- Drop matches that revisit an already-seen state: they
+            -- have no new futures, and this guarantees termination
+            -- when an iteration can match the empty string.
+            new = Set.filter (\m -> stateKey m `Set.notMember` seen) ms'
+         in addChoice stopB ms <> go (seen <> Set.map stateKey new) new
 
 atWordBoundary :: Match -> Bool
 atWordBoundary m =
@@ -244,12 +284,15 @@ lastCharOffset bs n = go (n - 1)
 -- | Match a Regex against a (presumed UTF-8 encoded) ByteString,
 -- returning the matched text and a map of (offset, size)
 -- pairs for captures.  Note that all matches are from the
--- beginning of the string (a @^@ anchor is implicit).  Note
--- also that to avoid pathological performance in certain cases,
--- the matcher is limited to considering 2000 possible matches
--- at a time; when that threshold is reached, it discards
--- smaller matches.  Hence certain regexes may incorrectly fail to
--- match: e.g. @a*a{3000}$@ on a string of 3000 @a@s.
+-- beginning of the string (a @^@ anchor is implicit).  As in
+-- PCRE, the match returned is the first one that a backtracking
+-- matcher would find (leftmost alternatives are preferred), which
+-- is not necessarily the longest.  Note also that to avoid
+-- pathological performance in certain cases, the matcher is limited
+-- to considering 2000 possible matches at a time; when that
+-- threshold is reached, it discards lower-priority matches.  Hence
+-- certain regexes may incorrectly fail to match: e.g. @a*a{3000}$@
+-- on a string of 3000 @a@s.
 matchRegex :: Regex
            -> ByteString
            -> Maybe (ByteString, M.IntMap (Int, Int))
@@ -257,7 +300,7 @@ matchRegex re bs =
   let capturingGroups = extractCapturingGroups re
   in  toResult <$> Set.lookupMin
                (exec (Set.empty, capturingGroups) Forward re
-                  (Set.singleton (Match bs 0 M.empty)))
+                  (Set.singleton (Match bs 0 M.empty emptyPath)))
  where
    toResult m = (B.take (matchOffset m) (matchBytes m), (matchCaptures m))
 

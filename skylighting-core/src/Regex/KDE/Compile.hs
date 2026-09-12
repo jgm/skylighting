@@ -52,9 +52,11 @@ type RParser = StateT RState Parser
 pRegex :: RParser Regex
 pRegex =
   option MatchNull $
-  foldr MatchAlt
-    -- the first alternative may be empty, as in (?:|a); as in PCRE,
-    -- an empty alternative matches the empty string:
+  -- earlier alternatives must be the left operands of MatchAlt, since
+  -- the matcher prefers them, as in PCRE.  The first alternative may
+  -- be empty, as in (?:|a); as in PCRE, an empty alternative matches
+  -- the empty string:
+  (\x xs -> foldr1 MatchAlt (x:xs))
     <$> (pAltPart <|> pure mempty)
     <*> many (lift (char '|') *> (pAltPart <|> pure mempty))
 
@@ -87,7 +89,7 @@ pParenthesized = do
     oldCaseSensitive <- gets rsCaseSensitive
     modify stModifier
     contents <- option MatchNull $
-      foldr MatchAlt
+      (\x xs -> foldr1 MatchAlt (x:xs))
         <$> (pAltPart <|> pure mempty)
         <*> many (lift (char '|') *>
               ((when resetCaptureNumbers
@@ -143,10 +145,11 @@ pRegexModifier = do
 pSuffix :: Regex -> RParser Regex
 pSuffix re = option re $ do
   w <- lift $ satisfy (inClass "*+?{")
-  (case w of
-    '*'  -> return $ MatchAlt (MatchSome re) MatchNull
-    '+'  -> return $ MatchSome re
-    '?'  -> return $ MatchAlt re MatchNull
+  case w of
+    '*'  -> withModifier (MatchAlt (MatchSome re) MatchNull)
+                         (MatchAlt MatchNull (Lazy (MatchSome re)))
+    '+'  -> withModifier (MatchSome re) (Lazy (MatchSome re))
+    '?'  -> withModifier (MatchAlt re MatchNull) (MatchAlt MatchNull re)
     '{'  -> do
       minn <- lift $
         option Nothing $ readMay . T.unpack <$> A.takeWhile isDigit
@@ -158,15 +161,22 @@ pSuffix re = option re $ do
               maybe False (> maxRepeat) maxn
                              -> mzero -- fall back to literal interpretation
           (Nothing, Nothing) -> mzero
-          (Just n, Nothing)  -> return $! atleast n re
-          (Nothing, Just n)  -> return $! atmost n re
+          (Just n, Nothing)  -> withModifier (atleast n re) (atleastLazy n re)
+          (Nothing, Just n)  -> withModifier (atmost n re) (atmostLazy n re)
           (Just m, Just n)
             | m > n          -> mzero -- invalid quantifier, e.g. a{3,1};
                                       -- fall back to literal interpretation
-            | otherwise      -> return $! between m n re
-    _   -> fail "pSuffix encountered impossible byte") >>=
-             lift . pQuantifierModifier
+            | otherwise      -> withModifier (between m n re)
+                                             (betweenLazy m n re)
+    _   -> fail "pSuffix encountered impossible byte"
  where
+   -- A lazy quantifier prefers fewer repetitions, which is expressed
+   -- by putting the empty alternative first; Lazy itself is only ever
+   -- applied to MatchSome (the matcher relies on this).  A possessive
+   -- quantifier commits to the preferred match of the greedy version.
+   withModifier greedy lazy = lift $
+     (Possessive greedy <$ char '+') <|> (lazy <$ char '?') <|> pure greedy
+
    -- repeat counts larger than this (the limit PCRE2 uses) are not
    -- treated as quantifiers:
    maxRepeat = 65535 :: Int
@@ -177,14 +187,20 @@ pSuffix re = option re $ do
      | n <= 0 = MatchNull
      | otherwise = MatchAlt (r <> atmost (n - 1) r) MatchNull
 
+   atmostLazy n r
+     | n <= 0 = MatchNull
+     | otherwise = MatchAlt MatchNull (r <> atmostLazy (n - 1) r)
+
    between 0 n r = atmost n r
    between m n r = mconcat (replicate m r) <> atmost (n - m) r
 
+   betweenLazy 0 n r = atmostLazy n r
+   betweenLazy m n r = mconcat (replicate m r) <> atmostLazy (n - m) r
+
    atleast n r = mconcat (replicate n r) <> MatchAlt (MatchSome r) MatchNull
 
-pQuantifierModifier :: Regex -> Parser Regex
-pQuantifierModifier re = option re $
-  (Possessive re <$ char '+') <|> (Lazy re <$ char '?')
+   atleastLazy n r = mconcat (replicate n r) <>
+                     MatchAlt MatchNull (Lazy (MatchSome r))
 
 pRegexChar :: RParser Regex
 pRegexChar = do

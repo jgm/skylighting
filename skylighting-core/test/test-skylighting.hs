@@ -301,7 +301,8 @@ regexTests =
   , ("abc|ab$", "abd", Nothing)
   , ("[\\x50-\\x51]*", "PQR", Just ("PQ", []))
   , ("[\\x{2019}]*", "\x2019PQR", Just ("\x2019", []))
-  , ("(?:ab)*|a.*", "abababa", Just ("abababa", []))
+  , ("(?:ab)*|a.*", "abababa", Just ("ababab", []))
+    -- leftmost-first: first alternative matches, so second is never tried
   , ("a[b-e]*", "abcdefg", Just ("abcde", []))
   , ("a[b-e\\n-]*", "abcde\nb-bcfg", Just ("abcde\nb-bc", []))
   , ("^\\s+\\S+\\s+$", "   abc  ", Just ("   abc  ", []))
@@ -344,8 +345,9 @@ regexTests =
   , ("([abc](?1)*)", "abcd", Just ("abc", [(1,"abc")]))
   , ("(x(?1)*)", "xxxxy", Just ("xxxx", [(1,"xxxx")]))
   , ("a|\\((?0)\\)", "(((a)))", Just ("(((a)))", []))
-  , ("([abc](x(?1))*)", "axbxcc", Just ("axbxc", [(1,"axbxc"),(2,"xc")]))
-    -- note: pcre gives insetad (2, "xbxc") -- I don't understand why
+  , ("([abc](x(?1))*)", "axbxcc", Just ("axbxc", [(1,"axbxc"),(2,"xbxc")]))
+    -- group 2's last iteration is "xbxc": the recursion (?1) inside it
+    -- matches "bxc", and inner iterations' captures are overwritten
   , ("[\\p{Nd}]", "33", Just ("3", []))
   , ("\\p{N}", "33", Just ("3", []))
     -- {m,n} with m > n is invalid and is treated as a literal
@@ -358,7 +360,8 @@ regexTests =
     -- recursive subroutine calls that consume no input used to hang;
     -- now re-entering a subroutine at the same offset just fails:
   , ("x|(?R)", "x", Just ("x", []))
-  , ("a|(?R)(?R)", "aa", Just ("aa", []))
+  , ("a|(?R)(?R)", "aa", Just ("a", []))
+    -- leftmost-first: the first alternative succeeds on "a"
     -- backward matching (lookbehind, \b) after multibyte characters
     -- used to land inside a UTF-8 sequence:
   , ("\x00e9(?<=\x00e9)x", "\x00e9x", Just ("\x00e9x", []))
@@ -465,6 +468,16 @@ regexTests =
   , ("(?>ab|a)c", "ac", Just ("ac", []))
   , ("(?>a+)ab", "aaab", Nothing)
   , ("x(?>)y", "xy", Just ("xy", []))
+  , ("(?>a|ab)c", "abc", Nothing)
+  , ("(?>(a|ab)c)", "abc", Just ("abc", [(1,"ab")]))
+    -- alternation is leftmost-first, not longest-match (as in PCRE):
+  , ("a|ab", "ab", Just ("a", []))
+  , ("(a|ab)c?", "abc", Just ("a", [(1,"a")]))
+  , ("(?=(a|ab))", "ab", Just ("", [(1,"a")]))
+    -- lazy quantifiers match as little as possible:
+  , ("a+?b", "aaab", Just ("aaab", []))
+  , ("a*?b", "aaab", Just ("aaab", []))
+  , ("(a+?)ab", "aaab", Just ("aaab", [(1,"aa")]))
   ]
 
 
