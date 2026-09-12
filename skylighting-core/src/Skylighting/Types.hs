@@ -109,7 +109,7 @@ data Matcher =
   | HlCHex
   | HlCStringChar
   | HlCChar
-  | LineContinue
+  | LineContinue !Char
   | IncludeRules !ContextName
   | DetectSpaces
   | DetectIdentifier

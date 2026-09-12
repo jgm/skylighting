@@ -121,7 +121,9 @@ main = do
           bash  = maybe (error "could not find bash syntax") id
                              (lookupSyntax "bash" sMap)
           c    = maybe (error "could not find C syntax") id
-                             (lookupSyntax "c" sMap) in
+                             (lookupSyntax "c" sMap)
+          dosbat = maybe (error "could not find MS-DOS Batch syntax") id
+                             (lookupSyntax "MS-DOS Batch" sMap) in
       [ testCase "perl NUL case" $ Right
              [[(OtherTok,"s\NULb\NUL")
               ,(StringTok,"c")
@@ -196,6 +198,13 @@ main = do
           , [ ( KeywordTok , "}" ) ] ]
              @=? tokenize defConfig bash
                      "f() {\n    echo > f\n}\n"
+
+      , testCase "LineContinue with char attribute (dosbat ^)" $ Right
+          [ [ ( BuiltInTok , "echo" )
+            , ( NormalTok , " foo " )
+            , ( SpecialCharTok , "^" ) ]
+          , [ ( NormalTok , "bar" ) ] ]
+             @=? tokenize defConfig dosbat "echo foo ^\nbar"
 
       , testCase "C floating-point literal (#174)" $ Right
           [ [ ( DataTypeTok , "double")

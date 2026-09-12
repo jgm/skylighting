@@ -336,7 +336,7 @@ tryRule rule inp = do
                 WordDetect s -> withAttr attr $
                                     wordDetect (rCaseSensitive rule)
                                       (rWeakDeliminators rule) s inp
-                LineContinue -> withAttr attr $ lineContinue inp
+                LineContinue c -> withAttr attr $ lineContinue c inp
                 DetectSpaces -> withAttr attr $ detectSpaces inp
                 DetectIdentifier -> withAttr attr $ detectIdentifier inp
                 IncludeRules cname -> includeRules
@@ -534,9 +534,9 @@ detectIdentifier inp = do
                                      not (isAlphaNum d || d == '_')) t)
     _ -> mzero
 
-lineContinue :: ByteString -> TokenizerM Text
-lineContinue inp = do
-  if inp == "\\"
+lineContinue :: Char -> ByteString -> TokenizerM Text
+lineContinue c inp = do
+  if inp == UTF8.fromString [c]
      then do
        modify $ \st -> st{ lineContinuation = True }
        takeChars 1

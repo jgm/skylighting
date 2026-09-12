@@ -265,7 +265,12 @@ getParser casesensitive syntaxname itemdatas lists kwattr cattr el = do
                  "HlCHex" -> return $ HlCHex
                  "HlCStringChar" -> return $ HlCStringChar
                  "HlCChar" -> return $ HlCChar
-                 "LineContinue" -> return $ LineContinue
+                 -- KDE uses the first character of the char attribute,
+                 -- or backslash if it is absent or empty:
+                 "LineContinue" -> return $ LineContinue $
+                    case T.uncons (getAttrValue "char" el) of
+                      Just (c, _) -> c
+                      Nothing     -> '\\'
                  "IncludeRules" -> return $
                    IncludeRules (incsyntax, inccontext)
                  "DetectSpaces" -> return $ DetectSpaces
