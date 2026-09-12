@@ -139,6 +139,9 @@ pSuffix re = option re $ do
                        (readMay . T.unpack <$> A.takeWhile isDigit)
       _ <- lift $ char '}'
       case (minn, maxn) of
+          _ | maybe False (> maxRepeat) minn ||
+              maybe False (> maxRepeat) maxn
+                             -> mzero -- fall back to literal interpretation
           (Nothing, Nothing) -> mzero
           (Just n, Nothing)  -> return $! atleast n re
           (Nothing, Just n)  -> return $! atmost n re
@@ -149,8 +152,15 @@ pSuffix re = option re $ do
     _   -> fail "pSuffix encountered impossible byte") >>=
              lift . pQuantifierModifier
  where
-   atmost 0 _ = MatchNull
-   atmost n r = MatchAlt (mconcat (replicate n r)) (atmost (n-1) r)
+   -- repeat counts larger than this (the limit PCRE2 uses) are not
+   -- treated as quantifiers:
+   maxRepeat = 65535 :: Int
+
+   -- nest the optional matches -- r(r(r)?)? -- so that the size of
+   -- the compiled regex is linear, not quadratic, in n:
+   atmost n r
+     | n <= 0 = MatchNull
+     | otherwise = MatchAlt (r <> atmost (n - 1) r) MatchNull
 
    between 0 n r = atmost n r
    between m n r = mconcat (replicate m r) <> atmost (n - m) r

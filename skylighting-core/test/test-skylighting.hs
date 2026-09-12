@@ -389,6 +389,15 @@ regexTests =
   , ("(?i:\\x61+)", "aA", Just ("aA", []))
   , ("(?i:(ab)\\1)", "abAB", Just ("abAB", [(1,"ab")]))
   , ("(ab)\\1", "abAB", Nothing)
+    -- {m,n} expansion is now linear in n; behavior is unchanged:
+  , ("a{0,3}b", "aaab", Just ("aaab", []))
+  , ("a{0,3}b", "aaaab", Nothing)
+  , ("a{2,4}c", "aaaac", Just ("aaaac", []))
+  , ("a{2,4}c", "aaaaac", Nothing)
+  , ("[ab]{0,800}", replicate 800 'a', Just (replicate 800 'a', []))
+    -- repeat counts over 65535 are not treated as quantifiers:
+  , ("x{70000}", "xx", Nothing)
+  , ("x{70000}", "x{70000}", Just ("x{70000}", []))
   ]
 
 
