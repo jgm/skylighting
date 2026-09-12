@@ -209,6 +209,11 @@ pRegexEscapedChar caseSensitive = do
               case readMay ds of
                 Just !n -> return $ MatchCaptured n caseSensitive
                 Nothing -> fail "not a number"
+    'g' -> do -- PCRE backreference syntax: \g1 \g{12}
+              ds <- (char '{' *> many1 digit <* char '}') <|> many1 digit
+              case readMay ds of
+                Just !n -> return $ MatchCaptured n caseSensitive
+                Nothing -> fail "not a number"
     'd' -> return $ MatchChar isDigit
     'D' -> return $ MatchChar (not . isDigit)
     's' -> return $ MatchChar isSpace

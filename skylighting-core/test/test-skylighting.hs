@@ -420,6 +420,12 @@ regexTests =
     -- and a \G after consuming input always fails:
   , ("\\G\\d{4}-\\d{2}", "2024-01x", Just ("2024-01", []))
   , ("a\\Gb", "ab", Nothing)
+    -- \g1 and \g{1} are PCRE syntax for backreferences:
+  , ("(ab)\\g1", "ababx", Just ("abab", [(1,"ab")]))
+  , ("(a)(b)\\g2\\g1", "abba", Just ("abba", [(1,"a"),(2,"b")]))
+  , ("(ab)c\\g{1}", "abcabx", Just ("abcab", [(1,"ab")]))
+  , ("([_*]{1,2})x\\g1", "**x**", Just ("**x**", [(1,"**")]))
+  , ("([_*]{1,2})x\\g1", "**x*", Nothing)
   ]
 
 
