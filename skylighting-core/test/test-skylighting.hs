@@ -436,6 +436,16 @@ regexTests =
   , ("(a(?i)b|c)", "C", Just ("C", [(1,"C")]))
   , ("(?i)A(?-i)B", "aB", Just ("aB", []))
   , ("(?i)A(?-i)B", "Ab", Nothing)
+    -- \h and \H match horizontal whitespace (and its complement):
+  , ("a\\hb", "a b", Just ("a b", []))
+  , ("a\\hb", "a\tb", Just ("a\tb", []))
+  , ("a\\hb", "a\xa0\&b", Just ("a\xa0\&b", []))
+  , ("\\h", "\x180e", Just ("\x180e", []))
+  , ("a\\hb", "a\nb", Nothing)
+  , ("a\\Hb", "axb", Just ("axb", []))
+  , ("a\\Hb", "a b", Nothing)
+  , ("[\\h]", "\xa0", Just ("\xa0", []))
+  , ("[^\\h]+", "ab cd", Just ("ab", []))
   ]
 
 

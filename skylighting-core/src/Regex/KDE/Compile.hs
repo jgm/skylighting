@@ -229,6 +229,8 @@ pRegexEscapedChar caseSensitive = do
     'D' -> return $ MatchChar (not . isDigit)
     's' -> return $ MatchChar isSpace
     'S' -> return $ MatchChar (not . isSpace)
+    'h' -> return $ MatchChar isHorizSpace
+    'H' -> return $ MatchChar (not . isHorizSpace)
     'w' -> return $ MatchChar isWordChar
     'W' -> return $ MatchChar (not . isWordChar)
     'p' -> MatchChar <$> pUnicodeCharClass
@@ -290,6 +292,8 @@ pRegexCharClass caseSensitive = do
          <|> (not . isDigit <$ char 'D')
          <|> (isSpace <$ char 's')
          <|> (not . isSpace <$ char 'S')
+         <|> (isHorizSpace <$ char 'h')
+         <|> (not . isHorizSpace <$ char 'H')
          <|> (isWordChar <$ char 'w')
          <|> (not . isWordChar <$ char 'W')
   let getPosixClass = do
@@ -392,6 +396,14 @@ pUnicodeCharClass = do
                     c == PrivateUse || c == NotAssigned)
       _    -> const False) . generalCategory
 
+
+-- PCRE's \h matches this fixed list of horizontal whitespace
+-- characters (which is not the same as Unicode category Zs):
+isHorizSpace :: Char -> Bool
+isHorizSpace c =
+  c == '\t' || c == ' ' || c == '\xA0' || c == '\x1680' || c == '\x180E' ||
+  (c >= '\x2000' && c <= '\x200A') || c == '\x202F' || c == '\x205F' ||
+  c == '\x3000'
 
 isSpecial :: Char -> Bool
 isSpecial '\\' = True
