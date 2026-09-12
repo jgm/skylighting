@@ -226,16 +226,16 @@ matchRegex re bs =
    toResult m = (B.take (matchOffset m) (matchBytes m), (matchCaptures m))
 
 extractCapturingGroups :: Regex -> M.IntMap Regex
-extractCapturingGroups regex = M.singleton 0 regex <>
-  case regex of
-    MatchSome re -> extractCapturingGroups re
-    MatchAlt re1 re2 ->
-      extractCapturingGroups re1 <> extractCapturingGroups re2
-    MatchConcat re1 re2 ->
-      extractCapturingGroups re1 <> extractCapturingGroups re2
-    MatchCapture i re -> M.singleton i re
-    AssertPositive _ re -> extractCapturingGroups re
-    AssertNegative _ re -> extractCapturingGroups re
-    Possessive re -> extractCapturingGroups re
-    Lazy re -> extractCapturingGroups re
-    _ -> mempty
+extractCapturingGroups regex = M.insert 0 regex (go regex)
+ where
+  -- Note: left-biased union means that with (?|...), which reuses
+  -- group numbers, the first alternative's group wins.
+  go (MatchSome re) = go re
+  go (MatchAlt re1 re2) = go re1 <> go re2
+  go (MatchConcat re1 re2) = go re1 <> go re2
+  go (MatchCapture i re) = M.insert i re (go re)
+  go (AssertPositive _ re) = go re
+  go (AssertNegative _ re) = go re
+  go (Possessive re) = go re
+  go (Lazy re) = go re
+  go _ = mempty

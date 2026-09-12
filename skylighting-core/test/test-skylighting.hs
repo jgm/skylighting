@@ -377,6 +377,10 @@ regexTests =
   , ("[[:word:]]+", "a_b-c", Just ("a_b", []))
   , ("[^[:graph:]]", " a", Just (" ", []))
   , ("[[:alpha:][:digit:]]+", "ab1 x", Just ("ab1", []))
+    -- subroutine calls to groups nested inside other groups used to
+    -- be silently ignored (matching the empty string):
+  , ("((a)b)(?2)", "aba", Just ("aba", [(1,"ab"),(2,"a")]))
+  , ("((a)b)(?2)", "abx", Nothing)
   ]
 
 
