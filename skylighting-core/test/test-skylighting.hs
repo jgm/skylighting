@@ -359,6 +359,12 @@ regexTests =
     -- now re-entering a subroutine at the same offset just fails:
   , ("x|(?R)", "x", Just ("x", []))
   , ("a|(?R)(?R)", "aa", Just ("aa", []))
+    -- backward matching (lookbehind, \b) after multibyte characters
+    -- used to land inside a UTF-8 sequence:
+  , ("\x00e9(?<=\x00e9)x", "\x00e9x", Just ("\x00e9x", []))
+  , ("\x00e9\\bx", "\x00e9x", Nothing)
+  , ("\x2019(?<=\x2019)x", "\x2019x", Just ("\x2019x", []))
+  , ("\x00e9(?<!\x00e9)x", "\x00e9x", Nothing)
   ]
 
 

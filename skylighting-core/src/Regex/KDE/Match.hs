@@ -193,14 +193,17 @@ atWordBoundary m =
         (cur:next:_) -> isWordChar cur /= isWordChar next
         _ -> True
 
+-- Return the offset of the start of the (UTF-8 encoded) character
+-- that ends at (i.e., whose last byte is just before) offset n.
 lastCharOffset :: ByteString -> Int -> Maybe Int
 lastCharOffset _ 0 = Nothing
-lastCharOffset _ 1 = Just 0
-lastCharOffset bs n =
-  case B.index bs (n - 2) of
-    w | w <  0b10000000 -> Just (n - 1)
-      | w >= 0b11000000 -> Just (n - 1)
-      | otherwise -> lastCharOffset bs (n - 1)
+lastCharOffset bs n = go (n - 1)
+ where
+  go !k
+    | k <= 0 = Just 0
+    | isContinuationByte (B.index bs k) = go (k - 1)
+    | otherwise = Just k
+  isContinuationByte w = w >= 0b10000000 && w < 0b11000000
 
 -- | Match a Regex against a (presumed UTF-8 encoded) ByteString,
 -- returning the matched text and a map of (offset, size)
