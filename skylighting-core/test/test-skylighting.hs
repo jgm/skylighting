@@ -407,6 +407,14 @@ regexTests =
     -- yields a stray ] later (as in PCRE):
   , ("[^|{}[]", "a", Just ("a", []))
   , ("[^|{}[]", "[", Nothing)
+    -- \0 takes up to two further octal digits, as in PCRE
+    -- (\041 = '!', \042 = '"'); it is octal, not a backreference:
+  , ("[\\041-\\043]", "\"", Just ("\"", []))
+  , ("\\041", "!!", Just ("!", []))
+  , ("a\\0b", "a\NULb", Just ("a\NULb", []))
+  , ("[\\0]", "\NULx", Just ("\NUL", []))
+    -- a third digit is not consumed (\0101 is \b followed by 1):
+  , ("\\0101", "\b1", Just ("\b1", []))
   ]
 
 

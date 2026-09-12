@@ -212,7 +212,7 @@ pRegexEscapedChar caseSensitive = do
     'w' -> return $ MatchChar isWordChar
     'W' -> return $ MatchChar (not . isWordChar)
     'p' -> MatchChar <$> pUnicodeCharClass
-    _ | isDigit c ->
+    _ | isDigit c, c /= '0' -> -- \0 is an octal escape, not a backreference
        return $! MatchCaptured (ord c - ord '0') caseSensitive
       | otherwise -> mzero) <|> (matchLiteralChar <$> pEscaped c)
  where
@@ -231,9 +231,11 @@ pEscaped c =
     'r' -> return '\r'
     't' -> return '\t'
     'v' -> return '\v'
-    '0' -> do -- \0ooo matches octal ooo
-      ds <- A.take 3
-      case readMay ("'\\o" ++ T.unpack ds ++ "'") of
+    '0' -> do -- \0 followed by up to two octal digits (as in PCRE)
+      ds <- A.scan (0 :: Int) (\s w -> if s < 2 && isOctDigit w
+                                          then Just (s + 1)
+                                          else Nothing)
+      case readMay ("'\\o0" ++ T.unpack ds ++ "'") of
         Just x  -> return x
         Nothing -> fail "invalid octal character escape"
     _ | c >= '1' && c <= '7' -> do
