@@ -398,6 +398,15 @@ regexTests =
     -- repeat counts over 65535 are not treated as quantifiers:
   , ("x{70000}", "xx", Nothing)
   , ("x{70000}", "x{70000}", Just ("x{70000}", []))
+    -- an unmatched ] outside a character class is a literal, as in
+    -- PCRE (used, e.g., by mermaid.xml and apparmor.xml):
+  , ("a]b", "a]b", Just ("a]b", []))
+  , ("\\d{1,3}]", "42]x", Just ("42]", []))
+  , ("[ab]]", "b]", Just ("b]", []))
+    -- a class is terminated by the first unescaped ] even if that
+    -- yields a stray ] later (as in PCRE):
+  , ("[^|{}[]", "a", Just ("a", []))
+  , ("[^|{}[]", "[", Nothing)
   ]
 
 

@@ -378,7 +378,9 @@ isSpecial '*'  = True
 isSpecial '+'  = True
 -- isSpecial '{' = True -- this is okay except in suffixes
 isSpecial '[' = True
-isSpecial ']' = True
+-- an unmatched ] is treated as a literal (as in PCRE), so it is
+-- not included here; the ] terminating a character class is consumed
+-- by pRegexCharClass:
 isSpecial '%' = True
 isSpecial '(' = True
 isSpecial ')' = True
