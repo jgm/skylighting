@@ -113,7 +113,7 @@ library
                        Regex.KDE.Compile
                        Regex.KDE.Match
   other-extensions:    CPP
-  build-depends:       base >= 4.18 && < 5.0,
+  build-depends:       base >= 4.18 && < 5,
                        mtl,
                        transformers,
                        text,
@@ -147,7 +147,7 @@ test-suite test-skylighting
   type:           exitcode-stdio-1.0
   main-is:        test-skylighting.hs
   hs-source-dirs: test
-  build-depends:  base >= 4.8 && < 5.0,
+  build-depends:  base >= 4.8 && < 5,
                   tasty,
                   tasty-golden,
                   tasty-hunit,
