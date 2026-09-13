@@ -89,6 +89,8 @@ library
                        Skylighting.Syntax.Dtd
                        Skylighting.Syntax.Eiffel
                        Skylighting.Syntax.Elixir
+                       Skylighting.Syntax.ElixirEex
+                       Skylighting.Syntax.ElixirHeex
                        Skylighting.Syntax.Elm
                        Skylighting.Syntax.Email
                        Skylighting.Syntax.Erlang
