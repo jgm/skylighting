@@ -49,11 +49,13 @@ library
                        , skylighting-format-typst:Skylighting.Format.Typst
   other-modules:
                        Skylighting.Syntax.Abc
+                       Skylighting.Syntax.Abnf
                        Skylighting.Syntax.Actionscript
                        Skylighting.Syntax.Ada
                        Skylighting.Syntax.Agda
                        Skylighting.Syntax.Alert
                        Skylighting.Syntax.Apache
+                       Skylighting.Syntax.Asciidoc
                        Skylighting.Syntax.Asn1
                        Skylighting.Syntax.Asp
                        Skylighting.Syntax.Ats
@@ -62,17 +64,21 @@ library
                        Skylighting.Syntax.Bibtex
                        Skylighting.Syntax.Boo
                        Skylighting.Syntax.C
+                       Skylighting.Syntax.Cabal
                        Skylighting.Syntax.Changelog
                        Skylighting.Syntax.Clojure
                        Skylighting.Syntax.Cmake
+                       Skylighting.Syntax.Cobol
                        Skylighting.Syntax.Coffee
                        Skylighting.Syntax.Coldfusion
                        Skylighting.Syntax.Comments
                        Skylighting.Syntax.Commonlisp
+                       Skylighting.Syntax.Context
                        Skylighting.Syntax.Cpp
                        Skylighting.Syntax.Crystal
                        Skylighting.Syntax.Cs
                        Skylighting.Syntax.Css
+                       Skylighting.Syntax.Csv
                        Skylighting.Syntax.Curry
                        Skylighting.Syntax.D
                        Skylighting.Syntax.Dart
@@ -108,10 +114,12 @@ library
                        Skylighting.Syntax.Gpr
                        Skylighting.Syntax.Graphql
                        Skylighting.Syntax.Groovy
+                       Skylighting.Syntax.Haml
                        Skylighting.Syntax.Hamlet
                        Skylighting.Syntax.Haskell
                        Skylighting.Syntax.Haxe
                        Skylighting.Syntax.Html
+                       Skylighting.Syntax.Idl
                        Skylighting.Syntax.Idris
                        Skylighting.Syntax.Ini
                        Skylighting.Syntax.Isocpp
@@ -120,9 +128,12 @@ library
                        Skylighting.Syntax.Javadoc
                        Skylighting.Syntax.Javascript
                        Skylighting.Syntax.JavascriptReact
+                       Skylighting.Syntax.Jinja
+                       Skylighting.Syntax.Jira
                        Skylighting.Syntax.Json
                        Skylighting.Syntax.Jsp
                        Skylighting.Syntax.Julia
+                       Skylighting.Syntax.K
                        Skylighting.Syntax.Kotlin
                        Skylighting.Syntax.Latex
                        Skylighting.Syntax.Lex
@@ -130,6 +141,7 @@ library
                        Skylighting.Syntax.LiterateCurry
                        Skylighting.Syntax.LiterateHaskell
                        Skylighting.Syntax.Llvm
+                       Skylighting.Syntax.Logfile
                        Skylighting.Syntax.Lua
                        Skylighting.Syntax.M4
                        Skylighting.Syntax.Makefile
@@ -140,6 +152,7 @@ library
                        Skylighting.Syntax.Maxima
                        Skylighting.Syntax.Mediawiki
                        Skylighting.Syntax.Mermaid
+                       Skylighting.Syntax.Meson
                        Skylighting.Syntax.Metafont
                        Skylighting.Syntax.Mips
                        Skylighting.Syntax.Modelines
@@ -148,12 +161,16 @@ library
                        Skylighting.Syntax.Monobasic
                        Skylighting.Syntax.Mustache
                        Skylighting.Syntax.Nasm
+                       Skylighting.Syntax.Nginx
                        Skylighting.Syntax.Nim
+                       Skylighting.Syntax.Ninja
                        Skylighting.Syntax.Nix
                        Skylighting.Syntax.Noweb
                        Skylighting.Syntax.Objectivec
                        Skylighting.Syntax.Objectivecpp
                        Skylighting.Syntax.Ocaml
+                       Skylighting.Syntax.Ocamllex
+                       Skylighting.Syntax.Ocamlyacc
                        Skylighting.Syntax.Octave
                        Skylighting.Syntax.Odin
                        Skylighting.Syntax.Opencl
@@ -171,15 +188,20 @@ library
                        Skylighting.Syntax.Purebasic
                        Skylighting.Syntax.Purescript
                        Skylighting.Syntax.Python
+                       Skylighting.Syntax.Q
                        Skylighting.Syntax.Qml
+                       Skylighting.Syntax.Quarto
                        Skylighting.Syntax.R
                        Skylighting.Syntax.Racket
                        Skylighting.Syntax.Raku
+                       Skylighting.Syntax.Rdoc
                        Skylighting.Syntax.Relaxng
                        Skylighting.Syntax.Relaxngcompact
                        Skylighting.Syntax.Rest
                        Skylighting.Syntax.Rhtml
+                       Skylighting.Syntax.Rmarkdown
                        Skylighting.Syntax.Roff
+                       Skylighting.Syntax.Rtf
                        Skylighting.Syntax.Ruby
                        Skylighting.Syntax.Rust
                        Skylighting.Syntax.Sas
@@ -204,12 +226,15 @@ library
                        Skylighting.Syntax.Tcsh
                        Skylighting.Syntax.Terraform
                        Skylighting.Syntax.Texinfo
+                       Skylighting.Syntax.Textile
                        Skylighting.Syntax.Tlaplus
+                       Skylighting.Syntax.Todo
                        Skylighting.Syntax.Toml
                        Skylighting.Syntax.Typescript
                        Skylighting.Syntax.Typst
                        Skylighting.Syntax.Verilog
                        Skylighting.Syntax.Vhdl
+                       Skylighting.Syntax.Vue
                        Skylighting.Syntax.Xml
                        Skylighting.Syntax.Xorg
                        Skylighting.Syntax.Xslt
