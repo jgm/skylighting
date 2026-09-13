@@ -185,7 +185,7 @@ benchmark benchmark-skylighting
   Default-Language: Haskell2010
 
 executable skylighting-extract
-  build-depends:       base >= 4.8 && < 5.0,
+  build-depends:       base >= 4.8 && < 5,
                        skylighting-core,
                        filepath,
                        text,
