@@ -22,7 +22,7 @@ source-repository head
 library
   exposed-modules:     Skylighting.Format.HTML
   other-extensions:    CPP
-  build-depends:       base >= 4.8 && < 5.0,
+  build-depends:       base >= 4.8 && < 5,
                        skylighting-core,
                        text,
                        containers,
