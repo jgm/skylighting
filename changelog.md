@@ -1,5 +1,278 @@
 # Revision history for skylighting and skylighting-core
 
+## PROVISIONAL 0.15
+
+  * New syntaxes: sparql (#212), sas (#213), mermaid, desktop,
+    elixir-eex, elixir-heex, abnf, asciidoc, cabal, cobol, context,
+    csv, haml, idl, jinja, jira, k, logfile, meson, nginx, ninja,
+    ocamllex, ocamlyacc, q, quarto, rdoc, rmarkdown, rtf, textile,
+    todo, vue.
+
+  * Update syntax definitions from upstream: bash, cmake, cpp,
+    crystal, dot, elixir, haskell, markdown, nix, ocaml, orgmode,
+    perl, php, powershell, python, qml, raku, rust,
+    spdx-comments, tcsh, typst, yaml, zig, zsh.
+
+  * Allow multiple contexts separated by `!` (#208).
+    This is an upstream KDE change.
+
+  * Bump min base version to 4.18.
+
+  * Regex: don't hang on bounded repetition with min > max.
+    `atmost` recursed without a guard for negative counts, so a pattern
+    like `a{3,1}` made the compiler loop forever building an infinite
+    regex. Reject the quantifier and fall back to interpreting it as a
+    literal, consistent with how other invalid quantifiers (`a{}`, `a{3`)
+    are handled.
+
+  * Regex: don't hang on lazy quantifiers in lookbehinds.
+    Previously lazy quantifier inside a lookbehind (e.g. `(?<=a+?b)`) hung.
+
+  * Regex: don't hang on subroutine recursion that consumes no input.
+    Previously a pattern like `x|(?R)` recursed forever.
+
+  * Regex: fix `lastCharOffset` for multibyte UTF-8 characters.
+    This bug resulted in failure of lookbehinds and word boundary
+    checks after non-ASCII characters.
+
+  * Regex: don't let `(?i:...)` leak out of its group.
+    Previously, in `/(?i:a)b/` the trailing `b` was also matched
+    case-insensitively.
+
+  * Regex: fix `[[:graph:]]`, `[[:word:]]`, and add `[[:digit:]]`.
+
+  * Regex: find nested capturing groups for subroutine calls.
+    Previously, calls like `(?2)` in `/((a)b)(?2)/` were
+    silently ignored (matching the empty string).
+
+  * Regex: apply case-insensitivity to classes, escapes, backreferences.
+    Case-insensitive matching was previously only applied to plain literal
+    characters, not character classes and escaped literals. Now:
+
+    + `pRegexCharClass` takes the case-sensitivity flag and, when
+      insensitive, matches a character if any of its case variants is in
+      the class (negated classes exclude all case variants, as in PCRE).
+    + Escaped literals like \x61 match case-insensitively when
+      insensitivity is in effect.
+    + The matcher compares captured text character by character with
+      case folding (correct even when the case variants have different
+      UTF-8 encodings).
+    + [API change] `MatchCaptured` has a new argument place;
+      `MatchCaptured !Int !Bool`, where the Bool records the case
+      sensitivity in effect at its position.
+
+  * Regex: linearize `{m,n}` expansion and cap repeat counts.
+    Previously `r{m,n}` was expanded to produce an AST quadratic in
+    n-m, which also made matching quadratic: matching `[ab]{0,800}`
+    against 800 characters took ~31 ms.  We now use
+    a nested-optional encoding, `r(r(r)?)?`, which is linear; the same
+    match takes ~0.3 ms. In addition, repeat counts larger than
+    65535 (the limit PCRE2 uses) are no longer treated as
+    quantifiers; like other invalid quantifier syntax, they fall
+    back to a literal interpretation. Previously `x{100000000}`
+    would eagerly build a hundred-million-node regex.
+
+  * Regex: treat unmatched `]` outside a character class as a literal.
+    This the behavior of PCRE2 (used by KSyntaxHighlighting via
+    QRegularExpression). Previously we treated this as a parse error,
+    which caused failures in several current KDE syntax definitions.
+
+  * Regex: parse `\0` octal escapes with up to two digits, as in PCRE.
+    `\0` previously required exactly three following octal digits.
+
+  * Regex: support `\G` (assert position of match start).
+    Because our matcher is always anchored at the start of
+    the input it is given, this is exactly AssertBeginning.
+
+  * Regex: support `\gN` and `\g{N}` backreferences.
+
+  * Regex: support inline modifiers like `(?i)` without a colon.
+
+  * Regex: support `\h` and `\H` (horizontal whitespace).
+
+  * Regex: support `\A` (start of subject).
+    Since matching is always anchored at the start of the input we are
+    given, `\A` is equivalent to AssertBeginning.
+
+  * Regex: allow an empty first alternative, as in `(?:|a)`.
+    As in PCRE, an empty alternative matches the empty string.  Empty
+    alternatives other than the first were already supported.
+
+  * Regex: support `\b` (backspace) inside character classes.
+
+  * Regex: support atomic groups `(?>...)`.
+
+  * Regex: leftmost-first (PCRE) match semantics instead of longest-match.
+
+    + Alternation is now leftmost-first, and alternatives are tried in
+      source order (a fold in the compiler used to reverse them, which
+      was harmless under longest-match).
+    + Possessive quantifiers and atomic groups commit to the first match
+      in backtracking order, fixing the divergence from PCRE.
+      `(?>a|ab)c` now fails on "abc".
+    + Lookahead/lookbehind assertions are atomic and keep only the first
+      match's captures, so `d(?=(a|ab))` captures "a", as in PCRE.
+    - Lazy quantifiers are compiled to forms that prefer fewer
+      repetitions instead of being special-cased in the matcher; the old
+      special case could commit to a short prefix and miss valid longer
+      continuations.
+    - Repetition loops terminate via a seen-state set.
+
+  * Regex: fix subroutine calls to groups with multi-digit numbers.
+
+  * Regex: after `(?|...)`, resume group numbering after the max group.
+
+  * Regex: allow a leading literal `]` in a character class to start a range.
+    As in PCRE, `[]-a]` is the range from `]` to `a`; previously it was parsed
+    as the three literals.
+
+  * Regex: support `\pL`, `\P{...}`, `\PL`, and `\p{^...}`.
+
+  * Regex: make Eq Match consistent with Ord.
+
+  * Regex: Raise compile errors for stray quantifiers and unsupported flags.
+
+    + a quantifier with nothing to repeat.
+    + a quantifier after an anchor or word-boundary assertion.
+    + `{m,n}` with m > n.
+    + repeat counts over 65535.
+    + inline flags we do not implement.
+
+  * Regex: Support minimal= (inverted greediness) on RegExpr rules.
+
+    + `compileRegex` takes a new Bool parameter for minimal matching
+      [API change], and `pSuffix` swaps the greedy and lazy variant
+      s of a quantifier when it is set.
+    + The inline flag `(?U)` (and `(?-U)`, `(?U:...))`, which toggles the
+      same option in PCRE, is now supported.
+    + RE has a new `reMinimal` field [API change], which
+      Skylighting.Parser sets from the `minimal` attribute on
+      RegExpr elements.
+
+  * Support the char attribute on LineContinue. [API change]
+    The LineContinue constructor of Matcher now carries the character.
+
+  * Fix case-sensitivity defaults to match KDE.
+
+    + Rules (RegExpr, StringDetect, WordDetect, DetectChar, etc.) now
+      default to case-sensitive matching regardless of the language
+      element's `casesensitive` attribute.
+    + The default case sensitivity of keyword lists is given by the
+      `casesensitive` attribute on the language element, and may be
+      overridden by the `casesensitive` attribute on general > keywords.
+    + An `insensitive` attribute on a keyword rule itself now overrides
+      the keyword list's case sensitivity, but only when the attribute
+      is actually present.
+
+    Behavior verified against KSyntaxHighlighting's definition.cpp and
+    highlightingdata.cpp.
+
+  * Honor `additionalDeliminator`/`weakDeliminator` on rules.
+
+    + Keyword rules fold rule-level `additionalDeliminator` and
+      `weakDeliminator` into their delimiter set, so e.g. Lua's
+      special variables rule (additionalDeliminator=".") matches
+      nil in nil.x even though the general keywords element makes
+      `.` a weak delimiter.
+    + Rule gains an `rAdditionalDeliminators` field [API change],
+      and both it and `rWeakDeliminators` now also incorporate
+      the general > keywords delimiter modifications, applied
+      before the rule-level ones as in KDE.  Both sets are consulted
+      by WordDetect, Int, Float, HlCHex, and HlCOct: a weak delimiter
+      counts as a word character and an additional delimiter does
+      not, with weak delimiters taking precedence.
+    + WordDetect now uses KDE's boundary conditions: a delimiter (or
+      line edge) must precede the word or be its first character, and
+      must follow the word or be its last character.  The leading
+      check also prevents WordDetect from matching in the middle of
+      a word.
+
+  * Match KDE semantics for Int, Float, HlCOct, HlCHex rules [API change]
+
+    + These rules match only if the *preceding* character is a word
+      delimiter (or the match is at the start of the line); nothing is
+      required of the following character.  Previously we used a
+      two-sided `\w`-based word boundary check.
+    + None of these rules consume a leading sign.  Previously Int,
+      HlCOct, HlCHex consumed an optional '-', and Float an optional
+      '+' or '-'.
+    + Int matches decimal digits only (no hex or octal forms).
+    + HlCOct matches C-style octals: '0' followed by octal digits.
+      Previously we required a "0o" prefix (and, due to a bug, actually
+      matched the hex form, so HlCOct never matched real octals).
+    + Float requires a '.', so "5e2" is not a Float; the exponent is
+      all-or-nothing (an incomplete exponent like "1.5e+" matches just
+      "1.5"); and there is no check on what follows the match, so
+      "1.2.3" matches "1.2".
+
+    Since all four rules (and keyword and WordDetect) now need
+    only a single effective delimiter set, we replace the
+    `rWeakDeliminators` and `rAdditionalDeliminators` fields on
+    Rule with a single `rWordDelimiters` field [API change].
+
+  * Match KDE line-loop semantics.
+
+    + Remove `cLineBeginContext` from Context [API change] and the
+      `lineBeginContext` attribute from the parser.  KDE no longer
+      has this feature, no bundled syntax definition uses it.
+    + Column and `firstNonspaceColumn` now restart on every physical line.
+      A line continuation only suppresses the previous line's
+      `lineEndContext`; it no longer carries the previous line's column
+      state into the next line.
+    + `lineEmptyContext` defaults to `lineEndContext` when unspecified or
+      `#stay` (KDE context.cpp, see kde bug 405903).
+    + An empty line now applies the `lineEmptyContext` switches of
+      successive top contexts until `#stay`, and does not apply
+      `lineEndContext` separately.
+    + `checkLineEnd` likewise applies lineEndContext switches of successive
+      top contexts until `#stay`.
+    + Guard against endless loops from broken syntax definitions, as KDE
+      does: the empty-line and line-end context-switch loops and rule
+      matching without consuming input are limited to 1024 iterations
+      without progress, after which highlighting of the line is aborted.
+
+  * Cache capturing groups in RE alongside the compiled regex.
+    Previously, matchRegex called extractCapturingGroups on every
+    invocation. Now the RE smart constructor extracts the
+    capturing groups once at compile time and caches them
+    alongside the compiled Regex. The tokenizer uses the cached groups
+    for static rules. For dynamic rules the groups are recomputed
+    after `subDynamic`, since the substitution rewrites the AST.
+
+    + compileRE now returns Either String (Regex, IntMap Regex) [API change].
+    + New function matchRegexWithGroups [API change] takes precomputed groups;
+      matchRegex keeps its old behavior for external callers.
+
+  * Resolve keywords at load time, not on every tokenize call.
+
+    + `tokenize` no longer resolves keywords; it assumes keyword lists in
+      the syntax map have already been resolved into word sets.  This is
+      the case for the bundled syntax definitions (which are generated
+      via loadSyntaxesFromDir) and for definitions loaded with the
+      functions in Skylighting.Loader.
+    - `loadValidSyntaxesFromDir` now resolves keywords, fixing an
+      inconsistency with `loadSyntaxesFromDir` (which already did).
+    - The skylighting CLI resolves keywords in syntaxes added with
+      `--definition`.
+    - Users who build a SyntaxMap by hand from `parseSyntaxDefinition`
+      output must now apply resolveKeywords themselves; tokenizing with
+      an unresolved keyword list yields a clear "Keyword with unresolved
+      list" error.
+
+  * Minor performance improvements in matchers and syntax lookup.
+
+    + `detect2Chars`: compare decoded characters directly (like
+      detectChar) instead of allocating a two-character Text and
+      encoding it to a ByteString on every attempt.
+    + `wordDetect`, `stringDetect`: in the case-sensitive case, compare
+      bytes with a prefix check instead of walking and decoding a
+      prefix of the input into Text on every attempt.
+    + `syntaxByName`: don't rebuild the entire syntax map with lowercased
+      keys on every lookup; try an exact lookup first and fall back to
+      a linear scan.
+    + `syntaxByShortName`: lowercase the query once instead of once per
+      map entry.
+
 ## 0.14.7
 
   * Update xml syntax definitions: agda, apache, bash, c, clojure,
