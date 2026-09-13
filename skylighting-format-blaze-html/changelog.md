@@ -1,5 +1,9 @@
 # Changelog for skylighting-format-blaze-html
 
+## 0.1.2.2
+
+* Improve performance of blaze-html formatter.
+
 ## 0.1.2.1
 
 * Ensure that per-line anchors have aria-labels. Otherwise screen
