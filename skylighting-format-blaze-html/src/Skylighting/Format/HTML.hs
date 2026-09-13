@@ -85,12 +85,13 @@ formatHtmlBlockFor htmlVersion opts ls =
   H.pre ! A.class_ (toValue $ Text.unwords classes)
         $ wrapCode opts
         $ mconcat . intersperse (toHtml "\n")
-        $ zipWith (sourceLineToHtml htmlVersion opts) [startNum..] ls
+        $ zipWith (sourceLineToHtml htmlVersion opts idPrefix) [startNum..] ls
   where  classes = Text.pack "sourceCode" :
                    [Text.pack "numberSource" | numberLines opts] ++
                    [x | x <- containerClasses opts
                       , x /= Text.pack "sourceCode"]
          startNum = LineNo $ startNumber opts
+         idPrefix = Text.unpack (lineIdPrefix opts)
 
 wrapCode :: FormatOptions -> Html -> Html
 wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
@@ -104,8 +105,9 @@ wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
 
 -- | Each line of source is wrapped in an (inline-block) anchor that makes
 -- subsequent per-line processing (e.g. adding line numbers) possible.
-sourceLineToHtml :: HtmlVersion -> FormatOptions -> LineNo -> SourceLine -> Html
-sourceLineToHtml htmlVersion opts lno cont =
+sourceLineToHtml :: HtmlVersion -> FormatOptions -> String -> LineNo -> SourceLine
+                 -> Html
+sourceLineToHtml htmlVersion opts idPrefix lno cont =
   H.span ! A.id lineNum
          $ do
            H.a ! A.href lineRef
@@ -123,15 +125,18 @@ sourceLineToHtml htmlVersion opts lno cont =
            mapM_ (tokenToHtml opts) cont
   where  lineNum = toValue prefixedLineNo
          lineRef = toValue ('#':prefixedLineNo)
-         prefixedLineNo = Text.unpack (lineIdPrefix opts) <> show (lineNo lno)
+         prefixedLineNo = idPrefix <> show (lineNo lno)
 
 tokenToHtml :: FormatOptions -> Token -> Html
 tokenToHtml _ (NormalTok, txt)  = toHtml txt
 tokenToHtml opts (toktype, txt) =
   if titleAttributes opts
-     then sp ! A.title (toValue $ show toktype)
+     -- the class and title values are known to be HTML-safe, so we use
+     -- preEscapedToValue to skip escaping at render time
+     then sp ! A.title (preEscapedToValue (show toktype))
      else sp
-   where sp = H.span ! A.class_ (toValue $ short toktype) $ toHtml txt
+   where sp = H.span ! A.class_ (preEscapedToValue (short toktype))
+                     $ toHtml txt
 
 short :: TokenType -> String
 short KeywordTok        = "kw"
