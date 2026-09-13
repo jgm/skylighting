@@ -60,8 +60,9 @@ formatHtmlInline opts = wrapCode opts{ codeClasses = nubOrd $ codeClasses opts +
                       . mconcat . intersperse (toHtml "\n")
                       . map (mapM_ (tokenToHtml opts))
 
--- | Format tokens as an HTML @pre@ block. Each line is wrapped in an a
--- element with the class ‘source-line’. If line numbering
+-- | Format tokens as an HTML @pre@ block. Each line is wrapped in a
+-- span element whose id is the line number (prefixed with 'lineIdPrefix'),
+-- beginning with an empty anchor linking to the line. If line numbering
 -- is selected, the surrounding pre is given the class ‘numberSource’,
 -- and the resulting html will display line numbers thanks to the included
 -- CSS.  See the documentation for 'formatHtmlInline' for information about how
@@ -70,7 +71,8 @@ formatHtmlBlock :: FormatOptions -> [SourceLine] -> Html
 formatHtmlBlock = formatHtmlBlockFor Html5
 
 -- | Like 'formatHtmlBlock' but uses only attributes valid in HTML 4
--- (so, @aria-hidden@ is not used in empty line number spans).
+-- (so, no @aria-hidden@ or @aria-label@ attributes are used on the
+-- line anchors).
 formatHtml4Block :: FormatOptions -> [SourceLine] -> Html
 formatHtml4Block = formatHtmlBlockFor Html4
 
@@ -101,7 +103,7 @@ wrapCode opts h = H.code ! A.class_ (toValue $ Text.unwords
          startZero = startNumber opts - 1
 
 -- | Each line of source is wrapped in an (inline-block) anchor that makes
--- subsequent per-line processing (e.g. adding line numnbers) possible.
+-- subsequent per-line processing (e.g. adding line numbers) possible.
 sourceLineToHtml :: HtmlVersion -> FormatOptions -> LineNo -> SourceLine -> Html
 sourceLineToHtml htmlVersion opts lno cont =
   H.span ! A.id lineNum
