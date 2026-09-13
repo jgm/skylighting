@@ -1,6 +1,6 @@
 # Revision history for skylighting and skylighting-core
 
-## PROVISIONAL 0.15
+## 0.15
 
   * New syntaxes: sparql (#212), sas (#213), mermaid, desktop,
     elixir-eex, elixir-heex, abnf, asciidoc, cabal, cobol, context,
