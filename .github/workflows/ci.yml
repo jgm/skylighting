@@ -22,8 +22,11 @@ jobs:
           - ghc: '9.12'
             cabal: 'latest'
             cabalopts: ''
+          - ghc: '9.14'
+            cabal: 'latest'
+            cabalopts: ''
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     - name: Install ghc/cabal
       run: |
@@ -32,7 +35,7 @@ jobs:
 
     - name: Cache cabal global package db
       id:   cabal-global
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: |
           ~/.cabal
@@ -40,7 +43,7 @@ jobs:
 
     - name: Cache cabal work
       id:   cabal-local
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: |
           dist-newstyle
@@ -64,7 +67,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Install stack
       shell: cmd
       run: |
