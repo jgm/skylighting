@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language [
-  <!ENTITY sep ",">
+  <!ENTITY Tab "&#9;">
+  <!ENTITY Pipe "|">
+  <!ENTITY Comma ",">
+  <!ENTITY Semicolon ";">
+  <!ENTITY quoted '"([^"]*+("")?+)*"'>
 ]>
 <!--
 Inspired by Rainbow CSV
 
 Language name     | Separator     | Extension | Properties
- CSV              | , (comma)     |   .csv    | Ignored inside double-quoted fields
  TSV              | \t (TAB)      | .tsv .tab |
- CSV (semicolon)  | ; (semicolon) |           | Ignored inside double-quoted fields
- CSV (whitespace) | whitespace    |           | Consecutive whitespaces are merged
- CSV (pipe)       | | (pipe)      |
+ CSV (comma)      | , (comma)     |   .csv    | Ignored inside double-quoted fields
+ CSV (semicolon)  | ; (semicolon) |   .csv    | Ignored inside double-quoted fields
+ CSV (whitespace) | whitespace    |   .csv    | Consecutive whitespaces are merged
+ CSV (pipe)       | | (pipe)      |   .csv    |
 
 https://www.rfc-editor.org/rfc/rfc4180
 
@@ -20,168 +24,613 @@ the syntax is tolerant of spaces before double quotes.
   aaa, "bbb,ccc", ddd
        ~ RFC: invalid character in non-escaped rule
 -->
-<language name="CSV" section="Other" version="2" kateversion="5.62" extensions="*.csv" mimetype="text/csv" priority="6" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
+<language name="CSV" section="Other" version="3" kateversion="6.22" extensions="*.csv" mimetype="text/csv" priority="6" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
   <highlighting>
 
     <contexts>
-      <context name="Column0" lineEndContext="#stay" attribute="Column 0">
-        <DetectChar char="&sep;" context="#pop!Column1" attribute="Column 0 Separator"/>
-        <RangeDetect char="&quot;" char1="&quot;" context="Column0Quote"/>
-        <DetectChar char="&quot;" context="Column0MultiLine"/>
-        <IncludeRules context="FindField"/>
+
+      <!-- CSV separator selector
+      searches for a separator in the following order: ';', '|', ',', ' '
+      @{
+      -->
+      <context name="Dispatch" lineEndContext="#stay" attribute="Column 0" fallthroughContext="Column0_Alone">
+        <RegExpr lookAhead="1" column="0" String='^(&quoted;;|;|[^|"][^|;]*;)' context="Semicolon_Column0_Start"/>
+        <RegExpr lookAhead="1" column="0" String='^\||[^"][^|]*\|' context="Pipe_Column0"/>
+        <RegExpr lookAhead="1" column="0" String='^(&quoted;,|,|[^"][^,]*,)' context="Comma_Column0_Start"/>
+        <RegExpr column="0" String="^[^ ]*(?= )" context="Ws_Column0" attribute="Column 0"/>
       </context>
-      <context name="Column0Quote" lineEndContext="#pop" attribute="Column 0" fallthroughContext="#pop">
+      <context name="Column0_Alone" lineEndContext="#pop" attribute="Column 0">
+      </context>
+      <!--
+      @}
+      -->
+
+      <!-- Comma (,) separator with double-quoted fields
+      @{
+      -->
+
+      <context name="Comma_Column0_Start" lineEndContext="#stay" attribute="Column 0" fallthroughContext="Comma_Column0">
+        <DetectChar char="&Comma;" context="Comma_Column1_Start" attribute="Column 0 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Comma_Column0_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Comma_Column0_QuoteContinuation!Column0_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Comma_Column0" lineEndContext="#pop" attribute="Column 0">
+        <DetectChar char="&Comma;" context="#pop!Comma_Column1_Start" attribute="Column 0 Separator"/>
+      </context>
+      <context name="Comma_Column0_QuoteContinuation" lineEndContext="#pop" attribute="Column 0" fallthroughContext="Comma_Error">
+        <IncludeRules context="Column0_FindQuote"/>
+        <DetectChar char="&Comma;" context="#pop!Comma_Column1_Start" attribute="Column 0 Separator"/>
+      </context>
+
+      <context name="Comma_Column1_Start" lineEndContext="#pop" attribute="Column 1" fallthroughContext="Comma_Column1">
+        <DetectChar char="&Comma;" context="Comma_Column2_Start" attribute="Column 1 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Comma_Column1_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Comma_Column1_QuoteContinuation!Column1_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Comma_Column1" lineEndContext="#pop#pop" attribute="Column 1">
+        <DetectChar char="&Comma;" context="#pop!Comma_Column2_Start" attribute="Column 1 Separator"/>
+      </context>
+      <context name="Comma_Column1_QuoteContinuation" lineEndContext="#pop#pop" attribute="Column 1" fallthroughContext="Comma_Error">
+        <IncludeRules context="Column1_FindQuote"/>
+        <DetectChar char="&Comma;" context="#pop!Comma_Column2_Start" attribute="Column 1 Separator"/>
+      </context>
+
+      <context name="Comma_Column2_Start" lineEndContext="#pop#pop" attribute="Column 2" fallthroughContext="Comma_Column2">
+        <DetectChar char="&Comma;" context="Comma_Column3_Start" attribute="Column 2 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Comma_Column2_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Comma_Column2_QuoteContinuation!Column2_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Comma_Column2" lineEndContext="#pop#pop#pop" attribute="Column 2">
+        <DetectChar char="&Comma;" context="#pop!Comma_Column3_Start" attribute="Column 2 Separator"/>
+      </context>
+      <context name="Comma_Column2_QuoteContinuation" lineEndContext="#pop#pop#pop" attribute="Column 2" fallthroughContext="Comma_Error">
+        <IncludeRules context="Column2_FindQuote"/>
+        <DetectChar char="&Comma;" context="#pop!Comma_Column3_Start" attribute="Column 2 Separator"/>
+      </context>
+
+      <context name="Comma_Column3_Start" lineEndContext="#pop#pop#pop" attribute="Column 3" fallthroughContext="Comma_Column3">
+        <DetectChar char="&Comma;" context="Comma_Column4_Start" attribute="Column 3 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Comma_Column3_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Comma_Column3_QuoteContinuation!Column3_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Comma_Column3" lineEndContext="#pop#pop#pop#pop" attribute="Column 3">
+        <DetectChar char="&Comma;" context="#pop!Comma_Column4_Start" attribute="Column 3 Separator"/>
+      </context>
+      <context name="Comma_Column3_QuoteContinuation" lineEndContext="#pop#pop#pop#pop" attribute="Column 3" fallthroughContext="Comma_Error">
+        <IncludeRules context="Column3_FindQuote"/>
+        <DetectChar char="&Comma;" context="#pop!Comma_Column4_Start" attribute="Column 3 Separator"/>
+      </context>
+
+      <context name="Comma_Column4_Start" lineEndContext="#pop#pop#pop#pop" attribute="Column 4" fallthroughContext="Comma_Column4">
+        <DetectChar char="&Comma;" context="Comma_Column5_Start" attribute="Column 4 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Comma_Column4_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Comma_Column4_QuoteContinuation!Column4_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Comma_Column4" lineEndContext="#pop#pop#pop#pop#pop" attribute="Column 4">
+        <DetectChar char="&Comma;" context="#pop!Comma_Column5_Start" attribute="Column 4 Separator"/>
+      </context>
+      <context name="Comma_Column4_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop" attribute="Column 4" fallthroughContext="Comma_Error">
+        <IncludeRules context="Column4_FindQuote"/>
+        <DetectChar char="&Comma;" context="#pop!Comma_Column5_Start" attribute="Column 4 Separator"/>
+      </context>
+
+      <context name="Comma_Column5_Start" lineEndContext="#pop#pop#pop#pop#pop" attribute="Column 5" fallthroughContext="Comma_Column5">
+        <DetectChar char="&Comma;" context="Comma_Column6_Start" attribute="Column 5 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Comma_Column5_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Comma_Column5_QuoteContinuation!Column5_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Comma_Column5" lineEndContext="#pop#pop#pop#pop#pop#pop" attribute="Column 5">
+        <DetectChar char="&Comma;" context="#pop!Comma_Column6_Start" attribute="Column 5 Separator"/>
+      </context>
+      <context name="Comma_Column5_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop#pop" attribute="Column 5" fallthroughContext="Comma_Error">
+        <IncludeRules context="Column5_FindQuote"/>
+        <DetectChar char="&Comma;" context="#pop!Comma_Column6_Start" attribute="Column 5 Separator"/>
+      </context>
+
+      <context name="Comma_Column6_Start" lineEndContext="#pop#pop#pop#pop#pop#pop" attribute="Column 6" fallthroughContext="Comma_Column6">
+        <DetectChar char="&Comma;" context="Comma_Column7_Start" attribute="Column 6 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Comma_Column6_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Comma_Column6_QuoteContinuation!Column6_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Comma_Column6" lineEndContext="#pop#pop#pop#pop#pop#pop#pop" attribute="Column 6">
+        <DetectChar char="&Comma;" context="#pop!Comma_Column7_Start" attribute="Column 6 Separator"/>
+      </context>
+      <context name="Comma_Column6_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop#pop#pop" attribute="Column 6" fallthroughContext="Comma_Error">
+        <IncludeRules context="Column6_FindQuote"/>
+        <DetectChar char="&Comma;" context="#pop!Comma_Column7_Start" attribute="Column 6 Separator"/>
+      </context>
+
+      <context name="Comma_Column7_Start" lineEndContext="#pop#pop#pop#pop#pop#pop#pop" attribute="Column 7" fallthroughContext="Comma_Column7">
+        <DetectChar char="&Comma;" context="Comma_Column8_Start" attribute="Column 7 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Comma_Column7_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Comma_Column7_QuoteContinuation!Column7_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Comma_Column7" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 7">
+        <DetectChar char="&Comma;" context="#pop!Comma_Column8_Start" attribute="Column 7 Separator"/>
+      </context>
+      <context name="Comma_Column7_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 7" fallthroughContext="Comma_Error">
+        <IncludeRules context="Column7_FindQuote"/>
+        <DetectChar char="&Comma;" context="#pop!Comma_Column8_Start" attribute="Column 7 Separator"/>
+      </context>
+
+      <context name="Comma_Column8_Start" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 8" fallthroughContext="Comma_Column8">
+        <DetectChar char="&Comma;" context="Comma_Column9_Start" attribute="Column 8 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Comma_Column8_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Comma_Column8_QuoteContinuation!Column8_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Comma_Column8" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 8">
+        <DetectChar char="&Comma;" context="#pop!Comma_Column9_Start" attribute="Column 8 Separator"/>
+      </context>
+      <context name="Comma_Column8_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 8" fallthroughContext="Comma_Error">
+        <IncludeRules context="Column8_FindQuote"/>
+        <DetectChar char="&Comma;" context="#pop!Comma_Column9_Start" attribute="Column 8 Separator"/>
+      </context>
+
+      <context name="Comma_Column9_Start" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9" fallthroughContext="Comma_Column9">
+        <DetectChar char="&Comma;" context="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Comma_Column9_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Comma_Column9_QuoteContinuation!Column9_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Comma_Column9" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9">
+        <DetectChar char="&Comma;" context="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9 Separator"/>
+      </context>
+      <context name="Comma_Column9_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9" fallthroughContext="Comma_Error">
+        <IncludeRules context="Column9_FindQuote"/>
+        <DetectChar char="&Comma;" context="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9 Separator"/>
+      </context>
+
+      <context name="Comma_Error" lineEndContext="#pop#pop" attribute="Error">
+        <DetectChar char="&Comma;" context="#pop" lookAhead="1"/>
+      </context>
+
+      <!--
+      @}
+      -->
+
+      <!-- Semicolon (,) separator with double-quoted fields
+      @{
+      -->
+
+      <context name="Semicolon_Column0_Start" lineEndContext="#stay" attribute="Column 0" fallthroughContext="Semicolon_Column0">
+        <DetectChar char="&Semicolon;" context="Semicolon_Column1_Start" attribute="Column 0 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Semicolon_Column0_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Semicolon_Column0_QuoteContinuation!Column0_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Semicolon_Column0" lineEndContext="#pop" attribute="Column 0">
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column1_Start" attribute="Column 0 Separator"/>
+      </context>
+      <context name="Semicolon_Column0_QuoteContinuation" lineEndContext="#pop" attribute="Column 0" fallthroughContext="Semicolon_Error">
+        <IncludeRules context="Column0_FindQuote"/>
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column1_Start" attribute="Column 0 Separator"/>
+      </context>
+
+      <context name="Semicolon_Column1_Start" lineEndContext="#pop" attribute="Column 1" fallthroughContext="Semicolon_Column1">
+        <DetectChar char="&Semicolon;" context="Semicolon_Column2_Start" attribute="Column 1 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Semicolon_Column1_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Semicolon_Column1_QuoteContinuation!Column1_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Semicolon_Column1" lineEndContext="#pop#pop" attribute="Column 1">
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column2_Start" attribute="Column 1 Separator"/>
+      </context>
+      <context name="Semicolon_Column1_QuoteContinuation" lineEndContext="#pop#pop" attribute="Column 1" fallthroughContext="Semicolon_Error">
+        <IncludeRules context="Column1_FindQuote"/>
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column2_Start" attribute="Column 1 Separator"/>
+      </context>
+
+      <context name="Semicolon_Column2_Start" lineEndContext="#pop#pop" attribute="Column 2" fallthroughContext="Semicolon_Column2">
+        <DetectChar char="&Semicolon;" context="Semicolon_Column3_Start" attribute="Column 2 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Semicolon_Column2_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Semicolon_Column2_QuoteContinuation!Column2_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Semicolon_Column2" lineEndContext="#pop#pop#pop" attribute="Column 2">
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column3_Start" attribute="Column 2 Separator"/>
+      </context>
+      <context name="Semicolon_Column2_QuoteContinuation" lineEndContext="#pop#pop#pop" attribute="Column 2" fallthroughContext="Semicolon_Error">
+        <IncludeRules context="Column2_FindQuote"/>
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column3_Start" attribute="Column 2 Separator"/>
+      </context>
+
+      <context name="Semicolon_Column3_Start" lineEndContext="#pop#pop#pop" attribute="Column 3" fallthroughContext="Semicolon_Column3">
+        <DetectChar char="&Semicolon;" context="Semicolon_Column4_Start" attribute="Column 3 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Semicolon_Column3_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Semicolon_Column3_QuoteContinuation!Column3_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Semicolon_Column3" lineEndContext="#pop#pop#pop#pop" attribute="Column 3">
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column4_Start" attribute="Column 3 Separator"/>
+      </context>
+      <context name="Semicolon_Column3_QuoteContinuation" lineEndContext="#pop#pop#pop#pop" attribute="Column 3" fallthroughContext="Semicolon_Error">
+        <IncludeRules context="Column3_FindQuote"/>
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column4_Start" attribute="Column 3 Separator"/>
+      </context>
+
+      <context name="Semicolon_Column4_Start" lineEndContext="#pop#pop#pop#pop" attribute="Column 4" fallthroughContext="Semicolon_Column4">
+        <DetectChar char="&Semicolon;" context="Semicolon_Column5_Start" attribute="Column 4 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Semicolon_Column4_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Semicolon_Column4_QuoteContinuation!Column4_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Semicolon_Column4" lineEndContext="#pop#pop#pop#pop#pop" attribute="Column 4">
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column5_Start" attribute="Column 4 Separator"/>
+      </context>
+      <context name="Semicolon_Column4_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop" attribute="Column 4" fallthroughContext="Semicolon_Error">
+        <IncludeRules context="Column4_FindQuote"/>
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column5_Start" attribute="Column 4 Separator"/>
+      </context>
+
+      <context name="Semicolon_Column5_Start" lineEndContext="#pop#pop#pop#pop#pop" attribute="Column 5" fallthroughContext="Semicolon_Column5">
+        <DetectChar char="&Semicolon;" context="Semicolon_Column6_Start" attribute="Column 5 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Semicolon_Column5_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Semicolon_Column5_QuoteContinuation!Column5_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Semicolon_Column5" lineEndContext="#pop#pop#pop#pop#pop#pop" attribute="Column 5">
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column6_Start" attribute="Column 5 Separator"/>
+      </context>
+      <context name="Semicolon_Column5_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop#pop" attribute="Column 5" fallthroughContext="Semicolon_Error">
+        <IncludeRules context="Column5_FindQuote"/>
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column6_Start" attribute="Column 5 Separator"/>
+      </context>
+
+      <context name="Semicolon_Column6_Start" lineEndContext="#pop#pop#pop#pop#pop#pop" attribute="Column 6" fallthroughContext="Semicolon_Column6">
+        <DetectChar char="&Semicolon;" context="Semicolon_Column7_Start" attribute="Column 6 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Semicolon_Column6_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Semicolon_Column6_QuoteContinuation!Column6_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Semicolon_Column6" lineEndContext="#pop#pop#pop#pop#pop#pop#pop" attribute="Column 6">
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column7_Start" attribute="Column 6 Separator"/>
+      </context>
+      <context name="Semicolon_Column6_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop#pop#pop" attribute="Column 6" fallthroughContext="Semicolon_Error">
+        <IncludeRules context="Column6_FindQuote"/>
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column7_Start" attribute="Column 6 Separator"/>
+      </context>
+
+      <context name="Semicolon_Column7_Start" lineEndContext="#pop#pop#pop#pop#pop#pop#pop" attribute="Column 7" fallthroughContext="Semicolon_Column7">
+        <DetectChar char="&Semicolon;" context="Semicolon_Column8_Start" attribute="Column 7 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Semicolon_Column7_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Semicolon_Column7_QuoteContinuation!Column7_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Semicolon_Column7" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 7">
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column8_Start" attribute="Column 7 Separator"/>
+      </context>
+      <context name="Semicolon_Column7_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 7" fallthroughContext="Semicolon_Error">
+        <IncludeRules context="Column7_FindQuote"/>
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column8_Start" attribute="Column 7 Separator"/>
+      </context>
+
+      <context name="Semicolon_Column8_Start" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 8" fallthroughContext="Semicolon_Column8">
+        <DetectChar char="&Semicolon;" context="Semicolon_Column9_Start" attribute="Column 8 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Semicolon_Column8_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Semicolon_Column8_QuoteContinuation!Column8_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Semicolon_Column8" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 8">
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column9_Start" attribute="Column 8 Separator"/>
+      </context>
+      <context name="Semicolon_Column8_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 8" fallthroughContext="Semicolon_Error">
+        <IncludeRules context="Column8_FindQuote"/>
+        <DetectChar char="&Semicolon;" context="#pop!Semicolon_Column9_Start" attribute="Column 8 Separator"/>
+      </context>
+
+      <context name="Semicolon_Column9_Start" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9" fallthroughContext="Semicolon_Column9">
+        <DetectChar char="&Semicolon;" context="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9 Separator"/>
+        <RangeDetect char="&quot;" char1="&quot;" context="Semicolon_Column9_QuoteContinuation"/>
+        <DetectChar char="&quot;" context="Semicolon_Column9_QuoteContinuation!Column9_Quote"/>
+        <AnyChar String=" &Tab;"/>
+      </context>
+      <context name="Semicolon_Column9" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9">
+        <DetectChar char="&Semicolon;" context="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9 Separator"/>
+      </context>
+      <context name="Semicolon_Column9_QuoteContinuation" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9" fallthroughContext="Semicolon_Error">
+        <IncludeRules context="Column9_FindQuote"/>
+        <DetectChar char="&Semicolon;" context="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9 Separator"/>
+      </context>
+
+      <context name="Semicolon_Error" lineEndContext="#pop#pop" attribute="Error">
+        <DetectChar char="&Semicolon;" context="#pop" lookAhead="1"/>
+      </context>
+
+      <!--
+      @}
+      -->
+
+      <!-- TAB (\t) separator
+      @{
+      -->
+
+      <context name="Tab_Column0" lineEndContext="#stay" attribute="Column 0">
+        <DetectChar char="&Tab;" context="Tab_Column1" attribute="Column 0 Separator"/>
+      </context>
+
+      <context name="Tab_Column1" lineEndContext="#pop" attribute="Column 1">
+        <DetectChar char="&Tab;" context="Tab_Column2" attribute="Column 1 Separator"/>
+      </context>
+
+      <context name="Tab_Column2" lineEndContext="#pop#pop" attribute="Column 2">
+        <DetectChar char="&Tab;" context="Tab_Column3" attribute="Column 2 Separator"/>
+      </context>
+
+      <context name="Tab_Column3" lineEndContext="#pop#pop#pop" attribute="Column 3">
+        <DetectChar char="&Tab;" context="Tab_Column4" attribute="Column 3 Separator"/>
+      </context>
+
+      <context name="Tab_Column4" lineEndContext="#pop#pop#pop#pop" attribute="Column 4">
+        <DetectChar char="&Tab;" context="Tab_Column5" attribute="Column 4 Separator"/>
+      </context>
+
+      <context name="Tab_Column5" lineEndContext="#pop#pop#pop#pop#pop" attribute="Column 5">
+        <DetectChar char="&Tab;" context="Tab_Column6" attribute="Column 5 Separator"/>
+      </context>
+
+      <context name="Tab_Column6" lineEndContext="#pop#pop#pop#pop#pop#pop" attribute="Column 6">
+        <DetectChar char="&Tab;" context="Tab_Column7" attribute="Column 6 Separator"/>
+      </context>
+
+      <context name="Tab_Column7" lineEndContext="#pop#pop#pop#pop#pop#pop#pop" attribute="Column 7">
+        <DetectChar char="&Tab;" context="Tab_Column8" attribute="Column 7 Separator"/>
+      </context>
+
+      <context name="Tab_Column8" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 8">
+        <DetectChar char="&Tab;" context="Tab_Column9" attribute="Column 8 Separator"/>
+      </context>
+
+      <context name="Tab_Column9" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9">
+        <DetectChar char="&Tab;" context="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9 Separator"/>
+      </context>
+
+      <!--
+      @}
+      -->
+
+      <!-- Pipe (|) separator
+      @{
+      -->
+
+      <context name="Pipe_Column0" lineEndContext="#stay" attribute="Column 0">
+        <DetectChar char="&Pipe;" context="Pipe_Column1" attribute="Column 0 Separator"/>
+      </context>
+
+      <context name="Pipe_Column1" lineEndContext="#pop" attribute="Column 1">
+        <DetectChar char="&Pipe;" context="Pipe_Column2" attribute="Column 1 Separator"/>
+      </context>
+
+      <context name="Pipe_Column2" lineEndContext="#pop#pop" attribute="Column 2">
+        <DetectChar char="&Pipe;" context="Pipe_Column3" attribute="Column 2 Separator"/>
+      </context>
+
+      <context name="Pipe_Column3" lineEndContext="#pop#pop#pop" attribute="Column 3">
+        <DetectChar char="&Pipe;" context="Pipe_Column4" attribute="Column 3 Separator"/>
+      </context>
+
+      <context name="Pipe_Column4" lineEndContext="#pop#pop#pop#pop" attribute="Column 4">
+        <DetectChar char="&Pipe;" context="Pipe_Column5" attribute="Column 4 Separator"/>
+      </context>
+
+      <context name="Pipe_Column5" lineEndContext="#pop#pop#pop#pop#pop" attribute="Column 5">
+        <DetectChar char="&Pipe;" context="Pipe_Column6" attribute="Column 5 Separator"/>
+      </context>
+
+      <context name="Pipe_Column6" lineEndContext="#pop#pop#pop#pop#pop#pop" attribute="Column 6">
+        <DetectChar char="&Pipe;" context="Pipe_Column7" attribute="Column 6 Separator"/>
+      </context>
+
+      <context name="Pipe_Column7" lineEndContext="#pop#pop#pop#pop#pop#pop#pop" attribute="Column 7">
+        <DetectChar char="&Pipe;" context="Pipe_Column8" attribute="Column 7 Separator"/>
+      </context>
+
+      <context name="Pipe_Column8" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 8">
+        <DetectChar char="&Pipe;" context="Pipe_Column9" attribute="Column 8 Separator"/>
+      </context>
+
+      <context name="Pipe_Column9" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9">
+        <DetectChar char="&Pipe;" context="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9 Separator"/>
+      </context>
+
+      <!--
+      @}
+      -->
+
+      <!-- Whitespace ( ) separator
+      @{
+      -->
+
+      <context name="Ws_Column0" lineEndContext="#stay" attribute="Column 0">
+        <DetectChar char=" " context="Ws_Column0Spaces" attribute="Column 0 Separator"/>
+      </context>
+      <context name="Ws_Column0Spaces" lineEndContext="#pop" attribute="Column 0 Separator" fallthroughContext="Ws_Column1">
+        <DetectChar char=" "/>
+      </context>
+
+      <context name="Ws_Column1" lineEndContext="#pop#pop" attribute="Column 1">
+        <DetectChar char=" " context="Ws_Column1Spaces" attribute="Column 1 Separator"/>
+      </context>
+      <context name="Ws_Column1Spaces" lineEndContext="#pop#pop#pop" attribute="Column 1 Separator" fallthroughContext="Ws_Column2">
+        <DetectChar char=" "/>
+      </context>
+
+      <context name="Ws_Column2" lineEndContext="#pop#pop#pop#pop" attribute="Column 2">
+        <DetectChar char=" " context="Ws_Column2Spaces" attribute="Column 2 Separator"/>
+      </context>
+      <context name="Ws_Column2Spaces" lineEndContext="#pop#pop#pop#pop#pop" attribute="Column 2 Separator" fallthroughContext="Ws_Column3">
+        <DetectChar char=" "/>
+      </context>
+
+      <context name="Ws_Column3" lineEndContext="#pop#pop#pop#pop#pop#pop" attribute="Column 3">
+        <DetectChar char=" " context="Ws_Column3Spaces" attribute="Column 3 Separator"/>
+      </context>
+      <context name="Ws_Column3Spaces" lineEndContext="#pop#pop#pop#pop#pop#pop#pop" attribute="Column 3 Separator" fallthroughContext="Ws_Column4">
+        <DetectChar char=" "/>
+      </context>
+
+      <context name="Ws_Column4" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 4">
+        <DetectChar char=" " context="Ws_Column4Spaces" attribute="Column 4 Separator"/>
+      </context>
+      <context name="Ws_Column4Spaces" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 4 Separator" fallthroughContext="Ws_Column5">
+        <DetectChar char=" "/>
+      </context>
+
+      <context name="Ws_Column5" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 5">
+        <DetectChar char=" " context="Ws_Column5Spaces" attribute="Column 5 Separator"/>
+      </context>
+      <context name="Ws_Column5Spaces" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 5 Separator" fallthroughContext="Ws_Column6">
+        <DetectChar char=" "/>
+      </context>
+
+      <context name="Ws_Column6" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 6">
+        <DetectChar char=" " context="Ws_Column6Spaces" attribute="Column 6 Separator"/>
+      </context>
+      <context name="Ws_Column6Spaces" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 6 Separator" fallthroughContext="Ws_Column7">
+        <DetectChar char=" "/>
+      </context>
+
+      <context name="Ws_Column7" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 7">
+        <DetectChar char=" " context="Ws_Column7Spaces" attribute="Column 7 Separator"/>
+      </context>
+      <context name="Ws_Column7Spaces" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 7 Separator" fallthroughContext="Ws_Column8">
+        <DetectChar char=" "/>
+      </context>
+
+      <context name="Ws_Column8" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 8">
+        <DetectChar char=" " context="Ws_Column8Spaces" attribute="Column 8 Separator"/>
+      </context>
+      <context name="Ws_Column8Spaces" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 8 Separator" fallthroughContext="Ws_Column9">
+        <DetectChar char=" "/>
+      </context>
+
+      <context name="Ws_Column9" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9">
+        <DetectChar char=" " context="Ws_Column9Spaces" attribute="Column 9 Separator"/>
+      </context>
+      <context name="Ws_Column9Spaces" lineEndContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop" attribute="Column 9 Separator" fallthroughContext="#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop#pop">
+        <DetectChar char=" "/>
+      </context>
+
+      <!--
+      @}
+      -->
+
+      <!-- Quote
+      @{
+      -->
+
+      <context name="Column0_Quote" lineEndContext="#pop!Column0_QuoteNextLine" attribute="Column 0">
+      </context>
+      <context name="Column0_QuoteNextLine" lineEndContext="#stay" attribute="Column 0">
+        <DetectChar char="&quot;" context="#pop"/>
+      </context>
+      <context name="Column0_FindQuote" lineEndContext="#stay" attribute="Column 0">
         <RangeDetect char="&quot;" char1="&quot;"/>
-        <DetectChar char="&quot;" context="#pop!Column0MultiLine"/>
-        <IncludeRules context="Error"/>
-      </context>
-      <context name="Column0MultiLine" lineEndContext="#stay" attribute="Column 0">
-        <DetectChar char="&quot;" context="#pop!Column0Quote"/>
+        <DetectChar char="&quot;" context="Column0_Quote"/>
       </context>
 
-      <context name="Column1" lineEndContext="#pop!Column0" attribute="Column 1">
-        <DetectChar char="&sep;" context="#pop!Column2" attribute="Column 1 Separator"/>
-        <RangeDetect char="&quot;" char1="&quot;" context="Column1Quote"/>
-        <DetectChar char="&quot;" context="Column1MultiLine"/>
-        <IncludeRules context="FindField"/>
+      <context name="Column1_Quote" lineEndContext="#pop!Column1_QuoteNextLine" attribute="Column 1">
       </context>
-      <context name="Column1Quote" lineEndContext="#pop#pop!Column0" attribute="Column 1" fallthroughContext="#pop">
+      <context name="Column1_QuoteNextLine" lineEndContext="#stay" attribute="Column 1">
+        <DetectChar char="&quot;" context="#pop"/>
+      </context>
+      <context name="Column1_FindQuote" lineEndContext="#stay" attribute="Column 1">
         <RangeDetect char="&quot;" char1="&quot;"/>
-        <DetectChar char="&quot;" context="#pop!Column1MultiLine"/>
-        <IncludeRules context="Error"/>
-      </context>
-      <context name="Column1MultiLine" lineEndContext="#stay" attribute="Column 1">
-        <DetectChar char="&quot;" context="#pop!Column1Quote"/>
+        <DetectChar char="&quot;" context="Column1_Quote"/>
       </context>
 
-      <context name="Column2" lineEndContext="#pop!Column0" attribute="Column 2">
-        <DetectChar char="&sep;" context="#pop!Column3" attribute="Column 2 Separator"/>
-        <RangeDetect char="&quot;" char1="&quot;" context="Column2Quote"/>
-        <DetectChar char="&quot;" context="Column2MultiLine"/>
-        <IncludeRules context="FindField"/>
+      <context name="Column2_Quote" lineEndContext="#pop!Column2_QuoteNextLine" attribute="Column 2">
       </context>
-      <context name="Column2Quote" lineEndContext="#pop#pop!Column0" attribute="Column 2" fallthroughContext="#pop">
+      <context name="Column2_QuoteNextLine" lineEndContext="#stay" attribute="Column 2">
+        <DetectChar char="&quot;" context="#pop"/>
+      </context>
+      <context name="Column2_FindQuote" lineEndContext="#stay" attribute="Column 2">
         <RangeDetect char="&quot;" char1="&quot;"/>
-        <DetectChar char="&quot;" context="#pop!Column2MultiLine"/>
-        <IncludeRules context="Error"/>
-      </context>
-      <context name="Column2MultiLine" lineEndContext="#stay" attribute="Column 2">
-        <DetectChar char="&quot;" context="#pop!Column2Quote"/>
+        <DetectChar char="&quot;" context="Column2_Quote"/>
       </context>
 
-      <context name="Column3" lineEndContext="#pop!Column0" attribute="Column 3">
-        <DetectChar char="&sep;" context="#pop!Column4" attribute="Column 3 Separator"/>
-        <RangeDetect char="&quot;" char1="&quot;" context="Column3Quote"/>
-        <DetectChar char="&quot;" context="Column3MultiLine"/>
-        <IncludeRules context="FindField"/>
+      <context name="Column3_Quote" lineEndContext="#pop!Column3_QuoteNextLine" attribute="Column 3">
       </context>
-      <context name="Column3Quote" lineEndContext="#pop#pop!Column0" attribute="Column 3" fallthroughContext="#pop">
+      <context name="Column3_QuoteNextLine" lineEndContext="#stay" attribute="Column 3">
+        <DetectChar char="&quot;" context="#pop"/>
+      </context>
+      <context name="Column3_FindQuote" lineEndContext="#stay" attribute="Column 3">
         <RangeDetect char="&quot;" char1="&quot;"/>
-        <DetectChar char="&quot;" context="#pop!Column3MultiLine"/>
-        <IncludeRules context="Error"/>
-      </context>
-      <context name="Column3MultiLine" lineEndContext="#stay" attribute="Column 3">
-        <DetectChar char="&quot;" context="#pop!Column3Quote"/>
+        <DetectChar char="&quot;" context="Column3_Quote"/>
       </context>
 
-      <context name="Column4" lineEndContext="#pop!Column0" attribute="Column 4">
-        <DetectChar char="&sep;" context="#pop!Column5" attribute="Column 4 Separator"/>
-        <RangeDetect char="&quot;" char1="&quot;" context="Column4Quote"/>
-        <DetectChar char="&quot;" context="Column4MultiLine"/>
-        <IncludeRules context="FindField"/>
+      <context name="Column4_Quote" lineEndContext="#pop!Column4_QuoteNextLine" attribute="Column 4">
       </context>
-      <context name="Column4Quote" lineEndContext="#pop#pop!Column0" attribute="Column 4" fallthroughContext="#pop">
+      <context name="Column4_QuoteNextLine" lineEndContext="#stay" attribute="Column 4">
+        <DetectChar char="&quot;" context="#pop"/>
+      </context>
+      <context name="Column4_FindQuote" lineEndContext="#stay" attribute="Column 4">
         <RangeDetect char="&quot;" char1="&quot;"/>
-        <DetectChar char="&quot;" context="#pop!Column4MultiLine"/>
-        <IncludeRules context="Error"/>
-      </context>
-      <context name="Column4MultiLine" lineEndContext="#stay" attribute="Column 4">
-        <DetectChar char="&quot;" context="#pop!Column4Quote"/>
+        <DetectChar char="&quot;" context="Column4_Quote"/>
       </context>
 
-      <context name="Column5" lineEndContext="#pop!Column0" attribute="Column 5">
-        <DetectChar char="&sep;" context="#pop!Column6" attribute="Column 5 Separator"/>
-        <RangeDetect char="&quot;" char1="&quot;" context="Column5Quote"/>
-        <DetectChar char="&quot;" context="Column5MultiLine"/>
-        <IncludeRules context="FindField"/>
+      <context name="Column5_Quote" lineEndContext="#pop!Column5_QuoteNextLine" attribute="Column 5">
       </context>
-      <context name="Column5Quote" lineEndContext="#pop#pop!Column0" attribute="Column 5" fallthroughContext="#pop">
+      <context name="Column5_QuoteNextLine" lineEndContext="#stay" attribute="Column 5">
+        <DetectChar char="&quot;" context="#pop"/>
+      </context>
+      <context name="Column5_FindQuote" lineEndContext="#stay" attribute="Column 5">
         <RangeDetect char="&quot;" char1="&quot;"/>
-        <DetectChar char="&quot;" context="#pop!Column5MultiLine"/>
-        <IncludeRules context="Error"/>
-      </context>
-      <context name="Column5MultiLine" lineEndContext="#stay" attribute="Column 5">
-        <DetectChar char="&quot;" context="#pop!Column5Quote"/>
+        <DetectChar char="&quot;" context="Column5_Quote"/>
       </context>
 
-      <context name="Column6" lineEndContext="#pop!Column0" attribute="Column 6">
-        <DetectChar char="&sep;" context="#pop!Column7" attribute="Column 6 Separator"/>
-        <RangeDetect char="&quot;" char1="&quot;" context="Column6Quote"/>
-        <DetectChar char="&quot;" context="Column6MultiLine"/>
-        <IncludeRules context="FindField"/>
+      <context name="Column6_Quote" lineEndContext="#pop!Column6_QuoteNextLine" attribute="Column 6">
       </context>
-      <context name="Column6Quote" lineEndContext="#pop#pop!Column0" attribute="Column 6" fallthroughContext="#pop">
+      <context name="Column6_QuoteNextLine" lineEndContext="#stay" attribute="Column 6">
+        <DetectChar char="&quot;" context="#pop"/>
+      </context>
+      <context name="Column6_FindQuote" lineEndContext="#stay" attribute="Column 6">
         <RangeDetect char="&quot;" char1="&quot;"/>
-        <DetectChar char="&quot;" context="#pop!Column6MultiLine"/>
-        <IncludeRules context="Error"/>
-      </context>
-      <context name="Column6MultiLine" lineEndContext="#stay" attribute="Column 6">
-        <DetectChar char="&quot;" context="#pop!Column6Quote"/>
+        <DetectChar char="&quot;" context="Column6_Quote"/>
       </context>
 
-      <context name="Column7" lineEndContext="#pop!Column0" attribute="Column 7">
-        <DetectChar char="&sep;" context="#pop!Column8" attribute="Column 7 Separator"/>
-        <RangeDetect char="&quot;" char1="&quot;" context="Column7Quote"/>
-        <DetectChar char="&quot;" context="Column7MultiLine"/>
-        <IncludeRules context="FindField"/>
+      <context name="Column7_Quote" lineEndContext="#pop!Column7_QuoteNextLine" attribute="Column 7">
       </context>
-      <context name="Column7Quote" lineEndContext="#pop#pop!Column0" attribute="Column 7" fallthroughContext="#pop">
+      <context name="Column7_QuoteNextLine" lineEndContext="#stay" attribute="Column 7">
+        <DetectChar char="&quot;" context="#pop"/>
+      </context>
+      <context name="Column7_FindQuote" lineEndContext="#stay" attribute="Column 7">
         <RangeDetect char="&quot;" char1="&quot;"/>
-        <DetectChar char="&quot;" context="#pop!Column7MultiLine"/>
-        <IncludeRules context="Error"/>
-      </context>
-      <context name="Column7MultiLine" lineEndContext="#stay" attribute="Column 7">
-        <DetectChar char="&quot;" context="#pop!Column7Quote"/>
+        <DetectChar char="&quot;" context="Column7_Quote"/>
       </context>
 
-      <context name="Column8" lineEndContext="#pop!Column0" attribute="Column 8">
-        <DetectChar char="&sep;" context="#pop!Column9" attribute="Column 8 Separator"/>
-        <RangeDetect char="&quot;" char1="&quot;" context="Column8Quote"/>
-        <DetectChar char="&quot;" context="Column8MultiLine"/>
-        <IncludeRules context="FindField"/>
+      <context name="Column8_Quote" lineEndContext="#pop!Column8_QuoteNextLine" attribute="Column 8">
       </context>
-      <context name="Column8Quote" lineEndContext="#pop#pop!Column0" attribute="Column 8" fallthroughContext="#pop">
+      <context name="Column8_QuoteNextLine" lineEndContext="#stay" attribute="Column 8">
+        <DetectChar char="&quot;" context="#pop"/>
+      </context>
+      <context name="Column8_FindQuote" lineEndContext="#stay" attribute="Column 8">
         <RangeDetect char="&quot;" char1="&quot;"/>
-        <DetectChar char="&quot;" context="#pop!Column8MultiLine"/>
-        <IncludeRules context="Error"/>
-      </context>
-      <context name="Column8MultiLine" lineEndContext="#stay" attribute="Column 8">
-        <DetectChar char="&quot;" context="#pop!Column8Quote"/>
+        <DetectChar char="&quot;" context="Column8_Quote"/>
       </context>
 
-      <context name="Column9" lineEndContext="#pop!Column0" attribute="Column 9">
-        <DetectChar char="&sep;" context="#pop!Column0" attribute="Column 9 Separator"/>
-        <RangeDetect char="&quot;" char1="&quot;" context="Column9Quote"/>
-        <DetectChar char="&quot;" context="Column9MultiLine"/>
-        <IncludeRules context="FindField"/>
+      <context name="Column9_Quote" lineEndContext="#pop!Column9_QuoteNextLine" attribute="Column 9">
       </context>
-      <context name="Column9Quote" lineEndContext="#pop!Column0" attribute="Column 9" fallthroughContext="#pop">
+      <context name="Column9_QuoteNextLine" lineEndContext="#stay" attribute="Column 9">
+        <DetectChar char="&quot;" context="#pop"/>
+      </context>
+      <context name="Column9_FindQuote" lineEndContext="#stay" attribute="Column 9">
         <RangeDetect char="&quot;" char1="&quot;"/>
-        <DetectChar char="&quot;" context="#pop!Column9MultiLine"/>
-        <IncludeRules context="Error"/>
-      </context>
-      <context name="Column9MultiLine" lineEndContext="#stay" attribute="Column 9">
-        <DetectChar char="&quot;" context="#pop!Column9Quote"/>
+        <DetectChar char="&quot;" context="Column9_Quote"/>
       </context>
 
-      <context name="FindField" lineEndContext="#stay" attribute="Column 0">
-        <DetectSpaces/>
-        <RegExpr String="[^&sep;]+"/>
-      </context>
+      <!--
+      @}
+      -->
 
-      <context name="Error" lineEndContext="#stay" attribute="Error">
-        <RegExpr String="[^&sep;]+" context="#pop" attribute="Error"/>
-      </context>
     </contexts>
 
     <itemDatas>

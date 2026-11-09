@@ -73,7 +73,7 @@
   <!-- <!ENTITY regadverb "(?!\()\s*(?::\w+\s*)*(?=[^\w\s])"> -->
   <!ENTITY regadverb "(?!\()\s*(?=[^\p{L}\p{N}\s])">
 ]>
-<language name="Raku" version="10" kateversion="5.62" section="Scripts" extensions="*.raku;*.rakumod;*.rakudoc;*.rakutest;*.pl6;*.PL6;*.p6;*.pm6;*.pod6" priority="6" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
+<language name="Raku" version="12" kateversion="6.22" section="Scripts" extensions="*.raku;*.rakumod;*.rakudoc;*.rakutest;*.pl6;*.PL6;*.p6;*.pm6;*.pod6" priority="6" author="Jonathan Poelen (jonathan.poelen@gmail.com)" license="MIT">
   <highlighting>
 
     <!-- https://docs.raku.org/routines -->

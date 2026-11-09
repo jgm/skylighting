@@ -13,7 +13,7 @@
  ** https://www.json.org/json-en.html
  ***************************************************************************
 -->
-<language name="JSON" section="Markup" version="10" kateversion="2.4" extensions="*.json;*.jsonl;*.ndjson;.kateproject;.arcconfig;*.geojson;*.gltf;*.theme;*.cast" mimetype="application/json;application/x-ndjson;application/geo+json" author="Sebastian Pipping (sebastian@pipping.org)" license="GPL">
+<language name="JSON" section="Markup" version="11" kateversion="2.4" extensions="*.json;*.jsonl;*.ndjson;.kateproject;.arcconfig;*.geojson;*.gltf;*.theme;*.cast" mimetype="application/json;application/x-ndjson;application/geo+json" author="Sebastian Pipping (sebastian@pipping.org)" license="GPL">
   <highlighting>
     <list name="Constants">
       <item>null</item>
@@ -57,8 +57,8 @@
       </context>
 
       <context name="String_Key_Char" lineEndContext="#stay" attribute="Style_Normal">
-        <RegExpr String="\\(?:[&quot;\\/bfnrt]|u[0-9a-fA-f]{4})" context="#pop" attribute="Style_String_Key_Char" />
-        <RegExpr String="\\(u[0-9a-fA-f]+|.)?" context="#pop" attribute="Style_Error" />
+        <RegExpr String="\\(?:[&quot;\\/bfnrt]|u[0-9a-fA-F]{4})" context="#pop" attribute="Style_String_Key_Char" />
+        <RegExpr String="\\(u[0-9a-fA-F]+|.)?" context="#pop" attribute="Style_Error" />
       </context>
 
       <context name="Value" lineEndContext="#stay" attribute="Style_Error" >
@@ -73,8 +73,8 @@
       </context>
 
       <context name="String_Key_Value" lineEndContext="#stay" attribute="Style_Normal">
-        <RegExpr String="\\(?:[&quot;\\/bfnrt]|u[0-9a-fA-f]{4})" context="#pop"  attribute="Style_String_Value_Char" />
-        <RegExpr String="\\(u[0-9a-fA-f]+|.)?" context="#pop" attribute="Style_Error" />
+        <RegExpr String="\\(?:[&quot;\\/bfnrt]|u[0-9a-fA-F]{4})" context="#pop"  attribute="Style_String_Value_Char" />
+        <RegExpr String="\\(u[0-9a-fA-F]+|.)?" context="#pop" attribute="Style_Error" />
       </context>
 
       <context name="Array" lineEndContext="#stay" attribute="Style_Error">

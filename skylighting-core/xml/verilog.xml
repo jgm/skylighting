@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language>
-<language name="Verilog" version="8" kateversion="5.0" section="Hardware" extensions="*.v;*.V;*.vl" mimetype="text/x-verilog-src" author="Yevgen Voronenko (ysv22@drexel.edu), Ryan Dalzell (ryan@tullyroan.com)" license="">
+<language name="Verilog" version="9" kateversion="5.0" section="Hardware" extensions="*.v;*.V;*.vl" mimetype="text/x-verilog-src" author="Yevgen Voronenko (ysv22@drexel.edu), Ryan Dalzell (ryan@tullyroan.com)" license="">
   <highlighting>
-    <list name="keywords">
+    <list name="controlflow">
       <item>macromodule</item>
       <item>table</item>
       <item>endtable</item>
       <item>specify</item>
-      <item>specparam</item>
       <item>endspecify</item>
-
-      <item>defparam</item>
       <item>default</item>
       <item>if</item>
-      <item>ifnone</item>
       <item>else</item>
       <item>forever</item>
       <item>while</item>
       <item>for</item>
-      <item>wait</item>
       <item>repeat</item>
+      <item>always</item>
+      <item>initial</item>
+      <item>config</item>
+      <item>endconfig</item>
+    </list>
+
+    <list name="keywords">
+      <item>specparam</item>
+      <item>defparam</item>
+      <item>ifnone</item>
+      <item>wait</item>
       <item>disable</item>
 
       <item>assign</item>
@@ -27,15 +33,11 @@
       <item>force</item>
       <item>release</item>
 
-      <item>always</item>
-      <item>initial</item>
       <item>edge</item>
       <item>posedge</item>
       <item>negedge</item>
 
       <!-- verilog-2001 keywords -->
-      <item>config</item>
-      <item>endconfig</item>
       <item>library</item>
       <item>design</item>
       <item>liblist</item>
@@ -150,10 +152,11 @@
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
         <DetectSpaces />
-        <RegExpr attribute="Keyword" context="Block name" String="(begin|fork)\ *:" beginRegion="Block"/>
-        <keyword attribute="Keyword" String="beginwords" context="#stay" beginRegion="Block"/>
-        <keyword attribute="Keyword" String="endwords" context="#stay" endRegion="Block"/>
+        <RegExpr attribute="Control Flow" context="Block name" String="(begin|fork)\ *:" beginRegion="Block"/>
+        <keyword attribute="Control Flow" String="beginwords" context="#stay" beginRegion="Block"/>
+        <keyword attribute="Control Flow" String="endwords" context="#stay" endRegion="Block"/>
 
+        <keyword attribute="Control Flow" context="#stay" String="controlflow" />
         <keyword attribute="Keyword" context="#stay" String="keywords" />
         <keyword attribute="Data Type" context="#stay" String="types" />
         <keyword attribute="Drive/charge strength" context="#stay" String="strength" />
@@ -167,6 +170,8 @@
         <Int attribute="Integer" context="#stay" />
 
         <RegExpr attribute="Case label" context="#stay" String="[a-zA-Z0-9_, \t]+\s*:" firstNonSpace="true"/>
+        <RegExpr attribute="Port Connection" context="#stay" String="(?&lt;![\w$])\.[a-zA-Z_][\w$]*"/>
+        <RegExpr attribute="Function" context="#stay" String="\b[a-zA-Z_][\w$]*(?=\s*\()"/>
         <!--<RegExpr attribute="Port map" context="Port" String="\.[a-zA-Z0-9_]+"/>-->
 
         <DetectChar attribute="String" context="String" char="&quot;"/>
@@ -219,6 +224,7 @@
 
     <itemDatas>
       <itemData name="Normal Text" defStyleNum="dsNormal"/>
+      <itemData name="Control Flow"  defStyleNum="dsControlFlow"/>
       <itemData name="Keyword"  defStyleNum="dsKeyword"/>
       <itemData name="Data Type"  defStyleNum="dsDataType"/>
 
@@ -232,9 +238,9 @@
       <itemData name="String Char"  defStyleNum="dsChar"/>
       <itemData name="Comment"  defStyleNum="dsComment"/>
       <itemData name="Symbol"  defStyleNum="dsOperator"/>
-      <itemData name="Preprocessor"  defStyleNum="dsOthers"/>
+      <itemData name="Preprocessor"  defStyleNum="dsPreprocessor"/>
       <itemData name="Prep. Lib"  defStyleNum="dsFloat"/>
-      <itemData name="System Task" defStyleNum="dsDataType"/>
+      <itemData name="System Task" defStyleNum="dsBuiltIn"/>
 
       <itemData name="Integer" defStyleNum="dsDecVal"/>
       <itemData name="Delay" defStyleNum="dsBaseN"/>
@@ -243,6 +249,8 @@
       <itemData name="Gate instantiation" defStyleNum="dsDataType"/>
 <!--       <itemData name="Port map" defStyleNum="dsDataType"/> -->
       <itemData name="Case label" defStyleNum="dsDecVal"/>
+      <itemData name="Function" defStyleNum="dsFunction"/>
+      <itemData name="Port Connection" defStyleNum="dsAttribute"/>
     </itemDatas>
   </highlighting>
   <general>

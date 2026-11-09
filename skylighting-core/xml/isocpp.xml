@@ -35,7 +35,7 @@
 <language
     name="ISO C++"
     section="Sources"
-    version="32"
+    version="33"
     kateversion="5.79"
     indenter="cstyle"
     style="C++"
@@ -132,6 +132,8 @@
       <!-- Concept -->
       <item>concept</item>
       <item>requires</item>
+      <!-- C++26 -->
+      <item>contract_assert</item>
       <!-- TM TS -->
       <!-- <item>atomic_cancel</item>
       <item>atomic_commit</item>
@@ -165,6 +167,8 @@
       <item>no_unique_address</item>
       <!-- C++23 -->
       <item>assume</item>
+      <!-- C++26 -->
+      <item>indeterminate</item>
       <!-- TM TS -->
       <!-- <item>optimize_for_synchronized</item> -->
     </list>
@@ -255,11 +259,14 @@
       <item>__has_include</item>
       <!-- C++20 -->
       <item>__has_cpp_attribute</item>
+      <!-- C++26 -->
+      <item>__has_embed</item>
     </list>
     <list name="InMacro">
       <item>__VA_ARGS__</item>
       <item>__VA_OPT__</item>
     </list>
+    <!-- not used, for list-completion only (see PreprocessorCmd context) -->
     <list name="preprocessor">
       <item>if</item>
       <item>ifdef</item>
@@ -269,15 +276,11 @@
       <item>elifndef</item> <!--C++23-->
       <item>else</item>
       <item>endif</item>
-      <item>cmakedefine01</item>
-      <item>cmakedefine</item>
       <item>define</item>
       <item>include</item>
-      <item>error</item>
-      <item>line</item>
-      <item>pragma</item>
       <item>undef</item>
-      <item>warning</item>
+      <!-- C++26 -->
+      <item>embed</item>
     </list>
     <list name="preprocessorDefine">
       <item>cmakedefine01</item>
@@ -731,6 +734,7 @@
         <WordDetect attribute="Preprocessor" context="PreprocessorEndOfLineSpace" String="endif" endRegion="PP" />
         <WordDetect attribute="Preprocessor" context="#pop!PreprocessorIfDef" String="elifdef" endRegion="PP" beginRegion="PP" lookAhead="true" />
         <WordDetect attribute="Preprocessor" context="#pop!PreprocessorIfDef" String="elifndef" endRegion="PP" beginRegion="PP" lookAhead="true" />
+        <WordDetect attribute="Preprocessor" context="#pop!Embed" String="embed"/>
         <keyword attribute="Preprocessor" context="#pop!Define" String="preprocessorDefine" />
         <keyword attribute="Preprocessor" context="#pop!Preprocessor" String="preprocessorOther" />
         <!-- GCC extension -->
@@ -744,6 +748,12 @@
         <RangeDetect attribute="Prep. Lib" context="PreprocessorEndOfLineSpace" char="&lt;" char1="&gt;" />
         <IncludeRules context="Preprocessor" />
         <DetectIdentifier/>
+      </context>
+
+      <context name="Embed" attribute="Preprocessor" lineEndContext="#pop" fallthroughContext="#pop!Preprocessor">
+        <DetectSpaces/>
+        <RangeDetect attribute="Prep. Lib" context="#pop!Preprocessor" char="&quot;" char1="&quot;" />
+        <RangeDetect attribute="Prep. Lib" context="#pop!Preprocessor" char="&lt;" char1="&gt;" />
       </context>
 
       <context name="PreprocessorIfDef" attribute="Preprocessor" lineEndContext="#pop" fallthroughContext="#pop!LineError">
