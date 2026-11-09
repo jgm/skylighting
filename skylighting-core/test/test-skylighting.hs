@@ -149,23 +149,28 @@ main = do
           [[(OtherTok,"m\\a\\")]]
             @=? tokenize defConfig perl
                      "m\\a\\"
-      , testCase "perl quoting case" $ Right
-          [[(KeywordTok,"my")
-           ,(NormalTok," ")
-           ,(DataTypeTok,"$foo")
-           ,(NormalTok," = ")
-           ,(OtherTok,"q/")
-           ,(SpecialStringTok,"bar")
-           ,(OtherTok,"/")
-           ,(NormalTok,";")]
-          ,[(KeywordTok,"my")
-           ,(NormalTok," ")
-           ,(DataTypeTok,"$baz")
-           ,(NormalTok," = ")
-           ,(OtherTok,"'")
-           ,(SpecialStringTok,"quux")
-           ,(OtherTok,"'")
-           ,(NormalTok,";")]]
+      , testCase "perl quoting case" $
+        Right
+          [[(KeywordTok,"my"),
+            (NormalTok," "),
+            (DataTypeTok,"$foo"),
+            (NormalTok," "),
+            (OperatorTok,"="),
+            (NormalTok," "),
+            (OtherTok,"q/"),
+            (SpecialStringTok,"bar"),
+            (OtherTok,"/"),
+            (NormalTok,";")]
+           ,[(KeywordTok,"my"),
+             (NormalTok," "),
+             (DataTypeTok,"$baz"),
+             (NormalTok," "),
+             (OperatorTok,"="),
+             (NormalTok," "),
+             (OtherTok,"'"),
+             (SpecialStringTok,"quux"),
+             (OtherTok,"'"),
+             (NormalTok,";")]]
              @=? tokenize defConfig perl
                      "my $foo = q/bar/;\nmy $baz = 'quux';\n"
       , testCase "cpp floats" $ Right

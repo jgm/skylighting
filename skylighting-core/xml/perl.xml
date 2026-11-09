@@ -42,7 +42,7 @@
 
    Enhance tr/// and y/// support.
 -->
-<language name="Perl" alternativeNames="PL" version="23" kateversion="5.0" section="Scripts" extensions="*.pl;*.PL;*.pm" mimetype="application/x-perl;text/x-perl" priority="5" author="Anders Lund (anders@alweb.dk)" license="LGPLv2">
+<language name="Perl" alternativeNames="PL" version="24" kateversion="6.22" section="Scripts" extensions="*.pl;*.PL;*.pm" mimetype="application/x-perl;text/x-perl" priority="5" author="Anders Lund (anders@alweb.dk)" license="LGPLv2">
   <highlighting>
     <list name="control_flow">
       <item>if</item>
@@ -84,6 +84,7 @@
     <list name="operators">
       <item>and</item>
       <item>or</item>
+      <item>xor</item>
       <item>not</item>
       <item>eq</item>
       <item>ne</item>
@@ -92,6 +93,7 @@
       <item>le</item>
       <item>ge</item>
       <item>cmp</item>
+      <item>isa</item>
     </list>
     <list name="functions">
       <item>abs</item>
@@ -306,13 +308,18 @@
       <item>constant</item>
       <item>bytes</item>
       <item>diagnostics</item>
+      <item>feature</item>
     </list>
     <contexts>
       <context name="normal" attribute="Normal Text" lineEndContext="#stay">
         <DetectSpaces />
 
+        <StringDetect attribute="Keyword" context="EndSection" String="__END__" firstNonSpace="true"/>
         <StringDetect attribute="Keyword" context="data_handle" String="__DATA__" firstNonSpace="true" />
-        <StringDetect attribute="Keyword" context="#stay" String="__END__" firstNonSpace="true"/>
+
+        <WordDetect attribute="Import" context="module" String="use" firstNonSpace="true"/>
+        <WordDetect attribute="Import" context="module" String="no" firstNonSpace="true"/>
+
         <RegExpr attribute="Keyword" context="sub_name_def" String="\bsub\s+" />
         <keyword attribute="Keyword" context="#stay" String="keywords" />
         <keyword attribute="Control Flow" context="#stay" String="control_flow" />
@@ -357,6 +364,7 @@
         <RegExpr attribute="Operator" context="find_pattern" String="\b(?:m|qr)(?=\s*[^\w\s\]})])" />
 
         <RegExpr attribute="Normal Text" context="#stay" String="[\w_]+\s*//?\=?|[&lt;&gt;&quot;':]//?\=?" />
+
         <DetectIdentifier/>
 
         <!-- Avoid conflicts between operators / and // -->
@@ -367,9 +375,13 @@
 
         <DetectChar attribute="Normal Text" context="#stay" char="{" beginRegion="Block" />
         <DetectChar attribute="Normal Text" context="#stay" char="}" endRegion="Block" />
+
+        <StringDetect String="=>" attribute="FatComma" context="#stay"/>
+        <AnyChar attribute="Operator2" context="#stay" String="=&lt;>&amp;|!+-*/%^~" />
       </context>
 
       <!-- ====== quoted construct central ===== -->
+
       <context name="find_quoted" attribute="Normal Text" lineEndContext="#stay" >
         <!-- NOTE - qx'not interpolated regex' does not cover newline between "qr" and "'" -->
         <RegExpr attribute="Operator" context="string_6" String="x\s*(')" beginRegion="String" />
@@ -433,7 +445,7 @@
         <DetectChar attribute="Operator" context="#pop#pop#pop" char="&gt;" endRegion="String" />
         <IncludeRules context="ipstring_internal" />
       </context>
-      <context name="ip_string_6" attribute="String (interpolated)" lineEndContext="#stay" dynamic="true">
+      <context name="ip_string_6" attribute="String (interpolated)" lineEndContext="#stay">
         <StringDetect attribute="String (interpolated)" context="#stay" String="\%1" dynamic="true" />
         <DetectChar attribute="Operator" context="#pop#pop#pop" char="1" dynamic="true"  endRegion="String"/>
         <IncludeRules context="ipstring_internal" />
@@ -474,7 +486,7 @@
         <RangeDetect attribute="String" context="#stay" char="&lt;" char1="&gt;" />
         <DetectChar attribute="Operator" context="#pop#pop" char="&gt;" endRegion="String" />
       </context>
-      <context name="string_6" attribute="String" lineEndContext="#stay" dynamic="true">
+      <context name="string_6" attribute="String" lineEndContext="#stay">
         <DetectIdentifier />
         <Detect2Chars attribute="String Special Character" context="#stay" char="\" char1="\" />
         <StringDetect attribute="String Special Character" context="#stay" String="\%1" dynamic="true"/>
@@ -507,7 +519,7 @@
         <IncludeRules context="subst_curlybrace_pattern" />
       </context>
 
-      <context name="subst_maybe_comment" attribute="Pattern" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
+      <context name="subst_maybe_comment" attribute="Pattern" lineEndContext="#pop" fallthroughContext="#pop">
         <DetectChar attribute="Comment" context="#pop!comment" char="#" />
       </context>
 
@@ -542,7 +554,7 @@
         <!-- partially buggy if the character is in a set, a variable, etc. -->
         <RegExpr attribute="Operator" context="#pop!subst_any_replace" String="(.)" beginRegion="Replacement" />
       </context>
-      <context name="subst_any_replace" attribute="String (interpolated)" lineEndContext="#stay" dynamic="true">
+      <context name="subst_any_replace" attribute="String (interpolated)" lineEndContext="#stay">
         <RegExpr attribute="Operator" context="#pop#pop#pop" String="%1&subst_flags;" dynamic="true" endRegion="Replacement" />
         <IncludeRules context="ipstring_internal_without_identifier" />
       </context>
@@ -584,12 +596,12 @@
       </context>
 
       <!-- Fully parse s / / /. -->
-      <context name="subst_slash_pattern" attribute="Pattern" lineEndContext="#stay" dynamic="true">
+      <context name="subst_slash_pattern" attribute="Pattern" lineEndContext="#stay">
         <RegExpr attribute="Pattern Internal Operator" context="#stay" String="\$(?=%1)" dynamic="true" />
         <RegExpr attribute="Operator" context="subst_slash_replace" String="(%1)" dynamic="true" endRegion="Pattern" beginRegion="Replacement" />
         <IncludeRules context="regex_pattern_internal_ip" />
       </context>
-      <context name="subst_slash_replace" attribute="String (interpolated)" lineEndContext="#stay" dynamic="true">
+      <context name="subst_slash_replace" attribute="String (interpolated)" lineEndContext="#stay">
         <RegExpr attribute="Operator" context="#pop#pop#pop" String="%1&subst_flags;" dynamic="true" endRegion="Replacement" />
         <IncludeRules context="ipstring_internal" />
       </context>
@@ -604,7 +616,7 @@
         <RegExpr attribute="Operator" context="#pop#pop#pop" String="'&subst_flags;" endRegion="Replacement" />
       </context>
 
-      <context name="tr" attribute="Pattern" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop" >
+      <context name="tr" attribute="Pattern" lineEndContext="#pop" fallthroughContext="#pop" >
         <RegExpr attribute="Pattern" context="#pop" String="\([^)]*\)\s*\(?:[^)]*\)|\{[^}]*\}\s*\{[^}]*\}|\[[^]]*\]\s*\[[^\]]*\]|([^a-zA-Z0-9_\s[\]{}()]).*?\1.*?\1"/>
       </context>
 
@@ -622,7 +634,7 @@
         <IncludeRules context="regex_pattern_internal_ip" />
         <RegExpr attribute="Operator" context="#pop" String="/[cgimosx]*" endRegion="Pattern" />
       </context>
-      <context name="pattern" attribute="Pattern" lineEndContext="#stay" dynamic="true">
+      <context name="pattern" attribute="Pattern" lineEndContext="#stay">
         <RegExpr attribute="Pattern Internal Operator" context="#stay" String="\$(?=%1)" dynamic="true" />
         <RegExpr attribute="Operator" context="#pop#pop" String="%1[cgimosx]*" dynamic="true" endRegion="Pattern" />
         <IncludeRules context="regex_pattern_internal_ip" />
@@ -701,7 +713,7 @@
       </context>
 
       <!-- ====== Variables ====== -->
-      <context name="find_variable" attribute="Data Type" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop" >
+      <context name="find_variable" attribute="Data Type" lineEndContext="#pop" fallthroughContext="#pop">
         <RegExpr attribute="Data Type" context="var_detect" String="\$[#_][\w_]" />
         <RegExpr attribute="Special Variable" context="var_detect" String="\$[0-9]+|[@\$](?:[\+\-_]\B|ARGV\b|INC\b)|[%\$](?:INC\b|ENV\b|SIG\b)|\$\^[A-Z_\]\[\^\?\\]|%([\-\+!]|\^H)" />
         <RegExpr attribute="Data Type" context="var_detect" String="\$\$[\$\w_]|\$+::" />
@@ -713,7 +725,7 @@
         <AnyChar attribute="Operator" context="#pop" String="$@%*" />
       </context>
       <!-- This does not check fo a trailing slash, for usage in strings. -->
-      <context name="find_variable_unsafe" attribute="Data Type" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop" >
+      <context name="find_variable_unsafe" attribute="Data Type" lineEndContext="#pop" fallthroughContext="#pop">
         <RegExpr attribute="Data Type" context="var_detect_unsafe" String="\$[#_][\w_]" />
         <RegExpr attribute="Special Variable" context="var_detect_unsafe" String="\$[0-9]+|[@\$](?:[\+\-_]\B|ARGV\b|INC\b)|[%\$](?:INC\b|ENV\b|SIG\b)" />
         <RegExpr attribute="Special Variable" context="var_detect" String="\$\^[A-Z_\]\[\^\?\\]|%([\-\+!]|\^H)" />
@@ -722,11 +734,11 @@
         <RegExpr attribute="Data Type" context="var_detect_unsafe" String="[\$@%]\{\^?[\w_]+\}|[$@%]|\*\w+" />
         <AnyChar attribute="Operator" context="#pop" String="$@%*" />
       </context>
-      <context name="var_detect"  attribute="Data Type" lineEndContext="#pop#pop" fallthrough="true" fallthroughContext="#pop#pop">
+      <context name="var_detect"  attribute="Data Type" lineEndContext="#pop#pop" fallthroughContext="#pop#pop">
         <IncludeRules context="var_detect_unsafe" />
         <IncludeRules context="slash_safe_escape" />
       </context>
-      <context name="var_detect_unsafe"  attribute="Data Type" lineEndContext="#pop#pop" fallthrough="true" fallthroughContext="#pop#pop">
+      <context name="var_detect_unsafe"  attribute="Data Type" lineEndContext="#pop#pop" fallthroughContext="#pop#pop">
         <RegExpr attribute="Data Type" context="#stay" String="(?&lt;![0-9])[\w_]+" />
         <Detect2Chars attribute="Normal Text" context="#stay" char=":" char1=":" />
         <DetectChar attribute="Operator" context="#stay" char="'" />
@@ -738,7 +750,7 @@
 
 
       <!-- ====== Word lists ====== -->
-      <context name="quote_word" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
+      <context name="quote_word" attribute="Normal Text" lineEndContext="#stay">
         <DetectSpaces />
         <DetectIdentifier />
         <StringDetect attribute="Normal Text" context="#stay" String="\%1" dynamic="true" />
@@ -770,26 +782,66 @@
       </context>
 
       <!-- ====== Here Documents ====== -->
+
       <context name="find_here_document" attribute="Normal Text" lineEndContext="#pop" >
-        <RegExpr attribute="Keyword" context="here_document" String="(?|(\w+)\s*;?|\s*&quot;([^&quot;]+)&quot;\s*;?|\s*`([^`]+)`\s*;?)" />
-        <RegExpr attribute="Keyword" context="here_document_dumb" String="\s*'([^']+)'\s*;?" />
+        <RegExpr attribute="Keyword" context="heredoc_html" String="(HTML)\s*;?" />
+        <RegExpr attribute="Keyword" context="heredoc_mysql" String="(MYSQL)\s*;?" />
+        <RegExpr attribute="Keyword" context="heredoc_markdown" String="(MARKDOWN)\s*;?" />
+        <RegExpr attribute="Keyword" context="heredoc" String="(?|(\w+)\s*;?|&quot;([^&quot;]+)&quot;\s*;?|`([^`]+)`\s*;?)" />
+        <RegExpr attribute="Keyword" context="heredoc_ni_html" String="'(HTML)'\s*;?" />
+        <RegExpr attribute="Keyword" context="heredoc_ni_mysql" String="'(MYSQL)'\s*;?" />
+        <RegExpr attribute="Keyword" context="heredoc_ni_markdown" String="'(MARKDOWN)'\s*;?" />
+        <RegExpr attribute="Keyword" context="heredoc_ni" String="'([^']+)'\s*;?" />
       </context>
-      <context name="here_document" attribute="String (interpolated)" lineEndContext="#stay" dynamic="true">
+
+      <context name="heredoc" attribute="String (interpolated)" lineEndContext="#stay">
         <RegExpr attribute="Keyword" context="#pop#pop" String="^%1\b" column="0" dynamic="true" endRegion="HereDocument"/>
-        <RegExpr attribute="Keyword" context="here_document" String="\=\s*&lt;&lt;\s*[&quot;']?([A-Z0-9_\-]+)[&quot;']?" beginRegion="HEREDoc" />
+        <RegExpr attribute="Keyword" context="heredoc" String="=\s*&lt;&lt;\s*[&quot;']?([A-Z0-9_\-]+)[&quot;']?" beginRegion="HereDocument" />
         <IncludeRules context="ipstring_internal" />
-        <DetectSpaces />
       </context>
-      <context name="here_document_dumb" attribute="Normal Text" lineEndContext="#stay" dynamic="true">
-        <StringDetect attribute="Keyword" context="#pop#pop" String="%1" column="0" dynamic="true" endRegion="HereDocument"/>
-        <DetectSpaces />
-        <DetectIdentifier />
+
+      <context name="heredoc_html" attribute="Normal Text" lineEndContext="#stay">
+        <RegExpr attribute="Keyword" context="#pop#pop" String="^%1\b" column="0" dynamic="true" endRegion="HereDocument"/>
+        <IncludeRules context="ipstring_internal_without_identifier" />
+        <IncludeRules context="##HTML" />
+      </context>
+
+      <context name="heredoc_mysql" attribute="Normal Text" lineEndContext="#stay">
+        <RegExpr attribute="Keyword" context="#pop#pop" String="^%1\b" column="0" dynamic="true" endRegion="HereDocument"/>
+        <IncludeRules context="ipstring_internal_without_identifier" />
+        <IncludeRules context="##SQL (MySQL)" />
+      </context>
+
+      <context name="heredoc_markdown" attribute="Normal Text" lineEndContext="#stay">
+        <RegExpr attribute="Keyword" context="#pop#pop" String="^%1\b" column="0" dynamic="true" endRegion="HereDocument"/>
+        <IncludeRules context="ipstring_internal_without_identifier" />
+        <IncludeRules context="Normal Text##Markdown" />
+      </context>
+
+      <context name="heredoc_ni" attribute="String" lineEndContext="#stay">
+        <RegExpr attribute="Keyword" context="#pop#pop" String="^%1\b" column="0" dynamic="true" endRegion="HereDocument"/>
+      </context>
+
+      <context name="heredoc_ni_html" attribute="Normal Text" lineEndContext="#stay">
+        <RegExpr attribute="Keyword" context="#pop#pop" String="^%1\b" column="0" dynamic="true" endRegion="HereDocument"/>
+        <IncludeRules context="##HTML" />
+      </context>
+
+      <context name="heredoc_ni_mysql" attribute="Normal Text" lineEndContext="#stay">
+        <RegExpr attribute="Keyword" context="#pop#pop" String="^%1\b" column="0" dynamic="true" endRegion="HereDocument"/>
+        <IncludeRules context="##SQL (MySQL)" />
+      </context>
+
+      <context name="heredoc_ni_markdown" attribute="Normal Text" lineEndContext="#stay">
+        <RegExpr attribute="Keyword" context="#pop#pop" String="^%1\b" column="0" dynamic="true" endRegion="HereDocument"/>
+        <IncludeRules context="Normal Text##Markdown" />
       </context>
 
       <!-- ====== Misc ====== -->
+
       <context name="data_handle" attribute="Data" lineEndContext="#stay">
-        <RegExpr attribute="Pod" context="pod" String="^\=(?:head[1-6]|over|back|item|for|begin|end|pod)\s+.*" column="0" beginRegion="POD"/>
-        <StringDetect attribute="Keyword" context="normal" String="__END__" firstNonSpace="true" />
+        <RegExpr attribute="Pod" context="pod" String="^\=(?:head[1-6]|over|back|item|for|begin|end|encoding|pod).*" column="0" beginRegion="POD"/>
+        <StringDetect attribute="Keyword" context="#pop" String="__END__" firstNonSpace="true" />
       </context>
 
       <context name="Backticked" attribute="String (interpolated)" lineEndContext="#stay">
@@ -797,13 +849,13 @@
         <DetectChar attribute="Operator" context="#pop" char="`"/>
       </context>
 
-      <context name="slash_safe_escape" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
+      <context name="slash_safe_escape" attribute="Normal Text" lineEndContext="#pop" fallthroughContext="#pop">
         <RegExpr attribute="Normal Text" context="#pop" String="\s*\}\s*/{1,2}" endRegion="Block"/>
         <RegExpr attribute="Normal Text" context="#pop" String="\s*[)\]]?\s*/{1,2}" />
         <keyword attribute="Keyword" context="#pop" String="keywords" /><!-- wonder why??? -->
       </context>
 
-      <context name="sub_name_def" attribute="Normal Text" lineEndContext="#pop" fallthrough="true" fallthroughContext="#pop">
+      <context name="sub_name_def" attribute="Normal Text" lineEndContext="#pop" fallthroughContext="#pop">
         <DetectSpaces/>
         <DetectChar attribute="Normal Text" context="sub_arg_definition" char="(" />
         <RegExpr attribute="Function" context="#stay" String="\w+" />
@@ -811,7 +863,7 @@
         <Detect2Chars attribute="Normal Text" context="#stay" char=":" char1=":" />
       </context>
 
-      <context name="sub_arg_definition" attribute="Normal Text" lineEndContext="#stay" fallthrough="true" fallthroughContext="#pop#pop">
+      <context name="sub_arg_definition" attribute="Normal Text" lineEndContext="#stay" fallthroughContext="#pop#pop">
         <AnyChar attribute="Data Type" context="#stay" String="*$@%" />
         <AnyChar attribute="Normal Text" context="#stay" String="&amp;\[];" />
         <DetectChar attribute="Normal Text" context="slash_safe_escape" char=")" />
@@ -820,7 +872,7 @@
       <context name="pod" attribute="Pod" lineEndContext="#stay">
         <DetectSpaces />
         <DetectIdentifier />
-        <RegExpr attribute="Pod" context="#stay" String="^\=(?:head[1-6]|over|back|item|for|begin|end|pod)\s*.*" column="0" beginRegion="POD" endRegion="POD"/>
+        <RegExpr attribute="PodKeyword" context="#stay" String="^\=(?:head[1-6]|over|back|item|for|begin|end|encoding|pod).*" column="0"/>
         <StringDetect attribute="Pod" context="Pod" String="=cut" column="0" endRegion="POD"/>
       </context>
 
@@ -830,7 +882,16 @@
         <DetectIdentifier />
       </context>
 
+      <context name="module" attribute="Comment" lineEndContext="#pop">
+        <DetectSpaces />
+        <keyword attribute="Pragma" context="#pop" String="pragmas" />
+        <RegExpr attribute="Pragma" String="v\d+([.][\d.]*|\b)" context="#pop"/>
+        <RegExpr attribute="Normal Text" String="[a-zA-Z0-9:\\.]+" context="#pop"/>
+      </context>
+
       <context name="Pod" attribute="Pod" lineEndContext="#pop#pop"/>
+
+      <context name="EndSection" attribute="Comment" lineEndContext="#stay"/>
 
     </contexts>
     <itemDatas>
@@ -856,6 +917,10 @@
       <itemData name="Data"                      defStyleNum="dsNormal" />
       <itemData name="Comment"                   defStyleNum="dsComment" />
       <itemData name="Pod"                       defStyleNum="dsComment" />
+      <itemData name="FatComma"                  defStyleNum="dsOperator" bold="1" />
+      <itemData name="Import"                    defStyleNum="dsImport" />
+      <itemData name="Operator2"                 defStyleNum="dsOperator" />
+      <itemData name="PodKeyword"                defStyleNum="dsCommentVar" />
     </itemDatas>
   </highlighting>
   <general>
