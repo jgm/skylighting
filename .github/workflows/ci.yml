@@ -68,23 +68,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v7
-    - name: Install stack
-      shell: cmd
+    - name: Install ghc
       run: |
-          choco install haskell-stack
+        ghcup install ghc --set 9.10
+        ghcup install cabal --set 3.18.2.0
     - name: Bootstrap
       shell: pwsh
       run: |
           $env:Path += ";$HOME\AppData\Roaming\local\bin"
-          stack install --fast --flag skylighting-core:executable skylighting-core
+          cabal update
+          cabal build --only-dependencies -fexecutable --disable-optimization skylighting-core
+          cabal build -fexecutable --disable-optimization --ghc-option=-Werror
           cd skylighting
-          skylighting-extract (get-item ..\skylighting-core\xml)
+          cabal run skylighting-extract -fexecutable --disable-optimization -- (get-item ..\skylighting-core\xml)
     - name: Build and test
       shell: cmd
       run: |
           chcp 65001
-          stack build --test --fast --flag skylighting:executable --dependencies-only
-          stack test --jobs=1 --fast --flag skylighting:executable --ghc-options=-Werror
+          cabal build -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all
+          cabal test -fexecutable --disable-optimization ${{ matrix.versions.cabalopts }} --test-options="--hide-successes" all
 
 
 # macos:
