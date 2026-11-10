@@ -112,7 +112,7 @@ ansi16ColorList = [ ((ANSI.Dull , ANSI.Black  ), RGB 0   0   0  )
                   ]
 
 newtype Xterm256ColorCode = Xterm256ColorCode { getXterm256ColorCode :: Word8 }
-    deriving (Show, Read, Eq, Ord, Enum, Bounded, Data, Typeable, Generic)
+    deriving (Show, Read, Eq, Ord, Enum, Bounded, Data, Generic)
 
 instance Binary Xterm256ColorCode
 

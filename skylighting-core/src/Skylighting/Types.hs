@@ -55,7 +55,6 @@ import Data.Maybe (fromMaybe)
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Typeable (Typeable)
 import Data.Word
 import GHC.Generics (Generic)
 import Safe (readMay)
@@ -71,14 +70,14 @@ data KeywordAttr =
   KeywordAttr  { keywordCaseSensitive :: !Bool
                , keywordDelims        :: !(Set.Set Char)
                }
-  deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+  deriving (Show, Read, Eq, Ord, Data, Generic)
 
 instance Binary KeywordAttr
 
 -- | A set of "words," possibly case insensitive.
 data WordSet a = CaseSensitiveWords !(Set.Set a)
                | CaseInsensitiveWords !(Set.Set a)
-     deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+     deriving (Show, Read, Eq, Ord, Data, Generic)
 
 instance Binary a => Binary (WordSet a)
 
@@ -113,14 +112,14 @@ data Matcher =
   | IncludeRules !ContextName
   | DetectSpaces
   | DetectIdentifier
-  deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+  deriving (Show, Read, Eq, Ord, Data, Generic)
 
 instance Binary Matcher
 
 -- | A context switch, either pops or pushes a context.
 data ContextSwitch =
   Pop | Push !ContextName
-  deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+  deriving (Show, Read, Eq, Ord, Data, Generic)
 
 instance Binary ContextSwitch
 
@@ -138,14 +137,14 @@ data Rule = Rule{
   , rFirstNonspace    :: !Bool
   , rColumn           :: !(Maybe Int)
   , rContextSwitch    :: ![ContextSwitch]
-  } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+  } deriving (Show, Read, Eq, Ord, Data, Generic)
 
 instance Binary Rule
 
 -- | A list item is either just a textual value or an included list.
 -- IncludeList (x,y) includes list y from syntax with full name x.
 data ListItem = Item !Text | IncludeList !(Text, Text)
-  deriving (Show, Eq, Ord, Read, Data, Typeable, Generic)
+  deriving (Show, Eq, Ord, Read, Data, Generic)
 
 instance Binary ListItem
 
@@ -162,7 +161,7 @@ data Syntax = Syntax{
   , sLicense         :: !Text
   , sExtensions      :: ![String]
   , sStartingContext :: !Text
-  } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+  } deriving (Show, Read, Eq, Ord, Data, Generic)
 
 instance Binary Syntax
 
@@ -181,7 +180,7 @@ data Context = Context{
   , cFallthrough        :: !Bool
   , cFallthroughContext :: ![ContextSwitch]
   , cDynamic            :: !Bool
-} deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+} deriving (Show, Read, Eq, Ord, Data, Generic)
 
 instance Binary Context
 
@@ -221,7 +220,7 @@ data TokenType = KeywordTok
                | AlertTok
                | ErrorTok
                | NormalTok
-               deriving (Read, Show, Eq, Ord, Enum, Bounded, Data, Typeable, Generic)
+               deriving (Read, Show, Eq, Ord, Enum, Bounded, Data, Generic)
 
 instance Binary TokenType
 
@@ -259,7 +258,7 @@ data TokenStyle = TokenStyle {
   , tokenBold       :: !Bool
   , tokenItalic     :: !Bool
   , tokenUnderline  :: !Bool
-  } deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
+  } deriving (Show, Read, Ord, Eq, Data, Generic)
 
 instance Binary TokenStyle
 
@@ -298,7 +297,7 @@ defStyle = TokenStyle {
 
 -- | A color (red, green, blue).
 data Color = RGB Word8 Word8 Word8
-  deriving (Show, Read, Ord, Eq, Data, Typeable, Generic)
+  deriving (Show, Read, Ord, Eq, Data, Generic)
 
 instance Binary Color
 
@@ -370,7 +369,7 @@ data Style = Style {
   , backgroundColor           :: !(Maybe Color)
   , lineNumberColor           :: !(Maybe Color)
   , lineNumberBackgroundColor :: !(Maybe Color)
-  } deriving (Read, Show, Eq, Ord, Data, Typeable, Generic)
+  } deriving (Read, Show, Eq, Ord, Data, Generic)
 
 instance Binary Style
 
@@ -414,7 +413,7 @@ instance ToJSON Style where
 data ANSIColorLevel = ANSI16Color   -- ^ 16-color mode
                     | ANSI256Color  -- ^ 256-color mode
                     | ANSITrueColor -- ^ True-color mode
-       deriving (Show, Read, Eq, Ord, Enum, Bounded, Data, Typeable, Generic)
+       deriving (Show, Read, Eq, Ord, Enum, Bounded, Data, Generic)
 
 instance Binary ANSIColorLevel
 
@@ -428,7 +427,7 @@ data FormatOptions = FormatOptions{
        , containerClasses :: ![Text]         -- ^ Additional classes for Html container tag
        , lineIdPrefix     :: !Text           -- ^ Prefix for id attributes on lines
        , ansiColorLevel   :: !ANSIColorLevel -- ^ Level of ANSI color support to use
-       } deriving (Show, Read, Eq, Ord, Data, Typeable, Generic)
+       } deriving (Show, Read, Eq, Ord, Data, Generic)
 
 instance Binary FormatOptions
 

@@ -1,5 +1,4 @@
 {-# LANGUAGE CPP                 #-}
-{-# LANGUAGE DeriveDataTypeable  #-}
 {-# LANGUAGE DeriveGeneric       #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE PatternSynonyms #-}
@@ -38,7 +37,7 @@ data RE = RE'{
   , _reCaseSensitive :: Bool
   , _reMinimal       :: Bool
   , _reCompiled      :: Either String (Regex, M.IntMap Regex)
-} deriving Typeable
+}
 
 -- We define a smart constructor which also holds the compiled regex
 -- and its capturing groups, to avoid recomputing them each time we
