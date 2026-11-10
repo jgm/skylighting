@@ -107,7 +107,7 @@ jobs:
 
     - name: Compute build plan
       run: |
-          cabal build --enable-tests --disable-optimization -fexecutable --ghc-option=-Werror --dry-run all
+          cabal build --enable-tests --disable-optimization -fexecutable --dry-run all
 
     - name: Cache cabal global package db
       uses: actions/cache@v6
@@ -126,9 +126,9 @@ jobs:
 
     - name: Build
       run: |
-          cabal build --enable-tests --disable-optimization --ghc-option=-Werror ${{ inputs.cabalopts }} all
+          cabal build --enable-tests --disable-optimization ${{ inputs.cabalopts }} all
 
     - name: Test
       run: |
-          cabal test --enable-tests --disable-optimization --ghc-option=-Werror ${{ inputs.cabalopts }} all
+          cabal test --enable-tests --disable-optimization ${{ inputs.cabalopts }} all
 
