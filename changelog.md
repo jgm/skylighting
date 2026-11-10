@@ -1,5 +1,10 @@
 # Revision history for skylighting and skylighting-core
 
+## 0.15.0.1
+
+ * Update syntax definitions for csv, isocpp, json, perl, raku,
+   systemverilog, verilog.
+
 ## 0.15
 
   * New syntaxes: sparql (#212), sas (#213), mermaid, desktop,
