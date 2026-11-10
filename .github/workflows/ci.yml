@@ -7,60 +7,87 @@ jobs:
 
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         versions:
           - ghc: '9.6'
-            cabal: '3.10'
-            cabalopts: '--ghc-options=-Werror'
+            cabal: 'latest'
+            cabalopts: ''
           - ghc: '9.8'
             cabal: 'latest'
-            cabalopts: '--ghc-options=-Werror'
+            cabalopts: ''
           - ghc: '9.10'
             cabal: 'latest'
-            cabalopts: '--ghc-options=-Werror'
+            cabalopts: ''
           - ghc: '9.12'
             cabal: 'latest'
             cabalopts: ''
           - ghc: '9.14'
             cabal: 'latest'
             cabalopts: ''
+
     steps:
     - uses: actions/checkout@v7
-
-    - name: Install ghc/cabal
+    - name: Resolve GHC version
+      id:   ghc
+      shell: bash
       run: |
-        ghcup install ghc --set ${{ matrix.versions.ghc }}
-        ghcup install cabal ${{ matrix.versions.cabal }}
+          version=$(ghcup list -t ghc -c available -r | awk -v prefix="${{ matrix.versions.ghc }}." 'index($2, prefix) == 1 { print $2 }' | sort -V | tail -1)
+          test -n "$version"
+          dir="$(ghcup whereis basedir)/ghc/$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+          echo "preinstalled=$(test -d "$dir" && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "os=$(. /etc/os-release && echo "$ID-$VERSION_ID")" >> "$GITHUB_OUTPUT"
+
+    - name: Cache GHC installation
+      if:   steps.ghc.outputs.preinstalled != 'true'
+      uses: actions/cache@v6
+      with:
+        path: |
+          ${{ steps.ghc.outputs.dir }}
+        key: ${{ steps.ghc.outputs.os }}-ghc-install-${{ secrets.CACHE_VERSION }}-${{ steps.ghc.outputs.version }}
+
+    - name: Install cabal/ghc
+      run: |
+        ghcup install ghc ${{ steps.ghc.outputs.version }}
+        ghcup set ghc ${{ steps.ghc.outputs.version }}
+        ghcup install cabal --set ${{ matrix.versions.cabal }}
+
+    - name: Update cabal and get store path
+      id:   cabal-store
+      shell: bash
+      run: |
+          cabal update -z
+          echo "dir=$(cabal path -z --store-dir)" >> "$GITHUB_OUTPUT"
+
+    - name: Compute build plan
+      run: |
+          cabal build --enable-tests --disable-optimization -fexecutable ${{ matrix.versions.cabalopts }} --dry-run all
 
     - name: Cache cabal global package db
       id:   cabal-global
       uses: actions/cache@v6
       with:
         path: |
-          ~/.cabal
-        key: ${{ runner.os }}-${{ matrix.versions.ghc }}-${{ matrix.versions.cabal }}-cabal-global-${{ secrets.CACHE_VERSION }}
-
-    - name: Cache cabal work
-      id:   cabal-local
-      uses: actions/cache@v6
-      with:
-        path: |
-          dist-newstyle
-        key: ${{ runner.os }}-${{ matrix.versions.ghc }}-${{ matrix.versions.cabal }}-cabal-global-${{ secrets.CACHE_VERSION }}
+          ${{ steps.cabal-store.outputs.dir }}
+        key: ${{ runner.os }}-ghc-${{ matrix.versions.ghc }}-cabal-${{ secrets.CACHE_VERSION }}-${{ hashFiles('dist-newstyle/cache/plan.json') }}
+        restore-keys: |
+          ${{ runner.os }}-ghc-${{ matrix.versions.ghc }}-cabal-${{ secrets.CACHE_VERSION }}-
 
     - name: Bootstrap
       run: |
-          cabal update
-          cabal build --only-dependencies -fexecutable --disable-optimization skylighting-core
           cabal build -fexecutable --disable-optimization ${{ matrix.versions.cabalopts }} skylighting-core
           cd skylighting
           cabal run skylighting-extract -fexecutable --disable-optimization -- ../skylighting-core/xml
 
-    - name: Build and test
+    - name: Build
       run: |
-          cabal build -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all
-          cabal test -fexecutable --disable-optimization ${{ matrix.versions.cabalopts }} --test-options="--hide-successes" all
+          cabal build --enable-tests --disable-optimization -fexecutable ${{ matrix.versions.cabalopts }} all
+
+    - name: Test
+      run: |
+          cabal test --enable-tests --disable-optimization ${{ matrix.versions.cabalopts }} all
 
   windows:
 
@@ -68,43 +95,40 @@ jobs:
 
     steps:
     - uses: actions/checkout@v7
-    - name: Install ghc
+
+    # Use the versions of cabal and ghc that are included in the runner image.
+    - name: Update cabal and get versions and store path
+      id:   cabal-store
+      shell: bash
       run: |
-        ghcup install ghc --set 9.10
-        ghcup install cabal --set 3.18.2.0
+          cabal update -z
+          echo "ghc=$(ghc --numeric-version)" >> "$GITHUB_OUTPUT"
+          echo "dir=$(cabal path -z --store-dir)" >> "$GITHUB_OUTPUT"
+
+    - name: Compute build plan
+      run: |
+          cabal build --enable-tests --disable-optimization -fexecutable --ghc-option=-Werror --dry-run all
+
+    - name: Cache cabal global package db
+      uses: actions/cache@v6
+      with:
+        path: |
+          ${{ steps.cabal-store.outputs.dir }}
+        key: ${{ runner.os }}-ghc-${{ steps.cabal-store.outputs.ghc }}-cabal-${{ secrets.CACHE_VERSION }}-${{ hashFiles('dist-newstyle/cache/plan.json') }}
+        restore-keys: |
+          ${{ runner.os }}-ghc-${{ steps.cabal-store.outputs.ghc }}-cabal-${{ secrets.CACHE_VERSION }}-
+
     - name: Bootstrap
-      shell: pwsh
       run: |
-          $env:Path += ";$HOME\AppData\Roaming\local\bin"
-          cabal update
-          cabal build --only-dependencies -fexecutable --disable-optimization skylighting-core
-          cabal build -fexecutable --disable-optimization --ghc-option=-Werror
+          cabal build -fexecutable --disable-optimization ${{ matrix.versions.cabalopts }} skylighting-core
           cd skylighting
-          cabal run skylighting-extract -fexecutable --disable-optimization -- (get-item ..\skylighting-core\xml)
-    - name: Build and test
-      shell: cmd
+          cabal run skylighting-extract -fexecutable --disable-optimization -- ..\skylighting-core\xml
+
+    - name: Build
       run: |
-          chcp 65001
-          cabal build -fexecutable --enable-test --enable-benchmark --disable-optimization --only-dependencies all
-          cabal test -fexecutable --disable-optimization ${{ matrix.versions.cabalopts }} --test-options="--hide-successes" all
+          cabal build --enable-tests --disable-optimization --ghc-option=-Werror ${{ inputs.cabalopts }} all
 
+    - name: Test
+      run: |
+          cabal test --enable-tests --disable-optimization --ghc-option=-Werror ${{ inputs.cabalopts }} all
 
-# macos:
-
-#   runs-on: macOS-latest
-
-#   steps:
-#   - uses: actions/checkout@v1
-#   - name: Install stack
-#     run: |
-#         curl -L https://get.haskellstack.org/stable/osx-x86_64.tar.gz -o stack.tar.gz
-#         tar xzvf stack.tar.gz --strip-components=1 'stack*/stack'
-#   - name: Bootstrap
-#     run: |
-#         ./stack install --fast --flag skylighting-core:executable skylighting-core
-#         cd skylighting
-#         ../stack exec skylighting-extract -- ../skylighting-core/xml
-#   - name: Build and test
-#     run: |
-#         ./stack build --test --fast --flag skylighting:executable --dependencies-only
-#         ./stack build --test --jobs=1 --haddock --no-haddock-deps --fast --flag skylighting:executable --ghc-options=-Werror
